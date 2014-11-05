@@ -1,0 +1,7 @@
+#!/bin/sh 
+
+<%= node[:hadoop][:home] %>/sbin/stop-ps.sh
+
+<%= node[:hadoop][:home] %>/sbin/start-ps.sh
+
+exit $?

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+command=datanode
+h=`hostname`
+bin=`dirname "${BASH_SOURCE-$0}"`
+bin=`cd "$bin"; pwd`
+
+log=<%= node[:hadoop][:logs_dir] %>/hadoop-<%= node[:hadoop][:user] %>-$command-$h.log
+
+"$bin"/hadoop-daemon.sh --config $HADOOP_CONF_DIR --script hdfs start $command
+sleep 2; head "$log"
+
+PID_FILE=<%= node[:hadoop][:logs_dir] %>/hadoop-<%= node[:hadoop][:user] %>-$command.pid
+PID=`cat $PID_FILE` 
+kill -0 $PID 
+
+exit $?

@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<!-- 
+<property>
+  <name>dfs.replication</name>
+  <value><%= node[:hadoop][:repl] %></value>
+  <description>Default block replication.
+  The actual number of replications can be specified when the file is created.
+  The default is used if replication is not specified in create time.
+  </description>
+</property>
+
+<property>
+<name>dfs.http.address</name>
+<value><%= @addr1 %></value>
+  <description> default port is 50070 but had to change it because it already in use
+  </description>
+</property>
+
+<property>
+<name>dfs.datanode.address</name>
+<value><%= @addr2 %></value>
+  <description> default port is 50070 but had to change it because it already in use
+  </description>
+</property>
+
+<property>
+<name>dfs.datanode.http.address</name>
+<value><%= @addr3 %></value>
+  <description> default port is 50070 but had to change it because it already in use
+  </description>
+</property>
+
+<property>
+<name>dfs.datanode.ipc.address</name>
+<value><%= @addr4 %></value>
+  <description> default port is 50070 but had to change it because it already in use
+  </description>
+</property>
+
+<property>
+<name>dfs.datanode.https.address</name>
+<value><%= @addr5 %></value>
+  <description> default port is 50070 but had to change it because it already in use
+  </description>
+</property>
+
+-->
+
+<property>
+  <name>dfs.storage.type</name>
+  <value><%= node[:hadoop][:storage_type] %></value>
+  <description>storage type could be one of derby, clusterj or ...</description>
+</property>
+
+<property>
+  <name>dfs.dbconnector.string</name>
+  <value><%= @mysql_host %></value>
+  <description>Default block replication.
+  </description>
+</property>
+
+<property>
+  <name>dfs.dbconnector.database</name>
+  <value><%= node[:hadoop][:db] %></value>
+</property>
+
+<property>
+  <name>dfs.dbconnector.num-session-factories</name>
+  <value>1</value>
+</property>
+
+<property>
+    <name>dfs.storage.mysql.protocol</name>
+    <value><%= node[:ndb][:mysql][:jdbc_url] %></value>
+</property>
+
+<property>
+  <name>dfs.storage.mysql.user</name>
+  <value><%= node[:mysql][:user] %></value>
+</property>
+
+<property>
+  <name>dfs.storage.mysql.user.password</name>
+  <value><%= node[:mysql][:password] %></value>
+</property>
+
+<property>
+  <name>dfs.storage.mysql.port</name>
+  <value><%= node[:ndb][:mysql_port] %></value>
+</property>
+
+<property>
+  <name>dfs.leader.check.interval</name>
+  <value><%= node[:hadoop][:leader_check_interval_ms] %></value>
+</property>
+
+<property>
+  <name>dfs.leader.missed.hb</name>
+  <value><%= node[:hadoop][:missed_hb] %></value>
+</property>
+
+<property>
+  <name>dfs.client.max.retires.on.failure</name>
+  <value>1</value>
+</property>
+
+<property>
+  <name>dsf.client.refresh.namenode.list</name>
+  <value>60000</value>
+</property>
+
+<property>
+  <name>dfs.client.block.write.locateFollowingBlock.retries</name>
+  <value>10</value>
+</property>
+
+<property>
+  <name>dfs.webhdfs.enabled</name>
+  <value>true</value>
+</property>
+
+</configuration>

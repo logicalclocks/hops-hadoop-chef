@@ -1,0 +1,10 @@
+#!/bin/bash
+
+EXEC_WITH_USER="su <%= node[:hadoop][:user] %> -c"
+
+$EXEC_WITH_USER "<%= node[:hadoop][:home] %>/bin/hadoop $@"
+
+
+exit $?
+
+

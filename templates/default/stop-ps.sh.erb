@@ -1,0 +1,9 @@
+#!/bin/bash
+
+command=proxyserver
+pidDir=<%= node[:hadoop][:logs_dir] %>
+service=yarn
+
+<%= node[:hadoop][:home] %>/sbin/kill-process.sh $service <%= node[:hadoop][:yarn][:user] %> $command $pidDir
+
+exit $?

@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# Startup script for namenode
+#
+### BEGIN INIT INFO # Provides:                     nodemanager-*
+# Required-Start:                 
+# Should-Start:                 
+# Required-Stop:                  
+# Default-Start:                2 3 4 5
+# Default-Stop:                 0 1 6
+# Short-Description:            start and stop nodemanager-*
+# Description:                  Start/Stop/Restart Nodemanager
+### END INIT INFO
+
+# Variables
+
+START_PROG="<%= node[:hadoop][:home] %>/sbin/root-start-nm.sh"  
+STOP_PROG="<%= node[:hadoop][:home] %>/sbin/stop-nm.sh"  
+
+RETVAL=0
+
+EXEC_WITH_USER=
+
+start() {
+  $EXEC_WITH_USER "$START_PROG"
+  return $?
+}
+
+stop() {
+  $EXEC_WITH_USER "$STOP_PROG"
+  return $?
+}
+
+restart() {
+  $EXEC_WITH_USER "$STOP_PROG"
+  $EXEC_WITH_USER "$START_PROG"
+  return $?
+}
+
+
+# user-supplied parameter to stop/start/restart process.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  reload)
+    restart
+    ;;
+  -h|--help)
+    echo ""
+    echo "usage: <prog> start|stop|restart"
+    echo ""
+    exit 0
+    ;;
+  *)
+    echo $"Usage: <prog> {start|stop|restart}"
+    exit 1
+  esac
+
+
+exit $RETVAL

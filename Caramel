@@ -1,0 +1,6 @@
+hop/install:ndb/install
+hop/nn:L/hop/install,ndb/mysqld,kagent
+hop/rm:hop/nn,L/hop/install
+hop/dn:hop/rm,L/hop/install
+hop/nm:hop/dn,L/hop/install
+hop/jhs:hop/dn,L/hop/install

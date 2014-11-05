@@ -1,0 +1,9 @@
+#!/bin/bash
+
+command=historyserver
+pidDir=/tmp
+service=mapred
+
+<%= node[:hadoop][:home] %>/sbin/kill-process.sh $service <%= node[:hadoop][:yarn][:user] %> $command $pidDir
+
+exit $?

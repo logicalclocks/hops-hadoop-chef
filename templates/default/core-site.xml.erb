@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<!-- In: conf/core-site.xml -->
+<property>
+  <name>hadoop.tmp.dir</name>
+  <value><%= node[:hadoop][:tmp_dir] %></value>
+  <description>A base for other temporary directories.</description>
+</property>
+
+<property>
+  <name>io.file.buffer.size</name>
+  <value><%= node[:hadoop][:io_buffer_sz] %></value>
+  <description>Size of read/write buffer used in SequenceFiles.</description>
+</property>
+
+<!--
+<property>
+  <name>fs.default.name</name>
+  <value><%= @myNN %></value>
+  <description>The name of the default file system.  A URI whose
+  scheme and authority determine the FileSystem implementation.  The
+  uri's scheme determines the config property (fs.SCHEME.impl) naming
+  the FileSystem implementation class.  The uri's authority is used to
+  determine the host, port, etc. for a filesystem.</description>
+</property>
+-->
+
+<property>
+  <name>dfs.namenodes.rpc.address</name>
+  <value><%= @listNNs %></value>  
+  <description>The name of the default file system.  A URI whose
+  determine the host, port, etc. for a filesystem.</description>
+</property>
+
+<property>
+  <name>ipc.client.connect.max.retries</name>
+  <value><%= node[:hadoop][:max_retries] %></value>
+  <description></description>
+</property>
+
+ <property>
+  <name>fs.defaultFS</name>
+  <value><%= @myNN %></value>
+ </property>
+
+</configuration>
+

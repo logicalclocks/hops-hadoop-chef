@@ -1,0 +1,21 @@
+#!/bin/bash
+
+command=resourcemanager
+EXEC_WITH_USER="su <%= node[:hadoop][:yarn][:user] %> -l -c"
+
+bin=`dirname "${BASH_SOURCE-$0}"`
+bin=`cd "$bin"; pwd`
+
+log=<%= node[:hadoop][:logs_dir] %>/yarn-<%= node[:hadoop][:yarn][:user] %>-$command-<%= node['hostname'] %>.log
+
+$EXEC_WITH_USER "cd ${bin}/..; . ${bin}/../libexec/yarn-config.sh ; ${bin}/yarn-daemon.sh --config \$YARN_CONF_DIR  start $command"
+sleep 2; head "$log"
+
+PID_FILE=<%= node[:hadoop][:logs_dir] %>/yarn-<%= node[:hadoop][:yarn][:user] %>-$command.pid
+PID=`cat $PID_FILE` 
+kill -0 $PID 
+
+exit $?
+
+
+

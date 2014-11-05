@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ $# -ne 4 ] ; then
+    echo "Incorrect args. Usage: kill-process service user command_name pid_dir"
+    exit 1
+fi
+
+SERVICE=$1
+USER_NAME=$2
+COMMAND=$3
+PID_DIR=$4
+res=1
+
+function kill_named {
+    PID=`ps aux | grep -i $COMMAND | grep $SERVICE | awk '{print $2}'`
+    if [ "$PID" != "" ] ; then
+	kill $PID
+        res=$?
+    fi
+}
+
+echo "Stopping the $COMMAND"
+PID_FILE=$PID_DIR/$SERVICE-$USER_NAME-$COMMAND.pid
+PID=`cat $PID_FILE`
+kill $PID
+res=$?
+
+if [ $res -ne 0 ] ; then
+    kill_named
+else
+    wait_pid_removed=2
+    timeout=0
+    while [ $timeout -lt $wait_pid_removed ] ; do
+	sleep 1
+	kill -0 $PID 2>&1 > /dev/null
+        if [ $? -ne 0 ] ; then 
+          break
+        fi
+	echo -n "."
+	timeout=`expr $timeout + 1`
+    done
+    echo ""
+
+    if [ $timeout -eq $wait_pid_removed ] ; then
+	kill_named
+    fi
+fi
+
+if [ $res -eq 0 ] ; then
+ echo "Killed $SERVICE/$COMMAND"
+fi
+
+exit $res
