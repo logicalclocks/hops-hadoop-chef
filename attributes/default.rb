@@ -31,7 +31,7 @@ default[:mysql][:port]                  = default[:ndb][:mysql_port]
 default[:hadoop][:mysql_url]               = "jdbc:mysql://#{default[:ndb][:mysql_ip]}:#{default[:ndb][:mysql_port]}/"
 
 default[:hadoop][:yarn][:scripts]          = %w{ start stop restart root-start }
-default[:hadoop][:yarn][:user]             = node[:hadoop][:user]
+default[:hadoop][:yarn][:user]             = "yarn"
 default[:hadoop][:yarn][:nm][:memory_mbs]  = 1000
 default[:hadoop][:yarn][:ps_port]          = 20888
 
@@ -72,7 +72,7 @@ default[:hadoop][:nm][:jmxport]            = "8083"
 default[:hadoop][:jmx][:username]          = "monitorRole"
 default[:hadoop][:jmx][:password]          = "hop"
 
-default[:hadoop][:mr][:user]               = node[:hadoop][:user]
+default[:hadoop][:mr][:user]               = "mapred"
 
 default[:hadoop][:nn][:public_ips]         = ['10.0.2.15']
 default[:hadoop][:nn][:private_ips]        = ['10.0.2.15']

@@ -9,7 +9,7 @@ for script in node[:hadoop][:yarn][:scripts]
   template "#{node[:hadoop][:home]}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node[:hadoop][:yarn][:user]
-    group node[:hadoop][:yarn][:user]
+    group node[:hadoop][:group]
     mode 0775
   end
 end 
@@ -21,7 +21,7 @@ end
 
 template "/etc/init.d/#{yarn_command}" do
   source "#{yarn_command}.erb"
-  owner node[:hadoop][:user]
+  owner node[:hadoop][:yarn][:user]
   group node[:hadoop][:group]
   mode 0754
   notifies :enable, resources(:service => yarn_command)
@@ -30,7 +30,7 @@ end
 
 user node[:hadoop][:mr][:user] do
   supports :manage_home => true
-  home "/home/#{node[:hadoop][:yarn][:user]}"
+  home "/home/#{node[:hadoop][:mr][:user]}"
   action :create
   system true
   shell "/bin/bash"
