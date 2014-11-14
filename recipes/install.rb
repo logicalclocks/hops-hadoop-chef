@@ -17,12 +17,27 @@ user node[:hdfs][:user] do
   shell "/bin/bash"
 end
 
-group node[:hadoop][:group] do
-  action :modify
-  members node[:hdfs][:user]
-  append true
+user node[:hadoop][:yarn][:user] do
+  supports :manage_home => true
+  home "/home/#{node[:hadoop][:yarn][:user]}"
+  action :create
+  system true
+  shell "/bin/bash"
 end
 
+user node[:hadoop][:mr][:user] do
+  supports :manage_home => true
+  home "/home/#{node[:hadoop][:mr][:user]}"
+  action :create
+  system true
+  shell "/bin/bash"
+end
+
+group node[:hadoop][:group] do
+  action :modify
+  members ["#{node[:hdfs][:user]}", "#{node[:hadoop][:yarn][:user]}", "#{node[:hadoop][:mr][:user]}"]
+  append true
+end
 
 directory node[:hadoop][:dir] do
   owner node[:hdfs][:user]
