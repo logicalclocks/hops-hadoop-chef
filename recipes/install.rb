@@ -42,7 +42,7 @@ end
 directory node[:hadoop][:dir] do
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "0755"
+  mode "0775"
   recursive true
   action :create
 end
@@ -71,7 +71,7 @@ remote_file cached_package_filename do
   source package_url
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "0755"
+  mode "0775"
   # TODO - checksum
   action :create_if_missing
 end
@@ -95,14 +95,14 @@ end
  directory node[:hadoop][:logs_dir] do
    owner node[:hdfs][:user]
    group node[:hadoop][:group]
-   mode "0755"
+   mode "0775"
    action :create
  end
 
  directory node[:hadoop][:tmp_dir] do
    owner node[:hdfs][:user]
    group node[:hadoop][:group]
-   mode "0755"
+   mode "1777"
    action :create
  end
 

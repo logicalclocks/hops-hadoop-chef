@@ -24,24 +24,10 @@ ndb_connectstring()
 # set node[:ndb][:mysql][:jdbc_url]
 jdbc_url()
 
-directory node[:hadoop][:logs_dir] do
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "0755"
-  action :create
-end
-
-directory node[:hadoop][:tmp_dir] do
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "0755"
-  action :create
-end
-
 directory node[:hadoop][:conf_dir] do
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "0755"
+  mode "0770"
   action :create
 end
 
@@ -49,7 +35,7 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "755"
+  mode "770"
   variables({
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
@@ -64,7 +50,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "755"
+  mode "770"
 end
 
 
@@ -99,7 +85,7 @@ if node[:hadoop][:install_protobuf]
     source proto_url
     owner node[:hdfs][:user]
     group node[:hadoop][:group]
-    mode "0755"
+    mode "0770"
     # TODO - checksum
     action :create_if_missing
   end
@@ -135,9 +121,9 @@ end
 
 
 directory "/conf" do
-  owner "root"
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "0755"
+  mode "0775"
   recursive true
   action :create
 end
@@ -147,5 +133,5 @@ template "/conf/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "755"
+  mode "770"
 end
