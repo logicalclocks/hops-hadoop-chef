@@ -46,9 +46,9 @@ kagent_config yarn_command do
   service "MAP_REDUCE"
   start_script "#{node[:hadoop][:home]}/sbin/root-start-#{yarn_service}.sh"
   stop_script "#{node[:hadoop][:home]}/sbin/stop-#{yarn_service}.sh"
-  log_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hadoop][:user]}-#{yarn_command}-#{node['hostname']}.log"
-#  pid_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hadoop][:user]}-#{yarn_command}.pid"
-  pid_file "/tmp/mapred-#{node[:hadoop][:user]}-#{yarn_command}.pid"
+  log_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hdfs][:user]}-#{yarn_command}-#{node['hostname']}.log"
+#  pid_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hdfs][:user]}-#{yarn_command}.pid"
+  pid_file "/tmp/mapred-#{node[:hdfs][:user]}-#{yarn_command}.pid"
   config_file "#{node[:hadoop][:conf_dir]}/mapred-site.xml"
   web_port node[:hadoop]["#{yarn_service}"][:http_port]
 end

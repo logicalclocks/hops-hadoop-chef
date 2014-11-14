@@ -3,10 +3,10 @@
 command=namenode
 
 rootDir=<%= node[:hadoop][:home] %>
-source /home/<%= node[:hadoop][:user] %>/.bash_profile
+source /home/<%= node[:hdfs][:user] %>/.bash_profile
 
 HDFS=$rootDir/bin/hdfs
-log=$rootDir/logs/hadoop-<%= node[:hadoop][:user] %>-$command.log
+log=$rootDir/logs/hadoop-<%= node[:hdfs][:user] %>-$command.log
 
 echo "Formating namenode on ..."
 echo "$HDFS $command -format > $log"

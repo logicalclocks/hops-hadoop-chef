@@ -25,21 +25,21 @@ ndb_connectstring()
 jdbc_url()
 
 directory node[:hadoop][:logs_dir] do
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "0755"
   action :create
 end
 
 directory node[:hadoop][:tmp_dir] do
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "0755"
   action :create
 end
 
 directory node[:hadoop][:conf_dir] do
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "0755"
   action :create
@@ -47,7 +47,7 @@ end
 
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
@@ -62,7 +62,7 @@ end
 
 template "#{node[:hadoop][:home]}/etc/hadoop/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
 end
@@ -70,14 +70,14 @@ end
 
 template "#{node[:hadoop][:home]}/etc/hadoop/jmxremote.password" do 
   source "jmxremote.password.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "600"
 end
 
 template "#{node[:hadoop][:home]}/sbin/kill-process.sh" do 
   source "kill-process.sh.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "754"
 end
@@ -97,7 +97,7 @@ if node[:hadoop][:install_protobuf]
 
   remote_file proto_filename do
     source proto_url
-    owner node[:hadoop][:user]
+    owner node[:hdfs][:user]
     group node[:hadoop][:group]
     mode "0755"
     # TODO - checksum
@@ -105,7 +105,7 @@ if node[:hadoop][:install_protobuf]
   end
 
   bash "install_protobuf_2_5" do
-    user node[:hadoop][:user]
+    user node[:hdfs][:user]
     code <<-EOF
     apt-get -y remove protobuf-compiler
     tar -xzf #{proto_filename} -C #{Chef::Config[:file_cache_path]}
@@ -145,7 +145,7 @@ end
 
 template "/conf/container-executor.cfg" do
   source "container-executor.cfg.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
 end

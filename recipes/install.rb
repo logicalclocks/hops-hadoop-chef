@@ -9,23 +9,23 @@ group node[:hadoop][:group] do
   action :create
 end
 
-user node[:hadoop][:user] do
+user node[:hdfs][:user] do
   supports :manage_home => true
   action :create
-  home "/home/#{node[:hadoop][:user]}"
+  home "/home/#{node[:hdfs][:user]}"
   system true
   shell "/bin/bash"
 end
 
 group node[:hadoop][:group] do
   action :modify
-  members node[:hadoop][:user]
+  members node[:hdfs][:user]
   append true
 end
 
 
 directory node[:hadoop][:dir] do
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "0755"
   recursive true
@@ -54,7 +54,7 @@ cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_file
 
 remote_file cached_package_filename do
   source package_url
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "0755"
   # TODO - checksum
@@ -71,21 +71,21 @@ bash 'extract-hadoop' do
         mv #{node[:hadoop][:dir]}/hadoop #{node[:hadoop][:home]}
 # chown -L : traverse symbolic links
         ln -s #{node[:hadoop][:home]} #{node[:hadoop][:dir]}/hadoop
-        chown -RL #{node[:hadoop][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}
+        chown -RL #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}
         touch #{node[:hadoop][:home]}/.downloaded
 	EOH
   not_if { ::File.exist?("#{node[:hadoop][:home]}/.downloaded") }
 end
 
  directory node[:hadoop][:logs_dir] do
-   owner node[:hadoop][:user]
+   owner node[:hdfs][:user]
    group node[:hadoop][:group]
    mode "0755"
    action :create
  end
 
  directory node[:hadoop][:tmp_dir] do
-   owner node[:hadoop][:user]
+   owner node[:hdfs][:user]
    group node[:hadoop][:group]
    mode "0755"
    action :create

@@ -4,6 +4,6 @@ command=namenode
 pidDir=<%= node[:hadoop][:logs_dir] %>
 service=hadoop
 
-<%= node[:hadoop][:home] %>/sbin/kill-process.sh $service <%= node[:hadoop][:user] %> $command $pidDir
+<%= node[:hadoop][:home] %>/sbin/kill-process.sh $service <%= node[:hdfs][:user] %> $command $pidDir
 
 exit $?

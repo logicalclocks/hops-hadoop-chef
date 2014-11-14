@@ -1,5 +1,5 @@
 default[:hadoop][:version]                 = default[:hadoop][:version]
-default[:hadoop][:user]                    = "hdfs"
+default[:hdfs][:user]                      = "hdfs"
 default[:hadoop][:group]                   = "hadoop"
 default[:hadoop][:dir]                     = "/srv"
 default[:hadoop][:home]                    = "#{default[:hadoop][:dir]}/hadoop-#{default[:hadoop][:version]}"

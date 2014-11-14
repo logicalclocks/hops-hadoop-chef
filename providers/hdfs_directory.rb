@@ -4,7 +4,7 @@ action :create do
   Chef::Log.info "Creating hdfs directory: #{@new_resource.name}"
 
   bash "mk-dir-#{new_resource.name}" do
-    user node[:hadoop][:user]
+    user node[:hdfs][:user]
     code <<-EOF
      . #{node[:hadoop][:home]}/sbin/set-env.sh
      #{node[:hadoop][:home]}/bin/hdfs dfs -mkdir -p #{new_resource.name}

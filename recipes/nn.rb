@@ -17,7 +17,7 @@ firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
 
 template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
@@ -29,7 +29,7 @@ end
 for script in node[:hadoop][:nn][:scripts]
   template "#{node[:hadoop][:home]}/sbin/#{script}" do
     source "#{script}.erb"
-    owner node[:hadoop][:user]
+    owner node[:hdfs][:user]
     group node[:hadoop][:group]
     mode 0775
   end
@@ -40,7 +40,7 @@ end
 
 if node[:hadoop][:format].eql? "true"
     bash 'format-nn' do
-      user node[:hadoop][:user]
+      user node[:hdfs][:user]
       code <<-EOH
  		#{node[:hadoop][:home]}/sbin/format-nn.sh
  	EOH
@@ -55,7 +55,7 @@ end
 
 template "/etc/init.d/namenode" do
   source "namenode.erb"
-  owner node[:hadoop][:user]
+  owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode 0754
   notifies :enable, resources(:service => "namenode"), :immediately
@@ -68,8 +68,8 @@ kagent_config "namenode" do
   stop_script "#{node[:hadoop][:home]}/sbin/stop-nn.sh"
   init_script "#{node[:hadoop][:home]}/sbin/format-nn.sh"
   config_file "#{node[:hadoop][:conf_dir]}/core-site.xml"
-  log_file "#{node[:hadoop][:logs_dir]}/hadoop-#{node[:hadoop][:user]}-namenode-#{node['hostname']}.log"
-  pid_file "#{node[:hadoop][:logs_dir]}/hadoop-#{node[:hadoop][:user]}-namenode.pid"
+  log_file "#{node[:hadoop][:logs_dir]}/hadoop-#{node[:hdfs][:user]}-namenode-#{node['hostname']}.log"
+  pid_file "#{node[:hadoop][:logs_dir]}/hadoop-#{node[:hdfs][:user]}-namenode.pid"
   web_port node[:hadoop][:nn][:http_port]
 end
 
