@@ -119,71 +119,18 @@ if node[:hadoop][:install_protobuf]
   end
 end
 
-bash "update_env_variables_for_user" do
-    user node[:hadoop][:user]
-    code <<-EOF
-# add the environment variables when logging in using non-interactive shell (i.e., using ssh)
-# .bash_profile is sourced when logging in with ssh, .bashrc is not sources
 
-cp /home/#{node[:hadoop][:user]}/.bashrc /home/#{node[:hadoop][:user]}/.bashrc.bak
 
-# make recipe idempotent, by cleaning out old profile
-rm /home/#{node[:hadoop][:user]}/.bash_profile
+hadoop_user_envs node[:hdfs][:user] do
+  action :update
+end
 
-echo export JAVA_HOME=#{node[:java][:java_home]} >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export HADOOP_INSTALL=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-# '' (single quoting) a string causes its variables not to be dereferenced
-echo 'export PATH=\$PATH:#{node[:hadoop][:dir]}/hadoop/bin' >> /home/#{node[:hadoop][:user]}/.bash_profile
-# \\ has the same effect as a single '\' on singly quoted string
-echo export PATH=\\$PATH:#{node[:hadoop][:dir]}/hadoop/sbin >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export HADOOP_MAPRED_HOME=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export HADOOP_COMMON_HOME=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export HADOOP_HDFS_HOME=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export YARN_HOME=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export HADOOP_HOME=#{node[:hadoop][:dir]}/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
+hadoop_user_envs node[:hadoop][:yarn][:user] do
+  action :update
+end
 
-echo export HADOOP_CONF_DIR=#{node[:hadoop][:dir]}/hadoop/etc/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export YARN_CONF_DIR=#{node[:hadoop][:dir]}/hadoop/etc/hadoop >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export LD_LIBRARY_PATH=#{node[:ndb][:libndb]} >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-echo export HADOOP_PID_DIR=#{node[:hadoop][:dir]}/hadoop/logs >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export YARN_PID_DIR=#{node[:hadoop][:dir]}/hadoop/logs >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-# echo export 'HADOOP_CLASSPATH=:.:\$HADOOP_HOME/share/hadoop/yarn/test/*:\$HADOOP_HOME/share/hadoop/yarn/*:\$HADOOP_HOME/share/hadoop/yarn/lib/*:\$HADOOP_HOME/share/hadoop/mapreduce/*:\$HADOOP_HOME/share/hadoop/mapreduce/lib/*:\$HADOOP_HOME/share/hadoop/mapreduce/test/*:\$HADOOP_HOME/share/hadoop/common/lib/*:\$HADOOP_HOME/share/hadoop/hdfs/lib/*:\$HADOOP_HOME/share/hadoop/tools/lib/*:\$HADOOP_HOME/share/hadoop/common/*:\$HADOOP_HOME/share/hadoop/common/*:\$HADOOP_HOME/share/hadoop/hdfs/*:\$HADOOP_HOME/share/hadoop/mapreduce/*' >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-echo export 'HADOOP_CLASSPATH=:.:\$HADOOP_CONF_DIR:\$HADOOP_COMMON_HOME/share/hadoop/common/*:\$HADOOP_COMMON_HOME/share/hadoop/common/lib/*:\$HADOOP_HDFS_HOME/share/hadoop/hdfs/*:\$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/lib/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/test/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/test/*:\$HADOOP_COMMON_HOME/share/hadoop/tools/lib/*' >> /home/#{node[:hadoop][:user]}/.bash_profile
-
- 
-echo export 'CLASSPATH=\$HADOOP_CLASSPATH' >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-echo "export HADOOP_NAMENODE_OPTS=\\"-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8077 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=\\$HADOOP_CONF_DIR/jmxremote.password\\" " >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-export "HADOOP_DATANODE_OPTS=\\"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8078 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=\\$HADOOP_CONF_DIR/jmxremote.password\\" " >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-echo "export YARN_OPTS=\\"-Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=\\$HADOOP_CONF_DIR/jmxremote.password\\" " >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-# Command specific options appended to HADOOP_OPTS when specified
-echo "export YARN_RESOURCEMANAGER_OPTS=\\"-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8082 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=\\$HADOOP_CONF_DIR/jmxremote.password\\" " >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-echo "export YARN_NODEMANAGER_OPTS=\\"-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8083 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=\\$HADOOP_CONF_DIR/jmxremote.password\\" " >> /home/#{node[:hadoop][:user]}/.bash_profile
-echo export cygwin=false >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-export HADOOP_USER_CLASSPATH_FIRST=true >> /home/#{node[:hadoop][:user]}/.bash_profile
-
-# Wipe old .bashrc, and add new .bashrc starting with running .bash_profile and then running the old .bashrc
-echo "test -f /home/#{node[:hadoop][:user]}/.bash_profile && source /home/#{node[:hadoop][:user]}/.bash_profile" > /home/#{node[:hadoop][:user]}/.bashrc
-cat /home/#{node[:hadoop][:user]}/.bashrc.bak >> /home/#{node[:hadoop][:user]}/.bashrc
-rm /home/#{node[:hadoop][:user]}/.bashrc.bak
-
-# Create a ssh key, needed for start-dfs.sh and start-yarn.sh
-ssh-keygen -t rsa -P '' -f /home/#{node[:hadoop][:user]}/.ssh/id_rsa
-cat /home/#{node[:hadoop][:user]}/.ssh/id_rsa.pub >> /home/#{node[:hadoop][:user]}/.ssh/authorized_keys
-# Disable need for user confirmation when sshing to a host for the first time. 
-# The alternative would be to explicitly add hosts to .ssh/known_hosts file.
-echo "\nStrictHostKeyChecking no\n" >> /home/#{node[:hadoop][:user]}/.ssh/config
-
-EOF
-  not_if { ::File.exist?("/home/#{node[:hadoop][:user]}/.ssh/config") }
+hadoop_user_envs node[:hadoop][:mr][:user] do
+  action :update
 end
 
 
