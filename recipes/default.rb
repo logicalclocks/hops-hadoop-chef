@@ -121,15 +121,15 @@ end
 
 
 
-hadoop_user_envs node[:hdfs][:user] do
+hops_user_envs node[:hdfs][:user] do
   action :update
 end
 
-hadoop_user_envs node[:hadoop][:yarn][:user] do
+hops_user_envs node[:hadoop][:yarn][:user] do
   action :update
 end
 
-hadoop_user_envs node[:hadoop][:mr][:user] do
+hops_user_envs node[:hadoop][:mr][:user] do
   action :update
 end
 
