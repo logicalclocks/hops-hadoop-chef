@@ -33,8 +33,8 @@ kagent_config yarn_command do
   service "YARN"
   start_script "#{node[:hadoop][:home]}/sbin/root-start-#{yarn_service}.sh"
   stop_script "#{node[:hadoop][:home]}/sbin/stop-#{yarn_service}.sh"
-  log_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hdfs][:user]}-#{yarn_command}-#{node['hostname']}.log"
-  pid_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hdfs][:user]}-#{yarn_command}.pid"
+  log_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hadoop][:yarn][:user]}-#{yarn_command}-#{node['hostname']}.log"
+  pid_file "#{node[:hadoop][:logs_dir]}/yarn-#{node[:hadoop][:yarn][:user]}-#{yarn_command}.pid"
   web_port node[:hadoop]["#{yarn_service}"][:http_port]
 end
 
