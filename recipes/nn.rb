@@ -37,15 +37,18 @@ end
 
 
 # it is ok if all namenodes format the fs. Unless you add a new one later..
-
 if node[:hadoop][:format].eql? "true"
+  if ::Directory.exists?("#{node[:hadoop][:tmp_dir]}/dfs/data/current/")
+    # if the nn has already been formatted, re-formatting it returns error
+    Chef::Log.info "Not formatting the NameNode. Remove this directory before formatting: (sudo rm -rf #{node[:hadoop][:tmp_dir]}/dfs/data/current/)"
+  else 
     bash 'format-nn' do
       user node[:hdfs][:user]
       code <<-EOH
- 		#{node[:hadoop][:home]}/sbin/format-nn.sh
+   	#{node[:hadoop][:home]}/sbin/format-nn.sh
  	EOH
-      not_if "test -d #{node[:hadoop][:tmp_dir]}/dfs/data/current/"
     end
+  end
 end
 
 service "namenode" do
