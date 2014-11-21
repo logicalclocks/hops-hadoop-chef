@@ -24,7 +24,7 @@ tmp_dirs   = ["/mr-history", node[:hadoop][:jhs][:inter_dir], node[:hadoop][:jhs
 
  for d in tmp_dirs
    Chef::Log.info "Creating hdfs directory: #{d}"
-   hadoop_hdfs_directory d do
+   hops_hdfs_directory d do
     action :create
     mode "1777"
    end
@@ -33,7 +33,7 @@ tmp_dirs   = ["/mr-history", node[:hadoop][:jhs][:inter_dir], node[:hadoop][:jhs
 node.normal[:mr][:dirs] = [node[:hadoop][:mr][:staging_dir], node[:hadoop][:mr][:tmp_dir]]
  for d in node[:mr][:dirs]
    Chef::Log.info "Creating hdfs directory: #{d}"
-   hadoop_hdfs_directory d do
+   hops_hdfs_directory d do
     action :create
     mode "0775"
    end

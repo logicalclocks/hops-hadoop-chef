@@ -15,8 +15,6 @@ require 'resolv'
 # Hadoop requires fqdns to work - won't work with IPs
 hostf = Resolv::Hosts.new
 
-# get your ip address
-my_ip = my_private_ip()
 
 # set node[:ndb][:connect_string]
 ndb_connectstring()
@@ -24,44 +22,53 @@ ndb_connectstring()
 # set node[:ndb][:mysql][:jdbc_url]
 jdbc_url()
 
-directory node[:hadoop][:conf_dir] do
+# get your ip address
+my_ip = my_private_ip()
+listNNs = "hdfs://" + private_recipe_ip("hadoop", "nn") + ":29211"
+firstNN = "hdfs://" + private_recipe_ip("hadoop", "nn") + ":29211"
+
+
+template "#{node[:hadoop][::conf_dir]}/core-site.xml" do 
+  source "core-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "0770"
-  action :create
+  mode "755"
+  variables({
+              :myNN => firstNN,
+              :listNNs => listNNs
+            })
 end
 
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "770"
+  mode "755"
   variables({
+              :myNN => firstNN,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",
               :addr4 => my_ip + ":40103",
               :addr5 => my_ip + ":40104",
-              :mysql_host => node[:ndb][:connect_string].split(":").first
             })
 end
 
-template "#{node[:hadoop][:home]}/etc/hadoop/hadoop-env.sh" do
+template "#{node[:hadoop][:conf_dir]}/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  mode "770"
+  mode "755"
 end
 
-
-template "#{node[:hadoop][:home]}/etc/hadoop/jmxremote.password" do 
+template "#{node[:hadoop][:conf_dir]}/jmxremote.password" do 
   source "jmxremote.password.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "600"
 end
 
-template "#{node[:hadoop][:home]}/etc/hadoop/yarn-jmxremote.password" do 
+template "#{node[:hadoop][:conf_dir]}/yarn-jmxremote.password" do 
   source "jmxremote.password.erb"
   owner node[:hadoop][:yarn][:user]
   group node[:hadoop][:group]

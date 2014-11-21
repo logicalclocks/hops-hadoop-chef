@@ -124,4 +124,157 @@
   <value>true</value>
 </property>
 
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Do not modify this file directly.  Instead, copy entries that you -->
+<!-- wish to modify from this file into hdfs-site.xml and change them -->
+<!-- there.  If hdfs-site.xml does not already exist, create it.      -->
+
+<property>
+  <name>hadoop.hdfs.configuration.version</name>
+  <value>1</value>
+  <description>version of this configuration file</description>
+</property>
+
+<!--
+<property>
+  <name>dfs.namenode.logging.level</name>
+  <value>Dfs_Namenode_Logging_Level_Config_Param</value>
+  <description>
+    The logging level for dfs namenode. Other values are "dir" (trace
+    namespace mutations), "block" (trace block under/over replications
+    and block creations/deletions), or "all".
+  </description>
+</property>
+
+
+<property>
+  <name>dfs.namenode.http-address</name>
+  <value>NN_MACHINE_NAME:Dfs_Namenode_Http_Address_Config_Param</value>
+  <description>
+    The address and the base port where the dfs namenode web ui will listen on.
+  </description>
+</property>
+
+
+<property>
+  <name>dfs.namenode.rpc-address</name>
+  <value><%= @myNN %></value>
+  <description>
+    RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
+    the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
+    dfs.namenode.rpc-address.EXAMPLENAMESERVICE
+    The value of this property will take the form of hdfs://nn-host1:rpc-port.
+  </description>
+</property>
+-->
+
+<property>
+  <name>dfs.blocksize</name>
+  <value>256m</value>
+  <description>
+      The default block size for new files, in bytes.
+      You can use the following suffix (case insensitive):
+      k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
+      Or provide complete size in bytes (such as 134217728 for 128 MB).
+  </description>
+</property>
+
+
+<property>
+  <name>dfs.namenode.accesstime.precision</name>
+  <value>3600000</value>
+  <description>The access time for HDFS file is precise upto this value. 
+               The default value is 1 hour. Setting a value of 0 disables
+               access times for HDFS.
+  </description>
+</property>
+
+
+<property>
+   <name>dfs.namenode.handler.count</name>
+  <value>200</value>
+  <description>The RPC server that listens to requests from clients</description>
+</property>
+
+<!--property>
+   <name>dfs.namenode.service.handler.count</name>
+  <value>10</value>
+  <description>The RPC server threads that listens to requests from DataNodes</description>
+</property-->
+
+<property>
+   <name>dfs.storage.ansestor.lock.type</name>
+  <value>READ_COMMITTED</value>
+  <description>Lock type for ancestors in the file path. Values: READ | READ_COMMITTED</description>
+</property>
+
+
+<property>
+   <name>dfs.namenode.inodeid.batchsize</name>
+  <value>100000</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.namenode.blockid.batchsize</name>
+  <value>100000</value>
+  <description></description>
+</property>
+
+
+<property>
+   <name>dsf.client.refresh.namenode.list</name>
+  <value>60000</value>
+  <description>Time in ms</description>
+</property>
+
+<property>
+   <name>dfs.namenode.selector-policy</name>
+  <value>ROUND_ROBIN</value>
+  <description>Used by clients. Possible values ROUND_ROBIN, RANDOM</description>
+</property>
+
+<property>
+  <name>dfs.namenode.safemode.extension</name>
+  <value>30000</value>
+  <description>
+    Determines extension of safe mode in milliseconds
+    after the threshold level is reached.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.processReport.batchsize</name>
+  <value>10000</value>
+  <description>
+    
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.misreplicated.batchsize</name>
+  <value>500</value>
+  <description>
+    
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.misreplicated.noofbatches</name>
+  <value>10</value>
+  <description>
+  </description>
+</property>
+
 </configuration>
