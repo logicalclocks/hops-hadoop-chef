@@ -18,7 +18,6 @@ depends 'java'
 depends 'kagent'
 depends 'ndb'
 depends 'hostsfile'
-depends 'hadoop'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -27,7 +26,7 @@ end
 attribute "hadoop/version",
 :description => "Hop version number",
 :type => 'string',
-:default => "2.4.0"
+:default => "2.2.0"
 
 attribute "yarn/resourcemanager",
 :description => "Ip address for the resourcemanager",
@@ -54,7 +53,6 @@ attribute "hadoop/mr/user",
 :type => 'string',
 :default => "mapred"
 
-
 attribute "mysql/user",
 :description => "Mysql server username",
 :type => 'string'
@@ -68,3 +66,8 @@ attribute "hadoop/format",
 :type => 'string',
 :default => "true"
 
+attribute 'ndb/connectstring',
+:display_name => 'MySQL Cluster connectstring',
+:description => 'List of MySQL Cluster mgmt server addresses',
+:type => 'string',
+:default => '10.0.2.15:1186'
