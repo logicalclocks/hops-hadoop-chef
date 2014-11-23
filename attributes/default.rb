@@ -8,8 +8,8 @@ default[:hadoop][:tmp_dir]                 = "#{default[:hadoop][:home]}/tmp"
 default[:hadoop][:conf_dir]                = "#{default[:hadoop][:home]}/etc/hadoop"
 
 default[:hadoop][:download_url]            = "#{default[:download_url]}/hop-#{default[:hadoop][:version]}.tgz"
-default[:hadoop][:protobuf_url]         = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
-default[:hadoop][:hadoop_src_url]       = "#{default[:download_url]}/hadoop-#{default[:hadoop][:version]}-src.tar.gz"
+default[:hadoop][:protobuf_url]            = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
+default[:hadoop][:hadoop_src_url]          = "#{default[:download_url]}/hadoop-#{default[:hadoop][:version]}-src.tar.gz"
 
 default[:hadoop][:nn][:http_port]          = 50070
 default[:hadoop][:dn][:http_port]          = 50075
@@ -26,8 +26,8 @@ default[:hadoop][:format]                  = "true"
 default[:hadoop][:io_buffer_sz]            = 131072
 
 # set the location of libndbclient.so. set-env.sh sets LD_LIBRARY_PATH to find this library.
-default[:ndb][:libndb]                  = "#{default[:mysql][:version_dir]}/lib"
-default[:mysql][:port]                  = default[:ndb][:mysql_port]
+default[:ndb][:libndb]                     = "#{default[:mysql][:version_dir]}/lib"
+default[:mysql][:port]                     = default[:ndb][:mysql_port]
 default[:hadoop][:mysql_url]               = "jdbc:mysql://#{default[:ndb][:mysql_ip]}:#{default[:ndb][:mysql_port]}/"
 
 default[:hadoop][:yarn][:scripts]          = %w{ start stop restart root-start }

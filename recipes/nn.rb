@@ -6,25 +6,7 @@ set_hostnames("hops", "nn")
 set_hostnames("hops", "dn")
 ndb_connectstring()
 #nnPort=29211
-nnPort=9000
 
-allNNs = ""
-for nn in private_recipe_hostnames("hops","nn")
-#for nn in node[:hadoop][:nn][:private_ips]
-   allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
-end
-firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
-
-template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
-  source "core-site.xml.erb"
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "755"
-  variables({
-              :myNN => firstNN,
-              :listNNs => allNNs
-            })
-end
 
 for script in node[:hadoop][:nn][:scripts]
   template "#{node[:hadoop][:home]}/sbin/#{script}" do

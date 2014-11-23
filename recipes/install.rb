@@ -78,6 +78,8 @@ end
 
 base_name = File.basename(base_package_filename, ".tgz")
 # Extract and install hadoop
+
+hopped = "#{node[:hadoop][:home]}/.downloaded_#{node[:hadoop][:version]}"
 bash 'extract-hadoop' do
   user "root"
   code <<-EOH
@@ -87,9 +89,9 @@ bash 'extract-hadoop' do
 # chown -L : traverse symbolic links
         ln -s #{node[:hadoop][:home]} #{node[:hadoop][:dir]}/hadoop
         chown -RL #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}
-        touch #{node[:hadoop][:home]}/.downloaded
+        touch #{hopped}
 	EOH
-  not_if { ::File.exist?("#{node[:hadoop][:home]}/.downloaded") }
+  not_if { ::File.exist?("#{hopped}") }
 end
 
  directory node[:hadoop][:logs_dir] do

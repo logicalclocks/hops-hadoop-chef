@@ -16,29 +16,35 @@ require 'resolv'
 hostf = Resolv::Hosts.new
 
 
-# set node[:ndb][:connect_string]
+set_hostnames("hops", "nn")
+set_hostnames("hops", "dn")
 ndb_connectstring()
 
-# set node[:ndb][:mysql][:jdbc_url]
 jdbc_url()
 
-# get your ip address
+nnPort=29211
 my_ip = my_private_ip()
-listNNs = "hdfs://" + private_recipe_ip("hadoop", "nn") + ":29211"
-firstNN = "hdfs://" + private_recipe_ip("hadoop", "nn") + ":29211"
+firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 
-template "#{node[:hadoop][::conf_dir]}/core-site.xml" do 
+allNNs = ""
+for nn in private_recipe_hostnames("hops","nn")
+   allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
+end
+#firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
+
+template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
               :myNN => firstNN,
-              :listNNs => listNNs
+              :allNNs => allNNs
             })
 end
 
+mysql_host = "jdbc:mysql://localhost:#{node[:ndb][:mysql_port]}/"
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
@@ -46,6 +52,7 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   mode "755"
   variables({
               :myNN => firstNN,
+              :mysql_host => node[:ndb][:connect_string].split(":").first,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",
