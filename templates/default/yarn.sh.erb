@@ -1,9 +1,0 @@
-#!/bin/bash
-
-command=yarn
-
-sudo -u <%= node[:hdfs][:user] %> bash -l <<EOF
-<%= node[:hadoop][:home] %>/bin/$command $@
-EOF
-
-exit $?

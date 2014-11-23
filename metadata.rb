@@ -18,12 +18,13 @@ depends 'java'
 depends 'kagent'
 depends 'ndb'
 depends 'hostsfile'
+depends 'hadoop'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
 end
 
-attribute "hops/version",
+attribute "hadoop/version",
 :description => "Hop version number",
 :type => 'string',
 :default => "2.4.0"
@@ -38,17 +39,17 @@ attribute "hops/mysql_url",
 :type => 'string',
 :default => ""
 
-attribute "hops/user",
+attribute "hdfs/user",
 :description => "Username to run hdfs as",
 :type => 'string',
 :default => "hdfs"
 
-attribute "hops/yarn/user",
+attribute "hadoop/yarn/user",
 :description => "Username to run yarn as",
 :type => 'string',
 :default => "yarn"
 
-attribute "hops/mr/user",
+attribute "hadoop/mr/user",
 :description => "Username to run MapReduce as",
 :type => 'string',
 :default => "mapred"
@@ -62,7 +63,7 @@ attribute "mysql/password",
 :description => "MySql server Password",
 :type => 'string'
 
-attribute "hops/format",
+attribute "hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
 :type => 'string',
 :default => "true"
