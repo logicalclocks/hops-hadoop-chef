@@ -18,6 +18,7 @@ depends 'java'
 depends 'kagent'
 depends 'ndb'
 depends 'hostsfile'
+depends 'hadoop'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
