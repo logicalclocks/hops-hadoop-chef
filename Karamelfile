@@ -1,0 +1,23 @@
+dependencies: 
+  - recipe: hops::nn,
+    local:  
+      - hops::install
+  - recipe: hops::rm,
+    local:  
+      - hops::install
+    global:  
+      - hops::nn
+  - recipe: hops::dn,
+    local: 
+      - hops::install
+    global:  
+      - hops::rm
+  - recipe: hops::nm,
+    local:   
+      - hops::install
+  - recipe: hops::jhs,
+    local:
+      - hops::install
+    global:  
+      - hops::nn
+      - hops::dn
