@@ -15,7 +15,7 @@
 </property>
 
 <property>
-<name>dfs.http.address</name>
+<name>dfs.namenode.http.address</name>
 <value><%= @addr1 %></value>
   <description> default port is 50070 but had to change it because it already in use
   </description>
@@ -49,50 +49,19 @@
   </description>
 </property>
 
--->
-
 <property>
-  <name>dfs.storage.type</name>
-  <value><%= node[:hadoop][:storage_type] %></value>
-  <description>storage type could be one of derby, clusterj or ...</description>
-</property>
-
-<property>
-  <name>dfs.dbconnector.string</name>
-  <value><%= @mysql_host %></value>
-  <description>Default block replication.
+  <name>dfs.namenode.rpc-address</name>
+  <value>10.0.2.15:13001</value>
+  <description>
+    RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
+    the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
+    dfs.namenode.rpc-address.EXAMPLENAMESERVICE
+    The value of this property will take the form of hdfs://nn-host1:rpc-port.
   </description>
 </property>
 
-<property>
-  <name>dfs.dbconnector.database</name>
-  <value><%= node[:hadoop][:db] %></value>
-</property>
+-->
 
-<property>
-  <name>dfs.dbconnector.num-session-factories</name>
-  <value>1</value>
-</property>
-
-<property>
-    <name>dfs.storage.mysql.protocol</name>
-    <value><%= node[:ndb][:mysql][:jdbc_url] %></value>
-</property>
-
-<property>
-  <name>dfs.storage.mysql.user</name>
-  <value><%= node[:mysql][:user] %></value>
-</property>
-
-<property>
-  <name>dfs.storage.mysql.user.password</name>
-  <value><%= node[:mysql][:password] %></value>
-</property>
-
-<property>
-  <name>dfs.storage.mysql.port</name>
-  <value><%= node[:ndb][:mysql_port] %></value>
-</property>
 
 <property>
   <name>dfs.leader.check.interval</name>
@@ -125,17 +94,6 @@
 </property>
 
 
-
-
-
-
-
-
-
-
-
-
-
 <!-- Do not modify this file directly.  Instead, copy entries that you -->
 <!-- wish to modify from this file into hdfs-site.xml and change them -->
 <!-- there.  If hdfs-site.xml does not already exist, create it.      -->
@@ -145,39 +103,6 @@
   <value>1</value>
   <description>version of this configuration file</description>
 </property>
-
-<!--
-<property>
-  <name>dfs.namenode.logging.level</name>
-  <value>Dfs_Namenode_Logging_Level_Config_Param</value>
-  <description>
-    The logging level for dfs namenode. Other values are "dir" (trace
-    namespace mutations), "block" (trace block under/over replications
-    and block creations/deletions), or "all".
-  </description>
-</property>
-
-
-<property>
-  <name>dfs.namenode.http-address</name>
-  <value>NN_MACHINE_NAME:Dfs_Namenode_Http_Address_Config_Param</value>
-  <description>
-    The address and the base port where the dfs namenode web ui will listen on.
-  </description>
-</property>
-
-
-<property>
-  <name>dfs.namenode.rpc-address</name>
-  <value><%= @myNN %></value>
-  <description>
-    RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
-    the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
-    dfs.namenode.rpc-address.EXAMPLENAMESERVICE
-    The value of this property will take the form of hdfs://nn-host1:rpc-port.
-  </description>
-</property>
--->
 
 <property>
   <name>dfs.blocksize</name>
@@ -274,6 +199,30 @@
   <name>dfs.namenode.misreplicated.noofbatches</name>
   <value>10</value>
   <description>
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.legacy-rename.enable</name>
+  <value>false</value>
+  <description>
+  </description>
+</property>
+
+<property>
+  <name>dfs.storage.driver.configfile</name>
+  <value>ndb.config</value>
+  <description>
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.logging.level</name>
+  <value><%= node[:hops][:log_level] %></value>
+  <description>
+    The logging level for dfs namenode. Other values are "dir" (trace
+    namespace mutations), "block" (trace block under/over replications
+    and block creations/deletions), or "all".
   </description>
 </property>
 

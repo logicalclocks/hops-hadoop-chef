@@ -1,7 +1,7 @@
 
 com.mysql.clusterj.connectstring = <%= @ndb_connectstring %> 
 com.mysql.clusterj.database = <%= node[:hadoop][:db] %>
-com.mysql.clusterj.connection.pool.size = <%= [:ndb][:num_ndb_slots_per_client] %>
+com.mysql.clusterj.connection.pool.size = <%= node[:ndb][:num_ndb_slots_per_client] %>
 com.mysql.clusterj.max.transactions = 1024
 
 se.sics.hop.metadata.ndb.mysqlserver.data_source_class_name = com.mysql.jdbc.jdbc2.optional.MysqlDataSource
