@@ -71,3 +71,17 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
             })
 end
 
+libpath = File.expand_path '../../../kagent/libraries', __FILE__
+ndb_connectstring()
+ndb_connectstring = node[:ndb][:connect_string]
+
+template "#{node[:hadoop][:home]}/share/hadoop/ndb.config" do
+  source "ndb.config.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  variables({
+              :ndb_connectstring => node[:ndb][:connect_string],
+              :mysql_host => "localhost", #node[:ndb][:connect_string].split(":").first,
+            })
+end
