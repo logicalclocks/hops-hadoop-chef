@@ -1,5 +1,51 @@
-miter $$
+-- MySQL dump 10.13  Distrib 5.6.17-ndb-7.3.5, for linux-glibc2.5 (x86_64)
+--
+-- Host: localhost    Database: hop_mahmoud
+-- ------------------------------------------------------
+-- Server version	5.6.17-ndb-7.3.5-cluster-gpl
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `block_checksum`
+--
+
+DROP TABLE IF EXISTS `block_checksum`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `block_checksum` (
+  `inode_id` int(11) NOT NULL,
+  `block_index` int(11) NOT NULL,
+  `checksum` bigint(20) NOT NULL,
+  PRIMARY KEY (`inode_id`,`block_index`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `block_checksum`
+--
+
+LOCK TABLES `block_checksum` WRITE;
+/*!40000 ALTER TABLE `block_checksum` DISABLE KEYS */;
+/*!40000 ALTER TABLE `block_checksum` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `block_infos`
+--
+
+DROP TABLE IF EXISTS `block_infos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `block_infos` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -12,20 +58,50 @@ CREATE TABLE `block_infos` (
   `block_recovery_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `block_infos`
+--
 
-delimiter $$
+LOCK TABLES `block_infos` WRITE;
+/*!40000 ALTER TABLE `block_infos` DISABLE KEYS */;
+INSERT INTO `block_infos` VALUES (1007,1000,0,1,1001,0,1,0,0);
+/*!40000 ALTER TABLE `block_infos` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `block_lookup_table`
+--
+
+DROP TABLE IF EXISTS `block_lookup_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `block_lookup_table` (
   `block_id` bigint(20) NOT NULL,
   `inode_id` int(11) NOT NULL,
   PRIMARY KEY (`block_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `block_lookup_table`
+--
 
-delimiter $$
+LOCK TABLES `block_lookup_table` WRITE;
+/*!40000 ALTER TABLE `block_lookup_table` DISABLE KEYS */;
+INSERT INTO `block_lookup_table` VALUES (1000,1007);
+/*!40000 ALTER TABLE `block_lookup_table` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `corrupt_replicas`
+--
+
+DROP TABLE IF EXISTS `corrupt_replicas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `corrupt_replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -34,11 +110,59 @@ CREATE TABLE `corrupt_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `timestamp` (`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `corrupt_replicas`
+--
 
-delimiter $$
+LOCK TABLES `corrupt_replicas` WRITE;
+/*!40000 ALTER TABLE `corrupt_replicas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `corrupt_replicas` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `encoding_status`
+--
+
+DROP TABLE IF EXISTS `encoding_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `encoding_status` (
+  `inode_id` int(11) NOT NULL,
+  `status` int(11) DEFAULT NULL,
+  `codec` varchar(8) DEFAULT NULL,
+  `target_replication` smallint(11) DEFAULT NULL,
+  `parity_status` int(11) DEFAULT NULL,
+  `status_modification_time` bigint(20) DEFAULT NULL,
+  `parity_status_modification_time` bigint(20) DEFAULT NULL,
+  `parity_inode_id` int(11) DEFAULT NULL,
+  `parity_file_name` char(36) DEFAULT NULL,
+  `lost_blocks` int(11) DEFAULT '0',
+  `lost_parity_blocks` int(11) DEFAULT '0',
+  `revoked` bit(1) DEFAULT b'0',
+  PRIMARY KEY (`inode_id`),
+  UNIQUE KEY `parity_inode_id` (`parity_inode_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `encoding_status`
+--
+
+LOCK TABLES `encoding_status` WRITE;
+/*!40000 ALTER TABLE `encoding_status` DISABLE KEYS */;
+/*!40000 ALTER TABLE `encoding_status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `excess_replicas`
+--
+
+DROP TABLE IF EXISTS `excess_replicas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `excess_replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -46,11 +170,25 @@ CREATE TABLE `excess_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `excess_replicas`
+--
 
-delimiter $$
+LOCK TABLES `excess_replicas` WRITE;
+/*!40000 ALTER TABLE `excess_replicas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `excess_replicas` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `inode_attributes`
+--
+
+DROP TABLE IF EXISTS `inode_attributes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inode_attributes` (
   `inodeId` int(11) NOT NULL,
   `nsquota` bigint(20) DEFAULT NULL,
@@ -58,11 +196,26 @@ CREATE TABLE `inode_attributes` (
   `nscount` bigint(20) DEFAULT NULL,
   `diskspace` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inodeId`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `inode_attributes`
+--
 
-delimiter $$
+LOCK TABLES `inode_attributes` WRITE;
+/*!40000 ALTER TABLE `inode_attributes` DISABLE KEYS */;
+INSERT INTO `inode_attributes` VALUES (1,9223372036854775807,-1,7,1);
+/*!40000 ALTER TABLE `inode_attributes` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `inodes`
+--
+
+DROP TABLE IF EXISTS `inodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inodes` (
   `id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
@@ -84,11 +237,26 @@ CREATE TABLE `inodes` (
   PRIMARY KEY (`parent_id`,`name`),
   KEY `inode_idx` (`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (parent_id) */$$
+/*!50100 PARTITION BY KEY (parent_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `inodes`
+--
 
-delimiter $$
+LOCK TABLES `inodes` WRITE;
+/*!40000 ALTER TABLE `inodes` DISABLE KEYS */;
+INSERT INTO `inodes` VALUES (1005,1004,'f4',1420714587164,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','\0','\0','\0',0),(1003,1002,'f2',1420714587196,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','\0','\0','\0',0),(1,0,'',1420714587140,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','','\0','\0',0),(1006,1005,'f5',1420714587164,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','\0','\0','\0',0),(1007,1003,'test.txt',1420714587743,1420714587196,'maism\nsupergroup§\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,1001,281474976710657,NULL,'\0','\0','\0','\0',0),(1004,1003,'f3',1420714587164,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','\0','\0','\0',0),(1002,1,'f1',1420714587140,0,'maism\nsupergroupÌ\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,NULL,NULL,0,0,NULL,'','\0','\0','\0',0);
+/*!40000 ALTER TABLE `inodes` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `invalidated_blocks`
+--
+
+DROP TABLE IF EXISTS `invalidated_blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `invalidated_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -98,11 +266,25 @@ CREATE TABLE `invalidated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `invalidated_blocks`
+--
 
-delimiter $$
+LOCK TABLES `invalidated_blocks` WRITE;
+/*!40000 ALTER TABLE `invalidated_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invalidated_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `leader`
+--
+
+DROP TABLE IF EXISTS `leader`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `leader` (
   `id` bigint(20) NOT NULL,
   `counter` bigint(20) NOT NULL,
@@ -112,11 +294,26 @@ CREATE TABLE `leader` (
   `partition_val` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`partition_val`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (partition_val) */$$
+/*!50100 PARTITION BY KEY (partition_val) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `leader`
+--
 
-delimiter $$
+LOCK TABLES `leader` WRITE;
+/*!40000 ALTER TABLE `leader` DISABLE KEYS */;
+INSERT INTO `leader` VALUES (1,8,'2015-01-08 10:56:32','127.0.0.1:34055','127.0.0.1:0',0);
+/*!40000 ALTER TABLE `leader` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `lease_paths`
+--
+
+DROP TABLE IF EXISTS `lease_paths`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lease_paths` (
   `holder_id` int(11) NOT NULL,
   `path` varchar(3000) NOT NULL,
@@ -124,11 +321,25 @@ CREATE TABLE `lease_paths` (
   PRIMARY KEY (`path`,`part_key`),
   KEY `holder_idx` (`holder_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (part_key) */$$
+/*!50100 PARTITION BY KEY (part_key) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `lease_paths`
+--
 
-delimiter $$
+LOCK TABLES `lease_paths` WRITE;
+/*!40000 ALTER TABLE `lease_paths` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lease_paths` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `leases`
+--
+
+DROP TABLE IF EXISTS `leases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `leases` (
   `holder` varchar(255) NOT NULL,
   `part_key` int(11) NOT NULL,
@@ -138,28 +349,70 @@ CREATE TABLE `leases` (
   KEY `holderid_idx` (`holder_id`),
   KEY `update_idx` (`last_update`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (part_key) */$$
+/*!50100 PARTITION BY KEY (part_key) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `leases`
+--
 
-delimiter $$
+LOCK TABLES `leases` WRITE;
+/*!40000 ALTER TABLE `leases` DISABLE KEYS */;
+/*!40000 ALTER TABLE `leases` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `misreplicated_range_queue`
+--
+
+DROP TABLE IF EXISTS `misreplicated_range_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `misreplicated_range_queue` (
   `range` varchar(120) NOT NULL,
   PRIMARY KEY (`range`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `misreplicated_range_queue`
+--
 
-delimiter $$
+LOCK TABLES `misreplicated_range_queue` WRITE;
+/*!40000 ALTER TABLE `misreplicated_range_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `misreplicated_range_queue` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `path_memcached`
+--
+
+DROP TABLE IF EXISTS `path_memcached`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `path_memcached` (
   `path` varchar(128) NOT NULL,
   `inodeids` varbinary(13500) NOT NULL,
   PRIMARY KEY (`path`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `path_memcached`
+--
 
-delimiter $$
+LOCK TABLES `path_memcached` WRITE;
+/*!40000 ALTER TABLE `path_memcached` DISABLE KEYS */;
+/*!40000 ALTER TABLE `path_memcached` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `pending_blocks`
+--
+
+DROP TABLE IF EXISTS `pending_blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pending_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -167,11 +420,51 @@ CREATE TABLE `pending_blocks` (
   `num_replicas_in_progress` int(11) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `pending_blocks`
+--
 
-delimiter $$
+LOCK TABLES `pending_blocks` WRITE;
+/*!40000 ALTER TABLE `pending_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pending_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `quota_update`
+--
+
+DROP TABLE IF EXISTS `quota_update`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quota_update` (
+  `id` int(11) NOT NULL,
+  `inode_id` int(11) NOT NULL,
+  `namespace_delta` bigint(20) DEFAULT NULL,
+  `diskspace_delta` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`inode_id`,`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quota_update`
+--
+
+LOCK TABLES `quota_update` WRITE;
+/*!40000 ALTER TABLE `quota_update` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quota_update` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `replica_under_constructions`
+--
+
+DROP TABLE IF EXISTS `replica_under_constructions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `replica_under_constructions` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -180,11 +473,25 @@ CREATE TABLE `replica_under_constructions` (
   `replica_index` int(11) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `replica_under_constructions`
+--
 
-delimiter $$
+LOCK TABLES `replica_under_constructions` WRITE;
+/*!40000 ALTER TABLE `replica_under_constructions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `replica_under_constructions` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `replicas`
+--
+
+DROP TABLE IF EXISTS `replicas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -193,28 +500,72 @@ CREATE TABLE `replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `replicas`
+--
 
-delimiter $$
+LOCK TABLES `replicas` WRITE;
+/*!40000 ALTER TABLE `replicas` DISABLE KEYS */;
+INSERT INTO `replicas` VALUES (1007,1000,0,0);
+/*!40000 ALTER TABLE `replicas` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `safe_blocks`
+--
+
+DROP TABLE IF EXISTS `safe_blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `safe_blocks` (
   `id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `safe_blocks`
+--
 
-delimiter $$
+LOCK TABLES `safe_blocks` WRITE;
+/*!40000 ALTER TABLE `safe_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `safe_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `storage_id_map`
+--
+
+DROP TABLE IF EXISTS `storage_id_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storage_id_map` (
   `storage_id` varchar(128) NOT NULL,
   `sid` int(11) NOT NULL,
   PRIMARY KEY (`storage_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `storage_id_map`
+--
 
-delimiter $$
+LOCK TABLES `storage_id_map` WRITE;
+/*!40000 ALTER TABLE `storage_id_map` DISABLE KEYS */;
+INSERT INTO `storage_id_map` VALUES ('DS-264705639-193.10.67.59-60697-1420714586939',0);
+/*!40000 ALTER TABLE `storage_id_map` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `under_replicated_blocks`
+--
+
+DROP TABLE IF EXISTS `under_replicated_blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `under_replicated_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -223,54 +574,49 @@ CREATE TABLE `under_replicated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`),
   KEY `level` (`level`,`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!50100 PARTITION BY KEY (inode_id) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `under_replicated_blocks`
+--
 
-delimiter $$
+LOCK TABLES `under_replicated_blocks` WRITE;
+/*!40000 ALTER TABLE `under_replicated_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `under_replicated_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `variables`
+--
+
+DROP TABLE IF EXISTS `variables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `variables` (
   `id` int(11) NOT NULL,
   `value` varbinary(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `variables`
+--
 
-delimiter $$
+LOCK TABLES `variables` WRITE;
+/*!40000 ALTER TABLE `variables` DISABLE KEYS */;
+INSERT INTO `variables` VALUES (11,'\0\0\0\0\0\0\0\0'),(1,'\0\0¢'),(8,''),(10,'\0\0\0\0\0\0\0'),(0,'\0\0\0\0\0\0†'),(13,''),(2,'\0\ZÄ'),(5,''),(4,'\rˇˇˇÿ\r\0\0è\rtestClusterID\0\0\0\0\0\0\0\0\'BP-722604724-193.10.67.59-1420714585555'),(12,'\0\0\0'),(14,''),(3,'\r\0\0\0\0\r\0\0\0\0\r\0\0\0\0\r\0\0\0\0\r\0\0\0\0'),(9,'\0\0\0'),(17,''),(6,''),(16,''),(15,''),(7,'');
+/*!40000 ALTER TABLE `variables` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-CREATE TABLE `quota_update` (
-  `id` int(11) NOT NULL,
-  `inode_id` int(11) NOT NULL,
-  `namespace_delta` bigint(20) DEFAULT NULL,
-  `diskspace_delta` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`inode_id`,`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-
-delimiter $$
-
-CREATE TABLE `encoding_status` (
-  `inode_id` int(11) NOT NULL,
-  `status` int(11) DEFAULT NULL,
-  `codec` varchar(8) DEFAULT NULL,
-  `target_replication` smallint(11) DEFAULT NULL,
-  `parity_status` int(11) DEFAULT NULL,
-  `status_modification_time` bigint(20) DEFAULT NULL,
-  `parity_status_modification_time` bigint(20) DEFAULT NULL,
-  `parity_inode_id` int(11) DEFAULT NULL,
-  `parity_file_name` char(36) DEFAULT NULL,
-  `lost_blocks` int(11) DEFAULT 0,
-  `lost_parity_blocks` int(11) DEFAULT 0,
-  `revoked` bit(1) DEFAULT 0,
-  PRIMARY KEY (`inode_id`),
-  UNIQUE KEY `parity_inode_id` (`parity_inode_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-delimiter $$
-
-CREATE TABLE `block_checksum` (
-  `inode_id` int(11) NOT NULL,
-  `block_index` int(11) NOT NULL,
-  `checksum` bigint(20) NOT NULL,
-  PRIMARY KEY (`inode_id`,`block_index`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+-- Dump completed on 2015-01-08 13:51:04
