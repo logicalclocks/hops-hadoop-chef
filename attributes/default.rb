@@ -6,11 +6,8 @@ node.normal[:hadoop][:version]             = "2.0.4-alpha"
 default[:hops][:download_url]              = "#{node[:download_url]}/hops-#{node[:hadoop][:version]}.tgz"
 default[:hops][:hadoop_src_url]            = "#{node[:download_url]}/hadoop-#{node[:hadoop][:version]}-src.tar.gz"
 
-
-default[:hadoop][:storage_type]            = "clusterj"
 default[:hadoop][:leader_check_interval_ms]= 1000
 default[:hadoop][:missed_hb]               = 1
-default[:hadoop][:repl]                    = 1
 node.normal[:hadoop][:db]                  = "hops"
 default[:hadoop][:max_retries]             = 0
 
