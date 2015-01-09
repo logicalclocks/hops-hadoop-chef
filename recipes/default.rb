@@ -78,6 +78,6 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
   mode "755"
   variables({
               :ndb_connectstring => node[:ndb][:connect_string],
-              :mysql_host => "localhost", 
+              :mysql_host => node[:ndb][:connect_string].split(":").first,
             })
 end
