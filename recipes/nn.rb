@@ -1,5 +1,4 @@
 
-
 hops_ndb "install" do
   action :nothing
 end

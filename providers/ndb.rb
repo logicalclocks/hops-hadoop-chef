@@ -14,10 +14,11 @@ new_resource.updated_by_last_action(false)
   bash "mysql-install-hops" do
     user node[:ndb][:user]
     code <<-EOF
-    #{node[:ndb][:scripts_dir]}/mysql-client.sh hops < #{Chef::Config[:file_cache_path]}/hops.sql
+    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]}\"
+    #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < #{Chef::Config[:file_cache_path]}/hops.sql
     EOF
     new_resource.updated_by_last_action(true)
-    not_if "#{node[:ndb][:scripts_dir]}/mysql-client.sh hops -e \"show create table block_infos;\""
+    not_if "#{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} -e \"show create table block_infos;\""
   end
 
 end
