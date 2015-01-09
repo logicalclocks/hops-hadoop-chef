@@ -71,13 +71,13 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
             })
 end
 
-template "#{node[:hadoop][:home]}/etc/hadoop/ndb.config" do
-  source "ndb.config.erb"
+template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
+  source "ndb.props.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
               :ndb_connectstring => node[:ndb][:connect_string],
-              :mysql_host => "localhost", 
+              :mysql_host => node[:ndb][:connect_string].split(":").first,
             })
 end
