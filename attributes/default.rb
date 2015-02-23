@@ -17,3 +17,5 @@ default[:mysql][:port]                     = default[:ndb][:mysql_port]
 default[:hadoop][:mysql_url]               = "jdbc:mysql://#{default[:ndb][:mysql_ip]}:#{default[:ndb][:mysql_port]}/"
 
 default[:hops][:log_level]                 = "DEBUG"
+
+default[:dal][:download_url]           = "#{node[:download_url]}/ndb-dal-#{node[:hadoop][:version]}.tgz"
