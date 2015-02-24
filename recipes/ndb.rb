@@ -23,9 +23,9 @@ base_name = File.basename(base_package_filename, ".tgz")
 bash 'extract-hadoop' do
   user "root"
   code <<-EOH
-	tar -zxf #{cached_package_filename} -C #{node[:hadoop][:home]}/shared/yarn/jars
-        chown -RL #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}/shared/yarn/jars
-        rm #{node[:hadoop][:home]}/etc/hadoop/ndb.props
+	tar -zxf #{cached_package_filename} -C #{node[:hadoop][:home]}/share/hadoop/yarn/lib
+        chown -RL #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}/share/hadoop/yarn/lib
+        rm -f #{node[:hadoop][:home]}/etc/hadoop/ndb.props
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
