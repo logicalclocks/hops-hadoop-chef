@@ -1,8 +1,12 @@
 dependencies: 
   - recipe: hops::install
+  - recipe: hops::ndb
+    local:  
+      - hops::install
   - recipe: hops::nn
     local:  
       - hops::install
+      - hops::ndb
   - recipe: hops::rm
     local:  
       - hops::install
@@ -12,10 +16,12 @@ dependencies:
     local: 
       - hops::install
     global:  
-      - hops::rm
+      - hops::nn
   - recipe: hops::nm
     local:   
       - hops::install
+    global:  
+      - hops::rm
   - recipe: hops::jhs
     local:
       - hops::install
