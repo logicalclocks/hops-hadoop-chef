@@ -4,6 +4,22 @@ require 'resolv'
 
 ndb_connectstring()
 
+directory "#{node[:hadoop][:dir]}/ndb-hops-#{node[:hadoop][:version]}" do
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  action :create
+  recursive true
+end
+
+link "#{node[:hadoop][:dir]}/ndb-hops" do
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  to "#{node[:hadoop][:dir]}/ndb-hops-#{node[:hadoop][:version]}"
+end
+
+
+
 package_url = node[:dal][:download_url]
 base_package_filename = File.basename(package_url)
 cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
@@ -18,13 +34,14 @@ remote_file cached_package_filename do
 end
 
 hin = "#{node[:hadoop][:home]}/.#{base_package_filename}_dal_downloaded"
-base_name = File.basename(base_package_filename, ".tgz")
-# Extract and install hadoop
+base_name = File.basename(base_package_filename, ".jar")
 bash 'extract-hadoop' do
-  user "root"
+  user node[:hdfs][:user]
+  group node[:hadoop][:group]
   code <<-EOH
-	tar -zxf #{cached_package_filename} -C #{node[:hadoop][:home]}/share/hadoop/yarn/lib
-        chown -RL #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:hadoop][:home]}/share/hadoop/yarn/lib
+        rm -f #{node[:hadoop][:home]}/share/hadoop/hdfs/lib/ndb-dal.jar
+	cp #{cached_package_filename} #{node[:hadoop][:dir]}/ndb-hops
+	ln -s #{node[:hadoop][:dir]}/#{base_name}.jar #{node[:hadoop][:home]}/share/hadoop/hdfs/lib/ndb-dal.jar
         rm -f #{node[:hadoop][:home]}/etc/hadoop/ndb.props
         touch #{hin}
 	EOH

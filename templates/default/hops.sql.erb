@@ -1,51 +1,5 @@
--- MySQL dump 10.13  Distrib 5.6.17-ndb-7.3.5, for linux-glibc2.5 (x86_64)
---
--- Host: localhost    Database: hop_mahmoud
--- ------------------------------------------------------
--- Server version	5.6.17-ndb-7.3.5-cluster-gpl
+delimiter $$
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `block_checksum`
---
-
-DROP TABLE IF EXISTS `block_checksum`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `block_checksum` (
-  `inode_id` int(11) NOT NULL,
-  `block_index` int(11) NOT NULL,
-  `checksum` bigint(20) NOT NULL,
-  PRIMARY KEY (`inode_id`,`block_index`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `block_checksum`
---
-
-LOCK TABLES `block_checksum` WRITE;
-/*!40000 ALTER TABLE `block_checksum` DISABLE KEYS */;
-/*!40000 ALTER TABLE `block_checksum` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `block_infos`
---
-
-DROP TABLE IF EXISTS `block_infos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `block_infos` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -58,31 +12,20 @@ CREATE TABLE `block_infos` (
   `block_recovery_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
---
--- Table structure for table `block_lookup_table`
---
 
-DROP TABLE IF EXISTS `block_lookup_table`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `block_lookup_table` (
   `block_id` bigint(20) NOT NULL,
   `inode_id` int(11) NOT NULL,
   PRIMARY KEY (`block_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
---
--- Table structure for table `corrupt_replicas`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `corrupt_replicas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `corrupt_replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -91,43 +34,11 @@ CREATE TABLE `corrupt_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `timestamp` (`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
 
---
--- Table structure for table `encoding_status`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `encoding_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `encoding_status` (
-  `inode_id` int(11) NOT NULL,
-  `status` int(11) DEFAULT NULL,
-  `codec` varchar(8) DEFAULT NULL,
-  `target_replication` smallint(11) DEFAULT NULL,
-  `parity_status` int(11) DEFAULT NULL,
-  `status_modification_time` bigint(20) DEFAULT NULL,
-  `parity_status_modification_time` bigint(20) DEFAULT NULL,
-  `parity_inode_id` int(11) DEFAULT NULL,
-  `parity_file_name` char(36) DEFAULT NULL,
-  `lost_blocks` int(11) DEFAULT '0',
-  `lost_parity_blocks` int(11) DEFAULT '0',
-  `revoked` bit(1) DEFAULT b'0',
-  PRIMARY KEY (`inode_id`),
-  UNIQUE KEY `parity_inode_id` (`parity_inode_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `excess_replicas`
---
-
-DROP TABLE IF EXISTS `excess_replicas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `excess_replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -135,16 +46,11 @@ CREATE TABLE `excess_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
---
--- Table structure for table `inode_attributes`
---
 
-DROP TABLE IF EXISTS `inode_attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `inode_attributes` (
   `inodeId` int(11) NOT NULL,
   `nsquota` bigint(20) DEFAULT NULL,
@@ -152,16 +58,11 @@ CREATE TABLE `inode_attributes` (
   `nscount` bigint(20) DEFAULT NULL,
   `diskspace` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inodeId`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
---
--- Table structure for table `inodes`
---
 
-DROP TABLE IF EXISTS `inodes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `inodes` (
   `id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
@@ -183,17 +84,11 @@ CREATE TABLE `inodes` (
   PRIMARY KEY (`parent_id`,`name`),
   KEY `inode_idx` (`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (parent_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (parent_id) */$$
 
 
---
--- Table structure for table `invalidated_blocks`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `invalidated_blocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `invalidated_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -203,18 +98,12 @@ CREATE TABLE `invalidated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
 
---
--- Table structure for table `leader`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `leader`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `leader` (
+CREATE TABLE `hdfs_leader` (
   `id` bigint(20) NOT NULL,
   `counter` bigint(20) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -223,16 +112,11 @@ CREATE TABLE `leader` (
   `partition_val` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`partition_val`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (partition_val) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (partition_val) */$$
 
---
--- Table structure for table `lease_paths`
---
 
-DROP TABLE IF EXISTS `lease_paths`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `lease_paths` (
   `holder_id` int(11) NOT NULL,
   `path` varchar(3000) NOT NULL,
@@ -240,17 +124,11 @@ CREATE TABLE `lease_paths` (
   PRIMARY KEY (`path`,`part_key`),
   KEY `holder_idx` (`holder_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (part_key) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (part_key) */$$
 
 
---
--- Table structure for table `leases`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `leases`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `leases` (
   `holder` varchar(255) NOT NULL,
   `part_key` int(11) NOT NULL,
@@ -260,45 +138,28 @@ CREATE TABLE `leases` (
   KEY `holderid_idx` (`holder_id`),
   KEY `update_idx` (`last_update`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (part_key) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (part_key) */$$
 
 
---
--- Table structure for table `misreplicated_range_queue`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `misreplicated_range_queue`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `misreplicated_range_queue` (
   `range` varchar(120) NOT NULL,
   PRIMARY KEY (`range`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
---
--- Table structure for table `path_memcached`
---
 
-DROP TABLE IF EXISTS `path_memcached`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `path_memcached` (
   `path` varchar(128) NOT NULL,
   `inodeids` varbinary(13500) NOT NULL,
   PRIMARY KEY (`path`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
---
--- Table structure for table `pending_blocks`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `pending_blocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pending_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -306,33 +167,11 @@ CREATE TABLE `pending_blocks` (
   `num_replicas_in_progress` int(11) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
---
--- Table structure for table `quota_update`
---
 
-DROP TABLE IF EXISTS `quota_update`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `quota_update` (
-  `id` int(11) NOT NULL,
-  `inode_id` int(11) NOT NULL,
-  `namespace_delta` bigint(20) DEFAULT NULL,
-  `diskspace_delta` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`inode_id`,`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+delimiter $$
 
---
--- Table structure for table `replica_under_constructions`
---
-
-DROP TABLE IF EXISTS `replica_under_constructions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `replica_under_constructions` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -341,16 +180,11 @@ CREATE TABLE `replica_under_constructions` (
   `replica_index` int(11) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
---
--- Table structure for table `replicas`
---
 
-DROP TABLE IF EXISTS `replicas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+delimiter $$
+
 CREATE TABLE `replicas` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -359,46 +193,28 @@ CREATE TABLE `replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
 
---
--- Table structure for table `safe_blocks`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `safe_blocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `safe_blocks` (
   `id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
---
--- Table structure for table `storage_id_map`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `storage_id_map`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storage_id_map` (
   `storage_id` varchar(128) NOT NULL,
   `sid` int(11) NOT NULL,
   PRIMARY KEY (`storage_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
---
--- Table structure for table `under_replicated_blocks`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `under_replicated_blocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `under_replicated_blocks` (
   `inode_id` int(11) NOT NULL,
   `block_id` bigint(20) NOT NULL,
@@ -407,23 +223,623 @@ CREATE TABLE `under_replicated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`),
   KEY `level` (`level`,`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50100 PARTITION BY KEY (inode_id) */$$
 
 
---
--- Table structure for table `variables`
---
+delimiter $$
 
-DROP TABLE IF EXISTS `variables`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `variables` (
   `id` int(11) NOT NULL,
   `value` varbinary(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
--- Dump completed on 2015-01-08 13:51:04
+delimiter $$
+
+CREATE TABLE `quota_update` (
+  `id` int(11) NOT NULL,
+  `inode_id` int(11) NOT NULL,
+  `namespace_delta` bigint(20) DEFAULT NULL,
+  `diskspace_delta` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`inode_id`,`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY KEY (inode_id) */$$
+
+
+delimiter $$
+
+CREATE TABLE `encoding_status` (
+  `inode_id` int(11) NOT NULL,
+  `status` int(11) DEFAULT NULL,
+  `codec` varchar(8) DEFAULT NULL,
+  `target_replication` smallint(11) DEFAULT NULL,
+  `parity_status` int(11) DEFAULT NULL,
+  `status_modification_time` bigint(20) DEFAULT NULL,
+  `parity_status_modification_time` bigint(20) DEFAULT NULL,
+  `parity_inode_id` int(11) DEFAULT NULL,
+  `parity_file_name` char(36) DEFAULT NULL,
+  `lost_blocks` int(11) DEFAULT 0,
+  `lost_parity_blocks` int(11) DEFAULT 0,
+  `revoked` bit(1) DEFAULT 0,
+  PRIMARY KEY (`inode_id`),
+  UNIQUE KEY `parity_inode_id` (`parity_inode_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+delimiter $$
+
+CREATE TABLE `block_checksum` (
+  `inode_id` int(11) NOT NULL,
+  `block_index` int(11) NOT NULL,
+  `checksum` bigint(20) NOT NULL,
+  PRIMARY KEY (`inode_id`,`block_index`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY KEY (inode_id) */$$
+
+delimiter $$
+
+CREATE TABLE `applicationstate` (
+  `applicationid` VARCHAR(45) NOT NULL,
+  `appstate` VARBINARY(13500) NULL,
+  `appuser` VARCHAR(45) NULL,
+  `appname` VARCHAR(150) NULL,
+  `appsmstate` VARCHAR(45) NULL,
+  PRIMARY KEY (`applicationid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `delegation_token` (
+  `seq_number` INT NOT NULL,
+  `rmdt_identifier` VARBINARY(13500) NULL,
+  PRIMARY KEY (`seq_number`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `version` (
+  `id` INT NOT NULL,
+  `version` VARBINARY(13500) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `delegation_key` (
+  `key` INT NOT NULL,
+  `delegationkey` VARBINARY(13500) NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `sequence_number` (
+  `id` INT NOT NULL,
+  `sequence_number` INT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `applicationattemptstate` (
+  `applicationid` VARCHAR(45) NOT NULL,
+  `applicationattemptid` VARCHAR(45) NOT NULL,
+  `applicationattemptstate` VARBINARY(13000) NULL,
+  `applicationattempthost` VARCHAR(45) NULL,
+  `applicationattemptrpcport` INT NULL,
+  `applicationattempttokens` VARBINARY(500) NULL,
+  `applicationattempttrakingurl` VARCHAR(120) NULL,
+  PRIMARY KEY (`applicationid`, `applicationattemptid`),
+  INDEX `applicationid` (`applicationid` ASC)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `appmaster_rpc` (
+  `id` INT NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  `rpc` VARBINARY(13000) NOT NULL,
+  `userid` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_variables` (
+  `id` INT NOT NULL,
+  `value` INT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_queuemetrics` (
+  `id` INT NOT NULL,
+  `apps_submitted` INT NULL,
+  `apps_running` INT NULL,
+  `apps_pending` INT NULL,
+  `apps_completed` INT NULL,
+  `apps_killed` INT NULL,
+  `apps_failed` INT NULL,
+  `allocated_mb` INT NULL,
+  `allocated_vcores` INT NULL,
+  `allocated_containers` INT NULL,
+  `aggregate_containers_allocated` BIGINT NULL,
+  `aggregate_containers_released` BIGINT NULL,
+  `available_mb` INT NULL,
+  `available_vcores` INT NULL,
+  `pending_mb` INT NULL,
+  `pending_vcores` INT NULL,
+  `reserved_mb` INT NULL,
+  `reserved_vcores` INT NULL,
+  `reserved_containers` INT NULL,
+  `active_users` INT NULL,
+  `active_applications` INT NULL,
+  `parent_id` INT NULL,
+  `queue_name` VARCHAR(45) NULL,
+  `pending_containers` INT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_rmnode` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `hostname` VARCHAR(45) NULL,
+  `commandport` INT NULL,
+  `httpport` INT NULL,
+  `nodeaddress` VARCHAR(45) NULL,
+  `httpaddress` VARCHAR(45) NULL,
+  `nextheartbeat` BIT NOT NULL,
+  `nodeid` VARCHAR(45) NULL,
+  `healthreport` VARCHAR(500) NULL,
+  `lasthealthreporttime` BIGINT NULL,
+  `currentstate` VARCHAR(45) NULL,
+  `overcommittimeout` INT NULL,
+  `nodemanager_version` VARCHAR(45) NULL,
+  PRIMARY KEY (`rmnodeid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_resource` (
+  `id` VARCHAR(45) NOT NULL,
+  `type` INT NOT NULL,
+  `parent` INT NOT NULL,
+  `memory` INT NULL,
+  `virtualcores` INT NULL,
+  PRIMARY KEY (`id`, `type`, `parent`),
+  INDEX `id` (`id` ASC)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_node` (
+  `nodeid` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `location` VARCHAR(45) NULL,
+  `level` INT NULL,
+  `parent` VARCHAR(45) NULL,
+  PRIMARY KEY (`nodeid`),
+  INDEX `name` (`name` ASC, `location` ASC),
+  CONSTRAINT `nodeid`
+    FOREIGN KEY (`nodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_ficascheduler_node` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `nodename` VARCHAR(45) NULL,
+  `numcontainers` INT NULL,
+  `rmcontainerid` VARCHAR(45) NULL,
+  PRIMARY KEY (`rmnodeid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_rmctx_activenodes` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`rmnodeid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_updatedcontainerinfo` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `containerid` VARCHAR(45) NOT NULL,
+  `updatedcontainerinfoid` INT NOT NULL,
+  PRIMARY KEY (`rmnodeid`, `containerid`, `updatedcontainerinfoid`),
+  INDEX `containerid` (`containerid` ASC),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_containerstatus` (
+  `containerid` VARCHAR(45) NOT NULL,
+  `state` VARCHAR(45) NULL,
+  `diagnostics` VARCHAR(2000) NULL,
+  `exitstatus` INT NULL,
+  `rmnodeid` VARCHAR(45) NULL,
+  PRIMARY KEY (`containerid`),
+  INDEX `rmnodeid_idx` (`rmnodeid` ASC),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_applicationattemptid` (
+  `attemptid` VARCHAR(45) NOT NULL,
+  `appid` VARCHAR(45) NULL,
+  PRIMARY KEY (`attemptid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_justlaunchedcontainers` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `containerid_id` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`containerid_id`, `rmnodeid`),
+  INDEX `rmnodeid_idx` (`rmnodeid` ASC),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_latestnodehbresponse` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `response` VARBINARY(13500) NULL,
+  PRIMARY KEY (`rmnodeid`),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_containerid_toclean` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `containerid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`rmnodeid`, `containerid`),
+  INDEX `rmnodeId` (`containerid` ASC),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_fifoscheduler_nodes` (
+  `nodeid_id` VARCHAR(45) NOT NULL,
+  `ficaschedulernode_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`nodeid_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_rmcontainer` (
+  `containerid_id` VARCHAR(45) NOT NULL,
+  `appattemptid_id` VARCHAR(45) NULL,
+  `nodeid_id` VARCHAR(45) NULL,
+  `user` VARCHAR(45) NULL,
+  `starttime` BIGINT NULL,
+  `finishtime` BIGINT NULL,
+  `state` VARCHAR(45) NULL,
+  `finishedstatusstate` VARCHAR(45) NULL,
+  `exitstatus` INT NULL,
+  PRIMARY KEY (`containerid_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_launchedcontainers` (
+  `schedulernode_id` VARCHAR(45) NOT NULL,
+  `containerid_id` VARCHAR(45) NOT NULL,
+  `rmcontainer_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`schedulernode_id`, `containerid_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_rmnode_finishedapplications` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `applicationid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`rmnodeid`, `applicationid`),
+  INDEX `index2` (`rmnodeid` ASC),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapplication` (
+  `appid` VARCHAR(45) NOT NULL,
+  `user` VARCHAR(45) NULL,
+  `queuename` VARCHAR(45) NULL,
+  PRIMARY KEY (`appid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_livecontainers` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `containerid_id` VARCHAR(45) NOT NULL,
+  `rmcontainer_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`schedulerapp_id`, `containerid_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_reservedcontainers` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `priority_id` INT NULL,
+  `nodeid_id` INT NULL,
+  `rmcontainer_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`schedulerapp_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_newlyallocatedcontainers` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `rmcontainer_id` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`schedulerapp_id`, `rmcontainer_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_reservations` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `priority_id` INT NULL,
+  PRIMARY KEY (`schedulerapp_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_schedulingopportunities` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `priority_id` INT NULL,
+  PRIMARY KEY (`schedulerapp_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_schedulerapp_lastscheduledcontainer` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `priority_id` INT NOT NULL,
+  `time` BIGINT NULL,
+  PRIMARY KEY (`schedulerapp_id`, `priority_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_appschedulinginfo` (
+  `appid` VARCHAR(45) NOT NULL,
+  `schedulerapp_id` VARCHAR(45) NULL,
+  `queuename` VARCHAR(45) NULL,
+  `user` VARCHAR(45) NULL,
+  `containeridcounter` INT NULL,
+  `pending` BIT NULL,
+  `stoped` BIT NULL,
+  PRIMARY KEY (`appid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_appschedulinginfo_blacklist` (
+  `appschedulinginfo_id` VARCHAR(45) NOT NULL,
+  `blacklisted` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`appschedulinginfo_id`, `blacklisted`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_container` (
+  `containerid_id` VARCHAR(45) NOT NULL,
+  `containerstate` VARBINARY(13500) NULL,
+  PRIMARY KEY (`containerid_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_token` (
+  `id` INT NOT NULL,
+  `identifier` VARBINARY(6500) NULL,
+  `kind` VARCHAR(45) NULL,
+  `password` VARBINARY(6500) NULL,
+  `service` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_rmctx_inactivenodes` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`rmnodeid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_resourcerequest` (
+  `appschedulinginfo_id` VARCHAR(45) NOT NULL,
+  `priority` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `resourcerequeststate` VARBINARY(13500) NULL,
+  PRIMARY KEY (`appschedulinginfo_id`, `priority`, `name`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `yarn_leader` (
+  `id` BIGINT NOT NULL,
+  `counter` BIGINT NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `hostname` VARCHAR(100) NOT NULL,
+  `httpAddress` VARCHAR(100) NULL DEFAULT NULL,
+  `partition_val` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`, `partition_val`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_fsscheduler_node` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `numcontainers` INT NULL,
+  `reservedcontainer_id` VARCHAR(45) NULL,
+  `reservedappschedulable_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`rmnodeid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_fsleafqueue` (
+  `fsqueuename` INT NOT NULL,
+  `lasttime_minshare` BIGINT NULL,
+  `lasttime_halfshare` BIGINT NULL,
+  PRIMARY KEY (`fsqueuename`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_fsqueue` (
+  `fsqueuename` VARCHAR(45) NOT NULL,
+  `metricsqueuename` VARCHAR(45) NULL,
+  `parentqueuename` VARCHAR(45) NULL,
+  `isparent` BIT NULL,
+  `runnableaps` INT NULL,
+  `lasttime_minshare` VARCHAR(45) NULL,
+  `lasttime_halfshare` VARCHAR(45) NULL,
+  PRIMARY KEY (`fsqueuename`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_fsqueuemetrics` (
+  `queuename` INT NOT NULL,
+  `fairshare_mb` INT NULL,
+  `fairshare_vcores` INT NULL,
+  `minshare_mb` INT NULL,
+  `minshare_vcores` INT NULL,
+  `maxshare_mb` INT NULL,
+  `maxshare_vcores` INT NULL,
+  PRIMARY KEY (`queuename`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_childqueue` (
+  `parentqueuename` VARCHAR(45) NOT NULL,
+  `childqueuename` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`parentqueuename`, `childqueuename`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `ha_appschedulable` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `starttime` BIGINT NULL,
+  `fsqueuename` VARCHAR(45) NULL,
+  PRIMARY KEY (`schedulerapp_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+CREATE TABLE `ha_preemptionmap` (
+  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `rmcontainer_id` VARCHAR(45) NULL,
+  `value` BIGINT NULL,
+  PRIMARY KEY (`schedulerapp_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `secret_manager_keys` (
+  `id` VARCHAR(45) NOT NULL,
+  `key` VARBINARY(13500) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+CREATE TABLE `allocate_response` (
+  `applicationattemptid` VARCHAR(45) NOT NULL,
+  `allocate_response` VARBINARY(13500) NULL,
+  PRIMARY KEY (`applicationattemptid`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+delimiter $$
+
+CREATE TABLE `rms_load` (
+  `rmhostname` VARCHAR(100) NOT NULL,
+  `load` BIGINT NULL,
+  PRIMARY KEY (`rmhostname`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
