@@ -22,14 +22,14 @@ suites:
 suites:
   - name: default
     run_list:
-      - recipe[ndb::install]
-      - recipe[kagent::install]
-      - recipe[hops::install]
-      - recipe[kagent::default]
-      - recipe[ndb::mgmd]
-      - recipe[ndb::ndbd]
-      - recipe[ndb::mysqld]
-      - recipe[ndb::memcached]
+#      - recipe[ndb::install]
+#      - recipe[kagent::install]
+#      - recipe[hops::install]
+#      - recipe[kagent::default]
+#      - recipe[ndb::mgmd]
+#      - recipe[ndb::ndbd]
+#      - recipe[ndb::mysqld]
+#      - recipe[ndb::memcached]
       - recipe[hops::ndb]
       - recipe[hops::nn]
       - recipe[hops::dn]

@@ -18,4 +18,5 @@ default[:hadoop][:mysql_url]               = "jdbc:mysql://#{default[:ndb][:mysq
 
 default[:hops][:log_level]                 = "DEBUG"
 
-default[:dal][:download_url]               = "#{node[:download_url]}/ndb-dal-#{node[:hadoop][:version]}.jar"
+default[:dal][:download_url]               = "#{node[:download_url]}/ndb-dal-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
+default[:clusterj][:download_url]          = "#{node[:download_url]}/clusterj-#{node[:ndb][:version]}.jar"
