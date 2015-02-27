@@ -30,26 +30,30 @@ remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{base_filename}" do
   action :create_if_missing
 end
 
-clusterj_url = node[:clusterj][:download_url]
-clusterj_filename = File.basename(clusterj_url)
+ clusterj_url = node[:clusterj][:download_url]
+ clusterj_filename = File.basename(clusterj_url)
 
-remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{clusterj_filename}" do
-  source clusterj_url
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
-
-# bash 'clusterj-ownership' do
-#   user "root"
-#   group "root"
-#   code <<-EOH
-#         chown #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:mysql][:base_dir]}/share/java/clusterj* 
-#         chmod 751 #{node[:mysql][:base_dir]}/share/java/clusterj* 
-# 	EOH
+# remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{clusterj_filename}" do
+#   source clusterj_url
+#   owner node[:hdfs][:user]
+#   group node[:hadoop][:group]
+#   mode "0755"
+#   # TODO - checksum
+#   action :create_if_missing
 # end
+
+
+common="share/hadoop/common/lib"
+ bash 'clusterj-ownership' do
+   user "root"
+   group "root"
+   code <<-EOH
+         chown #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:mysql][:base_dir]}/share/java/clusterj* 
+         chmod 751 #{node[:mysql][:base_dir]}/share/java/clusterj* 
+         rm -f #{node[:hadoop][:home]}/#{common}/clusterj.jar
+         ln -s #{node[:mysql][:base_dir]}/share/java/clusterj-7.4.4.jar #{node[:hadoop][:home]}/#{common}/clusterj.jar
+ 	EOH
+ end
 
 
 hin = "#{node[:hadoop][:home]}/.#{base_filename}_dal_downloaded"
@@ -58,12 +62,12 @@ bash 'extract-hadoop' do
   group node[:hadoop][:group]
   code <<-EOH
         set -e
-        rm -f #{node[:hadoop][:home]}/share/hadoop/common/lib/ndb-dal.jar
-	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{base_filename} #{node[:hadoop][:home]}/share/hadoop/common/lib/ndb-dal.jar
+        rm -f #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
+	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{base_filename} #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
         rm -f #{node[:hadoop][:home]}/etc/hadoop/ndb.props
 
-        rm -f #{node[:hadoop][:home]}/share/hadoop/common/lib/clusterj.jar
-	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{clusterj_filename} #{node[:hadoop][:home]}/share/hadoop/common/lib/clusterj.jar
+#       rm -f #{node[:hadoop][:home]}/#{common}/clusterj.jar
+#	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{clusterj_filename} #{node[:hadoop][:home]}/#{common}/clusterj.jar
 
 	rm -f #{node[:hadoop][:home]}/lib/native/libndbclient.so
 	ln -s #{node[:mysql][:base_dir]}/lib/libndbclient.so* #{node[:hadoop][:home]}/lib/native
