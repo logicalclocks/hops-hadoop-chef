@@ -65,6 +65,9 @@ bash 'extract-hadoop' do
         rm -f #{node[:hadoop][:home]}/share/hadoop/common/lib/clusterj.jar
 	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{clusterj_filename} #{node[:hadoop][:home]}/share/hadoop/common/lib/clusterj.jar
 
+	rm -f #{node[:hadoop][:home]}/lib/native/libndbclient.so
+	ln -s #{node[:mysql][:base_dir]}/lib/libndbclient.so* #{node[:hadoop][:home]}/lib/native
+
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }

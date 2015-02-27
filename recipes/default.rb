@@ -54,7 +54,6 @@ file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do
   action :delete
 end
 
-mysql_host = "jdbc:mysql://localhost:#{node[:ndb][:mysql_port]}/"
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
@@ -62,22 +61,10 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   mode "755"
   variables({
               :myNN => firstNN,
-              :mysql_host => node[:ndb][:connect_string].split(":").first,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",
               :addr4 => my_ip + ":40103",
               :addr5 => my_ip + ":40104",
-            })
-end
-
-template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
-  source "ndb.props.erb"
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "755"
-  variables({
-              :ndb_connectstring => node[:ndb][:connect_string],
-              :mysql_host => node[:ndb][:connect_string].split(":").first,
             })
 end

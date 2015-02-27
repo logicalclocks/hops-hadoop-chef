@@ -28,6 +28,10 @@ describe service('JobHistoryServer') do
   it { should be_running   }
 end 
 
+describe command("/var/lib/mysql-cluster/ndb/scripts/mysql-client.sh -e \"show databases\"") do
+  its (:stdout) { should match /hops/ }
+end
+
 describe command("su hdfs -l -c \"/srv/hadoop/bin/hdfs dfs -ls /\"") do
   its (:stdout) { should match /mr-history/ }
 end
