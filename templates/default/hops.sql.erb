@@ -76,10 +76,9 @@ CREATE TABLE `inodes` (
   `generation_stamp` int(11) DEFAULT NULL,
   `header` bigint(20) DEFAULT NULL,
   `symlink` varchar(3000) DEFAULT NULL,
-  `dir` bit(1) NOT NULL,
-  `quota_enabled` bit(1) NOT NULL,
-  `under_construction` bit(1) NOT NULL,
-  `subtree_locked` bit(1) DEFAULT NULL,
+  `quota_enabled` bit(8) NOT NULL,
+  `under_construction` bit(8) NOT NULL,
+  `subtree_locked` bit(8) DEFAULT NULL,
   `subtree_lock_owner` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`parent_id`,`name`),
   KEY `inode_idx` (`id`)
@@ -103,17 +102,29 @@ CREATE TABLE `invalidated_blocks` (
 
 delimiter $$
 
-CREATE TABLE `hdfs_leader` (
+CREATE TABLE `hdfs_le_descriptors` (
   `id` bigint(20) NOT NULL,
   `counter` bigint(20) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `hostname` varchar(25) NOT NULL,
   `httpAddress` varchar(100) DEFAULT NULL,
   `partition_val` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`,`partition_val`)
+  PRIMARY KEY (`id`,`partition_val`),
+  KEY `part` (`partition_val`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
 /*!50100 PARTITION BY KEY (partition_val) */$$
 
+delimiter $$
+
+CREATE TABLE `yarn_le_descriptors` (
+  `id` bigint(20) NOT NULL,
+  `counter` bigint(20) NOT NULL,
+  `hostname` varchar(25) NOT NULL,
+  `httpAddress` varchar(100) DEFAULT NULL,
+  `partition_val` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`partition_val`),
+  KEY `part` (`partition_val`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY KEY (partition_val) */$$
 
 delimiter $$
 
@@ -261,7 +272,7 @@ CREATE TABLE `encoding_status` (
   `parity_file_name` char(36) DEFAULT NULL,
   `lost_blocks` int(11) DEFAULT 0,
   `lost_parity_blocks` int(11) DEFAULT 0,
-  `revoked` bit(1) DEFAULT 0,
+  `revoked` bit(8) DEFAULT 0,
   PRIMARY KEY (`inode_id`),
   UNIQUE KEY `parity_inode_id` (`parity_inode_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
@@ -399,7 +410,7 @@ CREATE TABLE `ha_rmnode` (
   `httpport` INT NULL,
   `nodeaddress` VARCHAR(45) NULL,
   `httpaddress` VARCHAR(45) NULL,
-  `nextheartbeat` BIT NOT NULL,
+  `nextheartbeat` BIT(8) NOT NULL,
   `nodeid` VARCHAR(45) NULL,
   `healthreport` VARCHAR(500) NULL,
   `lasthealthreporttime` BIGINT NULL,
@@ -673,8 +684,8 @@ CREATE TABLE `ha_appschedulinginfo` (
   `queuename` VARCHAR(45) NULL,
   `user` VARCHAR(45) NULL,
   `containeridcounter` INT NULL,
-  `pending` BIT NULL,
-  `stoped` BIT NULL,
+  `pending` BIT(8) NULL,
+  `stoped` BIT(8) NULL,
   PRIMARY KEY (`appid`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
@@ -730,19 +741,6 @@ CREATE TABLE `ha_resourcerequest` (
 
 delimiter $$
 
-CREATE TABLE `yarn_leader` (
-  `id` BIGINT NOT NULL,
-  `counter` BIGINT NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `hostname` VARCHAR(100) NOT NULL,
-  `httpAddress` VARCHAR(100) NULL DEFAULT NULL,
-  `partition_val` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`, `partition_val`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
 CREATE TABLE `ha_fsscheduler_node` (
   `rmnodeid` VARCHAR(45) NOT NULL,
   `numcontainers` INT NULL,
@@ -768,7 +766,7 @@ CREATE TABLE `ha_fsqueue` (
   `fsqueuename` VARCHAR(45) NOT NULL,
   `metricsqueuename` VARCHAR(45) NULL,
   `parentqueuename` VARCHAR(45) NULL,
-  `isparent` BIT NULL,
+  `isparent` BIT(8) NULL,
   `runnableaps` INT NULL,
   `lasttime_minshare` VARCHAR(45) NULL,
   `lasttime_halfshare` VARCHAR(45) NULL,
@@ -842,4 +840,5 @@ CREATE TABLE `rms_load` (
   `load` BIGINT NULL,
   PRIMARY KEY (`rmhostname`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
 
