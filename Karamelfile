@@ -5,11 +5,15 @@ dependencies:
       - hops::install
     global:  
       - ndb::dn
+      - ndb::mysql
+      - ndb::memcached
   - recipe: hops::nn
     local:  
       - hops::install
     global:  
       - ndb::dn
+      - ndb::mysql
+      - ndb::memcached
   - recipe: hops::rm
     local:  
       - hops::install
