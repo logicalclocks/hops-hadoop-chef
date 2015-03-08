@@ -3,14 +3,18 @@ dependencies:
   - recipe: hops::ndb
     local:  
       - hops::install
+    global:  
+      - ndb::dn
   - recipe: hops::nn
     local:  
       - hops::install
-      - hops::ndb
+    global:  
+      - ndb::dn
   - recipe: hops::rm
     local:  
       - hops::install
     global:  
+      - ndb::dn
       - hops::nn
   - recipe: hops::dn
     local: 
