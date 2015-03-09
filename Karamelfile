@@ -4,7 +4,7 @@ dependencies:
     local:  
       - hops::install
     global:  
-      - ndb::mysql
+      - ndb::mysqld
   - recipe: hops::nn
     local:  
       - hops::install
