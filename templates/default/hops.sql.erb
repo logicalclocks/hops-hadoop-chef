@@ -108,8 +108,8 @@ CREATE TABLE `hdfs_le_descriptors` (
   `hostname` varchar(25) NOT NULL,
   `httpAddress` varchar(100) DEFAULT NULL,
   `partition_val` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`,`partition_val`),
-  KEY `part` (`partition_val`)
+PRIMARY KEY (`id`,`partition_val`),
+KEY `part` (`partition_val`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
 /*!50100 PARTITION BY KEY (partition_val) */$$
 
@@ -141,13 +141,13 @@ CREATE TABLE `lease_paths` (
 delimiter $$
 
 CREATE TABLE `leases` (
-  `holder` varchar(255) NOT NULL,
-  `part_key` int(11) NOT NULL,
-  `last_update` bigint(20) DEFAULT NULL,
-  `holder_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`holder`,`part_key`),
-  KEY `holderid_idx` (`holder_id`),
-  KEY `update_idx` (`last_update`)
+`holder` varchar(255) NOT NULL,
+`part_key` int(11) NOT NULL,
+`last_update` bigint(20) DEFAULT NULL,
+`holder_id` int(11) DEFAULT NULL,
+PRIMARY KEY (`holder`,`part_key`),
+KEY `holderid_idx` (`holder_id`),
+KEY `update_idx` (`last_update`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
 /*!50100 PARTITION BY KEY (part_key) */$$
 
@@ -293,9 +293,9 @@ CREATE TABLE `applicationstate` (
   `applicationid` VARCHAR(45) NOT NULL,
   `appstate` VARBINARY(13500) NULL,
   `appuser` VARCHAR(45) NULL,
-  `appname` VARCHAR(150) NULL,
+  `appname` VARCHAR(200) NULL,
   `appsmstate` VARCHAR(45) NULL,
-  PRIMARY KEY (`applicationid`)
+PRIMARY KEY (`applicationid`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -304,7 +304,7 @@ delimiter $$
 CREATE TABLE `delegation_token` (
   `seq_number` INT NOT NULL,
   `rmdt_identifier` VARBINARY(13500) NULL,
-  PRIMARY KEY (`seq_number`)
+PRIMARY KEY (`seq_number`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -313,7 +313,7 @@ delimiter $$
 CREATE TABLE `version` (
   `id` INT NOT NULL,
   `version` VARBINARY(13500) NULL,
-  PRIMARY KEY (`id`)
+PRIMARY KEY (`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -322,7 +322,7 @@ delimiter $$
 CREATE TABLE `delegation_key` (
   `key` INT NOT NULL,
   `delegationkey` VARBINARY(13500) NULL,
-  PRIMARY KEY (`key`)
+PRIMARY KEY (`key`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -346,7 +346,12 @@ CREATE TABLE `applicationattemptstate` (
   `applicationattempttokens` VARBINARY(500) NULL,
   `applicationattempttrakingurl` VARCHAR(120) NULL,
   PRIMARY KEY (`applicationid`, `applicationattemptid`),
-  INDEX `applicationid` (`applicationid` ASC)
+  INDEX `applicationid` (`applicationid` ASC),
+  CONSTRAINT `applicationid`
+    FOREIGN KEY (`applicationid`)
+    REFERENCES `applicationstate` (`applicationid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -410,15 +415,16 @@ CREATE TABLE `ha_rmnode` (
   `httpport` INT NULL,
   `nodeaddress` VARCHAR(45) NULL,
   `httpaddress` VARCHAR(45) NULL,
-  `nextheartbeat` BIT(8) NOT NULL,
   `nodeid` VARCHAR(45) NULL,
   `healthreport` VARCHAR(500) NULL,
   `lasthealthreporttime` BIGINT NULL,
   `currentstate` VARCHAR(45) NULL,
   `overcommittimeout` INT NULL,
   `nodemanager_version` VARCHAR(45) NULL,
-  PRIMARY KEY (`rmnodeid`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+  `uci_id` INT NULL,
+  PRIMARY KEY (`rmnodeid`))
+ENGINE = ndbcluster
+PACK_KEYS = DEFAULT PARTITION BY KEY(rmnodeid)$$
 
 
 delimiter $$
@@ -447,9 +453,9 @@ CREATE TABLE `ha_node` (
   CONSTRAINT `nodeid`
     FOREIGN KEY (`nodeid`)
     REFERENCES `ha_rmnode` (`rmnodeid`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(nodeid) $$
 
 
 delimiter $$
@@ -458,7 +464,6 @@ CREATE TABLE `ha_ficascheduler_node` (
   `rmnodeid` VARCHAR(45) NOT NULL,
   `nodename` VARCHAR(45) NULL,
   `numcontainers` INT NULL,
-  `rmcontainerid` VARCHAR(45) NULL,
   PRIMARY KEY (`rmnodeid`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
@@ -491,11 +496,11 @@ delimiter $$
 
 CREATE TABLE `ha_containerstatus` (
   `containerid` VARCHAR(45) NOT NULL,
+  `rmnodeid` VARCHAR(45) NOT NULL,
   `state` VARCHAR(45) NULL,
   `diagnostics` VARCHAR(2000) NULL,
   `exitstatus` INT NULL,
-  `rmnodeid` VARCHAR(45) NULL,
-  PRIMARY KEY (`containerid`),
+  PRIMARY KEY (`containerid`, `rmnodeid`),
   INDEX `rmnodeid_idx` (`rmnodeid` ASC),
   CONSTRAINT `rmnodeid`
     FOREIGN KEY (`rmnodeid`)
@@ -507,14 +512,7 @@ CREATE TABLE `ha_containerstatus` (
 
 delimiter $$
 
-CREATE TABLE `ha_applicationattemptid` (
-  `attemptid` VARCHAR(45) NOT NULL,
-  `appid` VARCHAR(45) NULL,
-  PRIMARY KEY (`attemptid`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
-
-delimiter $$
 
 CREATE TABLE `ha_justlaunchedcontainers` (
   `rmnodeid` VARCHAR(45) NOT NULL,
@@ -540,7 +538,7 @@ CREATE TABLE `ha_latestnodehbresponse` (
     REFERENCES `ha_rmnode` (`rmnodeid`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(rmnodeid) $$
 
 
 delimiter $$
@@ -555,19 +553,12 @@ CREATE TABLE `ha_containerid_toclean` (
     REFERENCES `ha_rmnode` (`rmnodeid`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(rmnodeid) $$
 
 
 delimiter $$
 
-CREATE TABLE `ha_fifoscheduler_nodes` (
-  `nodeid_id` VARCHAR(45) NOT NULL,
-  `ficaschedulernode_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`nodeid_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
-
-delimiter $$
 
 CREATE TABLE `ha_rmcontainer` (
   `containerid_id` VARCHAR(45) NOT NULL,
@@ -586,10 +577,15 @@ CREATE TABLE `ha_rmcontainer` (
 delimiter $$
 
 CREATE TABLE `ha_launchedcontainers` (
-  `schedulernode_id` VARCHAR(45) NOT NULL,
+  `rmnodeid` VARCHAR(45) NOT NULL,
   `containerid_id` VARCHAR(45) NOT NULL,
   `rmcontainer_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`schedulernode_id`, `containerid_id`)
+  PRIMARY KEY (`rmnodeid`, `containerid_id`),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_ficascheduler_node` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -605,7 +601,7 @@ CREATE TABLE `ha_rmnode_finishedapplications` (
     REFERENCES `ha_rmnode` (`rmnodeid`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(rmnodeid) $$
 
 
 delimiter $$
@@ -620,31 +616,66 @@ CREATE TABLE `ha_schedulerapplication` (
 
 delimiter $$
 
-CREATE TABLE `ha_schedulerapp_livecontainers` (
-  `schedulerapp_id` VARCHAR(45) NOT NULL,
-  `containerid_id` VARCHAR(45) NOT NULL,
-  `rmcontainer_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`schedulerapp_id`, `containerid_id`)
+
+
+CREATE TABLE `ha_appschedulinginfo` (
+  `applicationattemptid` VARCHAR(45) NOT NULL,
+  `appid` VARCHAR(45) NOT NULL,
+  `queuename` VARCHAR(45) NULL,
+  `user` VARCHAR(45) NULL,
+  `containeridcounter` INT NULL,
+  `pending` BIT(8) NULL,
+  `stoped` BIT(8) NULL,
+  PRIMARY KEY (`applicationattemptid`),
+  INDEX `appid_idx` (`appid` ASC),
+  CONSTRAINT `appid`
+    FOREIGN KEY (`appid`)
+    REFERENCES `ha_schedulerapplication` (`appid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
 delimiter $$
+
+
+
+CREATE TABLE `ha_schedulerapp_livecontainers` (
+  `applicationattemptid` VARCHAR(45) NOT NULL,
+  `rmcontainer_id` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`applicationattemptid`, `rmcontainer_id`),
+  CONSTRAINT `applicationattemptid`
+    FOREIGN KEY (`applicationattemptid`)
+    REFERENCES `ha_appschedulinginfo` (`applicationattemptid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
+
 
 CREATE TABLE `ha_schedulerapp_reservedcontainers` (
   `schedulerapp_id` VARCHAR(45) NOT NULL,
   `priority_id` INT NULL,
   `nodeid_id` INT NULL,
   `rmcontainer_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`schedulerapp_id`)
+PRIMARY KEY (`schedulerapp_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
 delimiter $$
 
 CREATE TABLE `ha_schedulerapp_newlyallocatedcontainers` (
-  `schedulerapp_id` VARCHAR(45) NOT NULL,
+  `applicationattemptid` VARCHAR(45) NOT NULL,
   `rmcontainer_id` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`schedulerapp_id`, `rmcontainer_id`)
+  PRIMARY KEY (`applicationattemptid`, `rmcontainer_id`),
+  CONSTRAINT `applicationattemptid`
+    FOREIGN KEY (`applicationattemptid`)
+    REFERENCES `ha_appschedulinginfo` (`applicationattemptid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -653,7 +684,7 @@ delimiter $$
 CREATE TABLE `ha_schedulerapp_reservations` (
   `schedulerapp_id` VARCHAR(45) NOT NULL,
   `priority_id` INT NULL,
-  PRIMARY KEY (`schedulerapp_id`)
+PRIMARY KEY (`schedulerapp_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -662,7 +693,7 @@ delimiter $$
 CREATE TABLE `ha_schedulerapp_schedulingopportunities` (
   `schedulerapp_id` VARCHAR(45) NOT NULL,
   `priority_id` INT NULL,
-  PRIMARY KEY (`schedulerapp_id`)
+PRIMARY KEY (`schedulerapp_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -672,30 +703,23 @@ CREATE TABLE `ha_schedulerapp_lastscheduledcontainer` (
   `schedulerapp_id` VARCHAR(45) NOT NULL,
   `priority_id` INT NOT NULL,
   `time` BIGINT NULL,
-  PRIMARY KEY (`schedulerapp_id`, `priority_id`)
+PRIMARY KEY (`schedulerapp_id`, `priority_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
 delimiter $$
 
-CREATE TABLE `ha_appschedulinginfo` (
-  `appid` VARCHAR(45) NOT NULL,
-  `schedulerapp_id` VARCHAR(45) NULL,
-  `queuename` VARCHAR(45) NULL,
-  `user` VARCHAR(45) NULL,
-  `containeridcounter` INT NULL,
-  `pending` BIT(8) NULL,
-  `stoped` BIT(8) NULL,
-  PRIMARY KEY (`appid`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
-
-delimiter $$
 
 CREATE TABLE `ha_appschedulinginfo_blacklist` (
-  `appschedulinginfo_id` VARCHAR(45) NOT NULL,
+  `applicationattemptid` VARCHAR(45) NOT NULL,
   `blacklisted` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`appschedulinginfo_id`, `blacklisted`)
+  PRIMARY KEY (`applicationattemptid`, `blacklisted`),
+  CONSTRAINT `applicationattemptid`
+    FOREIGN KEY (`applicationattemptid`)
+    REFERENCES `ha_appschedulinginfo` (`applicationattemptid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -704,38 +728,38 @@ delimiter $$
 CREATE TABLE `ha_container` (
   `containerid_id` VARCHAR(45) NOT NULL,
   `containerstate` VARBINARY(13500) NULL,
-  PRIMARY KEY (`containerid_id`)
+  PRIMARY KEY (`containerid_id`),
+  CONSTRAINT `containerid_id`
+    FOREIGN KEY (`containerid_id`)
+    REFERENCES `ha_rmcontainer` (`containerid_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
 delimiter $$
 
-CREATE TABLE `ha_token` (
-  `id` INT NOT NULL,
-  `identifier` VARBINARY(6500) NULL,
-  `kind` VARCHAR(45) NULL,
-  `password` VARBINARY(6500) NULL,
-  `service` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
-
-delimiter $$
 
 CREATE TABLE `ha_rmctx_inactivenodes` (
   `rmnodeid` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`rmnodeid`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(rmnodeid) $$
 
 
 delimiter $$
 
 CREATE TABLE `ha_resourcerequest` (
-  `appschedulinginfo_id` VARCHAR(45) NOT NULL,
+  `applicationattemptid` VARCHAR(45) NOT NULL,
   `priority` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `resourcerequeststate` VARBINARY(13500) NULL,
-  PRIMARY KEY (`appschedulinginfo_id`, `priority`, `name`)
+  PRIMARY KEY (`applicationattemptid`, `priority`, `name`),
+  CONSTRAINT `applicationattemptid`
+    FOREIGN KEY (`applicationattemptid`)
+    REFERENCES `ha_appschedulinginfo` (`applicationattemptid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -746,82 +770,18 @@ CREATE TABLE `ha_fsscheduler_node` (
   `numcontainers` INT NULL,
   `reservedcontainer_id` VARCHAR(45) NULL,
   `reservedappschedulable_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`rmnodeid`)
+PRIMARY KEY (`rmnodeid`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
 delimiter $$
 
-CREATE TABLE `ha_fsleafqueue` (
-  `fsqueuename` INT NOT NULL,
-  `lasttime_minshare` BIGINT NULL,
-  `lasttime_halfshare` BIGINT NULL,
-  PRIMARY KEY (`fsqueuename`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
-
-delimiter $$
-
-CREATE TABLE `ha_fsqueue` (
-  `fsqueuename` VARCHAR(45) NOT NULL,
-  `metricsqueuename` VARCHAR(45) NULL,
-  `parentqueuename` VARCHAR(45) NULL,
-  `isparent` BIT(8) NULL,
-  `runnableaps` INT NULL,
-  `lasttime_minshare` VARCHAR(45) NULL,
-  `lasttime_halfshare` VARCHAR(45) NULL,
-  PRIMARY KEY (`fsqueuename`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
-CREATE TABLE `ha_fsqueuemetrics` (
-  `queuename` INT NOT NULL,
-  `fairshare_mb` INT NULL,
-  `fairshare_vcores` INT NULL,
-  `minshare_mb` INT NULL,
-  `minshare_vcores` INT NULL,
-  `maxshare_mb` INT NULL,
-  `maxshare_vcores` INT NULL,
-  PRIMARY KEY (`queuename`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
-CREATE TABLE `ha_childqueue` (
-  `parentqueuename` VARCHAR(45) NOT NULL,
-  `childqueuename` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`parentqueuename`, `childqueuename`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
-CREATE TABLE `ha_appschedulable` (
-  `schedulerapp_id` VARCHAR(45) NOT NULL,
-  `starttime` BIGINT NULL,
-  `fsqueuename` VARCHAR(45) NULL,
-  PRIMARY KEY (`schedulerapp_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-CREATE TABLE `ha_preemptionmap` (
-  `schedulerapp_id` VARCHAR(45) NOT NULL,
-  `rmcontainer_id` VARCHAR(45) NULL,
-  `value` BIGINT NULL,
-  PRIMARY KEY (`schedulerapp_id`)
-) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
 
 CREATE TABLE `secret_manager_keys` (
   `id` VARCHAR(45) NOT NULL,
   `key` VARBINARY(13500) NULL,
-  PRIMARY KEY (`id`)
+PRIMARY KEY (`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 
@@ -830,7 +790,7 @@ delimiter $$
 CREATE TABLE `allocate_response` (
   `applicationattemptid` VARCHAR(45) NOT NULL,
   `allocate_response` VARBINARY(13500) NULL,
-  PRIMARY KEY (`applicationattemptid`)
+PRIMARY KEY (`applicationattemptid`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
 delimiter $$
@@ -838,7 +798,29 @@ delimiter $$
 CREATE TABLE `rms_load` (
   `rmhostname` VARCHAR(100) NOT NULL,
   `load` BIGINT NULL,
-  PRIMARY KEY (`rmhostname`)
+PRIMARY KEY (`rmhostname`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1$$
 
+delimiter $$
 
+CREATE TABLE `ha_nextheartbeat` (
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `nextheartbeat` INT NULL,
+  PRIMARY KEY (`rmnodeid`),
+  CONSTRAINT `rmnodeid`
+    FOREIGN KEY (`rmnodeid`)
+    REFERENCES `ha_rmnode` (`rmnodeid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = ndbcluster$$
+
+delimiter $$
+
+CREATE TABLE `ha_pendingevents` (
+  `id` INT NOT NULL,
+  `rmnodeid` VARCHAR(45) NOT NULL,
+  `type` TINYINT NULL,
+  `status` TINYINT NULL,
+  `last_hb` INT NULL,
+  PRIMARY KEY (`id`, `rmnodeid`))
+ENGINE = ndbcluster$$

@@ -24,6 +24,11 @@ jdbc_url()
 
 nnPort=29211
 my_ip = my_private_ip()
+my_public_ip = my_public_ip()
+rm_private_ip = private_recipe_ip("hadoop","rm")
+rm_public_ip = public_recipe_ip("hadoop","rm")
+
+
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 
@@ -67,4 +72,25 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
               :addr4 => my_ip + ":40103",
               :addr5 => my_ip + ":40104",
             })
+end
+
+file "#{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" do 
+  owner node[:hdfs][:user]
+  action :delete
+end
+
+template "#{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" do
+  source "yarn-site.xml.erb"
+  owner node[:hadoop][:yarn][:user]
+  group node[:hadoop][:group]
+  mode "666"
+  variables({
+              :rm_private_ip => rm_private_ip,
+              :rm_public_ip => rm_public_ip,
+              :available_mem_mb => node[:hadoop][:yarn][:nm][:memory_mbs],
+              :my_public_ip => my_public_ip,
+              :my_private_ip => my_ip
+            })
+  action :create_if_missing
+#  notifies :restart, resources(:service => "rm")
 end
