@@ -14,6 +14,7 @@ new_resource.updated_by_last_action(false)
   bash "mysql-install-hops" do
     user node[:ndb][:user]
     code <<-EOF
+    set -e
     #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]}\"
     #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < #{Chef::Config[:file_cache_path]}/hops.sql
     EOF
