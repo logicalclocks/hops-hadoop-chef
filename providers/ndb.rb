@@ -19,7 +19,7 @@ new_resource.updated_by_last_action(false)
     #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < #{Chef::Config[:file_cache_path]}/hops.sql
     EOF
     new_resource.updated_by_last_action(true)
-    not_if "#{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} -e \"show create table block_infos;\""
+    not_if "#{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} -e \"show create table hdfs_block_infos;\""
   end
 
 end
