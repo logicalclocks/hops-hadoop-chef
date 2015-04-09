@@ -1,8 +1,10 @@
+node.normal[:hadoop][:version]             = "2.4.0"
+
 include_attribute "kagent"
 include_attribute "hadoop"
 include_attribute "ndb"
 
-node.normal[:hadoop][:version]             = "2.4.0"
+
 default[:hops][:download_url]              = "#{node[:download_url]}/hops-#{node[:hadoop][:version]}.tgz"
 default[:hops][:hadoop_src_url]            = "#{node[:download_url]}/hadoop-#{node[:hadoop][:version]}-src.tar.gz"
 
