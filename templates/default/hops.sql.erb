@@ -423,7 +423,7 @@ CREATE TABLE `yarn_rmnode` (
   `nodemanager_version` VARCHAR(45) NULL,
   `uci_id` INT NULL,
   PRIMARY KEY (`rmnodeid`))
-ENGINE = ndbcluster DEFAULT CHARSET=latin1$$
+ENGINE = ndbcluster DEFAULT CHARSET=latin1
 PACK_KEYS = DEFAULT PARTITION BY KEY(rmnodeid)$$
 
 
