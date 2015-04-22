@@ -27,7 +27,10 @@
     <value><%= @rm_private_ip %>:8088</value>
     <description>The http address of the RM web application.</description>
   </property>
-
+  <property>
+    <name>yarn.nodemanager.delete.debug-delay-sec</name>
+    <value>86400</value>
+  </property>
   <property>
     <description>NM Webapp address.</description>
     <name>yarn.nodemanager.webapp.address</name>
@@ -42,6 +45,63 @@
     <name>yarn.resourcemanager.scheduler.class</name>
     <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
     <description>In case you do not want to use the default scheduler</description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.container-executor.class</name>
+    <value>org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor</value>
+    <description>LinuxContainerExecutor uses CGroups, DefaultContainerExecutor uses Unix processes.</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.group</name>
+    <value><%= node[:hadoop][:group] %></value>
+  </property>
+<property>
+  <name>yarn.nodemanager.container-executor.resources-handler.class</name>
+  <value>org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler</value>
+</property>
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.cgroups.hierarchy</name>
+    <value>/yarn</value>
+    <description>LinuxContainerExecutor CGroups hierarchy.</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.cgroups.mount-path</name>
+    <value>/cgroup</value>
+    <description>LinuxContainerExecutor CGroups mount-path.</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.cgroups.mount</name>
+    <value>true</value>
+    <description>Whether the LCE should attempt to mount cgroups if not found. Only used when the LCE resources handler is set to the CgroupsLCEResourcesHandler.</description>
+  </property>
+<property>
+  <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
+  <value>100</value>
+</property>
+<property>
+  <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
+  <value>false</value>
+</property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.client.thread-count</name>
+    <value>50</value>
+    <description>Number of ResourceManager threads for decoding and handling client RPCs for apps.</description>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.client.thread-count</name>
+    <value>50</value>
+    <description>Number of ResourceTracker threads for decoding and handling client RPCs for NodeManager heartbeats.</description>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.admin.client.thread-count</name>
+    <value>1</value>
+    <description>Number of ResourceManager threads for decoding and handling client RPCs for Admin operations.</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.container-manager.thread-count</name>
+    <value>20</value>
+    <description>Number of threads for starting/stopping containers</description>
   </property>
   <property>
     <name>yarn.nodemanager.local-dirs</name>
@@ -121,6 +181,11 @@
     <name>yarn.log-aggregation.retain-check-interval-seconds</name>
     <value><%= node[:hadoop][:yarn][:log_retain_check] %></value>
     <description>Default time (in seconds) between checks for retained log files in HDFS. Only applicable if log-aggregation is disabled.</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.heartbeat.interval-ms</name>
+    <value><%= node[:hadoop][:yarn][:nodemanager_hb_ms] %></value>
+    <description>Time in ms between heartbeats sent from the NodeManager to the ResourceManager.</description>
   </property>
 
 </configuration>
