@@ -12,6 +12,8 @@ libpath = File.expand_path '../../../kagent/libraries', __FILE__
 require File.join(libpath, 'inifile')
 require 'resolv'
 
+include_recipe "hops::wrap"
+
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
 hostf = Resolv::Hosts.new
