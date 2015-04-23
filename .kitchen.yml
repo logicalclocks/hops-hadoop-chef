@@ -19,8 +19,7 @@ platforms:
 suites:
   - name: default
     run_list:
-     # - recipe[kagent::install]
-     # - apt::default
+      - recipe[kagent::install]
       - recipe[ndb::install]
       - recipe[hops::install]
       - recipe[ndb::mgmd]
