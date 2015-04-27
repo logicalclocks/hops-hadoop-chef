@@ -6,13 +6,13 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "hadoop::default"
 
 libpath = File.expand_path '../../../kagent/libraries', __FILE__
 require File.join(libpath, 'inifile')
 require 'resolv'
 
 include_recipe "hops::wrap"
+include_recipe "hadoop::default"
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -27,8 +27,8 @@ jdbc_url()
 nnPort=29211
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
-rm_private_ip = private_recipe_ip("hadoop","rm")
-rm_public_ip = public_recipe_ip("hadoop","rm")
+rm_private_ip = private_recipe_ip("hops","rm")
+rm_public_ip = public_recipe_ip("hops","rm")
 
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
