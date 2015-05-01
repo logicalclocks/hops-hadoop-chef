@@ -1,7 +1,7 @@
 # Cookbook Name:: hadoop
 # Recipe:: default
 #
-# Copyright 2013, KTH
+# Copyright 2015, KTH
 #
 # All rights reserved - Do Not Redistribute
 #
@@ -95,4 +95,20 @@ template "#{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" do
             })
   action :create_if_missing
 #  notifies :restart, resources(:service => "rm")
+end
+
+file "#{node[:hadoop][:home]}/etc/hadoop/mapred-site.xml" do 
+  owner node[:hadoop][:mr][:user]
+  action :delete
+end
+
+template "#{node[:hadoop][:home]}/etc/hadoop/mapred-site.xml" do
+  source "mapred-site.xml.erb"
+  owner node[:hadoop][:mr][:user]
+  group node[:hadoop][:group]
+  mode "666"
+  variables({
+              :rm_private_ip => rm_private_ip
+            })
+#  notifies :restart, resources(:service => "jhs")
 end
