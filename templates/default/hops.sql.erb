@@ -812,7 +812,7 @@ CREATE TABLE `yarn_nextheartbeat` (
     REFERENCES `yarn_rmnode` (`rmnodeid`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
-ENGINE = ndbcluster DEFAULT CHARSET=latin1$$
+ENGINE = ndbcluster DEFAULT CHARSET=latin1 PARTITION BY KEY(rmnodeid)$$
 
 delimiter $$
 
