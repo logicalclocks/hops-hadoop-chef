@@ -6,10 +6,14 @@ description      'Installs/Configures HOPS distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0"
 
+#link:<a target='_blank' href='https://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
 recipe            "hops::dn", "Installs a Hops DataNode"
+#link:<a target='_blank' href='https://%host%:50088/'>Launch the WebUI for the ResourceManager</a>
 recipe            "hops::rm", "Installs a YARN ResourceManager"
 recipe            "hops::nm", "Installs a YARN NodeManager"
+#link:<a target='_blank' href='https://%host%:50030/'>Launch the WebUI for the JobTracker</a>
+#link:<a target='_blank' href='https://%host%:51111/'>Launch the WebUI for the HistoryServer</a>
 recipe            "hops::jhs", "Installs a MapReduce JobHistory Server for YARN"
 recipe            "hops::ps", "Installs a WebProxy Server for YARN"
 
