@@ -9,9 +9,9 @@ dependencies:
     local:  
       - hops::install
     global:  
-      - ndb::dn
-      - ndb::mysql
-      - ndb::memcached
+      - ndb::mgmd
+      - ndb::ndbd
+      - ndb::mysqld
   - recipe: hops::rm
     local:  
       - hops::install
