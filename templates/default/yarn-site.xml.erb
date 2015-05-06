@@ -36,7 +36,14 @@
     <name>yarn.nodemanager.webapp.address</name>
     <value><%= @my_private_ip %>:8042</value>
   </property>
-
+  <property>
+    <name>yarn.nodemanager.address</name>
+    <value><%= @my_private_ip %>:9000</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.localizer.address</name>
+    <value><%= @my_private_ip %>:9001</value>
+  </property>
   <property>
     <name>yarn.application.classpath</name>
     <value><%= node[:hadoop][:yarn][:app_classpath] %></value>
