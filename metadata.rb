@@ -54,6 +54,10 @@ attribute "hadoop/yarn/user",
 :type => 'string',
 :default => "yarn"
 
+attribute "hadoop/rm/scheduler_class",
+:description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
+:type => 'string'
+
 attribute "hadoop/mr/user",
 :description => "Username to run MapReduce as",
 :type => 'string',
