@@ -6,6 +6,7 @@ node.normal[:hadoop][:tmp_dir]         = "#{node[:hadoop][:home]}/tmp"
 node.normal[:hadoop][:conf_dir]        = "#{node[:hadoop][:home]}/etc/hadoop"
 node.normal[:hadoop][:sbin_dir]        = "#{node[:hadoop][:home]}/sbin"
 
+include_recipe "hops::wrap"
 include_recipe "hadoop::install"
 include_recipe "hops"
 
