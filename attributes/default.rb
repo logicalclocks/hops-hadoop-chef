@@ -23,7 +23,7 @@ default[:hops][:log_level]                 = "DEBUG"
 default[:dal][:download_url]               = "#{node[:download_url]}/ndb-dal-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
 default[:clusterj][:download_url]          = "#{node[:download_url]}/clusterj-#{node[:ndb][:version]}.jar"
 
-default[:hops][:recipes]                   = %w{ nn dn rm nm jhs } 
+default[:hops][:recipes]                   = %w{ nn dn rm nm jhs ps } 
 
 default[:hops][:nn][:public_ips]           = ['10.0.2.15']
 default[:hops][:nn][:private_ips]          = ['10.0.2.15']
