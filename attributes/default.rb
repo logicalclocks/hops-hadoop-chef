@@ -25,6 +25,15 @@ default[:clusterj][:download_url]          = "#{node[:download_url]}/clusterj-#{
 
 default[:hops][:recipes]                   = %w{ nn dn rm nm jhs ps } 
 
+# limits.d settings
+default[:hops][:limits][:nofile]           = '32768'
+default[:hops][:limits][:nproc]            = '65536'
+
+#default[:hops][:hadoop_env][:hadoop_opts]  = '-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}'
+#default[:hops][:mapred_env][:hadoop_opts]  = '-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}'
+
+
+
 default[:hops][:nn][:public_ips]           = ['10.0.2.15']
 default[:hops][:nn][:private_ips]          = ['10.0.2.15']
 default[:hops][:dn][:public_ips]           = ['10.0.2.15']
