@@ -39,9 +39,6 @@ suites:
       - recipe[hops::jhs]
 
     attributes:
-         kmon:
-            private_ips: ["10.0.2.15"]
-            public_ips: ["10.0.2.15"]
          kagent:
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
@@ -79,7 +76,6 @@ suites:
                private_ips: ["10.0.2.15"]
             jhs:
                private_ips: ["10.0.2.15"]
-            hostid: 10
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
          private_ips: ["10.0.2.15"]
