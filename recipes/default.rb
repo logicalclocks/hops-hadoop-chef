@@ -7,7 +7,6 @@
 #
 
 
-libpath = File.expand_path '../../../kagent/libraries', __FILE__
 require 'resolv'
 
 include_recipe "hops::wrap"
