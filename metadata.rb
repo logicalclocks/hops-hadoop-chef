@@ -21,9 +21,9 @@ recipe            "hops::ps", "Installs a WebProxy Server for YARN"
 depends 'java'
 depends 'kagent'
 depends 'ndb'
-depends 'hostsfile'
+#depends 'hostsfile'
 depends 'hadoop'
-depends 'aws'
+#depends 'aws'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
