@@ -39,6 +39,15 @@
   </description>
 </property>
 
+  <property>
+    <name>hadoop.proxyuser.<%= node[:hdfs][:user] %>.hosts</name>
+    <value>@hopsworks</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node[:hdfs][:user] %>.groups</name>
+    <value>*</value>
+  </property>
+
  <property>
   <name>fs.defaultFS</name>
   <value><%= @myNN %></value>

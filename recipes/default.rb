@@ -38,6 +38,11 @@ for nn in private_recipe_hostnames("hops","nn")
 end
 #firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
 
+hopsworksNodes = ""
+for hw in private_recipe_ips("hopsworks","default")
+   hopsworksNodes += "#{hw},"
+end
+
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   owner node[:hdfs][:user]
   action :delete
@@ -50,6 +55,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   mode "755"
   variables({
               :myNN => firstNN,
+              :hopsworks => hopsworksNodes,
               :allNNs => allNNs
             })
 end
