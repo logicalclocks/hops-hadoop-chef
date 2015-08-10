@@ -1,3 +1,4 @@
+node.override[:hadoop][:version]             = node[:hops][:version]
 node.default[:hadoop][:download_url] = node[:hops][:download_url]
 node.default[:hadoop][:hadoop_src_url] = node[:hops][:hadoop_src_url]
 node.normal[:hadoop][:home]            = "#{node[:hadoop][:dir]}/hadoop-#{node[:hadoop][:version]}"

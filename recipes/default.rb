@@ -39,7 +39,7 @@ end
 #firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
 
 hopsworksNodes = ""
-for hw in private_cookbook_ips("hopsworks")
+for hw in private_recipe_ips("hopsworks", "default")
    hopsworksNodes += "#{hw},"
 end
 
