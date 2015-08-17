@@ -40,8 +40,9 @@ end
 
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"
-for hw in private_recipe_ips("hopsworks", "default")
-   hopsworksNodes += "#{hw},"
+  for hw in private_recipe_ips("hopsworks", "default")
+    hopsworksNodes += "#{hw},"
+  end
 end
 
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 

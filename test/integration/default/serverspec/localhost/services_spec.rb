@@ -43,3 +43,22 @@ describe command("su yarn -l -c \"/srv/hadoop/bin/yarn jar /srv/hadoop/share/had
   its (:stdout) { should match /Estimated value of Pi is/ }
 end
 
+describe command("service namenode restart") do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("service datanode restart") do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("service resourcemanager restart") do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("service nodemanager restart") do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("service historyserver restart") do
+  its(:exit_status) { should eq 0 }
+end
