@@ -65,6 +65,7 @@ suites:
                private_ips: ["10.0.2.15"]
             jhs:
                private_ips: ["10.0.2.15"]
+            use_hopsworks: "true"
          hadoop:
             nn:
                private_ips: ["10.0.2.15"]
