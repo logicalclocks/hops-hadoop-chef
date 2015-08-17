@@ -81,3 +81,7 @@ attribute 'ndb/connectstring',
 :description => 'List of MySQL Cluster mgmt server addresses',
 :type => 'string',
 :default => '10.0.2.15:1186'
+
+attribute "hops/use_hopsworks",
+:description => "True/false - true if you are using HopsWorks",
+:type => 'string'

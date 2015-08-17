@@ -39,8 +39,10 @@ end
 #firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
 
 hopsworksNodes = ""
-for hw in private_cookbook_ips("hopsworks")
-   hopsworksNodes += "#{hw},"
+if node[:hops][:use_hopsworks].eql? "true"
+  for hw in private_cookbook_ips("hopsworks")
+    hopsworksNodes += "#{hw},"
+  end
 end
 
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
@@ -79,4 +81,3 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
               :addr5 => my_ip + ":40104",
             })
 end
-
