@@ -9,8 +9,8 @@ driver:
     natdnsproxy1: "on"
     nictype1: "virtio"
   network:
-  - ["forwarded_port", {guest: 50070, host: 57070}]
-  - ["forwarded_port", {guest: 50075, host: 57075}]
+  - ["forwarded_port", {guest: 57070, host: 50070}]
+  - ["forwarded_port", {guest: 57075, host: 50075}]
   - ["forwarded_port", {guest: 3306, host: 3308}]
   
 provisioner:
