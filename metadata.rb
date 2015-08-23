@@ -22,9 +22,7 @@ recipe            "hops::client", "Installs libaries and configuration files for
 depends 'java'
 depends 'kagent'
 depends 'ndb'
-#depends 'hostsfile'
 depends 'hadoop'
-#depends 'aws'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -32,18 +30,7 @@ end
 
 attribute "hadoop/version",
 :description => "Hop version number",
-:type => 'string',
-:default => "2.2.0"
-
-attribute "yarn/resourcemanager",
-:description => "Ip address for the resourcemanager",
-:type => 'string',
-:default => ""
-
-attribute "hops/mysql_url",
-:description => "JDBC address for the MySQL Server without the trailing DB name",
-:type => 'string',
-:default => ""
+:type => 'string'
 
 attribute "hdfs/user",
 :description => "Username to run hdfs as",
@@ -76,12 +63,6 @@ attribute "hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
 :type => 'string',
 :default => "true"
-
-attribute 'ndb/connectstring',
-:display_name => 'MySQL Cluster connectstring',
-:description => 'List of MySQL Cluster mgmt server addresses',
-:type => 'string',
-:default => '10.0.2.15:1186'
 
 attribute "hops/use_hopsworks",
 :description => "True/false - true if you are using HopsWorks",
