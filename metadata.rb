@@ -65,5 +65,9 @@ attribute "hadoop/format",
 :default => "true"
 
 attribute "hops/use_hopsworks",
-:description => "True/false - true if you are using HopsWorks",
+:description => "'true' or 'false' - true to enable HopsWorks support",
+:type => 'string'
+
+attribute "hops/erasure_coding",
+:description => "'true' or 'false' - true to enable erasure-coding replication",
 :type => 'string'

@@ -46,7 +46,12 @@ default[:hops][:nm][:private_ips]          = ['10.0.2.15']
 default[:hops][:jhs][:public_ips]          = ['10.0.2.15']
 default[:hops][:jhs][:private_ips]         = ['10.0.2.15']
 default[:hops][:ps][:public_ips]           = ['10.0.2.15']
-default[:hops][:ps][:private_ips]          = ['10.0.2.15']
+default[:hops][:ps][:private_ips]          = ['10.0.2.15'] 
 
 
 default[:hops][:use_hopsworks]             = "false"
+
+# Blocksize given in Bytes. 134217728 = 128MB
+default[:hdfs][:blocksize]                 = 134217728 
+
+default[:hops][:erasure_coding]            = "false"

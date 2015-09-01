@@ -73,7 +73,7 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :myNN => firstNN,
+              :firstNN => firstNN,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",

@@ -14,45 +14,50 @@
   </description>
 </property>
 
-<!-- 
+
 <property>
 <name>dfs.namenode.http.address</name>
-<value><%= @addr1 %></value>
+<value>0.0.0.0:50070</value>
   <description> default port is 50070 but had to change it because it already in use
   </description>
 </property>
 
+
 <property>
-<name>dfs.datanode.address</name>
-<value><%= @addr2 %></value>
-  <description> default port is 50070 but had to change it because it already in use
+  <name>dfs.datanode.address</name>
+  <value>0.0.0.0:50010</value>
+  <description>
+    The datanode server address and port for data transfer.
   </description>
 </property>
 
 <property>
 <name>dfs.datanode.http.address</name>
-<value><%= @addr3 %></value>
+<value>0.0.0.0:50475</value>
   <description> default port is 50070 but had to change it because it already in use
   </description>
 </property>
+
+
 
 <property>
 <name>dfs.datanode.ipc.address</name>
-<value><%= @addr4 %></value>
+<value>0.0.0.0:50020</value>
   <description> default port is 50070 but had to change it because it already in use
   </description>
 </property>
-
+<!-- 
 <property>
 <name>dfs.datanode.https.address</name>
 <value><%= @addr5 %></value>
   <description> default port is 50070 but had to change it because it already in use
   </description>
 </property>
+-->
 
 <property>
   <name>dfs.namenode.rpc-address</name>
-  <value>10.0.2.15:13001</value>
+  <value><%= @firstNN  %></value>
   <description>
     RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
     the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
@@ -61,27 +66,10 @@
   </description>
 </property>
 
--->
-
-
-<property>
-  <name>dfs.leader.check.interval</name>
-  <value><%= node[:hadoop][:leader_check_interval_ms] %></value>
-</property>
-
-<property>
-  <name>dfs.leader.missed.hb</name>
-  <value><%= node[:hadoop][:missed_hb] %></value>
-</property>
 
 <property>
   <name>dfs.client.max.retires.on.failure</name>
   <value>1</value>
-</property>
-
-<property>
-  <name>dsf.client.refresh.namenode.list</name>
-  <value>60000</value>
 </property>
 
 <property>
@@ -140,7 +128,15 @@
 </property-->
 
 <property>
-   <name>dfs.storage.ansestor.lock.type</name>
+  <name>dfs.datanode.data.dir</name>
+  <value><%= node[:hadoop][:dn][:data_dir] %></value>
+  <description>Determines where on the local filesystem an DFS data node should store its blocks.  If this is a comma-delimited
+  list of directories, then data will be storned in all named  directories, typically on different devices. Directories that do not exist are ignored.
+  </description>
+</property>
+
+<property>
+   <name>dfs.storage.ansestor.Lock.type</name>
   <value>READ_COMMITTED</value>
   <description>Lock type for ancestors in the file path. Values: READ | READ_COMMITTED</description>
 </property>
@@ -158,9 +154,19 @@
   <description></description>
 </property>
 
+<property>
+  <name>dfs.blocksize</name>
+  <value><%= node[:hdfs][:blocksize] %></value>
+  <description>
+      The default block size for new files, in bytes.
+      You can use the following suffix (case insensitive):
+      k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
+      Or provide complete size in bytes (such as 134217728 for 128 MB).
+  </description>
+</property>
 
 <property>
-   <name>dsf.client.refresh.namenode.list</name>
+   <name>dfs.client.refresh.namenode.list</name>
   <value>60000</value>
   <description>Time in ms</description>
 </property>
@@ -220,5 +226,106 @@
     and block creations/deletions), or "all".
   </description>
 </property>
+
+
+<property>
+   <name>dfs.namenode.selector-policy</name>
+  <value>RANDOM_STICKY</value>
+  <description>Used by clients. Possible values ROUND_ROBIN, RANDOM, RANDOM_STICKY</description>
+</property>
+
+
+<property>
+  <name>se.sics.hop.erasure_coding.enabled</name>
+  <value><%= node[:hops][:erasure_coding] %></value>
+  <description></description>
+</property>.
+
+<property>
+   <name>dfs.resolvingcache.memcache.connectionpool.size</name>
+  <value>10</value>
+  <description>should be same size as rpc threaads</description>
+</property>
+
+<property>
+   <name>dfs.resolvingcache.enabled</name>
+  <value>true</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.resolvingcache.type</name>
+  <value>InMemory</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.resolvingcache.memcache.server.address</name>
+  <value>127.0.0.1:11211</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.resolvingcache.inmemory.maxsize</name>
+  <value>2000000</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.ndb.setpartitionkey.enabled</name>
+  <value>true</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.ndb.setrandompartitionkey.enabled</name>
+  <value>true</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.namenode.quota.enabled</name>
+  <value>false</value>
+  <description></description>
+</property>
+
+
+<property>
+   <name>dfs.permissions.enabled</name>
+  <value>true</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.ndc.enable</name>
+  <value>false</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.transaction.stats.enabled</name>
+  <value>false</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.transaction.stats.detailed.enabled</name>
+  <value>false</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.transaction.stats.writerround</name>
+  <value>30</value>
+  <description></description>
+</property>
+
+<property>
+   <name>dfs.transaction.stats.dir</name>
+  <value>/tmp/hopsstats</value>
+  <description></description>
+</property>
+
+<property><name>dfs.heartbeat.interval</name><value>3</value><description></description></property>
 
 </configuration>
