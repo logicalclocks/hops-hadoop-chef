@@ -56,7 +56,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :myNN => firstNN,
+              :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
               :allNNs => allNNs
             })
