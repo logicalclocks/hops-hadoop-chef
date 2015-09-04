@@ -74,6 +74,7 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   mode "755"
   variables({
               :firstNN => rpcNN,
+              :myIp => my_ip,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",

@@ -1,6 +1,7 @@
 require 'resolv'
 
 ndb_connectstring()
+my_ip = my_private_ip()
 
 directory "#{node[:hadoop][:dir]}/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}" do
   owner node[:hdfs][:user]
@@ -67,7 +68,8 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
   mode "755"
   variables({
               :ndb_connectstring => node[:ndb][:connectstring],
-              :mysql_host => node[:ndb][:connectstring].split(":").first,
+#              :mysql_host => node[:ndb][:connectstring].split(":").first,
+              :mysql_host => my_ip
             })
 end
 
