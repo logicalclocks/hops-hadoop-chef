@@ -22,7 +22,7 @@ ndb_connectstring()
 
 jdbc_url()
 
-nnPort=29211
+nnPort=node[:hadoop][:nn][:port]
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
@@ -30,7 +30,7 @@ rm_public_ip = public_recipe_ip("hops","rm")
 
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
-
+rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 allNNs = ""
 for nn in private_recipe_hostnames("hops","nn")
@@ -73,7 +73,7 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => firstNN,
+              :firstNN => rpcNN,
               :addr1 => my_ip + ":40100",
               :addr2 => my_ip + ":40101",
               :addr3 => my_ip + ":40102",

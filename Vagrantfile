@@ -3,7 +3,7 @@ GUI               = false # Enable/Disable GUI
 RAM               = 1024   # Default memory size in MB
 
 # Network configuration
-DOMAIN            = ".nat.example.com"
+DOMAIN            = ".hops.io"
 NETWORK           = "192.168.50."
 NETMASK           = "255.255.255.0"
 
@@ -23,8 +23,8 @@ Vagrant.configure(2) do |config|
     ipaddr, ram, gui, box = cfg
 
     config.vm.define name do |machine|
-      machine.vm.box     = box
-      machine.vm.box_url = BOX_URL
+      machine.vm.box   = "threatstack/ubuntu-14.04-amd64"
+#      machine.vm.box_url = BOX_URL
       machine.vm.guest = :ubuntu
       machine.vm.provider "virtualbox" do |vbox|
         vbox.gui    = gui
@@ -37,7 +37,7 @@ Vagrant.configure(2) do |config|
 
     config.vm.provision :chef_solo, :log_level => :debug do |chef|
       chef.log_level = :debug
-      chef.cookbooks_path = "cookbooks"
+      chef.cookbooks_path = "/srv/cookbooks"
       chef.json = {
         "ndb" => {
           "mgmd" => { 
@@ -60,6 +60,9 @@ Vagrant.configure(2) do |config|
           "enabled" => "true",
         },
         "hopsworks" => {
+	  "default" =>    { 
+       	    "private_ips" => ["192.168.50.10","192.168.50.11"]
+          },
 	  "public_ips" => ["192.168.50.10","192.168.50.11"],
   	  "private_ips" => ["192.168.50.10","192.168.50.11"],
         },
@@ -81,9 +84,9 @@ Vagrant.configure(2) do |config|
 	  "jhs" =>    { 
        	    "private_ips" => ["192.168.50.10","192.168.50.11"]
           },
-          "use_hopsworks" : "true"
+          "use_hopsworks" => "true"
         },
-        "vagrant" : "enabled"
+        "vagrant" => "enabled"
       }
 
       chef.add_recipe "kagent::install"
