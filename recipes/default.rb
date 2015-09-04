@@ -36,13 +36,13 @@ allNNs = ""
 for nn in private_recipe_hostnames("hops","nn")
    allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
 end
-#firstNN = allNNs.eql?("") ? "" : allNNs.split(",").first
+if allNNs != ""
+   allNNs.chomp(",")
+end
 
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"
-  for hw in private_recipe_ips("hopsworks", "default")
-    hopsworksNodes += "#{hw},"
-  end
+  hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
@@ -66,7 +66,7 @@ file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do
   owner node[:hdfs][:user]
   action :delete
 end
-
+ 
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
