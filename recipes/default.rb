@@ -16,8 +16,8 @@ include_recipe "hadoop::default"
 # Hadoop requires fqdns to work - won't work with IPs
 hostf = Resolv::Hosts.new
 
-set_hostnames("hops", "nn")
-set_hostnames("hops", "dn")
+#set_hostnames("hops", "nn")
+#set_hostnames("hops", "dn")
 ndb_connectstring()
 
 jdbc_url()
