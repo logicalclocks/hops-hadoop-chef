@@ -33,20 +33,20 @@ firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 allNNs = ""
-for nn in private_recipe_hostnames("hops","nn")
+
+#for nn in private_recipe_hostnames("hops","nn")
+for nn in private_recipe_ips("hops","nn")
    allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
 end
-if allNNs != ""
-   allNNs.chomp(",")
-end
+allNNs = allNNs.chomp(",")
+
 
 allNNIps = ""
-for nn in private_recipe_hostnames("hops","nn")
-   allNNIps += "#{nn},"
+#for nn in private_recipe_hostnames("hops","nn")
+for nn in private_recipe_ips("hops","nn")
+   allNNIps += "#{nn}:#{nnPort},"
 end
-if allNNIps != ""
-   allNNIps.chomp(",")
-end
+allNNIps = allNNIps.chomp(",")
 
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"
@@ -66,7 +66,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => allNNs
+              :allNNs => allNNIps
             })
 end
 
@@ -75,13 +75,13 @@ file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do
   action :delete
 end
 
-myNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
+              :firstNN => firstNN,
               :allNNIps => allNNIps
             })
 end
@@ -97,6 +97,6 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => allNNIps
+              :allNNIps => allNNIps
             })
 end

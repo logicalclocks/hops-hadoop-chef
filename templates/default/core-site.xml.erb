@@ -21,8 +21,7 @@
 <property>
   <name>dfs.namenodes.rpc.address</name>
   <value><%= @allNNs %></value>  
-  <description>The name of the default file system.  A URI whose
-  determine the host, port, etc. for a filesystem.</description>
+  <description>HopsFS-specific list of comma-separated host:ip pairs for NameNodes.</description>
 </property>
 
 <property>
@@ -79,7 +78,7 @@
   
  <property>
   <name>fs.defaultFS</name>
-  <value>hdfs://<%= @firstNN %></value>
+  <value><%= @firstNN %></value>
  </property>
 
 </configuration>
