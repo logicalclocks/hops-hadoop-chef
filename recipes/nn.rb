@@ -7,9 +7,6 @@ my_ip = my_private_ip()
 
 nnPort = node[:hadoop][:nn][:port]
 
-firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
-
-
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
@@ -42,3 +39,18 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
             })
 end
 
+
+file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do 
+  owner node[:hdfs][:user]
+  action :delete
+end
+
+template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
+  source "hdfs-site.xml.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  variables({
+              :firstNN => "#{my_ip}:#{nnPort}"
+            })
+end

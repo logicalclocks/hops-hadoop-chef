@@ -81,22 +81,6 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => firstNN,
-              :allNNIps => allNNIps
-            })
-end
-
-file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do 
-  owner node[:hdfs][:user]
-  action :delete
-end
-
-template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
-  source "hdfs-site.xml.erb"
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "755"
-  variables({
-              :allNNIps => allNNIps
+              :firstNN => firstNN
             })
 end
