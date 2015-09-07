@@ -57,7 +57,7 @@
 
 <property>
   <name>dfs.namenode.rpc-address</name>
-  <value><%= @firstNN  %></value>
+  <value><%= @allNNIps  %></value>
   <description>
     RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
     the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1

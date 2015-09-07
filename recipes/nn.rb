@@ -5,6 +5,8 @@ include_recipe "hadoop::nn"
 
 my_ip = my_private_ip()
 
+nnPort = node[:hadoop][:nn][:port]
+
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 
@@ -27,14 +29,14 @@ file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   action :delete
 end
 
+myNN = "hdfs://" + my_ip + ":#{nnPort}"
 template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :myNN => "hdfs://" + my_ip + + ":#{nnPort}",
-              :firstNN => firstNN,
+              :firstNN => myNN,
               :hopsworks => hopsworksNodes,
               :allNNs => allNNs
             })
