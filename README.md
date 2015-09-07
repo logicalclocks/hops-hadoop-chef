@@ -8,6 +8,21 @@ recipes:
 * namenode.rb
 * datanode.rb
 
+
+## AWS VPC Instructions for Karamel
+
+1. Try and use a default VPC - it's much easier :)
+
+If you have to create a VPC, then you need to make sure that:
+ 1. Tenancy should be dedicated (for better performance)
+ 2. DNS Resolution must be activated (yes)
+ 3. DNS Hostnames must be activated (yes)
+ 4. Your attached subnets must have auto-assigned public IP enabled
+ 5. Your attached Internet Gateways should have global (public) access for all IPs enabled
+You can set the VPC properties when you both create the VPC and using the 'action' button in the VPC menu page.
+
+
+ 
 ##Roadmap
 
 Roadmap
