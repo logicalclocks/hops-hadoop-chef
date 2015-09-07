@@ -33,3 +33,8 @@ dependencies:
     global:  
       - hops::nn
       - hops::dn
+  - recipe: hops::client
+    local:
+      - hops::install
+    global:  
+      - hops::nn
