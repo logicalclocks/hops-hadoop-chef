@@ -12,3 +12,6 @@ cookbook 'ndb', github: 'hopshadoop/ndb-chef'
 # This is here until bmhatfield/chef-ulimit#41 is merged and a new version of the cookbook is released
 # cookbook 'ulimit', github: 'wolf31o2/ulimit_cookbook', ref: 'feature/matchers'
 
+group :testing do
+  cookbook 'hostsfile'
+end

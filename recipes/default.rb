@@ -16,8 +16,6 @@ include_recipe "hadoop::default"
 # Hadoop requires fqdns to work - won't work with IPs
 hostf = Resolv::Hosts.new
 
-#set_hostnames("hops", "nn")
-#set_hostnames("hops", "dn")
 ndb_connectstring()
 
 jdbc_url()
@@ -27,6 +25,23 @@ my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
+
+if "#{node["vagrant"]}" == "enabled"
+#  set_hostnames("hops", "nn")
+#  set_hostnames("hops", "dn")
+
+   hostsfile_entry "#{my_ip}" do
+     hostname  node['fqdn']
+     action    :update
+     unique    true
+   end
+   hostsfile_entry "#{my_ip}" do
+     hostname  node['hostname']
+     action    :update
+     unique    true
+   end
+end
+
 
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"

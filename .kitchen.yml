@@ -8,6 +8,7 @@ driver:
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
     nictype1: "virtio"
+
   network:
   - ["forwarded_port", {guest: 57070, host: 50070}]
   - ["forwarded_port", {guest: 57075, host: 50075}]
@@ -38,6 +39,7 @@ suites:
       - recipe[hops::jhs]
 
     attributes:
+         vagrant: "enabled"
          kagent:
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
