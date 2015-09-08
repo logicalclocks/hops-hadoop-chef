@@ -21,7 +21,7 @@
 <property>
   <name>dfs.namenodes.rpc.address</name>
   <value><%= @allNNs %></value>  
-  <description>HopsFS-specific list of comma-separated host:ip pairs for NameNodes.</description>
+  <description>HopsFS-specific list of comma-separated host:port pairs for NameNodes.</description>
 </property>
 
 <property>
@@ -38,6 +38,7 @@
   </description>
 </property>
 
+<!--
   <property>
     <name>hadoop.proxyuser.<%= node[:hdfs][:user] %>.hosts</name>
     <value>@hopsworks</value>
@@ -55,7 +56,7 @@
     <name>hadoop.proxyuser.<%= node[:hadoop][:yarn][:user] %>.groups</name>
     <value>*</value>
   </property>
-
+-->
 
 <property>
   <name>dfs.leader.check.interval</name>
