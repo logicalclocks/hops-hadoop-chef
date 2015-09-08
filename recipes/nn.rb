@@ -26,14 +26,14 @@ file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   action :delete
 end
 
-myNN = "hdfs://" + my_ip + ":#{nnPort}"
+myNN = "#{my_ip}:#{nnPort}"
 template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => myNN,
+              :firstNN => "hdfs://" + myNN,
               :hopsworks => hopsworksNodes,
               :allNNs => myNN
             })
@@ -51,6 +51,6 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => "#{my_ip}:#{nnPort}"
+              :firstNN => myNN
             })
 end
