@@ -35,7 +35,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => myNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => allNNs
+              :allNNs => myNN
             })
 end
 
