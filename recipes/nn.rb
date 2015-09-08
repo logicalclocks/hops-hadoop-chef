@@ -54,3 +54,17 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
               :firstNN => myNN
             })
 end
+
+template "#{node[:hadoop][:home]}/sbin/environment-env.sh" do
+  source "environment-env.sh.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "775"
+end
+
+template "#{node[:hadoop][:home]}/sbin/drop-and-recreate-hops-db.sh" do
+  source "drop-and-recreate-hops-db.sh.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "775"
+end

@@ -74,7 +74,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
 end
 
 
-hops_path = "#{Chef::Config[:file_cache_path]}/hops.sql"
+hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
 
 template hops_path do
   source "hops.sql.erb"
