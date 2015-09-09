@@ -12,7 +12,7 @@ CREATE TABLE `hdfs_block_infos` (
   `block_recovery_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -34,7 +34,7 @@ CREATE TABLE `hdfs_corrupt_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `timestamp` (`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -46,7 +46,7 @@ CREATE TABLE `hdfs_excess_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -86,7 +86,7 @@ CREATE TABLE `hdfs_inodes` (
   KEY `pidex` (`parent_id`),
   KEY `inode_idx` (`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (parent_id) */ $$
+/*!50100 */ $$
 
 
 delimiter $$
@@ -100,7 +100,7 @@ CREATE TABLE `hdfs_invalidated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -176,7 +176,7 @@ CREATE TABLE `hdfs_pending_blocks` (
   `num_replicas_in_progress` int(11) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -188,7 +188,7 @@ CREATE TABLE `hdfs_replica_under_constructions` (
   `state` int(11) DEFAULT NULL,
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -200,7 +200,7 @@ CREATE TABLE `hdfs_replicas` (
   PRIMARY KEY (`inode_id`,`block_id`,`storage_id`),
   KEY `storage_idx` (`storage_id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -230,7 +230,7 @@ CREATE TABLE `hdfs_under_replicated_blocks` (
   PRIMARY KEY (`inode_id`,`block_id`),
   KEY `level` (`level`,`timestamp`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -251,7 +251,7 @@ CREATE TABLE `hdfs_quota_update` (
   `diskspace_delta` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`inode_id`,`id`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 
 delimiter $$
@@ -281,7 +281,7 @@ CREATE TABLE `hdfs_block_checksum` (
   `checksum` bigint(20) NOT NULL,
   PRIMARY KEY (`inode_id`,`block_index`)
 ) ENGINE=ndbcluster DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY KEY (inode_id) */$$
+$$
 
 delimiter $$
 
