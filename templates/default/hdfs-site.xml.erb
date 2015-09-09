@@ -14,39 +14,6 @@
   </description>
 </property>
 
-
-<property>
-<name>dfs.namenode.http.address</name>
-<value>0.0.0.0:50070</value>
-  <description> default port is 50070 but had to change it because it already in use
-  </description>
-</property>
-
-
-<property>
-  <name>dfs.datanode.address</name>
-  <value>0.0.0.0:50010</value>
-  <description>
-    The datanode server address and port for data transfer.
-  </description>
-</property>
-
-<property>
-<name>dfs.datanode.http.address</name>
-<value>0.0.0.0:50475</value>
-  <description> default port is 50070 but had to change it because it already in use
-  </description>
-</property>
-
-
-
-<property>
-<name>dfs.datanode.ipc.address</name>
-<value>0.0.0.0:50020</value>
-  <description> default port is 50070 but had to change it because it already in use
-  </description>
-</property>
-
 <property>
   <name>dfs.namenode.rpc-address</name>
   <value><%= @firstNN %></value>
@@ -69,33 +36,15 @@
   <value>10</value>
 </property>
 
-<property>
-  <name>dfs.webhdfs.enabled</name>
-  <value>true</value>
-</property>
-
-
 <!-- Do not modify this file directly.  Instead, copy entries that you -->
 <!-- wish to modify from this file into hdfs-site.xml and change them -->
 <!-- there.  If hdfs-site.xml does not already exist, create it.      -->
 
-<property>
-  <name>hadoop.hdfs.configuration.version</name>
-  <value>1</value>
-  <description>version of this configuration file</description>
-</property>
-
-<property>
-  <name>dfs.blocksize</name>
-  <value>8m</value>
-  <description>
-      The default block size for new files, in bytes.
-      You can use the following suffix (case insensitive):
-      k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
-      Or provide complete size in bytes (such as 134217728 for 128 MB).
-  </description>
-</property>
-
+<!-- <property> -->
+<!--   <name>hadoop.hdfs.configuration.version</name> -->
+<!--   <value>1</value> -->
+<!--   <description>version of this configuration file</description> -->
+<!-- </property> -->
 
 <property>
   <name>dfs.namenode.accesstime.precision</name>
@@ -109,30 +58,23 @@
 
 <property>
    <name>dfs.namenode.handler.count</name>
-  <value>200</value>
+  <value>120</value>
   <description>The RPC server that listens to requests from clients</description>
 </property>
 
-<property>
-   <name>dfs.namenode.service.handler.count</name>
-  <value>10</value>
-  <description>The RPC server threads that listens to requests from DataNodes</description>
-</property>
+<!-- <property> -->
+<!--    <name>dfs.namenode.service.handler.count</name> -->
+<!--   <value>10</value> -->
+<!--   <description>The RPC server threads that listens to requests from DataNodes</description> -->
+<!-- </property> -->
 
-<property>
-  <name>dfs.datanode.data.dir</name>
-  <value>file://<%= node[:hadoop][:dn][:data_dir] %></value>
-  <description>Determines where on the local filesystem an DFS data node should store its blocks.  If this is a comma-delimited
-  list of directories, then data will be storned in all named  directories, typically on different devices. Directories that do not exist are ignored.
-  </description>
-</property>
-
-<property>
-   <name>dfs.storage.ansestor.Lock.type</name>
-  <value>READ_COMMITTED</value>
-  <description>Lock type for ancestors in the file path. Values: READ | READ_COMMITTED</description>
-</property>
-
+<!-- <property> -->
+<!--   <name>dfs.datanode.data.dir</name> -->
+<!--   <value>file://<%= node[:hadoop][:dn][:data_dir] %></value> -->
+<!--   <description>Determines where on the local filesystem an DFS data node should store its blocks.  If this is a comma-delimited -->
+<!--   list of directories, then data will be storned in all named  directories, typically on different devices. Directories that do not exist are ignored. -->
+<!--   </description> -->
+<!-- </property> -->
 
 <property>
    <name>dfs.namenode.inodeid.batchsize</name>
@@ -146,16 +88,16 @@
   <description></description>
 </property>
 
-<property>
-  <name>dfs.blocksize</name>
-  <value><%= node[:hdfs][:blocksize] %></value>
-  <description>
-      The default block size for new files, in bytes.
-      You can use the following suffix (case insensitive):
-      k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
-      Or provide complete size in bytes (such as 134217728 for 128 MB).
-  </description>
-</property>
+<!-- <property> -->
+<!--   <name>dfs.blocksize</name> -->
+<!--   <value><%= node[:hdfs][:blocksize] %></value> -->
+<!--   <description> -->
+<!--       The default block size for new files, in bytes. -->
+<!--       You can use the following suffix (case insensitive): -->
+<!--       k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.), -->
+<!--       Or provide complete size in bytes (such as 134217728 for 128 MB). -->
+<!--   </description> -->
+<!-- </property> -->
 
 <property>
    <name>dfs.client.refresh.namenode.list</name>
@@ -175,9 +117,9 @@
 <property>
   <name>dfs.namenode.processReport.batchsize</name>
   <value>10000</value>
-  <description>
-    
-  </description>
+  <description>This is the number of blocks to be processed in one transaction.
+  Higher values can result in higher throughput, but too high values can cause transactions to fail.
+    </description>
 </property>
 
 <property>
@@ -195,23 +137,15 @@
   </description>
 </property>
 
-<property>
-  <name>dfs.namenode.legacy-rename.enable</name>
-  <value>false</value>
-  <description>
-  </description>
-</property>
-
-
-<property>
-  <name>dfs.namenode.logging.level</name>
-  <value><%= node[:hops][:log_level] %></value>
-  <description>
-    The logging level for dfs namenode. Other values are "dir" (trace
-    namespace mutations), "block" (trace block under/over replications
-    and block creations/deletions), or "all".
-  </description>
-</property>
+<!-- <property> -->
+<!--   <name>dfs.namenode.logging.level</name> -->
+<!--   <value><%= node[:hops][:log_level] %></value> -->
+<!--   <description> -->
+<!--     The logging level for dfs namenode. Other values are "dir" (trace -->
+<!--     namespace mutations), "block" (trace block under/over replications -->
+<!--     and block creations/deletions), or "all". -->
+<!--   </description> -->
+<!-- </property> -->
 
 
 <property>
