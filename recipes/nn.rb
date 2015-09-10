@@ -61,3 +61,8 @@ template "#{node[:hadoop][:home]}/sbin/drop-and-recreate-hops-db.sh" do
   group node[:hadoop][:group]
   mode "775"
 end
+
+service "namenode" do
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :restart
+end
