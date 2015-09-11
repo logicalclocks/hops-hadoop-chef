@@ -1,7 +1,6 @@
 
 
 include_recipe "hops::wrap"
-include_recipe "hadoop::nn"
 
 my_ip = my_private_ip()
 
@@ -62,7 +61,9 @@ template "#{node[:hadoop][:home]}/sbin/drop-and-recreate-hops-db.sh" do
   mode "775"
 end
 
-service "namenode" do
-  supports :restart => true, :stop => true, :start => true, :status => true
-  action :restart
-end
+# service "namenode" do
+#   supports :restart => true, :stop => true, :start => true, :status => true
+#   action :restart
+# end
+
+include_recipe "hadoop::nn"

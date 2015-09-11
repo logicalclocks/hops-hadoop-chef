@@ -55,3 +55,5 @@ default[:hops][:use_hopsworks]             = "false"
 default[:hdfs][:blocksize]                 = 134217728 
 
 default[:hops][:erasure_coding]            = "false"
+
+default[:vagrant]                          = "false"

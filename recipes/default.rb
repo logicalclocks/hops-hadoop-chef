@@ -9,6 +9,28 @@
 
 require 'resolv'
 
+nnPort=node[:hadoop][:nn][:port]
+my_ip = my_private_ip()
+my_public_ip = my_public_ip()
+rm_private_ip = private_recipe_ip("hops","rm")
+rm_public_ip = public_recipe_ip("hops","rm")
+
+
+
+if "#{node["vagrant"]}" == "true"
+   hostsfile_entry "#{my_ip}" do
+     hostname  node['fqdn']
+     action    :create
+     unique    true
+   end
+   hostsfile_entry "#{my_ip}" do
+     hostname  node['hostname']
+     action    :create
+     unique    true
+   end
+end
+
+
 include_recipe "hops::wrap"
 include_recipe "hadoop::default"
 
@@ -20,40 +42,17 @@ ndb_connectstring()
 
 jdbc_url()
 
-nnPort=node[:hadoop][:nn][:port]
-my_ip = my_private_ip()
-my_public_ip = my_public_ip()
-rm_private_ip = private_recipe_ip("hops","rm")
-rm_public_ip = public_recipe_ip("hops","rm")
-
-if "#{node["vagrant"]}" == "enabled"
-#  set_hostnames("hops", "nn")
-#  set_hostnames("hops", "dn")
-
-   hostsfile_entry "#{my_ip}" do
-     hostname  node['fqdn']
-     action    :update
-     unique    true
-   end
-   hostsfile_entry "#{my_ip}" do
-     hostname  node['hostname']
-     action    :update
-     unique    true
-   end
-end
-
-
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
-allNNs = ""
+# allNNs = ""
 
-#for nn in private_recipe_hostnames("hops","nn")
-for nn in private_recipe_ips("hops","nn")
-   allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
-end
-allNNs = allNNs.chomp(",")
+# #for nn in private_recipe_hostnames("hops","nn")
+# for nn in private_recipe_ips("hops","nn")
+#    allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
+# end
+# allNNs = allNNs.chomp(",")
 
 
 allNNIps = ""
