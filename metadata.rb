@@ -80,3 +80,11 @@ attribute "hops/nn/heap_size",
 :description => "Size of the NameNode heap in MBs",
 :type => 'string'
 
+attribute "hops/nn/cache",
+:description => "'true' or 'false' - true to enable the path cache in the NameNode",
+:type => 'string'
+
+attribute "hops/nn/partition_key",
+:description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
+:type => 'string'
+

@@ -38,6 +38,16 @@ template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
             })
 end
 
+cache = "true"
+if node[:hops][:nn][:cache].eql? "false"
+   cache = "false"
+end
+
+partition_key = "true"
+if node[:hops][:nn][:partition_key].eql? "false"
+   partition_key = "false"
+end
+
 
 file "#{node[:hadoop][:home]}/etc/hadoop/hdfs-site.xml" do 
   owner node[:hdfs][:user]
@@ -50,7 +60,9 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
   group node[:hadoop][:group]
   mode "755"
   variables({
-              :firstNN => myNN
+              :firstNN => myNN,
+              :cache => cache,
+              :partition_key => partition_key
             })
 end
 

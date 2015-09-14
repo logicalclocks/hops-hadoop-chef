@@ -70,6 +70,7 @@ suites:
          hadoop:
             nn:
                private_ips: ["10.0.2.15"]
+               direct_memory_size: 300
             dn:
                private_ips: ["10.0.2.15"]
             rm:

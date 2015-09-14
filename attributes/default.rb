@@ -57,4 +57,7 @@ default[:hdfs][:blocksize]                 = 134217728
 
 default[:hops][:erasure_coding]            = "false"
 
+default[:hops][:nn][:cache]                = "true"
+default[:hops][:nn][:partition_key]         = "true"
+
 default[:vagrant]                          = "false"
