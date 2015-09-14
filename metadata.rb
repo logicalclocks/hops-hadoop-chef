@@ -72,10 +72,10 @@ attribute "hops/erasure_coding",
 :description => "'true' or 'false' - true to enable erasure-coding replication",
 :type => 'string'
 
-attribute "hadoop/nn/direct_memory_size",
+attribute "hops/nn/direct_memory_size",
 :description => "Size of the direct memory size for the NameNode in MBs",
 :type => 'string'
 
-attribute "hadoop/nn/heap_size",
+attribute "hops/nn/heap_size",
 :description => "Size of the NameNode heap in MBs",
 :type => 'string'
