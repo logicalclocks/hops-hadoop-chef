@@ -11,7 +11,7 @@ default[:hops][:hadoop_src_url]            = "#{node[:download_url]}/hadoop-#{no
 
 default[:hadoop][:leader_check_interval_ms]= 1000
 default[:hadoop][:missed_hb]               = 1
-node.normal[:hadoop][:db]                  = "hops"
+default[:hadoop][:db]                      = "hops"
 default[:hadoop][:max_retries]             = 0
 
 # set the location of libndbclient.so. set-env.sh sets LD_LIBRARY_PATH to find this library.
