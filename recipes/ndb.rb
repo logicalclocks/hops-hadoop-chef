@@ -30,16 +30,16 @@ remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{base_filename}" do
 end
 
 common="share/hadoop/common/lib"
- bash 'clusterj-ownership' do
-   user "root"
-   group "root"
-   code <<-EOH
-         chown #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:mysql][:base_dir]}/share/java/clusterj* 
-         chmod 751 #{node[:mysql][:base_dir]}/share/java/clusterj* 
-         rm -f #{node[:hadoop][:home]}/#{common}/clusterj.jar
-         ln -s #{node[:mysql][:base_dir]}/share/java/clusterj-#{node[:ndb][:version]}.jar #{node[:hadoop][:home]}/#{common}/clusterj.jar
- 	EOH
- end
+ # bash 'clusterj-ownership' do
+ #   user "root"
+ #   group "root"
+ #   code <<-EOH
+ #         chown #{node[:hdfs][:user]}:#{node[:hadoop][:group]} #{node[:mysql][:base_dir]}/share/java/clusterj* 
+ #         chmod 751 #{node[:mysql][:base_dir]}/share/java/clusterj* 
+ #         rm -f #{node[:hadoop][:home]}/#{common}/clusterj.jar
+ #         ln -s #{node[:mysql][:base_dir]}/share/java/clusterj-#{node[:ndb][:version]}.jar #{node[:hadoop][:home]}/#{common}/clusterj.jar
+ # 	EOH
+ # end
 
 
 hin = "#{node[:hadoop][:home]}/.#{base_filename}_dal_downloaded"
