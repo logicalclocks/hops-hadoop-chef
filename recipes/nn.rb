@@ -66,19 +66,19 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
             })
 end
 
-template "#{node[:hadoop][:home]}/sbin/drop-and-recreate-hops-db.sh" do
-  source "drop-and-recreate-hops-db.sh.erb"
-  owner node[:hdfs][:user]
-  group node[:hadoop][:group]
-  mode "771"
-end
-
 template "#{node[:hadoop][:home]}/sbin/root-drop-and-recreate-hops-db.sh" do
   source "root-drop-and-recreate-hops-db.sh.erb"
   owner "root"
   mode "700"
 end
 
+
+template "#{node[:hadoop][:home]}/sbin/drop-and-recreate-hops-db.sh" do
+  source "drop-and-recreate-hops-db.sh.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "771"
+end
 
 # service "namenode" do
 #   supports :restart => true, :stop => true, :start => true, :status => true

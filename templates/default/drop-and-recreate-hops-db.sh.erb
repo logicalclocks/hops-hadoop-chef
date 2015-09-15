@@ -2,5 +2,5 @@
 
 <%= node[:myql][:base_dir] %>/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> -e "drop database <%= node[:hadoop][:db] %>"
 <%= node[:myql][:base_dir] %>/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> -e "create database <%= node[:hadoop][:db] %>"
-<%= node[:myql][:base_dir] %>/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> <%= node[:hadoop][:db] %> < <%= node[:hops][:conf_dir] %>hops.sql
+<%= node[:myql][:base_dir] %>/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> <%= node[:hadoop][:db] %> < <%= node[:hadoop][:conf_dir] %>hops.sql
 
