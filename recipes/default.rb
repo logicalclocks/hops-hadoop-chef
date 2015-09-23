@@ -49,7 +49,7 @@ rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 # allNNs = ""
 
 if node[:hops][:nn][:private_ips].length > 1 
-  allNNIps = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
+  allNNIps = node[:hops][:nn][:private_ips].join(":#{nnPort},") + ":#{nnPort}"
 else
   allNNIps = "#{node[:hops][:nn][:private_ips][0]}" + ":#{nnPort}"
 end
