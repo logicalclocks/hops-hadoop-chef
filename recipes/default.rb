@@ -48,8 +48,11 @@ rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 # allNNs = ""
 
-
-allNNIps = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
+if node[:hops][:nn][:private_ips].length > 1 
+  allNNIps = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
+else
+  allNNIps = "#{node[:hops][:nn][:private_ips][0]}" + ":#{nnPort}"
+end
 
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"

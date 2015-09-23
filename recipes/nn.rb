@@ -12,6 +12,11 @@ if node[:hops][:use_hopsworks].eql? "true"
 end
 
 allNNs = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
+if node[:hops][:nn][:private_ips].length > 1 
+  allNNs = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
+else
+  allNNs = "#{node[:hops][:nn][:private_ips][0]}" + ":#{nnPort}"
+end
 
 
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
