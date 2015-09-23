@@ -98,3 +98,10 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
               :firstNN => firstNN
             })
 end
+
+template "#{node[:hadoop][:conf_dir]}/erasure-coding.xml" do
+  source "erasure-coding.xml.erb"
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "755"
+end
