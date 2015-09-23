@@ -11,13 +11,7 @@ if node[:hops][:use_hopsworks].eql? "true"
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
-allNNs = ""
-#for nn in private_recipe_hostnames("hops","nn")
-#   allNNs += "hdfs://#{nn}:#{nnPort},"
-for nn in private_recipe_ips("hops","nn")
-   allNNs += "#{nn}:#{nnPort},"
-end
-allNNs = allNNs.chomp(",")
+allNNs = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
 
 
 file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 

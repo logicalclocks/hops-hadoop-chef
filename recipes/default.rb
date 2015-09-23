@@ -48,19 +48,8 @@ rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 # allNNs = ""
 
-# #for nn in private_recipe_hostnames("hops","nn")
-# for nn in private_recipe_ips("hops","nn")
-#    allNNs += "hdfs://" + "#{nn}" + ":#{nnPort},"
-# end
-# allNNs = allNNs.chomp(",")
 
-
-allNNIps = ""
-#for nn in private_recipe_hostnames("hops","nn")
-for nn in private_recipe_ips("hops","nn")
-   allNNIps += "#{nn}:#{nnPort},"
-end
-allNNIps = allNNIps.chomp(",")
+allNNIps = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
 
 hopsworksNodes = ""
 if node[:hops][:use_hopsworks].eql? "true"
