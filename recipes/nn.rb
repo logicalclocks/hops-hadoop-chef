@@ -11,7 +11,6 @@ if node[:hops][:use_hopsworks].eql? "true"
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
-allNNs = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
 if node[:hops][:nn][:private_ips].length > 1 
   allNNs = "#{node[:hops][:nn][:private_ips]}".join(":#{nnPort},") + ":#{nnPort}"
 else
