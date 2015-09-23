@@ -55,7 +55,7 @@ default[:hops][:use_hopsworks]             = "false"
 # Blocksize given in Bytes. 134217728 = 128MB
 default[:hdfs][:blocksize]                 = 134217728 
 
-default[:hops][:erasure_coding]            = "false"
+default[:hops][:erasure_coding]            = "true"
 
 default[:hops][:nn][:cache]                = "true"
 default[:hops][:nn][:partition_key]         = "true"

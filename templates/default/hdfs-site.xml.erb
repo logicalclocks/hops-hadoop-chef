@@ -158,105 +158,105 @@
   <property>
     <name>se.sics.hop.erasure_coding.enabled</name>
     <value><%= node[:hops][:erasure_coding] %></value>
+    <description>Set to 'true' to enable support for erasure-coded replication of files in HDFS.</description>
+  </property>
+
+  <property>
+    <name>dfs.resolvingcache.memcache.connectionpool.size</name>
+    <value>10</value>
+    <description>should be same size as rpc threaads</description>
+  </property>
+
+  <property>
+    <name>dfs.resolvingcache.enabled</name>
+    <value><%= @cache %></value>
     <description></description>
-    </property>.
+  </property>
 
-    <property>
-      <name>dfs.resolvingcache.memcache.connectionpool.size</name>
-      <value>10</value>
-      <description>should be same size as rpc threaads</description>
-    </property>
+  <property>
+    <name>dfs.resolvingcache.type</name>
+    <value>InMemory</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.resolvingcache.enabled</name>
-      <value><%= @cache %></value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.resolvingcache.memcache.server.address</name>
+    <value>127.0.0.1:11211</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.resolvingcache.type</name>
-      <value>InMemory</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.resolvingcache.inmemory.maxsize</name>
+    <value>2000000</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.resolvingcache.memcache.server.address</name>
-      <value>127.0.0.1:11211</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.ndb.setpartitionkey.enabled</name>
+    <value><%= @partition_key %></value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.resolvingcache.inmemory.maxsize</name>
-      <value>2000000</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.ndb.setrandompartitionkey.enabled</name>
+    <value>true</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.ndb.setpartitionkey.enabled</name>
-      <value><%= @partition_key %></value>
-      <description></description>
-    </property>
-
-    <property>
-      <name>dfs.ndb.setrandompartitionkey.enabled</name>
-      <value>true</value>
-      <description></description>
-    </property>
-
-    <property>
-      <name>dfs.namenode.quota.enabled</name>
-      <value>false</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.namenode.quota.enabled</name>
+    <value>false</value>
+    <description></description>
+  </property>
 
 
-    <property>
-      <name>dfs.permissions.enabled</name>
-      <value>true</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.permissions.enabled</name>
+    <value>true</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.ndc.enable</name>
-      <value>false</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.ndc.enable</name>
+    <value>false</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.transaction.stats.enabled</name>
-      <value>false</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.transaction.stats.enabled</name>
+    <value>false</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.transaction.stats.detailed.enabled</name>
-      <value>false</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.transaction.stats.detailed.enabled</name>
+    <value>false</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.transaction.stats.writerround</name>
-      <value>30</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.transaction.stats.writerround</name>
+    <value>30</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.transaction.stats.dir</name>
-      <value>/tmp/hopsstats</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.transaction.stats.dir</name>
+    <value>/tmp/hopsstats</value>
+    <description></description>
+  </property>
 
-    <property>
-      <name>dfs.heartbeat.interval
-      </name>
-      <value>3</value>
-      <description></description>
-    </property>
+  <property>
+    <name>dfs.heartbeat.interval
+    </name>
+    <value>3</value>
+    <description></description>
+  </property>
 
-    <!-- Enable erasure coding to test all code paths -->
-    <property>
-      <name>dfs.erasure_coding.enabled</name>
-      <value><%= node[:hops][:erasure_coding] %></value>
-    </property>
+  <!-- Enable erasure coding to test all code paths -->
+  <property>
+    <name>dfs.erasure_coding.enabled</name>
+    <value><%= node[:hops][:erasure_coding] %></value>
+  </property>
 
-  </configuration>
+</configuration>
