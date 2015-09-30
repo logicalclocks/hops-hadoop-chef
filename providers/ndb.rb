@@ -15,7 +15,7 @@ new_resource.updated_by_last_action(false)
     user node[:ndb][:user]
     code <<-EOF
     set -e
-    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]}\"
+    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1 COLLATE latin1_swedish_ci\"
     #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < "#{node[:hadoop][:conf_dir]}/hops.sql"
     EOF
     new_resource.updated_by_last_action(true)
