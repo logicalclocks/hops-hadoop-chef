@@ -49,6 +49,7 @@ default[:hops][:jhs][:private_ips]         = ['10.0.2.15']
 default[:hops][:ps][:public_ips]           = ['10.0.2.15']
 default[:hops][:ps][:private_ips]          = ['10.0.2.15'] 
 
+default[:hops][:yar][:rt]                  = "false"
 
 default[:hops][:use_hopsworks]             = "false"
 
