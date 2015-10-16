@@ -89,3 +89,7 @@ attribute "hops/nn/partition_key",
 :description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
 :type => 'string'
 
+attribute "hadoop/yarn/rt",
+:display_name => "Hadoop Resource Tracker enabled on this nodegroup",
+:type => 'string'
+
