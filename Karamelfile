@@ -38,3 +38,8 @@ dependencies:
       - hops::install
     global:  
       - hops::nn
+  - recipe: hops::rt
+    local:
+      - hops::install
+    global:  
+      - hops::rm

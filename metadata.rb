@@ -16,6 +16,7 @@ recipe            "hops::nm", "Installs a YARN NodeManager"
 #link:<a target='_blank' href='http://%host%:51111/'>Launch the WebUI for the HistoryServer</a>
 recipe            "hops::jhs", "Installs a MapReduce JobHistory Server for YARN"
 recipe            "hops::ps", "Installs a WebProxy Server for YARN"
+recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
 recipe            "hops::client", "Installs libaries and configuration files for writing HDFS and YARN progams"
 
 
