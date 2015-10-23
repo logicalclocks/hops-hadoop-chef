@@ -90,3 +90,7 @@ attribute "hops/yarn/resource_tracker",
 :display_name => "Hadoop Resource Tracker enabled on this nodegroup",
 :type => 'string'
 
+attribute "hops/install_db",
+:display_name => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
+:type => 'string'
+

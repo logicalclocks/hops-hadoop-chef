@@ -63,16 +63,19 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
 end
 
 
-hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
+if node[:hops][:db_install].eql? "true"
 
-template hops_path do
-  source "hops.sql.erb"
-  owner "root" 
-  mode "0755"
-#  notifies :install_hops, "hops_ndb[install]", :immediately 
+  hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
+
+  template hops_path do
+    source "hops.sql.erb"
+    owner "root" 
+    mode "0755"
+    #  notifies :install_hops, "hops_ndb[install]", :immediately 
+  end
+
+  hops_ndb "install" do
+    action :install_hops
+  end
+
 end
-
-hops_ndb "install" do
-  action :install_hops
-end
-
