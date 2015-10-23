@@ -49,7 +49,7 @@ default[:hops][:jhs][:private_ips]         = ['10.0.2.15']
 default[:hops][:ps][:public_ips]           = ['10.0.2.15']
 default[:hops][:ps][:private_ips]          = ['10.0.2.15'] 
 
-default[:hops][:yarn][:rt]                 = "false"
+default[:hops][:yarn][:resource_tracker]   = "false"
 
 default[:hops][:use_hopsworks]             = "false"
 
@@ -62,3 +62,6 @@ default[:hops][:nn][:cache]                = "true"
 default[:hops][:nn][:partition_key]        = "true"
 
 default[:vagrant]                          = "false"
+
+node.normal[:mysql][:user]                 = node[:mysql][:user]
+node.normal[:mysql][:password]             = node[:mysql][:password]

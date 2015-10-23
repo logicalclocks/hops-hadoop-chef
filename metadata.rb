@@ -9,11 +9,9 @@ version          "1.0"
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
 recipe            "hops::dn", "Installs a Hops DataNode"
-#link:<a target='_blank' href='http://%host%:50088/'>Launch the WebUI for the ResourceManager</a>
+-#link:<a target='_blank' href='http://%host%:50088/'>Launch the WebUI for the ResourceManager</a>
 recipe            "hops::rm", "Installs a YARN ResourceManager"
 recipe            "hops::nm", "Installs a YARN NodeManager"
-#link:<a target='_blank' href='http://%host%:50030/'>Launch the WebUI for the JobTracker</a>
-#link:<a target='_blank' href='http://%host%:51111/'>Launch the WebUI for the HistoryServer</a>
 recipe            "hops::jhs", "Installs a MapReduce JobHistory Server for YARN"
 recipe            "hops::ps", "Installs a WebProxy Server for YARN"
 recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
@@ -52,11 +50,13 @@ attribute "hadoop/mr/user",
 
 attribute "mysql/user",
 :description => "Mysql server username",
-:type => 'string'
+:type => 'string',
+:required => "required"
 
 attribute "mysql/password",
 :description => "MySql server Password",
-:type => 'string'
+:type => 'string',
+:required => "required"
 
 attribute "hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
@@ -86,7 +86,7 @@ attribute "hops/nn/partition_key",
 :description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
 :type => 'string'
 
-attribute "hops/yarn/rt",
+attribute "hops/yarn/resource_tracker",
 :display_name => "Hadoop Resource Tracker enabled on this nodegroup",
 :type => 'string'
 
