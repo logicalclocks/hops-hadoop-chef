@@ -9,7 +9,7 @@ version          "1.0"
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
 recipe            "hops::dn", "Installs a Hops DataNode"
--#link:<a target='_blank' href='http://%host%:50088/'>Launch the WebUI for the ResourceManager</a>
+#link:<a target='_blank' href='http://%host%:8088/'>Launch the WebUI for the ResourceManager</a>
 recipe            "hops::rm", "Installs a YARN ResourceManager"
 recipe            "hops::nm", "Installs a YARN NodeManager"
 recipe            "hops::jhs", "Installs a MapReduce JobHistory Server for YARN"
