@@ -30,28 +30,25 @@ depends 'hadoop'
   supports os
 end
 
-attribute "hadoop/version",
-:description => "Hop version number",
-:type => 'string'
+#attribute "hadoop/version",
+#:description => "Hop version number",
+#:type => 'string'
 
 attribute "hdfs/user",
 :description => "Username to run hdfs as",
-:type => 'string',
-:default => "hdfs"
+:type => 'string'
 
 attribute "hadoop/yarn/user",
 :description => "Username to run yarn as",
-:type => 'string',
-:default => "yarn"
-
-attribute "hadoop/rm/scheduler_class",
-:description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
 :type => 'string'
+
+# attribute "hadoop/rm/scheduler_class",
+# :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
+# :type => 'string'
 
 attribute "hadoop/mr/user",
 :description => "Username to run MapReduce as",
-:type => 'string',
-:default => "mapred"
+:type => 'string'
 
 attribute "mysql/user",
 :description => "Mysql server username",
@@ -63,8 +60,7 @@ attribute "mysql/password",
 
 attribute "hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
-:type => 'string',
-:default => "true"
+:type => 'string'
 
 attribute "hops/use_hopsworks",
 :description => "'true' or 'false' - true to enable HopsWorks support",
