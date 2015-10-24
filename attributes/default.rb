@@ -66,4 +66,4 @@ default[:vagrant]                          = "false"
 node.normal[:mysql][:user]                 = node[:mysql][:user]
 node.normal[:mysql][:password]             = node[:mysql][:password]
 
-default[:hops][:db_install]                = "true"
+default[:hops][:install_db]                = "true"

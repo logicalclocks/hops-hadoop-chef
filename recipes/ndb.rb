@@ -63,7 +63,7 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
 end
 
 
-if node[:hops][:db_install].eql? "true"
+if node[:hops][:install_db].eql? "true"
 
   hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
 
