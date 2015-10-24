@@ -63,7 +63,7 @@ end
 
 
 # If a MySQL server has been installed locally, then install the tables
-if  ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql_client.sh"
+if  ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql-client.sh"
 
   hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
 
