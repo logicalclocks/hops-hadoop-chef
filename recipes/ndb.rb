@@ -57,13 +57,13 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
   mode "755"
   variables({
               :ndb_connectstring => node[:ndb][:connectstring],
-#              :mysql_host => node[:ndb][:connectstring].split(":").first,
               :mysql_host => my_ip
             })
 end
 
 
-if node[:hops][:install_db].eql? "true"
+# If a MySQL server has been installed locally, then install the tables
+if  ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql_client.sh"
 
   hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
 
