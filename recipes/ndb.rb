@@ -20,7 +20,8 @@ end
 package_url = node[:dal][:download_url]
 base_filename = File.basename(package_url)
 
-remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{base_filename}" do
+
+remote_file "#{Chef::Config[:file_cache_path]}/#{base_filename}" do
   source package_url
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
@@ -29,26 +30,10 @@ remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{base_filename}" do
   action :create_if_missing
 end
 
-common="share/hadoop/common/lib"
-
-hin = "#{node[:hadoop][:home]}/.#{base_filename}_dal_downloaded"
-bash 'extract-hadoop' do
-  user node[:hdfs][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-        set -e
-        rm -f #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
-	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{base_filename} #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
-        rm -f #{node[:hadoop][:home]}/etc/hadoop/ndb.props
-
-	rm -f #{node[:hadoop][:home]}/lib/native/libndbclient.so
-	ln -s #{node[:mysql][:base_dir]}/lib/libndbclient.so* #{node[:hadoop][:home]}/lib/native
-
-        touch #{hin}
-	EOH
-  not_if { ::File.exist?("#{hin}") }
+hops_ndb "extract_ndb_hops" do
+  base_filename base_filename
+  action :install_ndb_hops
 end
-
 
 template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
@@ -61,21 +46,12 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
             })
 end
 
-
 # If a MySQL server has been installed locally, then install the tables
-if  ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql-client.sh"
-
-  hops_path = "#{node[:hadoop][:conf_dir]}/hops.sql"
-
-  template hops_path do
-    source "hops.sql.erb"
-    owner "root" 
-    mode "0755"
-    #  notifies :install_hops, "hops_ndb[install]", :immediately 
-  end
-
+if  
+  
   hops_ndb "install" do
     action :install_hops
+  only_if { ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql-client.sh" }
   end
 
 end

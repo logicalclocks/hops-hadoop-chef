@@ -54,6 +54,7 @@ suites:
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
             enabled: "true"
+            dir: "/tmp"
          hops:
             nn:
                private_ips: ["10.0.2.15"]
@@ -80,6 +81,7 @@ suites:
                private_ips: ["10.0.2.15"]
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
+            dir: "/tmp"
          hopsworks:
             default:
                private_ips: ["10.0.2.15"]

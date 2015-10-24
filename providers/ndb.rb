@@ -23,3 +23,38 @@ new_resource.updated_by_last_action(false)
   end
 
 end
+
+
+action :install_ndb_hops do
+
+  Chef::Log.info "Installing hops.sql on the mysql server"
+
+  template "#{node[:hadoop][:conf_dir]}/hops.sql" do
+    source "hops.sql.erb"
+    owner "root" 
+    mode "0755"
+    #  notifies :install_hops, "hops_ndb[install]", :immediately 
+  end
+
+  common="share/hadoop/common/lib"
+  base_filename = "#{new_resource.base_filename}"
+  hin = "#{node[:hadoop][:home]}/.#{base_filename}_dal_downloaded"
+  bash 'extract-hadoop' do
+    user node[:hdfs][:user]
+    group node[:hadoop][:group]
+    code <<-EOH
+        set -e
+        rm -f #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
+        cp #{Chef::Config[:file_cache_path]}/#{base_filename} #{node[:hadoop][:dir]}/ndb-hops/#{base_filename}
+	ln -s #{node[:hadoop][:dir]}/ndb-hops/#{base_filename} #{node[:hadoop][:home]}/#{common}/ndb-dal.jar
+        rm -f #{node[:hadoop][:home]}/etc/hadoop/ndb.props
+
+	rm -f #{node[:hadoop][:home]}/lib/native/libndbclient.so
+	ln -s #{node[:mysql][:base_dir]}/lib/libndbclient.so* #{node[:hadoop][:home]}/lib/native
+
+        touch #{hin}
+	EOH
+    not_if { ::File.exist?("#{hin}") }
+  end
+
+end
