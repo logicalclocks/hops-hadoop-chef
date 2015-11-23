@@ -15,7 +15,8 @@ new_resource.updated_by_last_action(false)
     user node[:ndb][:user]
     code <<-EOF
     set -e
-    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1 COLLATE latin1_swedish_ci\"
+#    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1 COLLATE latin1_swedish_ci\"
+    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1\"
     #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < "#{node[:hadoop][:conf_dir]}/hops.sql"
     EOF
     new_resource.updated_by_last_action(true)
@@ -35,6 +36,12 @@ action :install_ndb_hops do
     mode "0755"
     #  notifies :install_hops, "hops_ndb[install]", :immediately 
   end
+
+# link "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops.jar" do
+#   owner node[:hdfs][:user]
+#   group node[:hadoop][:group]
+#   to "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
+# end
 
   common="share/hadoop/common/lib"
   base_filename = "#{new_resource.base_filename}"

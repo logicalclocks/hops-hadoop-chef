@@ -17,6 +17,7 @@ link "#{node[:hadoop][:dir]}/ndb-hops" do
   to "#{node[:hadoop][:dir]}/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}"
 end
 
+
 package_url = node[:dal][:download_url]
 base_filename = File.basename(package_url)
 
@@ -34,6 +35,13 @@ hops_ndb "extract_ndb_hops" do
   base_filename base_filename
   action :install_ndb_hops
 end
+
+link "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops.jar" do
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  to "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
+end
+
 
 template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
@@ -55,3 +63,4 @@ if
   end
 
 end
+
