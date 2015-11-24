@@ -1,4 +1,3 @@
-#node.override[:hadoop][:version]             = "2.4.0"
 default[:hops][:version]                   = "2.4.0"
 
 include_attribute "kagent"
