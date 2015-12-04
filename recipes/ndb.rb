@@ -21,7 +21,6 @@ end
 package_url = node[:dal][:download_url]
 base_filename = File.basename(package_url)
 
-
 remote_file "#{Chef::Config[:file_cache_path]}/#{base_filename}" do
   source package_url
   owner node[:hdfs][:user]
@@ -30,6 +29,31 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{base_filename}" do
   # TODO - checksum
   action :create_if_missing
 end
+
+lib_url = node[:dal][:lib_url]
+lib = File.basename(lib_url)
+
+remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{lib}" do
+  source lib_url
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  mode "0755"
+  # TODO - checksum
+  action :create_if_missing
+end
+
+link "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb.so" do
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  to "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
+end
+
+link "#{node[:hadoop][:home]}/lib/native/lib-hopsndb.so" do
+  owner node[:hdfs][:user]
+  group node[:hadoop][:group]
+  to "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
+end
+
 
 hops_ndb "extract_ndb_hops" do
   base_filename base_filename
