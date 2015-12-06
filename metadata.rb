@@ -94,3 +94,7 @@ attribute "hops/install_db",
 :display_name => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
 :type => 'string'
 
+attribute "hadoop/dir",
+:display_name => "Base installation directory for HopsFS",
+:type => 'string'
+
