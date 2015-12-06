@@ -15,7 +15,6 @@ new_resource.updated_by_last_action(false)
     user node[:ndb][:user]
     code <<-EOF
     set -e
-#    #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1 COLLATE latin1_swedish_ci\"
     #{node[:ndb][:scripts_dir]}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node[:hadoop][:db]} CHARACTER SET latin1\"
     #{node[:ndb][:scripts_dir]}/mysql-client.sh #{node[:hadoop][:db]} < "#{node[:hadoop][:conf_dir]}/hops.sql"
     EOF
@@ -30,12 +29,21 @@ action :install_ndb_hops do
 
   Chef::Log.info "Installing hops.sql on the mysql server"
 
-  template "#{node[:hadoop][:conf_dir]}/hops.sql" do
-    source "hops.sql.erb"
-    owner "root" 
-    mode "0755"
-    #  notifies :install_hops, "hops_ndb[install]", :immediately 
-  end
+  # template "#{node[:hadoop][:conf_dir]}/hops.sql" do
+  #   source "hops.sql.erb"
+  #   owner "root" 
+  #   mode "0755"
+  #   #  notifies :install_hops, "hops_ndb[install]", :immediately 
+  # end
+
+    remote_file "#{node[:hadoop][:conf_dir]}/hops.sql" do
+      source node[:dal][:schema_url]
+      owner node[:hdfs][:user]
+      group node[:hadoop][:group]
+      mode "0775"
+      action :create_if_missing
+    end
+
 
 # link "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops.jar" do
 #   owner node[:hdfs][:user]
