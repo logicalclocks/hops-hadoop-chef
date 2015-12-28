@@ -33,26 +33,20 @@ end
 lib_url = node[:dal][:lib_url]
 lib = File.basename(lib_url)
 
-# remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{lib}" do
-#   source lib_url
-#   owner node[:hdfs][:user]
-#   group node[:hadoop][:group]
-#   mode "0755"
-#   # TODO - checksum
-#   action :create_if_missing
-# end
+ remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{lib}" do
+   source lib_url
+   owner node[:hdfs][:user]
+   group node[:hadoop][:group]
+   mode "0755"
+   # TODO - checksum
+   action :create_if_missing
+ end
 
-# link "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb.so" do
-#   owner node[:hdfs][:user]
-#   group node[:hadoop][:group]
-#   to "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
-# end
-
-# link "#{node[:hadoop][:home]}/lib/native/lib-hopsndb.so" do
-#   owner node[:hdfs][:user]
-#   group node[:hadoop][:group]
-#   to "#{node[:hadoop][:dir]}/ndb-hops/lib-hopsndb-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
-# end
+ link "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn.so" do
+   owner node[:hdfs][:user]
+   group node[:hadoop][:group]
+   to "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
+ end
 
 
 hops_ndb "extract_ndb_hops" do
@@ -79,12 +73,8 @@ template "#{node[:hadoop][:home]}/etc/hadoop/ndb.props" do
 end
 
 # If a MySQL server has been installed locally, then install the tables
-if  
   
   hops_ndb "install" do
     action :install_hops
   only_if { ::File.exist? "#{node[:ndb][:scripts_dir]}/mysql-client.sh" }
   end
-
-end
-

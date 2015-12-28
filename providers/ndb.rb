@@ -29,13 +29,6 @@ action :install_ndb_hops do
 
   Chef::Log.info "Installing hops.sql on the mysql server"
 
-  # template "#{node[:hadoop][:conf_dir]}/hops.sql" do
-  #   source "hops.sql.erb"
-  #   owner "root" 
-  #   mode "0755"
-  #   #  notifies :install_hops, "hops_ndb[install]", :immediately 
-  # end
-
     remote_file "#{node[:hadoop][:conf_dir]}/hops.sql" do
       source node[:dal][:schema_url]
       owner node[:hdfs][:user]
@@ -43,13 +36,6 @@ action :install_ndb_hops do
       mode "0775"
       action :create_if_missing
     end
-
-
-# link "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops.jar" do
-#   owner node[:hdfs][:user]
-#   group node[:hadoop][:group]
-#   to "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
-# end
 
   common="share/hadoop/common/lib"
   base_filename = "#{new_resource.base_filename}"
@@ -66,6 +52,9 @@ action :install_ndb_hops do
 
 	rm -f #{node[:hadoop][:home]}/lib/native/libndbclient.so
 	ln -s #{node[:mysql][:base_dir]}/lib/libndbclient.so* #{node[:hadoop][:home]}/lib/native
+
+	rm -f #{node[:hadoop][:home]}/lib/native/libhopsyarn.so
+	ln -s #{node[:hadoop][:dir]}/ndb-hops/libhopsyarn.so #{node[:hadoop][:home]}/lib/native/libhopsyarn.so
 
         touch #{hin}
 	EOH

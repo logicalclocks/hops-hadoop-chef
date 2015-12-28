@@ -1,7 +1,7 @@
 # Cookbook Name:: hadoop
 # Recipe:: default
 #
-# Copyright 2015, KTH
+# Copyright 2015, Dowling
 #
 # All rights reserved - Do Not Redistribute
 #
@@ -42,11 +42,8 @@ ndb_connectstring()
 
 jdbc_url()
 
-
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
-
-# allNNs = ""
 
 if node[:hops][:nn][:private_ips].length > 1 
   allNNIps = node[:hops][:nn][:private_ips].join(":#{nnPort},") + ":#{nnPort}"

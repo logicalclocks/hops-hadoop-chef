@@ -21,7 +21,7 @@ default[:hadoop][:mysql_url]               = "jdbc:mysql://#{default[:ndb][:mysq
 default[:hops][:log_level]                 = "DEBUG"
 
 default[:dal][:download_url]               = "#{node[:download_url]}/ndb-dal-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
-default[:dal][:lib_url]                    = "#{node[:download_url]}/lib-hopsndb-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
+default[:dal][:lib_url]                    = "#{node[:download_url]}/libhopsyarn-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
 default[:clusterj][:download_url]          = "#{node[:download_url]}/clusterj-#{node[:ndb][:version]}.jar"
 default[:dal][:schema_url]                 = "#{node[:download_url]}/hops.sql"
 
