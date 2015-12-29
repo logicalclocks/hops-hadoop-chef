@@ -61,4 +61,26 @@ action :install_ndb_hops do
     not_if { ::File.exist?("#{hin}") }
   end
 
+  lib_url = node[:dal][:lib_url]
+  lib = ::File.basename(lib_url)
+
+ remote_file "#{node[:hadoop][:dir]}/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}/#{lib}" do
+   source lib_url
+   owner node[:hdfs][:user]
+   group node[:hadoop][:group]
+   mode "0755"
+   # TODO - checksum
+   action :create_if_missing
+ end
+
+ link "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn.so" do
+   owner node[:hdfs][:user]
+   group node[:hadoop][:group]
+   to "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
+ end
+
+
+
+
+
 end

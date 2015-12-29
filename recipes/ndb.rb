@@ -30,34 +30,16 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{base_filename}" do
   action :create_if_missing
 end
 
-lib_url = node[:dal][:lib_url]
-lib = File.basename(lib_url)
-
- remote_file "#{node[:hadoop][:dir]}/ndb-hops/#{lib}" do
-   source lib_url
-   owner node[:hdfs][:user]
-   group node[:hadoop][:group]
-   mode "0755"
-   # TODO - checksum
-   action :create_if_missing
- end
-
- link "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn.so" do
-   owner node[:hdfs][:user]
-   group node[:hadoop][:group]
-   to "#{node[:hadoop][:dir]}/ndb-hops/libhopsyarn-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.so"
- end
-
 
 hops_ndb "extract_ndb_hops" do
   base_filename base_filename
   action :install_ndb_hops
 end
 
-link "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops.jar" do
+link "#{node[:hadoop][:dir]}/ndb-hops/ndb-dal.jar" do
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
-  to "#{node[:hadoop][:dir]}/ndb-hops/ndb-hops-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
+  to "#{node[:hadoop][:dir]}/ndb-hops/ndb-dal-#{node[:hadoop][:version]}-#{node[:ndb][:version]}.jar"
 end
 
 
