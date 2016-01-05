@@ -61,6 +61,10 @@ file "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do
   action :delete
 end
 
+if node[:ndb][:TransactionInactiveTimeout].to_i < node[:hadoop][:leader_check_interval_ms].to_i
+ raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
+end
+
 template "#{node[:hadoop][:home]}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node[:hdfs][:user]
