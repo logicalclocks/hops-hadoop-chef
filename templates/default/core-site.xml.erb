@@ -80,9 +80,29 @@
 
 <!--
 <property>
-  <name>hadoop.security.group.mapping</name>
-  <value>io.hops.metadata.ndb.dalimpl.hdfs.UserGroupClusterj</value>
-  <description>Class used to implement the mapping of username to a list of groups</description>
+    <name>hadoop.ssl.require.client.cert</name>
+    <value>true</value>
+    <description></description>
+</property>
+<property>
+    <name>hadoop.ssl.hostname.verifier</name>
+    <value>DEFAULT</value>
+    <description></description>
+</property>
+<property>
+    <name>hadoop.ssl.keystores.factory.class</name>
+    <value>org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory</value>
+    <description></description>
+</property>
+<property>
+    <name>hadoop.ssl.server.conf</name>
+    <value>ssl-server.xml</value>
+    <description></description>
+</property>
+<property>
+    <name>hadoop.ssl.client.conf</name>
+    <value>ssl-client.xml</value>
+    <description></description>
 </property>
 -->
 
