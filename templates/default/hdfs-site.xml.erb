@@ -259,4 +259,9 @@
     <value><%= node[:hops][:erasure_coding] %></value>
   </property>
 
+  <property>
+    <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+    <value><%= node[:hops][:reverse_dns_lookup_supported] %></value>
+  </property>
+
 </configuration>
