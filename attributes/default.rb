@@ -8,6 +8,9 @@ include_attribute "ndb"
 default[:hops][:download_url]              = "#{node[:download_url]}/hops-#{node[:hadoop][:version]}.tgz"
 default[:hops][:hadoop_src_url]            = "#{node[:download_url]}/hadoop-#{node[:hadoop][:version]}-src.tar.gz"
 
+default[:hops][:dir]                       = "/srv"
+
+
 default[:hadoop][:leader_check_interval_ms]= 1000
 default[:hadoop][:missed_hb]               = 1
 default[:hadoop][:db]                      = "hops"
@@ -68,3 +71,6 @@ node.normal[:mysql][:user]                 = node[:mysql][:user]
 node.normal[:mysql][:password]             = node[:mysql][:password]
 
 default[:hops][:reverse_dns_lookup_supported] = "false"
+
+default[:hops][:use_systemd]                  = "false"
+node.default[:hadoop][:use_systemd]           = node[:hops][:use_systemd]

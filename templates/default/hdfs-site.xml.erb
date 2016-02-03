@@ -264,4 +264,13 @@
     <value><%= node[:hops][:reverse_dns_lookup_supported] %></value>
   </property>
 
+  <property>
+    <name>dfs.client.read.shortcircuit</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>dfs.domain.socket.path</name>
+    <value><%= node[:hadoop][:tmp_dir] %>/dn_socket</value>
+  </property>
+
 </configuration>

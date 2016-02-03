@@ -21,7 +21,7 @@ describe service('nodemanager') do
   it { should be_running   }
 end 
 
-describe service('JobHistoryServer') do  
+describe service('historyserver') do  
   it { should be_running   }
 end 
 

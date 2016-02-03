@@ -11,3 +11,4 @@ node[:hops][:recipes].each do |r|
 end
 
 node.override[:hadoop][:yarn][:rt]                 = node[:hops][:yarn][:rt]
+

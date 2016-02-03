@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   customize:
-    memory: 4000
+    memory: 7000
     cpuexecutioncap: 90
     cpus: 1
     natdnshostresolver1: "on"
@@ -18,8 +18,9 @@ provisioner:
   name: chef_solo
 
 platforms:
+#  - name: centos-7.0
   - name: ubuntu-14.04
-#  - name: centos-6.5
+#  - name: ubuntu-15.04
 
 suites:
   - name: default
@@ -43,6 +44,7 @@ suites:
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
             dir: "/tmp"
+#            use_systemd: "true"
          ndb:
             mgmd:
                private_ips: ["10.0.2.15"]
@@ -56,6 +58,7 @@ suites:
             public_ips: ["10.0.2.15"]
             enabled: "true"
             dir: "/tmp"
+#            use_systemd: "true"
          hops:
             nn:
                private_ips: ["10.0.2.15"]
@@ -68,6 +71,7 @@ suites:
             jhs:
                private_ips: ["10.0.2.15"]
             use_hopsworks: "true"
+            dir: "/tmp"
          hadoop:
             nn:
                private_ips: ["10.0.2.15"]
@@ -82,6 +86,7 @@ suites:
                private_ips: ["10.0.2.15"]
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
+#            use_systemd: "true"
             dir: "/tmp"
          hopsworks:
             default:
