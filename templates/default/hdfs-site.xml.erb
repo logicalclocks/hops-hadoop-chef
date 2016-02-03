@@ -209,7 +209,6 @@
     <description></description>
   </property>
 
-
   <property>
     <name>dfs.permissions.enabled</name>
     <value>true</value>
@@ -254,6 +253,7 @@
   </property>
 
   <!-- Enable erasure coding to test all code paths -->
+<!--
   <property>
     <name>dfs.erasure_coding.enabled</name>
     <value><%= node[:hops][:erasure_coding] %></value>
@@ -272,5 +272,6 @@
     <name>dfs.domain.socket.path</name>
     <value><%= node[:hadoop][:tmp_dir] %>/dn_socket</value>
   </property>
+-->
 
 </configuration>
