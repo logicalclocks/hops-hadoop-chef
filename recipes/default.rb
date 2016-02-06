@@ -16,21 +16,6 @@ rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 
 
-
-if "#{node["vagrant"]}" == "true"
-   hostsfile_entry "#{my_ip}" do
-     hostname  node['fqdn']
-     action    :create
-     unique    true
-   end
-   hostsfile_entry "#{my_ip}" do
-     hostname  node['hostname']
-     action    :create
-     unique    true
-   end
-end
-
-
 include_recipe "hops::wrap"
 include_recipe "hadoop::default"
 
