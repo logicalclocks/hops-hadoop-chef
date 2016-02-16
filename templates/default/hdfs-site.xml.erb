@@ -156,7 +156,7 @@
 
 
   <property>
-    <name>se.sics.hop.erasure_coding.enabled</name>
+    <name>io.hops.erasure_coding.enabled</name>
     <value><%= node[:hops][:erasure_coding] %></value>
     <description>Set to 'true' to enable support for erasure-coded replication of files in HDFS.</description>
   </property>
@@ -273,5 +273,11 @@
     <value><%= node[:hadoop][:tmp_dir] %>/dn_socket</value>
   </property>
 -->
+
+  <property>
+    <name>fs.hdfs.impl</name>
+    <value>org.apache.hadoop.fs.ErasureCodingFileSystem</value>
+    <description>FileSystem implementation to be used with HDFS</description>
+  </property>
 
 </configuration>

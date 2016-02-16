@@ -4,11 +4,18 @@
 <configuration>
 
   <property>
+    <name>dfs.erasure_coding.enabled</name>
+    <value><%= node[:hops][:erasure_coding] %></value>    
+    <description>Enable erasure coding</description>
+  </property>
+
+  <property>
     <name>fs.hdfs.impl</name>
     <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
     <description>The FileSystem for hdfs: uris.</description>
   </property>
 
+  
   <property>
     <name>dfs.erasure_coding.codecs.json</name>
     <value>
@@ -46,4 +53,66 @@
     <description>JSon string that contains all erasure coding codecs</description>
   </property>
 
+<property>
+  <name>dfs.erasure_coding.parity_folder</name>
+  <value>/parity</value>
+  <description>The HDFS folder to store parity information in</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.recheck_interval</name>
+  <value>300000</value>
+  <description>How frequently should the system schedule encoding or repairs and check their state</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.repair_delay</name>
+  <value>1800000</value>
+  <description>How long should the system wait before scheduling a parity repair</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.parity_repair_delay</name>
+  <value>1800000</value>
+  <description>How long should the system wait before scheduling a parity repair</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.active_encoding_limit</name>
+  <value>10</value>
+  <description>Maximum number of active encoding jobs</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.active_repair_limit</name>
+  <value>10</value>
+  <description>Maximum number of active repair jobs</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.active_parity_repair_limit</name>
+  <value>10</value>
+  <description>Maximum number of active parity repair jobs</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.deletion_limit</name>
+  <value>100</value>
+  <description>Delete operations to be handle during one round</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.encoding_manager</name>
+  <value>io.hops.erasure_coding.MapReduceEncodingManager</value>
+  <description>Implementation of the EncodingManager to be used</description>
+</property>
+
+<property>
+  <name>dfs.erasure_coding.block_rapair_manager</name>
+  <value>io.hops.erasure_coding.MapReduceBlockRepairManager</value>
+  <description>Implementation of the repair manager to be used</description>
+</property>
+
+
+  
 </configuration>
