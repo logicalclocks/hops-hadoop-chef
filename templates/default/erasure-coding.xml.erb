@@ -4,19 +4,6 @@
 <configuration>
 
   <property>
-    <name>dfs.erasure_coding.enabled</name>
-    <value><%= node[:hops][:erasure_coding] %></value>    
-    <description>Enable erasure coding</description>
-  </property>
-
-  <property>
-    <name>fs.hdfs.impl</name>
-    <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
-    <description>The FileSystem for hdfs: uris.</description>
-  </property>
-
-  
-  <property>
     <name>dfs.erasure_coding.codecs.json</name>
     <value>
       [
@@ -51,6 +38,19 @@
       ]
     </value>
     <description>JSon string that contains all erasure coding codecs</description>
+  </property>
+
+  <!--
+  <property>
+    <name>dfs.erasure_coding.enabled</name>
+    <value><%= node[:hops][:erasure_coding] %></value>    
+    <description>Enable erasure coding</description>
+  </property>
+
+  <property>
+    <name>fs.hdfs.impl</name>
+    <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
+    <description>The FileSystem for hdfs: uris.</description>
   </property>
 
 <property>
@@ -113,6 +113,6 @@
   <description>Implementation of the repair manager to be used</description>
 </property>
 
-
+-->
   
 </configuration>
