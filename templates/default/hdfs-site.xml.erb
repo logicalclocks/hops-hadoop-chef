@@ -156,12 +156,6 @@
 
 
   <property>
-    <name>io.hops.erasure_coding.enabled</name>
-    <value><%= node[:hops][:erasure_coding] %></value>
-    <description>Set to 'true' to enable support for erasure-coded replication of files in HDFS.</description>
-  </property>
-
-  <property>
     <name>dfs.resolvingcache.memcache.connectionpool.size</name>
     <value>10</value>
     <description>should be same size as rpc threaads</description>
@@ -176,12 +170,6 @@
   <property>
     <name>dfs.resolvingcache.type</name>
     <value>InMemory</value>
-    <description></description>
-  </property>
-
-  <property>
-    <name>dfs.resolvingcache.memcache.server.address</name>
-    <value>127.0.0.1:11211</value>
     <description></description>
   </property>
 
@@ -255,11 +243,6 @@
   <!-- Enable erasure coding to test all code paths -->
 <!--
   <property>
-    <name>dfs.erasure_coding.enabled</name>
-    <value><%= node[:hops][:erasure_coding] %></value>
-  </property>
-
-  <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
     <value><%= node[:hops][:reverse_dns_lookup_supported] %></value>
   </property>
@@ -272,12 +255,13 @@
     <name>dfs.domain.socket.path</name>
     <value><%= node[:hadoop][:tmp_dir] %>/dn_socket</value>
   </property>
--->
 
   <property>
     <name>fs.hdfs.impl</name>
     <value>org.apache.hadoop.fs.ErasureCodingFileSystem</value>
     <description>FileSystem implementation to be used with HDFS</description>
   </property>
+
+-->
 
 </configuration>
