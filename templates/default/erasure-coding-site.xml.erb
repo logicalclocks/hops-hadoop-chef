@@ -47,11 +47,19 @@
     <description>Enable erasure coding</description>
   </property>
 
+<!--
+
   <property>
     <name>fs.hdfs.impl</name>
     <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
     <description>The FileSystem for hdfs: uris.</description>
   </property>
+
+
+-->
+
+   <property>                                                                                                                                                                                         <name>fs.hdfs.impl</name>                                                                                                                                                                       <value>org.apache.hadoop.fs.ErasureCodingFileSystem</value>                                                                                                                                     <description>FileSystem implementation to be used with HDFS</description>                                                                                                                     </property>    
+
 
 <property>
   <name>dfs.erasure_coding.parity_folder</name>
