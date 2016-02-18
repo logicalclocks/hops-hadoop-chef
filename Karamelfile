@@ -7,6 +7,9 @@ dependencies:
   - recipe: hops::nn
     global:  
       - hops::ndb
+  - recipe: hops::rm
+    global:  
+      - hops::ndb
   - recipe: hops::dn
     global:  
       - hops::nn
