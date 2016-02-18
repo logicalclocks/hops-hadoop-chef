@@ -275,9 +275,11 @@
 -->
 
   <property>
-    <name>fs.hdfs.impl</name>
-    <value>org.apache.hadoop.fs.ErasureCodingFileSystem</value>
-    <description>FileSystem implementation to be used with HDFS</description>
+    <name>dfs.erasure_coding.enabled</name>
+    <value><%= node[:hops][:erasure_coding] %></value>    
+    <description>Enable erasure coding</description>
   </property>
 
+
+  
 </configuration>
