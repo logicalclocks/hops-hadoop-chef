@@ -77,8 +77,8 @@ template "#{node[:hadoop][:conf_dir]}/hdfs-site.xml" do
             })
 end
 
-template "#{node[:hadoop][:conf_dir]}/erasure-coding.xml" do
-  source "erasure-coding.xml.erb"
+template "#{node[:hadoop][:conf_dir]}/erasure-coding-site.xml" do
+  source "erasure-coding-site.xml.erb"
   owner node[:hdfs][:user]
   group node[:hadoop][:group]
   mode "755"
