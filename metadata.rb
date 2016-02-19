@@ -98,6 +98,10 @@ attribute "hops/dir",
 :display_name => "Base installation directory for HopsFS",
 :type => 'string'
 
+attribute "hadoop/dir",
+:display_name => "Base installation directory for Hadoop/HopsFS",
+:type => 'string'
+
 attribute "hops/use_systemd",
 :description => "Use systemd startup scripts, default 'false'",
 :type => "string"
