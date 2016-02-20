@@ -1,6 +1,7 @@
 
 node.override[:hadoop][:version]                   = node[:hops][:version]
 node.override[:hadoop][:dir]                       = node[:hops][:dir]
+node.override[:hadoop][:home]                      = node[:hops][:dir] + "/hadoop"
 
 node.override[:hadoop][:nn][:direct_memory_size]   = node[:hops][:nn][:direct_memory_size]
 node.override[:hadoop][:nn][:heap_size]            = node[:hops][:nn][:heap_size]
