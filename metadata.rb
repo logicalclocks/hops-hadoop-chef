@@ -102,3 +102,7 @@ attribute "hops/dir",
 attribute "hops/use_systemd",
 :description => "Use systemd startup scripts, default 'false'",
 :type => "string"
+
+attribute "hadoop/data_dir",
+:description => "Directory to store actual hadoop data",
+:type => "string"
