@@ -1,7 +1,7 @@
 
 node.override[:hadoop][:version]                   = node[:hops][:version]
 node.override[:hadoop][:dir]                       = node[:hops][:dir]
-node.override[:hadoop][:home]                      = node[:hops][:dir] + "/hadoop" + node[:hops][:version]
+node.override[:hadoop][:home]                      = node[:hops][:dir] + "/hadoop-" + node[:hops][:version]
 node.override[:hadoop][:base_dir]                  = node[:hops][:dir] + "/hadoop"
 node.override[:hadoop][:logs_dir]                  = node[:hadoop][:home] + "/logs"
 node.override[:hadoop][:tmp_dir]                   = "#{node[:hadoop][:home]}/tmp"
