@@ -1,5 +1,7 @@
 require 'resolv'
 
+include_recipe "hops::wrap"
+
 ndb_connectstring()
 my_ip = my_private_ip()
 
