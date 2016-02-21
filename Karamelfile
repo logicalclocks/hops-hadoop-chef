@@ -1,7 +1,5 @@
 dependencies: 
   - recipe: hops::ndb
-    local:  
-      - hops::install
     global:  
       - ndb::mysqld
   - recipe: hops::nn
