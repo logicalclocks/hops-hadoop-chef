@@ -76,13 +76,12 @@ default[:hops][:use_systemd]                  = "false"
 node.default[:hadoop][:use_systemd]           = node[:hops][:use_systemd]
 
 
-#yarn
-<% yTimeout = node[:ndb][:TransactionInactiveTimeout] * 2 -%>
                                                           
 default[:hops][:yarn][:nodemanager_ha_enabled] = "true"
 default[:hops][:yarn][:nodemanager_auto_failover_enabled] = "true"
 default[:hops][:yarn][:nodemanager_recovery_enabled] = "true"
-default[:hops][:yarn][:rm_heartbeat] = yTimeout
+# NM heartbeats need to be at least twice as long as NDB transaction timeouts
+default[:hops][:yarn][:rm_heartbeat] = node[:ndb][:TransactionInactiveTimeout] * 2
 default[:hops][:yarn][:nodemanager_rpc_batch_max_size] = 60
 default[:hops][:yarn][:nodemanager_rpc_batch_max_duration] = 60
 default[:hops][:yarn][:rm_distributed] = "true"
