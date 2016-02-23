@@ -27,7 +27,7 @@
 
 
   <property>
-    <name>dfs.client.max.retires.on.failure</name>
+    <name>dfs.client.max.retries.on.failure</name>
     <value>1</value>
   </property>
 
@@ -163,7 +163,7 @@
 
   <property>
     <name>dfs.resolvingcache.enabled</name>
-    <value><%= @cache %></value>
+    <value><%= node[:hops][:nn][:cache] %></value>
     <description></description>
   </property>
 
@@ -181,7 +181,7 @@
 
   <property>
     <name>dfs.ndb.setpartitionkey.enabled</name>
-    <value><%= @partition_key %></value>
+    <value><%= node[:hops][:nn][:partition_key] %></value>
     <description></description>
   </property>
 
@@ -234,8 +234,7 @@
   </property>
 
   <property>
-    <name>dfs.heartbeat.interval
-    </name>
+    <name>dfs.heartbeat.interval</name>
     <value>3</value>
     <description></description>
   </property>
@@ -267,3 +266,4 @@
 -->
 
 </configuration>
+
