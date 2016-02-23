@@ -74,3 +74,25 @@ default[:hops][:reverse_dns_lookup_supported] = "false"
 
 default[:hops][:use_systemd]                  = "false"
 node.default[:hadoop][:use_systemd]           = node[:hops][:use_systemd]
+
+
+#yarn
+<% yTimeout = node[:ndb][:TransactionInactiveTimeout] * 2 -%>
+                                                          
+default[:hops][:yarn][:nodemanager_ha_enabled] = "true"
+default[:hops][:yarn][:nodemanager_auto_failover_enabled] = "true"
+default[:hops][:yarn][:nodemanager_recovery_enabled] = "true"
+default[:hops][:yarn][:rm_heartbeat] = yTimeout
+default[:hops][:yarn][:nodemanager_rpc_batch_max_size] = 60
+default[:hops][:yarn][:nodemanager_rpc_batch_max_duration] = 60
+default[:hops][:yarn][:rm_distributed] = "true"
+default[:hops][:yarn][:nodemanager_rm_streaming_enabled] = "true"
+default[:hops][:yarn][:client_failover_sleep_base_ms] = 100
+default[:hops][:yarn][:client_failover_sleep_max_ms] = 1000
+default[:hops][:yarn][:quota_enabled] = "true"
+default[:hops][:yarn][:quota_monitor_interval] = 1000
+default[:hops][:yarn][:quota_ticks_per_credit] = 60
+default[:hops][:yarn][:quota_min_ticks_charge] = 600
+default[:hops][:yarn][:quota_checkpoint_nbticks] = 600
+
+  
