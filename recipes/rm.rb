@@ -37,6 +37,10 @@ if node[:hadoop][:cgroups].eql? "true"
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
 
+file "#{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" do 
+  owner node[:hdfs][:user]
+  action :delete
+end
 
 template "#{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
