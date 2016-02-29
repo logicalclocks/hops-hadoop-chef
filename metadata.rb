@@ -22,29 +22,29 @@ recipe            "hops::purge-ndb", "Drops  hops db from NDB"
 depends 'java'
 depends 'kagent'
 depends 'ndb'
-depends 'hadoop'
+depends 'apache_hadoop'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
 end
 
-#attribute "hadoop/version",
+#attribute "apache_hadoop/version",
 #:description => "Hop version number",
 #:type => 'string'
 
-attribute "hdfs/user",
+attribute "apache_hadoop/hdfs/user",
 :description => "Username to run hdfs as",
 :type => 'string'
 
-attribute "hadoop/yarn/user",
+attribute "apache_hadoop/yarn/user",
 :description => "Username to run yarn as",
 :type => 'string'
 
-# attribute "hadoop/rm/scheduler_class",
+# attribute "apache_hadoop/rm/scheduler_class",
 # :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
 # :type => 'string'
 
-attribute "hadoop/mr/user",
+attribute "apache_hadoop/mr/user",
 :description => "Username to run MapReduce as",
 :type => 'string'
 
@@ -58,7 +58,7 @@ attribute "mysql/password",
 :type => 'string',
 :required => "required"
 
-attribute "hadoop/format",
+attribute "apache_hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
 :type => 'string'
 
@@ -103,6 +103,6 @@ attribute "hops/use_systemd",
 :description => "Use systemd startup scripts, default 'false'",
 :type => "string"
 
-attribute "hadoop/data_dir",
+attribute "apache_hadoop/data_dir",
 :description => "Directory to store actual hadoop data",
 :type => "string"

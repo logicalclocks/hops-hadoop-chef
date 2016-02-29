@@ -1,5 +1,5 @@
 include_recipe "hops::wrap"
-include_recipe "hadoop::ps"
+include_recipe "apache_hadoop::ps"
 
 
 

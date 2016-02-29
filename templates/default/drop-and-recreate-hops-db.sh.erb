@@ -1,6 +1,6 @@
 #!/bin/bash
 
-<%= node[:mysql][:base_dir] %>/bin/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> -e "drop database <%= node[:hadoop][:db] %>"
-<%= node[:mysql][:base_dir] %>/bin/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> -e "create database <%= node[:hadoop][:db] %>"
-<%= node[:mysql][:base_dir] %>/bin/mysql -u <%= node[:mysql][:user] %> -p<%= node[:mysql][:password] %> <%= node[:hadoop][:db] %> < <%= node[:hadoop][:conf_dir] %>/hops.sql
+<%= node.mysql.base_dir %>/bin/mysql -u <%= node.mysql.user %> -p<%= node.mysql.password %> -e "drop database <%= node.hops.db %>"
+<%= node.mysql.base_dir %>/bin/mysql -u <%= node.mysql.user %> -p<%= node.mysql.password %> -e "create database <%= node.hops.db %>"
+<%= node.mysql.base_dir %>/bin/mysql -u <%= node.mysql.user %> -p<%= node.mysql.password %> <%= node.hops.db %> < <%= node.apache_hadoop.conf_dir %>/hops.sql
 
