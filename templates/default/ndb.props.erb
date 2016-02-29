@@ -1,6 +1,6 @@
 
 com.mysql.clusterj.connectstring = <%= @ndb_connectstring %> 
-com.mysql.clusterj.database = <%= node.apache_hadoop.db %>
+com.mysql.clusterj.database = <%= node.hops.db %>
 com.mysql.clusterj.connection.pool.size = <%= node.ndb.num_ndb_slots_per_client %>
 com.mysql.clusterj.max.transactions = 1024
 

@@ -15,11 +15,11 @@ new_resource.updated_by_last_action(false)
     user node.ndb.user
     code <<-EOF
     set -e
-    #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node.apache_hadoop.db} CHARACTER SET latin1\"
-    #{node.ndb.scripts_dir}/mysql-client.sh #{node.apache_hadoop.db} < "#{node.apache_hadoop.conf_dir}/hops.sql"
+    #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node.hops.db} CHARACTER SET latin1\"
+    #{node.ndb.scripts_dir}/mysql-client.sh #{node.hops.db} < "#{node.apache_hadoop.conf_dir}/hops.sql"
     EOF
     new_resource.updated_by_last_action(true)
-    not_if "#{node.ndb.scripts_dir}/mysql-client.sh #{node.apache_hadoop.db} -e \"show create table hdfs_block_infos;\""
+    not_if "#{node.ndb.scripts_dir}/mysql-client.sh #{node.hops.db} -e \"show create table hdfs_block_infos;\""
   end
 
 end
