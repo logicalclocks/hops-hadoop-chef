@@ -1,10 +1,10 @@
-name             'hops'
+name             "hops"
 maintainer       "Jim Dowling"
 maintainer_email "jdowling@kth.se"
 license          "GPL 2.0"
 description      'Installs/Configures HOPS distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "1.0"
+version          "0.1.0"
 
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
