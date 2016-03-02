@@ -1,2 +1,2 @@
 include_recipe "hops::wrap"
-include_recipe "hadoop::nm"
+include_recipe "apache_hadoop::nm"

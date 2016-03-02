@@ -1,6 +1,6 @@
 #!/bin/bash
 
-<%= node[:ndb][:scripts_dir] %>/mysql-client.sh -e "drop database <%= node[:hadoop][:db] %>"
-<%= node[:ndb][:scripts_dir] %>/mysql-client.sh -e "create database <%= node[:hadoop][:db] %>"
-<%= node[:ndb][:scripts_dir] %>/mysql-client.sh <%= node[:hadoop][:db] %> < <%= node[:hadoop][:conf_dir] %>/hops.sql
+<%= node.ndb.scripts_dir %>/mysql-client.sh -e "drop database <%= node.hops.db %>"
+<%= node.ndb.scripts_dir %>/mysql-client.sh -e "create database <%= node.hops.db %>"
+<%= node.ndb.scripts_dir %>/mysql-client.sh <%= node.hops.db %> < <%= node.apache_hadoop.conf_dir %>/hops.sql
 

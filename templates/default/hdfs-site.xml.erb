@@ -7,7 +7,7 @@
 
   <property>
     <name>dfs.replication</name>
-    <value><%= node[:hadoop][:num_replicas] %></value>
+    <value><%= node.apache_hadoop.num_replicas %></value>
     <description>Default block replication.
     The actual number of replications can be specified when the file is created.
     The default is used if replication is not specified in create time.
@@ -70,7 +70,7 @@
 
   <!-- <property> -->
   <!--   <name>dfs.datanode.data.dir</name> -->
-  <!--   <value>file://<%= node[:hadoop][:dn][:data_dir] %></value> -->
+  <!--   <value>file://<%= node.apache_hadoop.dn.data_dir %></value> -->
   <!--   <description>Determines where on the local filesystem an DFS data node should store its blocks.  If this is a comma-delimited -->
   <!--   list of directories, then data will be storned in all named  directories, typically on different devices. Directories that do not exist are ignored. -->
   <!--   </description> -->
@@ -90,7 +90,7 @@
 
   <!-- <property> -->
   <!--   <name>dfs.blocksize</name> -->
-  <!--   <value><%= node[:hdfs][:blocksize] %></value> -->
+  <!--   <value><%= node.apache_hadoop.hdfs.blocksize %></value> -->
   <!--   <description> -->
   <!--       The default block size for new files, in bytes. -->
   <!--       You can use the following suffix (case insensitive): -->
@@ -139,7 +139,7 @@
 
   <!-- <property> -->
   <!--   <name>dfs.namenode.logging.level</name> -->
-  <!--   <value><%= node[:hops][:log_level] %></value> -->
+  <!--   <value><%= node.hops.log_level %></value> -->
   <!--   <description> -->
   <!--     The logging level for dfs namenode. Other values are "dir" (trace -->
   <!--     namespace mutations), "block" (trace block under/over replications -->
@@ -163,7 +163,7 @@
 
   <property>
     <name>dfs.resolvingcache.enabled</name>
-    <value><%= node[:hops][:nn][:cache] %></value>
+    <value><%= node.hops.nn.cache %></value>
     <description></description>
   </property>
 
@@ -181,7 +181,7 @@
 
   <property>
     <name>dfs.ndb.setpartitionkey.enabled</name>
-    <value><%= node[:hops][:nn][:partition_key] %></value>
+    <value><%= node.hops.nn.partition_key %></value>
     <description></description>
   </property>
 
@@ -243,7 +243,7 @@
 
   <property>
     <name>dfs.erasure_coding.enabled</name>
-    <value><%= node[:hops][:erasure_coding] %></value>    
+    <value><%= node.hops.erasure_coding %></value>    
     <description>Enable erasure coding</description>
   </property>
 
@@ -251,7 +251,7 @@
 <!--
   <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
-    <value><%= node[:hops][:reverse_dns_lookup_supported] %></value>
+    <value><%= node.hops.reverse_dns_lookup_supported %></value>
   </property>
 
   <property>
@@ -260,7 +260,7 @@
   </property>
   <property>
     <name>dfs.domain.socket.path</name>
-    <value><%= node[:hadoop][:tmp_dir] %>/dn_socket</value>
+    <value><%= node.apache_hadoop.tmp_dir %>/dn_socket</value>
   </property>
 
 -->

@@ -1,3 +1,3 @@
 include_recipe "hops::wrap"
-include_recipe "hadoop::jhs"
+include_recipe "apache_hadoop::jhs"
 

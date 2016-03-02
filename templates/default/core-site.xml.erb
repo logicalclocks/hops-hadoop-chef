@@ -8,14 +8,14 @@
 <!-- In: conf/core-site.xml -->
 <property>
   <name>hadoop.tmp.dir</name>
-  <value><%= node[:hadoop][:tmp_dir] %></value>
+  <value><%= node.apache_hadoop.tmp_dir %></value>
   <description>A base for other temporary directories.</description>
 </property>
 
 <!--
 <property>
   <name>io.file.buffer.size</name>
-  <value><%= node[:hadoop][:io_buffer_sz] %></value>
+  <value><%= node.apache_hadoop.io_buffer_sz %></value>
   <description>Size of read/write buffer used in SequenceFiles.</description>
 </property>
 -->
@@ -28,7 +28,7 @@
 
 <property>
   <name>ipc.client.connect.max.retries</name>
-  <value><%= node[:hadoop][:max_retries] %></value>
+  <value><%= node.apache_hadoop.max_retries %></value>
   <description>If a HDFS client has a communication problem with a NameNode, retry the connection the number of times specified here.</description>
 </property>
 
@@ -43,20 +43,20 @@
 
 <!--
   <property>
-    <name>hadoop.proxyuser.<%= node[:hdfs][:user] %>.hosts</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.hdfs.user %>.hosts</name>
     <value>@hopsworks</value>
   </property>
   <property>
-    <name>hadoop.proxyuser.<%= node[:hdfs][:user] %>.groups</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.hdfs.user %>.groups</name>
     <value>*</value>
   </property>
 
   <property>
-    <name>hadoop.proxyuser.<%= node[:hadoop][:yarn][:user] %>.hosts</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.yarn.user %>.hosts</name>
     <value>@hopsworks</value>
   </property>
   <property>
-    <name>hadoop.proxyuser.<%= node[:hadoop][:yarn][:user] %>.groups</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.yarn.user %>.groups</name>
     <value>*</value>
   </property>
 -->
