@@ -1,10 +1,10 @@
-name             'hops'
+name             "hops"
 maintainer       "Jim Dowling"
 maintainer_email "jdowling@kth.se"
 license          "GPL 2.0"
 description      'Installs/Configures HOPS distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "1.0"
+version          "0.1.1"
 
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
@@ -22,29 +22,33 @@ recipe            "hops::purge-ndb", "Drops  hops db from NDB"
 depends 'java'
 depends 'kagent'
 depends 'ndb'
-depends 'hadoop'
+depends 'apache_hadoop'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
 end
 
-#attribute "hadoop/version",
+#attribute "apache_hadoop/version",
 #:description => "Hop version number",
 #:type => 'string'
 
-attribute "hdfs/user",
+attribute "apache_hadoop/hdfs/user",
 :description => "Username to run hdfs as",
 :type => 'string'
 
-attribute "hadoop/yarn/user",
+attribute "apache_hadoop/yarn/user",
 :description => "Username to run yarn as",
 :type => 'string'
 
-# attribute "hadoop/rm/scheduler_class",
+attribute "apache_hadoop/yarn/rm_heartbeat",
+:description => "NodeManager heartbeat timeout",
+:type => 'string'
+
+# attribute "apache_hadoop/rm/scheduler_class",
 # :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
 # :type => 'string'
 
-attribute "hadoop/mr/user",
+attribute "apache_hadoop/mr/user",
 :description => "Username to run MapReduce as",
 :type => 'string'
 
@@ -58,7 +62,7 @@ attribute "mysql/password",
 :type => 'string',
 :required => "required"
 
-attribute "hadoop/format",
+attribute "apache_hadoop/format",
 :description => "Format HDFS: 'hdfs namenode -format'",
 :type => 'string'
 
@@ -103,6 +107,6 @@ attribute "hops/use_systemd",
 :description => "Use systemd startup scripts, default 'false'",
 :type => "string"
 
-attribute "hadoop/data_dir",
+attribute "apache_hadoop/data_dir",
 :description => "Directory to store actual hadoop data",
 :type => "string"
