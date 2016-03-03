@@ -22,3 +22,9 @@ end
 
 #node.override.apache_hadoop.yarn.rt                 = node.hops.yarn.rt
 
+case node.platform
+when "ubuntu"
+ if node.platform_version.to_f <= 14.04
+   node.override.apache_hadoop.systemd = "false"
+ end
+end

@@ -81,7 +81,8 @@ default.hops.yarn.nodemanager_ha_enabled = "false"
 default.hops.yarn.nodemanager_auto_failover_enabled = "false"
 default.hops.yarn.nodemanager_recovery_enabled = "false"
 # NM heartbeats need to be at least twice as long as NDB transaction timeouts
-default.hops.yarn.rm_heartbeat = node.ndb.TransactionInactiveTimeout * 2
+#default.hops.yarn.rm_heartbeat = node.ndb.TransactionInactiveTimeout * 2
+default.hops.yarn.rm_heartbeat = 2000
 default.hops.yarn.nodemanager_rpc_batch_max_size = 60
 default.hops.yarn.nodemanager_rpc_batch_max_duration = 60
 default.hops.yarn.rm_distributed = "false"

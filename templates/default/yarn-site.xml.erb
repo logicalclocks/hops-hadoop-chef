@@ -255,6 +255,41 @@
     <name>yarn.resourcemanager.ha.rm-ids</name>
     <value><%= node.hops.rm.private_ips.join(",") %></value>
   </property>
+
+
+<% for id in node.hops.rm.private_ips -%>
+
+  <property>
+    <name>yarn.resourcemanager.hostname.<%= id %></name>
+    <value><%= id %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.scheduler.address.<%= id %></name>
+    <value><%= id %>:8030</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.resource-tracker.address.<%= id %></name>
+    <value><%= id %>:8031</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.address.<%= id %></name>
+    <value><%= id %>:8032</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.admin.address.<%= id %></name>
+    <value><%= id %>:8033</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.groupMembership.address.<%= id %></name>
+    <value><%= id %>:8034</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.webapp.address.<%= id %></name>
+    <value><%= id %>:8088</value>
+  </property>
+
+<% end -%>
+
   <property>
     <name>yarn.resourcemanager.store.class</name>
     <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.NDBRMStateStore</value>
