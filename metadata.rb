@@ -40,7 +40,7 @@ attribute "apache_hadoop/yarn/user",
 :description => "Username to run yarn as",
 :type => 'string'
 
-attribute "apache_hadoop/yarn/rm_heartbeat",
+attribute "hops/yarn/rm_heartbeat",
 :description => "NodeManager heartbeat timeout",
 :type => 'string'
 
