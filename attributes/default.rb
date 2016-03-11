@@ -77,9 +77,9 @@ node.normal.apache_hadoop.use_systemd      = node.hops.use_systemd
 
 
                                                           
-default.hops.yarn.nodemanager_ha_enabled = "false"
-default.hops.yarn.nodemanager_auto_failover_enabled = "false"
-default.hops.yarn.nodemanager_recovery_enabled = "false"
+default.hops.yarn.nodemanager_ha_enabled = "true"
+default.hops.yarn.nodemanager_auto_failover_enabled = "true"
+default.hops.yarn.nodemanager_recovery_enabled = "true"
 # NM heartbeats need to be at least twice as long as NDB transaction timeouts
 #default.hops.yarn.rm_heartbeat = node.ndb.TransactionInactiveTimeout * 2
 default.hops.yarn.rm_heartbeat = 2000
