@@ -142,7 +142,7 @@ attribute "hops/yarn/nodemanager_rpc_batch_max_duration",
 :type => "string"
 
 attribute "hops/yarn/rm_distributed",
-:description => "",
+:description => "Set to 'true' to enable distributed RMs",
 :type => "string"
 
 attribute "hops/yarn/nodemanager_rm_streaming_enabled",
