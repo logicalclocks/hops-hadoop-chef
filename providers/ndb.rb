@@ -54,7 +54,7 @@ action :install_ndb_hops do
 	ln -s #{node.mysql.base_dir}/lib/libndbclient.so* #{node.apache_hadoop.home}/lib/native
 
 	rm -f #{node.apache_hadoop.home}/lib/native/libhopsyarn.so
-	ln -s #{node.apache_hadoop.dir}/ndb-hops/libhopsyarn.so #{node.apache_hadoop.home}/lib/native/hopsyarn-1.0.so
+	ln -s #{node.apache_hadoop.dir}/ndb-hops/libhopsyarn.so #{node.apache_hadoop.home}/lib/native/libhopsyarn-1.0.so
 
         touch #{hin}
 	EOH

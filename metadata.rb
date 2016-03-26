@@ -191,3 +191,73 @@ attribute "apache_hadoop/yarn/rt",
 attribute "apache_hadoop/dir",
 :display_name => "Hadoop installation directory",
 :type => 'string'
+=======
+:description => "Directory to store actual hadoop data",
+:type => "string"
+
+
+attribute "hops/yarn/rm_distributed",
+:description => "Set to 'true' for distribute yarn",
+:type => "string"
+
+
+attribute "hops/yarn/nodemanager_ha_enabled",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/nodemanager_auto_failover_enabled",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/nodemanager_recovery_enabled",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/rm_heartbeat",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/nodemanager_rpc_batch_max_size",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/nodemanager_rpc_batch_max_duration",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/rm_distributed",
+:description => "Set to 'true' to enable distributed RMs",
+:type => "string"
+
+attribute "hops/yarn/nodemanager_rm_streaming_enabled",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/client_failover_sleep_base_ms",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/client_failover_sleep_max_ms",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/quota_enabled",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/quota_monitor_interval",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/quota_ticks_per_credit",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/quota_min_ticks_charge",
+:description => "",
+:type => "string"
+
+attribute "hops/yarn/quota_checkpoint_nbticks",
+:description => "",
+:type => "string"
+

@@ -68,6 +68,8 @@ suites:
                private_ips: ["10.0.2.15"]
             jhs:
                private_ips: ["10.0.2.15"]
+            yarn:
+               rm_distributed: "true"
             use_hopsworks: "true"
             dir: "/tmp"
          apache_hadoop:

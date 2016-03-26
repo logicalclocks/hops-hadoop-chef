@@ -37,8 +37,8 @@ default.hops.limits.nproc            = '65536'
 #default.hops.hadoop_env.hadoop_opts  = '-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}'
 #default.hops.mapred_env.hadoop_opts  = '-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}'
 
-default.hops.nn.direct_memory_size   = 500
-default.hops.nn.heap_size            = 500
+default.hops.nn.direct_memory_size   = 50
+default.hops.nn.heap_size            = 100
 
 default.hops.nn.public_ips           = ['10.0.2.15']
 default.hops.nn.private_ips          = ['10.0.2.15']
@@ -72,27 +72,27 @@ node.normal.mysql.password             = node.mysql.password
 
 default.hops.reverse_dns_lookup_supported = "false"
 
-default.hops.use_systemd                  = "false"
-node.normal.apache_hadoop.use_systemd      = node.hops.use_systemd
+default.hops.use_systemd               = "false"
+node.normal.apache_hadoop.use_systemd  = node.hops.use_systemd
 
 
                                                           
-default.hops.yarn.nodemanager_ha_enabled = "false"
-default.hops.yarn.nodemanager_auto_failover_enabled = "false"
-default.hops.yarn.nodemanager_recovery_enabled = "false"
+default.hops.yarn.nodemanager_ha_enabled            = "true"
+default.hops.yarn.nodemanager_auto_failover_enabled = "true"
+default.hops.yarn.nodemanager_recovery_enabled      = "true"
 # NM heartbeats need to be at least twice as long as NDB transaction timeouts
-#default.hops.yarn.rm_heartbeat = node.ndb.TransactionInactiveTimeout * 2
-default.hops.yarn.rm_heartbeat = 2000
-default.hops.yarn.nodemanager_rpc_batch_max_size = 60
-default.hops.yarn.nodemanager_rpc_batch_max_duration = 60
-default.hops.yarn.rm_distributed = "false"
-default.hops.yarn.nodemanager_rm_streaming_enabled = "true"
-default.hops.yarn.client_failover_sleep_base_ms = 100
-default.hops.yarn.client_failover_sleep_max_ms = 1000
-default.hops.yarn.quota_enabled = "true"
-default.hops.yarn.quota_monitor_interval = 1000
-default.hops.yarn.quota_ticks_per_credit = 60
-default.hops.yarn.quota_min_ticks_charge = 600
-default.hops.yarn.quota_checkpoint_nbticks = 600
+#default.hops.yarn.rm_heartbeat                     = node.ndb.TransactionInactiveTimeout * 2
+default.hops.yarn.rm_heartbeat                      = 2000
+default.hops.yarn.nodemanager_rpc_batch_max_size    = 60
+default.hops.yarn.nodemanager_rpc_batch_max_duration= 60
+default.hops.yarn.rm_distributed                    = "false"
+default.hops.yarn.nodemanager_rm_streaming_enabled  = "true"
+default.hops.yarn.client_failover_sleep_base_ms     = 100
+default.hops.yarn.client_failover_sleep_max_ms      = 1000
+default.hops.yarn.quota_enabled                     = "true"
+default.hops.yarn.quota_monitor_interval            = 1000
+default.hops.yarn.quota_ticks_per_credit            = 60
+default.hops.yarn.quota_min_ticks_charge            = 600
+default.hops.yarn.quota_checkpoint_nbticks          = 600
 
 node.default.apache_hadoop.yarn.log_aggregation = "true"

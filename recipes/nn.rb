@@ -81,3 +81,21 @@ template "#{node.apache_hadoop.home}/sbin/drop-and-recreate-hops-db.sh" do
 end
 
 include_recipe "apache_hadoop::nn"
+
+
+# TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
+
+service_name="namenode"
+if node.apache_hadoop.systemd == "true"
+  service "#{service_name}" do
+    provider Chef::Provider::Service::Systemd
+    supports :restart => true, :stop => true, :start => true, :status => true
+    action :restart
+  end
+else  #sysv
+  service "#{service_name}" do
+    provider Chef::Provider::Service::Init::Debian
+    supports :restart => true, :stop => true, :start => true, :status => true
+    action :restart
+  end
+end
