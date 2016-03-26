@@ -95,4 +95,4 @@ default.hops.yarn.quota_ticks_per_credit            = 60
 default.hops.yarn.quota_min_ticks_charge            = 600
 default.hops.yarn.quota_checkpoint_nbticks          = 600
 
-node.default.apache_hadoop.yarn.log_aggregation = "false"
+node.default.apache_hadoop.yarn.log_aggregation     = "false"
