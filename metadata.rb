@@ -191,15 +191,10 @@ attribute "apache_hadoop/yarn/rt",
 attribute "apache_hadoop/dir",
 :display_name => "Hadoop installation directory",
 :type => 'string'
-=======
-:description => "Directory to store actual hadoop data",
-:type => "string"
-
 
 attribute "hops/yarn/rm_distributed",
 :description => "Set to 'true' for distribute yarn",
 :type => "string"
-
 
 attribute "hops/yarn/nodemanager_ha_enabled",
 :description => "",
