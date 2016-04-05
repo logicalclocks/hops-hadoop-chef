@@ -60,6 +60,7 @@ do
     fi
 
     rm -f test/integration/default/serverspec/localhost/services_spec.rb
+    mkdir -p test/integration/default/serverspec/localhost
 
     for f in `ls test_src/services_spec.rb.* | grep -v *[#~]`
     do

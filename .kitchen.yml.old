@@ -43,7 +43,7 @@ platforms:
         - "192.168.0.3"
     driver_config: 
       customize: 
-        memory: 4096
+        memory: 9096
         cpuexecutioncap: 90
         cpus: 2
         natdnshostresolver1: "on"
