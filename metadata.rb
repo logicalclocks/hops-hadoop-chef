@@ -5,6 +5,8 @@ license          "GPL 2.0"
 description      'Installs/Configures HOPS distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.1"
+source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
+
 
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a Hops NameNode"
