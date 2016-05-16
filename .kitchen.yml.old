@@ -70,6 +70,7 @@ platforms:
 suites: 
   - 
     attributes: 
+      download_url: "http://snurran.sics.se/hops/beta"
       vagrant: "true"
       mysql: 
         run_as_user: mysql
