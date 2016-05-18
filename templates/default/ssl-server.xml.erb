@@ -1,10 +1,51 @@
-<!-- https://www-01.ibm.com/support/knowledgecenter/SSPT3X_4.1.0/com.ibm.swg.im.infosphere.biginsights.admin.doc/doc/admin_ssl_hbase_mr_yarn_hdfs_web.html -->
 
+<!-- SSL -->
+<property>
+  <name>ssl.server.truststore.location</name>
+  <value><%= node.hops.ssl.server.truststore.location %></value>
+  <description>Truststore to be used by NN and DN. Must be specified.</description>
+</property>
 
-ssl.server.truststore.location=/etc/security/serverKeys/truststore.jks
-ssl.server.truststore.password=serverTrustStorePassword
-ssl.server.truststore.type=jks
-ssl.server.keystore.location=/etc/security/serverKeys/keystore.jks
-ssl.server.keystore.password=serverStorePassPassword
-ssl.server.keystore.type=jks
-ssl.server.keystore.keypassword=serverKeyPassPasswordsl-server.xml
+<property>
+  <name>ssl.server.truststore.password</name>
+  <value><%= node.hops.ssl.server.truststore.password %></value>
+  <description>Optional. Default value is "".
+  </description>
+</property>
+
+<property>
+  <name>ssl.server.truststore.type</name>
+  <value>jks</value>
+  <description>Optional. The keystore file format, default value is "jks".</description>
+</property>
+
+<property>
+  <name>ssl.server.truststore.reload.interval</name>
+  <value>10000</value>
+  <description>Truststore reload check interval, in milliseconds.
+  Default value is 10000 (10 seconds).</description>
+</property>
+
+<property>
+  <name>ssl.server.keystore.location</name>
+  <value><%= node.hops.ssl.server.keystore.location %></value>
+  <description>Keystore to be used by NN and DN. Must be specified.</description>
+</property>
+
+<property>
+  <name>ssl.server.keystore.password</name>
+  <value><%= node.hops.ssl.server.keystore.password %></value>
+  <description>Must be specified.</description>
+</property>
+
+<property>
+  <name>ssl.server.keystore.keypassword</name>
+  <value><%= node.hops.ssl.server.keystore.keypassword %></value>
+  <description>Must be specified.</description>
+</property>
+
+<property>
+  <name>ssl.server.keystore.type</name>
+  <value>jks</value>
+  <description>Optional. The keystore file format, default value is "jks".</description>
+</property>
