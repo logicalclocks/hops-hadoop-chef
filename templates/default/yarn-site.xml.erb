@@ -362,5 +362,23 @@
     <name>yarn.quotas.overpricing-threshold.mb</name>
     <value>0.1</value>
 </property>
-  
+
+<!-- SSL -->
+<property>
+    <name>yarn.http.policy</name>
+    <value><%= node.hops.yarn.http.policy %></value>
+</property>
+<property>
+    <name>yarn.log.server.url</name>
+    <value><%= node.hops.yarn.log.server.url %></value>
+</property>
+<property>
+    <name>yarn.resourcemanager.webapp.https.address</name>
+    <value><%= node.hops.yarn.resourcemanager.webapp.https.address %></value>
+</property>
+<property>
+    <name>yarn.nodemanager.webapp.https.address</name>
+    <value><%= node.hops.yarn.nodemanager.webapp.https.address %></value>
+</property>
+
 </configuration>

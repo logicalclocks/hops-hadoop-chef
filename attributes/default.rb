@@ -52,6 +52,10 @@ default.hops.jhs.private_ips         = ['10.0.2.15']
 default.hops.ps.public_ips           = ['10.0.2.15']
 default.hops.ps.private_ips          = ['10.0.2.15'] 
 
+default.hops.jhs.https.port 		 = "19443"
+default.hops.rm.https.port 			 = "8090"
+default.hops.nm.https.port  		 = "45443"
+
 default.hops.yarn.resource_tracker   = "false"
 
 default.hops.use_hopsworks             = "false"
@@ -95,3 +99,32 @@ default.hops.yarn.quota_min_ticks_charge            = 600
 default.hops.yarn.quota_checkpoint_nbticks          = 600
 
 node.default.apache_hadoop.yarn.log_aggregation     = "true"
+
+## SSL Config Attributes##
+
+#hdfs-site.xml 
+default.hops.dfs.https.enable 							= "true"
+default.hops.dfs.http.policy   							= "HTTPS_ONLY"
+default.hops.dfs.datanode.https.address 				= "0.0.0.0:50475"
+default.hops.dfs.namenode.https-address   				= "0.0.0.0:50470"
+
+#mapred-site.xml 
+default.hops.mapreduce.jobhistory.http.policy 			= "HTTPS_ONLY"
+default.hops.mapreduce.jobhistory.webapp.https.address  = "#{default.hops.jhs.public_ips}:#{default.hops.jhs.https.port}"
+
+#yarn-site.xml 
+default.hops.yarn.http.policy							= "HTTPS_ONLY"
+default.hops.yarn.log.server.url                        = "https://#{default.hops.jhs.private_ips}:#{default.hops.jhs.https.port}/jobhistory/logs"
+default.hops.yarn.resourcemanager.webapp.https.address  = "#{default.hops.rm.private_ips}:#{default.hops.rm.https.port}"
+default.hops.yarn.nodemanager.webapp.https.address 		= "0.0.0.0:#{default.hops.nm.https.port}"
+
+#ssl-server.xml 
+default.hops.ssl.server.keystore.password   			= "password"
+default.hops.ssl.server.keystore.keypassword   			= "password"
+default.hops.ssl.server.keystore.location 				= "node_server_keystore.jks"
+default.hops.ssl.server.truststore.location   			= "node_server_truststore.jks"
+default.hops.ssl.server.truststore.password     	 	= "changeit"
+
+#ssl-client.xml 
+default.hops.ssl.client.truststore.password  			= "changeit"
+default.hops.ssl.client.truststore.location   			= "node_client_truststore.jks"

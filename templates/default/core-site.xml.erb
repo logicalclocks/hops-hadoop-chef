@@ -88,11 +88,16 @@
   <description></description>
 </property>
 
-<!--
+  
+ <property>
+  <name>fs.defaultFS</name>
+  <value><%= @firstNN %></value>
+ </property>
+
+<!-- SSL -->
 <property>
     <name>hadoop.ssl.require.client.cert</name>
-    <value>true</value>
-    <description></description>
+    <value>false</value>
 </property>
 <property>
     <name>hadoop.ssl.hostname.verifier</name>
@@ -114,12 +119,8 @@
     <value>ssl-client.xml</value>
     <description></description>
 </property>
--->
 
-  
- <property>
-  <name>fs.defaultFS</name>
-  <value><%= @firstNN %></value>
- </property>
+
+
 
 </configuration>

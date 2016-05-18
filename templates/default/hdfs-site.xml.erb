@@ -265,5 +265,22 @@
 
 -->
 
-</configuration>
+<!-- SSL -->
+<property>
+    <name>dfs.https.enable</name>
+    <value><%= node.hops.dfs.https.enable %></value>
+</property>
+<property>
+    <name>dfs.http.policy</name>
+    <value><%= node.hops.dfs.http.policy %></value>
+</property>
+<property>
+    <name>dfs.datanode.https.address</name>
+    <value><%= node.hops.dfs.datanode.https.address %></value>
+</property>
+<property>
+    <name>dfs.namenode.https-address</name>
+    <value><%= node.hops.dfs.namenode.https-address %></value>
+</property>
 
+</configuration>
