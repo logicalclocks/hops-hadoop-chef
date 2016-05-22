@@ -8,3 +8,23 @@ include_recipe "apache_hadoop::install"
 include_recipe "hops"
 
 
+if node.vagrant === "true" || node.vagrant == true
+  count = 0
+  for nn in node.apache_hadoop.nn['private_ips']
+    case node.platform_family
+    when "debian"
+      hostsfile_entry nn do
+        hostname  "data#{count}"
+        action    :create
+        unique    true
+      end
+    when "rhel"
+      hostsfile_entry "#{nn}" do
+        hostname  "data#{count}"
+        unique    true
+      end
+    end
+    count += 1
+  end
+
+end

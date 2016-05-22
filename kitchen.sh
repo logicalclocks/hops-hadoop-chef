@@ -11,6 +11,10 @@ regex="test_src/services_spec.rb.(.+)"
 boxes="test_src/box_(.+)"
 
 
+#vagrant plugin install vagrant-omnibus
+#vagrant plugin install vagrant-hostmanager
+
+
 for box in `ls test_src/box_* | grep -v *[#~]`
 do
    cp .kitchen.yml.old .kitchen.yml

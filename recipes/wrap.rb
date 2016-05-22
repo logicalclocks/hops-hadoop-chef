@@ -20,8 +20,6 @@ node.hops.recipes.each do |r|
   node.override.apache_hadoop["#{r}"][:public_ips]        = node.hops["#{r}"][:public_ips]
 end
 
-#node.override.apache_hadoop.yarn.rt                 = node.hops.yarn.rt
-
 case node.platform
 when "ubuntu"
  if node.platform_version.to_f <= 14.04
