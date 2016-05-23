@@ -10,6 +10,7 @@ service nodemanager stop
 service historyserver stop
 
 "$bin"/root-drop-and-recreate-hops-db.sh
+rm -rf <%= node.apache_hadoop.data_dir %>
 "$bin"/format-nn.sh
 
 service namenode start
