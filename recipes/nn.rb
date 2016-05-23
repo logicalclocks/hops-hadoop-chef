@@ -80,6 +80,14 @@ template "#{node.apache_hadoop.home}/sbin/drop-and-recreate-hops-db.sh" do
   mode "771"
 end
 
+
+template "#{node.apache_hadoop.home}/sbin/root-test-drop-full-recreate.sh" do
+  source "root-test-drop-full-recreate.sh.erb"
+  owner "root"
+  mode "700"
+end
+
+
 include_recipe "apache_hadoop::nn"
 
 
