@@ -95,6 +95,9 @@ if node.apache_hadoop.cgroups.eql? "true"
 end
 
 
+node.normal.apache_hadoop.yarn.aux_services = "spark_shuffle"
+
+
 template "#{node.apache_hadoop.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node.apache_hadoop.yarn.user
