@@ -25,6 +25,7 @@ depends 'java'
 depends 'kagent'
 depends 'ndb'
 depends 'apache_hadoop'
+depends 'ntp'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -256,5 +257,9 @@ attribute "hops/yarn/quota_min_ticks_charge",
 
 attribute "hops/yarn/quota_checkpoint_nbticks",
 :description => "",
+:type => "string"
+
+attribute "ntp/install",
+:description => "Install Network Time Protocol (default: false)",
 :type => "string"
 

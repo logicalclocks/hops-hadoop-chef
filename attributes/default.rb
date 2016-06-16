@@ -99,3 +99,9 @@ default.hops.yarn.quota_min_ticks_charge            = 600
 default.hops.yarn.quota_checkpoint_nbticks          = 600
 
 node.default.apache_hadoop.yarn.log_aggregation     = "true"
+
+node.default.ntp.install                            = "false"
+
+# Servers to sync ntp time with
+node.normal.ntp.servers                             = ['0.europe.pool.ntp.org', '1.europe.pool.ntp.org', '2.europe.pool.ntp.org', '3.europe.pool.ntp.org']
+#node.normal.ntp.peers                               = ['time0.int.example.org', 'time1.int.example.org']

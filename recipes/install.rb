@@ -7,6 +7,9 @@ include_recipe "hops::wrap"
 include_recipe "apache_hadoop::install"
 include_recipe "hops"
 
+if node.ntp.install == "true"
+  include_recipe "ntp"
+end
 
 if node.vagrant === "true" || node.vagrant == true
   # count = 0
