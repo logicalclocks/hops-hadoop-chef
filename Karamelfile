@@ -8,6 +8,8 @@ dependencies:
   - recipe: hops::rm
     local:  
       - hops::ndb
+    global:  
+      - hops::dn
   - recipe: hops::dn
     global:  
       - hops::nn
