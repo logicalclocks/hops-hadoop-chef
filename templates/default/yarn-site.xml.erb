@@ -44,10 +44,6 @@
   </property>
 
   <property>
-    <name>yarn.web-proxy.address</name>
-    <value><%= @rm_private_ip %>:<%= node.apache_hadoop.yarn.ps_port %></value>
-  </property>
-  <property>
     <name>yarn.resourcemanager.webapp.address</name>
     <value>0.0.0.0:8088</value>
     <description>The http address of the RM web application.</description>
