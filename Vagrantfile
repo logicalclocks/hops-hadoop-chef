@@ -1,6 +1,6 @@
 # ---- Configuration variables ----
 GUI               = false # Enable/Disable GUI
-RAM               = 1024   # Default memory size in MB
+RAM               = 4096   # Default memory size in MB
 
 # Network configuration
 DOMAIN            = ".hops.io"
@@ -23,8 +23,8 @@ Vagrant.configure(2) do |config|
     ipaddr, ram, gui, box = cfg
 
     config.vm.define name do |machine|
-      machine.vm.box   = "threatstack/ubuntu-14.04-amd64"
-#      machine.vm.box_url = BOX_URL
+#      machine.vm.box   = "threatstack/ubuntu-14.04-amd64"
+      machine.vm.box_url = BOX_URL
       machine.vm.guest = :ubuntu
       machine.vm.provider "virtualbox" do |vbox|
         vbox.gui    = gui
@@ -63,8 +63,6 @@ Vagrant.configure(2) do |config|
 	  "default" =>    { 
        	    "private_ips" => ["192.168.50.10","192.168.50.11"]
           },
-	  "public_ips" => ["192.168.50.10","192.168.50.11"],
-  	  "private_ips" => ["192.168.50.10","192.168.50.11"],
         },
         "public_ips" => ["192.168.50.10","192.168.50.11"],
         "private_ips" => ["192.168.50.10","192.168.50.11"],
@@ -95,7 +93,6 @@ Vagrant.configure(2) do |config|
       chef.add_recipe "ndb::mgmd"
       chef.add_recipe "ndb::ndbd"
       chef.add_recipe "ndb::mysqld"
-      chef.add_recipe "ndb::memcached"
       chef.add_recipe "hops::ndb"
       chef.add_recipe "hops::nn"
       chef.add_recipe "hops::dn"

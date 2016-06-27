@@ -25,7 +25,10 @@ default.hops.log_level                 = "DEBUG"
 
 default.dal.download_url               = "#{node.download_url}/ndb-dal-#{node.hadoop.version}-#{node.ndb.version}.jar"
 default.dal.lib_url                    = "#{node.download_url}/libhopsyarn-#{node.hadoop.version}-#{node.ndb.version}.so"
-default.clusterj.download_url          = "#{node.download_url}/clusterj-#{node.ndb.version}.jar"
+
+default.yarn.spark.version             = "1.6.1"
+default.yarn.spark.shuffle_jar         = "spark-#{node.yarn.spark.version}-yarn-shuffle.jar"
+default.yarn.spark.shuffle_url         = "#{node.download_url}/#{node.yarn.spark.shuffle_jar}"
 default.dal.schema_url                 = "#{node.download_url}/hops.sql"
 
 default.hops.recipes                   = %w{ nn dn rm nm jhs ps } 
@@ -96,3 +99,9 @@ default.hops.yarn.quota_min_ticks_charge            = 600
 default.hops.yarn.quota_checkpoint_nbticks          = 600
 
 node.default.apache_hadoop.yarn.log_aggregation     = "true"
+
+node.default.ntp.install                            = "false"
+
+# Servers to sync ntp time with
+node.normal.ntp.servers                             = ['0.europe.pool.ntp.org', '1.europe.pool.ntp.org', '2.europe.pool.ntp.org', '3.europe.pool.ntp.org']
+#node.normal.ntp.peers                               = ['time0.int.example.org', 'time1.int.example.org']

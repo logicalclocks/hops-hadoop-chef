@@ -62,11 +62,11 @@
 -->
 
   <property>
-    <name>hadoop.proxyuser.glassfish.hosts</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.yarn.user %>.hosts</name>
     <value>*</value>
   </property>
   <property>
-    <name>hadoop.proxyuser.glassfish.groups</name>
+    <name>hadoop.proxyuser.<%= node.apache_hadoop.yarn.user %>.groups</name>
     <value>*</value>
   </property>
 
