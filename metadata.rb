@@ -85,6 +85,10 @@ attribute "hops/use_systemd",
 :description => "Use systemd startup scripts, default 'false'",
 :type => "string"
 
+attribute "apache_hadoop/group",
+:description => "Group to run hdfs/yarn/mr as",
+:type => 'string'
+
 
 #
 # wrapper parameters 
