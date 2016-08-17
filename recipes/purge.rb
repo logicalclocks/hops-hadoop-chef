@@ -1,7 +1,6 @@
 include_recipe "apache_hadoop::purge"
 
 
-
 link "#{node.apache_hadoop.dir}/ndb-hops" do
   action :delete
   ignore_failure true
