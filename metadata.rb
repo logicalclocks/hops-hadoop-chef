@@ -30,64 +30,72 @@ depends 'apache_hadoop'
   supports os
 end
 
+attribute "java/jdk_version",
+          :description =>  "Jdk version",
+          :type => 'string'
+
+attribute "java/install_flavor",
+          :description =>  "Oracle (default) or openjdk",
+          :type => 'string'
+
 attribute "hops/yarn/rm_heartbeat",
-:description => "NodeManager heartbeat timeout",
-:type => 'string'
+          :description => "NodeManager heartbeat timeout",
+          :type => 'string'
 
 attribute "mysql/user",
-:description => "Mysql server username",
-:type => 'string',
-:required => "required"
+          :description => "Mysql server username",
+          :type => 'string',
+          :required => "required"
 
 attribute "mysql/password",
-:description => "MySql server Password",
-:type => 'string',
-:required => "required"
+          :description => "MySql server Password",
+          :type => 'string',
+          :required => "required"
 
 attribute "hops/use_hopsworks",
-:description => "'true' or 'false' - true to enable HopsWorks support",
-:type => 'string'
+          :description => "'true' or 'false' - true to enable HopsWorks support",
+          :type => 'string'
 
 attribute "hops/erasure_coding",
-:description => "'true' or 'false' - true to enable erasure-coding replication",
-:type => 'string'
+          :description => "'true' or 'false' - true to enable erasure-coding replication",
+          :type => 'string'
 
 attribute "hops/nn/direct_memory_size",
-:description => "Size of the direct memory size for the NameNode in MBs",
-:type => 'string'
+          :description => "Size of the direct memory size for the NameNode in MBs",
+          :type => 'string'
 
 attribute "hops/nn/heap_size",
-:description => "Size of the NameNode heap in MBs",
-:type => 'string'
+          :description => "Size of the NameNode heap in MBs",
+          :type => 'string'
 
 attribute "hops/nn/cache",
-:description => "'true' or 'false' - true to enable the path cache in the NameNode",
-:type => 'string'
+          :description => "'true' or 'false' - true to enable the path cache in the NameNode",
+          :type => 'string'
 
 attribute "hops/nn/partition_key",
-:description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
-:type => 'string'
+          :description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
+          :type => 'string'
 
 attribute "hops/yarn/resource_tracker",
-:display_name => "Hadoop Resource Tracker enabled on this nodegroup",
-:type => 'string'
+          :description => "Hadoop Resource Tracker enabled on this nodegroup",
+          :type => 'string'
 
 attribute "hops/install_db",
-:display_name => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
-:type => 'string'
+          :description => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
+          :type => 'string'
 
 attribute "hops/dir",
-:display_name => "Base installation directory for HopsFS",
-:type => 'string'
+          :description => "Base installation directory for HopsFS",
+          :type => 'string'
 
 
 attribute "hops/use_systemd",
-:description => "Use systemd startup scripts, default 'false'",
-:type => "string"
+          :description => "Use systemd startup scripts, default 'false'",
+          :type => "string"
 
 attribute "apache_hadoop/group",
-:description => "Group to run hdfs/yarn/mr as",
-:type => 'string'
+          :description => "Group to run hdfs/yarn/mr as",
+          :type => 'string'
 
 
 #
@@ -95,171 +103,159 @@ attribute "apache_hadoop/group",
 #
 
 attribute "apache_hadoop/yarn/nm/memory_mbs",
-:display_name => "Apache_Hadoop NodeManager Memory in MB",
-:type => 'string'
+          :description => "Apache_Hadoop NodeManager Memory in MB",
+          :type => 'string'
 
 attribute "apache_hadoop/yarn/vcores",
-:display_name => "Apache_Hadoop NodeManager Number of Virtual Cores",
-:type => 'string'
+          :description => "Apache_Hadoop NodeManager Number of Virtual Cores",
+          :type => 'string'
 
 attribute "apache_hadoop/yarn/max_vcores",
-:display_name => "Hadoop NodeManager Maximum Virtual Cores per container",
-:type => 'string'
+          :description => "Hadoop NodeManager Maximum Virtual Cores per container",
+          :type => 'string'
 
 attribute "apache_hadoop/version",
-:display_name => "Hadoop version",
-:description => "Version of apache_hadoop",
-:type => 'string'
+          :description => "Hadoop version",
+          :type => 'string'
 
 attribute "apache_hadoop/num_replicas",
-:display_name => "HDFS replication factor",
-:description => "Number of replicates for each file stored in HDFS",
-:type => 'string'
+          :description => "HDFS replication factor",
+          :type => 'string'
 
 attribute "apache_hadoop/container_cleanup_delay_sec",
-:display_name => "Cleanup Delay (s)",
-:description => "The number of seconds container data is retained after termination",
-:type => 'string'
+          :description => "The number of seconds container data is retained after termination",
+          :type => 'string'
 
 attribute "apache_hadoop/yarn/user",
-:display_name => "Username to run yarn as",
-:description => "Username to run yarn as",
-:type => 'string'
+          :description => "Username to run yarn as",
+          :type => 'string'
 
 attribute "apache_hadoop/mr/user",
-:display_name => "Username to run mapReduce as",
-:description => "Username to run mapReduce as",
-:type => 'string'
+          :description => "Username to run mapReduce as",
+          :type => 'string'
 
 attribute "apache_hadoop/hdfs/user",
-:display_name => "Username to run hdfs as",
-:description => "Username to run hdfs as",
-:type => 'string'
+          :description => "Username to run hdfs as",
+          :type => 'string'
 
 attribute "apache_hadoop/format",
-:display_name => "Format HDFS",
-:description => "Format HDFS, Run 'hdfs namenode -format",
-:type => 'string'
+          :description => "Format HDFS",
+          :type => 'string'
 
 attribute "apache_hadoop/tmp_dir",
-:display_name => "Hadoop Temp Dir",
-:description => "The directory in which Hadoop stores temporary data, including container data",
-:type => 'string'
+          :description => "The directory in which Hadoop stores temporary data, including container data",
+          :type => 'string'
 
 attribute "apache_hadoop/data_dir",
-:display_name => "HDFS Data Dir",
-:description => "The directory in which Hadoop's DataNodes store their data",
-:type => 'string'
+          :description => "The directory in which Hadoop's DataNodes store their data",
+          :type => 'string'
 
 attribute "apache_hadoop/yarn/nodemanager_hb_ms",
-:description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
-:type => 'string'
+          :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
+          :type => 'string'
 
 attribute "apache_hadoop/container_cleanup_delay_sec",
-:display_name => "Cleanup Delay (s)",
-:description => "The number of seconds container data is retained after termination",
-:type => 'string'
+          :description => "The number of seconds container data is retained after termination",
+          :type => 'string'
 
 attribute "apache_hadoop/rm/scheduler_class",
-:display_name => "YARN scheduler class",
-:description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
-:type => 'string'
+          :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
+          :type => 'string'
 
 attribute "apache_hadoop/rm/scheduler_capacity/calculator_class",
-:display_name => "YARN resource calculator class",
-:description => "Switch to DominantResourseCalculator for multiple resource scheduling",
-:type => 'string'
+          :description => "YARN resource calculator class. Switch to DominantResourseCalculator for multiple resource scheduling",
+          :type => 'string'
 
 attribute "apache_hadoop/user_envs",
-:description => "Update the PATH environment variable for the hdfs and yarn users to include hadoop/bin in the PATH ",
-:type => 'string'
+          :description => "Update the PATH environment variable for the hdfs and yarn users to include hadoop/bin in the PATH ",
+          :type => 'string'
 
 attribute "apache_hadoop/logging_level",
-:description => "Log levels are: TRACE, DEBUG, INFO, WARN",
-:type => 'string'
+          :description => "Log levels are: TRACE, DEBUG, INFO, WARN",
+          :type => 'string'
 
 attribute "apache_hadoop/nn/heap_size",
-:description => "Size of the NameNode heap in MBs",
-:type => 'string'
+          :description => "Size of the NameNode heap in MBs",
+          :type => 'string'
 
 attribute "apache_hadoop/nn/direct_memory_size",
-:description => "Size of the direct memory size for the NameNode in MBs",
-:type => 'string'
+          :description => "Size of the direct memory size for the NameNode in MBs",
+          :type => 'string'
 
 attribute "apache_hadoop/ha_enabled",
-:description => "'true' to enable HA, else 'false'",
-:type => 'string'
+          :description => "'true' to enable HA, else 'false'",
+          :type => 'string'
 
 attribute "apache_hadoop/yarn/rt",
-:display_name => "Hadoop Resource Tracker enabled on this nodegroup",
-:type => 'string'
+          :description => "Hadoop Resource Tracker enabled on this nodegroup",
+          :type => 'string'
 
 attribute "apache_hadoop/dir",
-:display_name => "Hadoop installation directory",
-:type => 'string'
+          :description => "Hadoop installation directory",
+          :type => 'string'
 
 attribute "hops/yarn/rm_distributed",
-:description => "Set to 'true' for distribute yarn",
-:type => "string"
+          :description => "Set to 'true' for distribute yarn",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_ha_enabled",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_auto_failover_enabled",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_recovery_enabled",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/rm_heartbeat",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_rpc_batch_max_size",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_rpc_batch_max_duration",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/rm_distributed",
-:description => "Set to 'true' to enable distributed RMs",
-:type => "string"
+          :description => "Set to 'true' to enable distributed RMs",
+          :type => "string"
 
 attribute "hops/yarn/nodemanager_rm_streaming_enabled",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/client_failover_sleep_base_ms",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/client_failover_sleep_max_ms",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/quota_enabled",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/quota_monitor_interval",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/quota_ticks_per_credit",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/quota_min_ticks_charge",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 attribute "hops/yarn/quota_checkpoint_nbticks",
-:description => "",
-:type => "string"
+          :description => "",
+          :type => "string"
 
 
