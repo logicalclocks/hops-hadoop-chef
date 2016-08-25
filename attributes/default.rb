@@ -6,7 +6,7 @@ include_attribute "ndb"
 
 
 default.hops.download_url              = "#{node.download_url}/hops-#{node.apache_hadoop.version}.tgz"
-default.hops.hadoop_src_url            = "#{node.download_url}/hadoop-#{node.hadoop.version}-src.tar.gz"
+default.hops.hadoop_src_url            = "#{node.download_url}/hadoop-#{node.apache_hadoop.version}-src.tar.gz"
 
 default.hops.dir                       = "/srv"
 
@@ -23,8 +23,8 @@ default.hadoop.mysql_url               = "jdbc:mysql://#{default.ndb.mysql_ip}:#
 
 default.hops.log_level                 = "DEBUG"
 
-default.dal.download_url               = "#{node.download_url}/ndb-dal-#{node.hadoop.version}-#{node.ndb.version}.jar"
-default.dal.lib_url                    = "#{node.download_url}/libhopsyarn-#{node.hadoop.version}-#{node.ndb.version}.so"
+default.dal.download_url               = "#{node.download_url}/ndb-dal-#{node.apache_hadoop.version}-#{node.ndb.version}.jar"
+default.dal.lib_url                    = "#{node.download_url}/libhopsyarn-#{node.apache_hadoop.version}-#{node.ndb.version}.so"
 
 default.yarn.spark.version             = "1.6.1"
 default.yarn.spark.shuffle_jar         = "spark-#{node.yarn.spark.version}-yarn-shuffle.jar"
