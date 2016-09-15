@@ -258,4 +258,11 @@ attribute "hops/yarn/quota_checkpoint_nbticks",
           :description => "",
           :type => "string"
 
+attribute "hops/trash/interval",
+          :description => "How long in minutes trash survives in /user/<glassfish>/.Trash/<interval-bucket>/...",
+          :type => "string"
+
+attribute "hops/trash/checkpoint/interval",
+          :description => "How long in minutes until a new directory bucket is created in /user/<glassfish>/.Trash with a timestamp. ",
+          :type => "string"
 
