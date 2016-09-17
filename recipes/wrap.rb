@@ -12,6 +12,8 @@ node.override.apache_hadoop.dn.data_dir               = "#{node.apache_hadoop.da
 node.override.apache_hadoop.nn.name_dir               = "#{node.apache_hadoop.data_dir}/hdfs/nn"
 node.override.apache_hadoop.use_systemd               = node.hops.use_systemd
 
+node.override.apache_hadoop.yarn.aux_services         "spark_shuffle,mapreduce_shuffle"
+
 node.override.apache_hadoop.nn.direct_memory_size   = node.hops.nn.direct_memory_size
 node.override.apache_hadoop.nn.heap_size            = node.hops.nn.heap_size
 
