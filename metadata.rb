@@ -267,3 +267,6 @@ attribute "hops/trash/checkpoint/interval",
           :description => "How long in minutes until a new directory bucket is created in /user/<glassfish>/.Trash with a timestamp. ",
           :type => "string"
 
+attribute "apache_hadoop/yarn/aux_services",
+          :description => "mapreduce_shuffle, spark_shuffle",
+          :type => "string"
