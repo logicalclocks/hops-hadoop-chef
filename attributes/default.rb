@@ -101,5 +101,8 @@ default.hops.yarn.quota_checkpoint_nbticks          = 600
 
 node.default.apache_hadoop.yarn.log_aggregation     = "true"
 
+
+default.hops.nn.format_options                      = "-formatAll"
+
 default.hops.trash.interval                         = 360
 default.hops.trash.checkpoint.interval              = 60
