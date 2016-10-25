@@ -8,3 +8,11 @@ remote_file "#{node.hops.dir}/hadoop/share/hadoop/yarn/lib/#{node.yarn.spark.shu
   mode 0644
   action :create_if_missing
 end
+
+remote_file "#{node.hops.dir}/hadoop/share/hadoop/yarn/lib/#{node.yarn.kafka.util_jar}"  do
+  user node.apache_hadoop.yarn.user
+  group node.apache_hadoop.group
+  source node.yarn.kafka.util_url
+  mode 0644
+  action :create_if_missing
+end

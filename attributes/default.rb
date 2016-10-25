@@ -29,6 +29,8 @@ default.dal.lib_url                          = "#{node.download_url}/libhopsyarn
 default.yarn.spark.version                   = "2.0.1"
 default.yarn.spark.shuffle_jar               = "spark-#{node.yarn.spark.version}-yarn-shuffle.jar"
 default.yarn.spark.shuffle_url               = "#{node.download_url}/#{node.yarn.spark.shuffle_jar}"
+default.yarn.kafka.util_jar                  = "kafka-util-0.1.jar"
+default.yarn.kafka.util_url                  = "#{node.download_url}/#{node.yarn.kafka.util_jar}"
 default.dal.schema_url                       = "#{node.download_url}/hops.sql"
 default.yarn.spark.version                   = "2.0.1"
 
