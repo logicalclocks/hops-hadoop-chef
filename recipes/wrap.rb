@@ -8,8 +8,6 @@ node.override.apache_hadoop.tmp_dir                   = "#{node.apache_hadoop.ho
 node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.home}/etc/hadoop"
 node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.home}/sbin"
 node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.home}/bin"
-node.override.apache_hadoop.dn.data_dir               = "#{node.apache_hadoop.data_dir}/hdfs/dn"
-node.override.apache_hadoop.nn.name_dir               = "#{node.apache_hadoop.data_dir}/hdfs/nn"
 node.override.apache_hadoop.use_systemd               = node.hops.use_systemd
 
 node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_options

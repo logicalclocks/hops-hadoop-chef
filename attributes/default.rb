@@ -63,9 +63,6 @@ default.hops.yarn.resource_tracker           = "false"
 
 default.hops.use_hopsworks                   = "false"
 
-# Blocksize given in Bytes. 134217728        = 128MB
-node.normal.apache_hadoop.hdfs.blocksize     = 134217728 
-
 default.hops.erasure_coding                  = "false"
 
 default.hops.nn.cache                        = "true"
