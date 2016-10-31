@@ -1,4 +1,4 @@
-default.hops.version                   = "2.4.0"
+default.hops.version                   = "2.7.3"
 
 include_attribute "kagent"
 include_attribute "apache_hadoop"
