@@ -98,6 +98,9 @@ attribute "apache_hadoop/group",
           :description => "Group to run hdfs/yarn/mr as",
           :type => 'string'
 
+attribute "apache_hadoop/hdfs/blocksize",
+          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
+          :type => 'string'
 
 #
 # wrapper parameters 
