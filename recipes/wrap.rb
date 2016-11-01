@@ -14,8 +14,9 @@ node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_opti
 
 node.override.apache_hadoop.yarn.aux_services         = "spark_shuffle,mapreduce_shuffle"
 
-node.override.apache_hadoop.nn.direct_memory_size   = node.hops.nn.direct_memory_size
-node.override.apache_hadoop.nn.heap_size            = node.hops.nn.heap_size
+node.override.apache_hadoop.nn.direct_memory_size     = node.hops.nn.direct_memory_size
+node.override.apache_hadoop.nn.heap_size              = node.hops.nn.heap_size
+node.override.apache_hadoop.data_dir                  = node.hops.data_dir
 
 node.hops.recipes.each do |r|
   node.override.apache_hadoop["#{r}"][:private_ips]       = node.hops["#{r}"][:private_ips]

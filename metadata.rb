@@ -94,6 +94,10 @@ attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
           :type => "string"
 
+attribute "hops/data_dir",
+          :description => "The directory in which Hadoop's DataNodes and NameNodes store their data",
+          :type => 'string'
+
 attribute "apache_hadoop/group",
           :description => "Group to run hdfs/yarn/mr as",
           :type => 'string'
@@ -148,10 +152,6 @@ attribute "apache_hadoop/format",
 
 attribute "apache_hadoop/tmp_dir",
           :description => "The directory in which Hadoop stores temporary data, including container data",
-          :type => 'string'
-
-attribute "apache_hadoop/data_dir",
-          :description => "The directory in which Hadoop's DataNodes store their data",
           :type => 'string'
 
 attribute "apache_hadoop/yarn/nodemanager_hb_ms",
