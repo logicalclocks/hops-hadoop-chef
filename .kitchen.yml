@@ -41,7 +41,7 @@ suites:
     attributes:
          hops:
             hdfs:
-               blocksize: 8m
+               blocksize: "8m"
          hops:
             nn:
                private_ips: ["10.0.2.15"]

@@ -101,6 +101,10 @@ attribute "hops/data_dir",
           :description => "The directory in which Hadoop's DataNodes and NameNodes store their data",
           :type => 'string'
 
+attribute "hops/dn/data_dir",
+          :description => "The directory in which Hadoop's DataNodes store their data",
+          :type => 'string'
+
 attribute "apache_hadoop/group",
           :description => "Group to run hdfs/yarn/mr as",
           :type => 'string'

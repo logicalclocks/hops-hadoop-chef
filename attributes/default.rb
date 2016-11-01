@@ -24,6 +24,7 @@ default.hadoop.mysql_url                     = "jdbc:mysql://#{default.ndb.mysql
 default.hops.log_level                       = "DEBUG"
 
 default.hops.data_dir                        = "/var/data/hadoop"
+default.hops.dn.data_dir                     = "#{node.hops.data_dir}/hdfs/dn"
 default.hops.hdfs.blocksize                  = "134217728"
 
 default.dal.download_url                     = "#{node.download_url}/ndb-dal-#{node.apache_hadoop.version}-#{node.ndb.version}.jar"
