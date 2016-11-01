@@ -113,14 +113,6 @@ attribute "apache_hadoop/yarn/nm/memory_mbs",
           :description => "Apache_Hadoop NodeManager Memory in MB",
           :type => 'string'
 
-attribute "apache_hadoop/yarn/nm/memory_mbs",
-          :description => "Apache_Hadoop NodeManager Memory in MB",
-          :type => 'string'
-
-attribute "apache_hadoop/nm/log_dir",
-          :description => "Directory for storing user logs for the nodemanager",
-          :type => 'string'
-
 attribute "apache_hadoop/yarn/vcores",
           :description => "Apache_Hadoop NodeManager Number of Virtual Cores",
           :type => 'string'
