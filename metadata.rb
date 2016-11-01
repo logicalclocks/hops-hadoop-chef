@@ -154,7 +154,7 @@ attribute "apache_hadoop/tmp_dir",
           :description => "The directory in which Hadoop stores temporary data, including container data",
           :type => 'string'
 
-attribute "apache_hadoop/nodemanager/log_dir",
+attribute "apache_hadoop/nm/log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
 
