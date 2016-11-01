@@ -93,7 +93,6 @@ attribute "hops/hdfs/blocksize",
           :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
 
-
 attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
           :type => "string"
@@ -112,6 +111,14 @@ attribute "apache_hadoop/group",
 
 attribute "apache_hadoop/yarn/nm/memory_mbs",
           :description => "Apache_Hadoop NodeManager Memory in MB",
+          :type => 'string'
+
+attribute "apache_hadoop/yarn/nm/memory_mbs",
+          :description => "Apache_Hadoop NodeManager Memory in MB",
+          :type => 'string'
+
+attribute "apache_hadoop/nm/log_dir",
+          :description => "Directory for storing user logs for the nodemanager",
           :type => 'string'
 
 attribute "apache_hadoop/yarn/vcores",
