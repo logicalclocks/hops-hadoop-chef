@@ -5,7 +5,6 @@ node.override.apache_hadoop.home                      = node.hops.dir + "/hadoop
 node.override.apache_hadoop.base_dir                  = node.hops.dir + "/hadoop"
 node.override.apache_hadoop.logs_dir                  = node.apache_hadoop.home + "/logs"
 node.override.apache_hadoop.tmp_dir                   = "#{node.apache_hadoop.home}/tmp"
-node.override.apache_hadoop.nm.log_dir                = "#{node.apache_hadoop.logs_dir}/userlogs"
 node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.home}/etc/hadoop"
 node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.home}/sbin"
 node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.home}/bin"
