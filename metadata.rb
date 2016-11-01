@@ -89,6 +89,10 @@ attribute "hops/dir",
           :description => "Base installation directory for HopsFS",
           :type => 'string'
 
+attribute "hops/hdfs/blocksize",
+          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
+          :type => 'string'
+
 
 attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
@@ -100,10 +104,6 @@ attribute "hops/data_dir",
 
 attribute "apache_hadoop/group",
           :description => "Group to run hdfs/yarn/mr as",
-          :type => 'string'
-
-attribute "apache_hadoop/hdfs/blocksize",
-          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
 
 #
