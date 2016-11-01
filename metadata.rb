@@ -89,15 +89,22 @@ attribute "hops/dir",
           :description => "Base installation directory for HopsFS",
           :type => 'string'
 
+attribute "hops/hdfs/blocksize",
+          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
+          :type => 'string'
+
 
 attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
           :type => "string"
 
+attribute "hops/data_dir",
+          :description => "The directory in which Hadoop's DataNodes and NameNodes store their data",
+          :type => 'string'
+
 attribute "apache_hadoop/group",
           :description => "Group to run hdfs/yarn/mr as",
           :type => 'string'
-
 
 #
 # wrapper parameters 
@@ -149,10 +156,6 @@ attribute "apache_hadoop/tmp_dir",
 
 attribute "apache_hadoop/nodemanager/log-dirs",
           :description => "The directory in which yarn node manager store containers logs",
-          :type => 'string'
-
-attribute "apache_hadoop/data_dir",
-          :description => "The directory in which Hadoop's DataNodes store their data",
           :type => 'string'
 
 attribute "apache_hadoop/yarn/nodemanager_hb_ms",

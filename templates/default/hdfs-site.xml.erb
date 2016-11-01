@@ -88,22 +88,34 @@
     <description></description>
   </property>
 
-  <!-- <property> -->
-  <!--   <name>dfs.blocksize</name> -->
-  <!--   <value><%= node.apache_hadoop.hdfs.blocksize %></value> -->
-  <!--   <description> -->
-  <!--       The default block size for new files, in bytes. -->
-  <!--       You can use the following suffix (case insensitive): -->
-  <!--       k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.), -->
-  <!--       Or provide complete size in bytes (such as 134217728 for 128 MB). -->
-  <!--   </description> -->
-  <!-- </property> -->
+  <property>
+    <name>dfs.blocksize</name>
+    <value><%= node.hops.hdfs.blocksize %></value>
+    <description>
+        The default block size for new files, in bytes.
+        You can use the following suffix (case insensitive):
+        k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
+        Or provide complete size in bytes (such as 134217728 for 128 MB).
+    </description>
+  </property>
 
   <property>
     <name>dfs.client.refresh.namenode.list</name>
     <value>60000</value>
     <description>Time in ms</description>
   </property>
+
+
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file://<%= node.apache_hadoop.nn.name_dir %></value>
+  </property>
+
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>file://<%= node.apache_hadoop.dn.data_dir %></value>
+  </property>
+
 
   <property>
     <name>dfs.namenode.safemode.extension</name>

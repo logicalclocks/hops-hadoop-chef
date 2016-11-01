@@ -9,16 +9,16 @@ node.override.apache_hadoop.nodemanager.log-dirs      = "#{node.apache_hadoop.lo
 node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.home}/etc/hadoop"
 node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.home}/sbin"
 node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.home}/bin"
-node.override.apache_hadoop.dn.data_dir               = "#{node.apache_hadoop.data_dir}/hdfs/dn"
-node.override.apache_hadoop.nn.name_dir               = "#{node.apache_hadoop.data_dir}/hdfs/nn"
 node.override.apache_hadoop.use_systemd               = node.hops.use_systemd
 
 node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_options
 
 node.override.apache_hadoop.yarn.aux_services         = "spark_shuffle,mapreduce_shuffle"
 
-node.override.apache_hadoop.nn.direct_memory_size   = node.hops.nn.direct_memory_size
-node.override.apache_hadoop.nn.heap_size            = node.hops.nn.heap_size
+node.override.apache_hadoop.nn.direct_memory_size     = node.hops.nn.direct_memory_size
+node.override.apache_hadoop.nn.heap_size              = node.hops.nn.heap_size
+node.override.apache_hadoop.data_dir                  = node.hops.data_dir
+node.override.apache_hadoop.hdfs.blocksize            = node.hops.hdfs.blocksize
 
 node.hops.recipes.each do |r|
   node.override.apache_hadoop["#{r}"][:private_ips]       = node.hops["#{r}"][:private_ips]

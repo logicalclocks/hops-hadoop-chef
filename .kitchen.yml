@@ -39,6 +39,9 @@ suites:
 #      - recipe[hops::jn]
 
     attributes:
+         apache_hadoop:
+            hdfs:
+               block_size: 8m
          hops:
             nn:
                private_ips: ["10.0.2.15"]
