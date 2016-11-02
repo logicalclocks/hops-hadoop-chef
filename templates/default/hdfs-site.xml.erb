@@ -108,12 +108,12 @@
 
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>file://<%= node.apache_hadoop.nn.name_dir %></value>
+    <value><%= node.apache_hadoop.nn.name_dir %></value>
   </property>
 
   <property>
     <name>dfs.datanode.data.dir</name>
-    <value>file://<%= node.apache_hadoop.dn.data_dir %></value>
+    <value><%= node.apache_hadoop.dn.data_dir %></value>
   </property>
 
 
