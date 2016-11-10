@@ -39,9 +39,9 @@ suites:
 #      - recipe[hops::jn]
 
     attributes:
-         apache_hadoop:
+         hops:
             hdfs:
-               block_size: 8m
+               blocksize: "8m"
          hops:
             nn:
                private_ips: ["10.0.2.15"]
@@ -51,6 +51,7 @@ suites:
                private_ips: ["10.0.2.15"]
             nm:
                private_ips: ["10.0.2.15"]
+               log_dir : "/srv"
             jhs:
                private_ips: ["10.0.2.15"]
             ps:

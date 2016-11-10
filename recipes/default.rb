@@ -72,6 +72,7 @@ template "#{node.apache_hadoop.conf_dir}/hdfs-site.xml" do
   owner node.apache_hadoop.hdfs.user
   group node.apache_hadoop.group
   mode "755"
+  cookbook "hops"
   variables({
               :firstNN => firstNN
             })
@@ -102,6 +103,7 @@ template "#{node.apache_hadoop.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node.apache_hadoop.yarn.user
   group node.apache_hadoop.group
+  cookbook "hops"
   mode "666"
   variables({
               :rm_private_ip => rm_dest_ip,

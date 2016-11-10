@@ -93,13 +93,16 @@ attribute "hops/hdfs/blocksize",
           :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
 
-
 attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
           :type => "string"
 
 attribute "hops/data_dir",
           :description => "The directory in which Hadoop's DataNodes and NameNodes store their data",
+          :type => 'string'
+
+attribute "hops/dn/data_dir",
+          :description => "The directory in which Hadoop's DataNodes store their data",
           :type => 'string'
 
 attribute "apache_hadoop/group",
@@ -154,7 +157,7 @@ attribute "apache_hadoop/tmp_dir",
           :description => "The directory in which Hadoop stores temporary data, including container data",
           :type => 'string'
 
-attribute "apache_hadoop/nodemanager/log-dirs",
+attribute "apache_hadoop/nm/log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
 

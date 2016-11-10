@@ -57,6 +57,7 @@ template "#{node.apache_hadoop.conf_dir}/hdfs-site.xml" do
   owner node.apache_hadoop.hdfs.user
   group node.apache_hadoop.group
   mode "755"
+  cookbook "hops"
   variables({
               :firstNN => myNN,
               :cache => cache,

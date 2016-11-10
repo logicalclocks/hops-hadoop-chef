@@ -5,7 +5,6 @@ node.override.apache_hadoop.home                      = node.hops.dir + "/hadoop
 node.override.apache_hadoop.base_dir                  = node.hops.dir + "/hadoop"
 node.override.apache_hadoop.logs_dir                  = node.apache_hadoop.home + "/logs"
 node.override.apache_hadoop.tmp_dir                   = "#{node.apache_hadoop.home}/tmp"
-node.override.apache_hadoop.nodemanager.log-dirs      = "#{node.apache_hadoop.logs_dir}/userlogs"
 node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.home}/etc/hadoop"
 node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.home}/sbin"
 node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.home}/bin"
@@ -18,6 +17,7 @@ node.override.apache_hadoop.yarn.aux_services         = "spark_shuffle,mapreduce
 node.override.apache_hadoop.nn.direct_memory_size     = node.hops.nn.direct_memory_size
 node.override.apache_hadoop.nn.heap_size              = node.hops.nn.heap_size
 node.override.apache_hadoop.data_dir                  = node.hops.data_dir
+node.override.apache_hadoop.dn.data_dir               = node.hops.dn.data_dir
 node.override.apache_hadoop.hdfs.blocksize            = node.hops.hdfs.blocksize
 
 node.hops.recipes.each do |r|
