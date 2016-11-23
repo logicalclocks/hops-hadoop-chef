@@ -39,6 +39,10 @@ attribute "java/install_flavor",
           :description =>  "Oracle (default) or openjdk",
           :type => 'string'
 
+attribute "java/java_home",
+          :description =>  "JAVA_HOME",
+          :type => 'string'
+
 attribute "hops/yarn/rm_heartbeat",
           :description => "NodeManager heartbeat timeout",
           :type => 'string'
