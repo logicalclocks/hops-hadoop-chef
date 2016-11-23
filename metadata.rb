@@ -283,8 +283,8 @@ attribute "apache_hadoop/yarn/aux_services",
 
 attribute "hops/nn/private_ips",
           :description => "Set ip addresses",
-          :type => "string"
+          :type => "array"
 
 attribute "hops/rm/private_ips",
           :description => "Set ip addresses",
-          :type => "string"
+          :type => "array"
