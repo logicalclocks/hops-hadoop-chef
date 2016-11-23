@@ -280,3 +280,11 @@ attribute "hops/trash/checkpoint/interval",
 attribute "apache_hadoop/yarn/aux_services",
           :description => "mapreduce_shuffle, spark_shuffle",
           :type => "string"
+
+attribute "hops/nn/private_ips",
+          :description => "Set ip addresses",
+          :type => "string"
+
+attribute "hops/rm/private_ips",
+          :description => "Set ip addresses",
+          :type => "string"

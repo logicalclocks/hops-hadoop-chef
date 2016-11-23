@@ -11,6 +11,7 @@ node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.ho
 node.override.apache_hadoop.use_systemd               = node.hops.use_systemd
 
 node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_options
+node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_options
 
 node.override.apache_hadoop.yarn.aux_services         = "spark_shuffle,mapreduce_shuffle"
 
