@@ -292,3 +292,41 @@ attribute "hops/nn/private_ips",
 attribute "hops/rm/private_ips",
           :description => "Set ip addresses",
           :type => "array"
+
+attribute "apache_hadoop/capacity/max_ap",
+          :description => "Maximum number of applications that can be pending and running.",
+          :type => "string"
+attribute "apache_hadoop/capacity/max_am_percent",
+          :description => "Maximum percent of resources in the cluster which can be used to run application masters i.e. controls number of concurrent running applications.",
+          :type => "string"
+attribute "apache_hadoop/capacity/resource_calculator_class",
+          :description => "The ResourceCalculator implementation to be used to compare Resources in the scheduler. The default i.e. DefaultResourceCalculator only uses Memory while DominantResourceCalculator uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.",
+          :type => "string"
+attribute "apache_hadoop/capacity/root/queues",
+          :description => "The queues at the root level (root is the root queue).",
+          :type => "string"
+attribute "apache_hadoop/capacity/default_capacity",
+          :description => "Default queue target capacity.",
+          :type => "string"
+attribute "apache_hadoop/capacity/user_limit_factor",
+          :description => " Default queue user limit a percentage from 0.0 to 1.0.",
+          :type => "string"
+attribute "apache_hadoop/capacity/default_max_capacity",
+          :description => "The maximum capacity of the default queue.",
+          :type => "string"
+attribute "apache_hadoop/capacity/default_state",
+          :description => "The state of the default queue. State can be one of RUNNING or STOPPED.",
+          :type => "string"
+attribute "apache_hadoop/capacity/default_acl_submit_applications",
+          :description => "The ACL of who can submit jobs to the default queue.",
+          :type => "string"
+attribute "apache_hadoop/capacity/default_acl_administer_queue",
+          :description => "The ACL of who can administer jobs on the default queue.",
+          :type => "string"
+attribute "apache_hadoop/capacity/queue_mapping",
+          :description => "A list of mappings that will be used to assign jobs to queues The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]* Typically this list will be used to map users to queues, for example, u:%user:%user maps all users to queues with the same name as the user.",
+          :type => "string"
+attribute "apache_hadoop/capacity/queue_mapping_override.enable",
+          :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
+          :type => "string"
+
