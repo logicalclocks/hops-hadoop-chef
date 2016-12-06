@@ -302,7 +302,7 @@ attribute "apache_hadoop/capacity/max_am_percent",
 attribute "apache_hadoop/capacity/resource_calculator_class",
           :description => "The ResourceCalculator implementation to be used to compare Resources in the scheduler. The default i.e. DefaultResourceCalculator only uses Memory while DominantResourceCalculator uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.",
           :type => "string"
-attribute "apache_hadoop/capacity/root/queues",
+attribute "apache_hadoop/capacity/root_queues",
           :description => "The queues at the root level (root is the root queue).",
           :type => "string"
 attribute "apache_hadoop/capacity/default_capacity",
