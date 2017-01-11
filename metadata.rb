@@ -330,3 +330,6 @@ attribute "apache_hadoop/capacity/queue_mapping_override.enable",
           :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
           :type => "string"
 
+attribute "hadoop_spark/version",
+          :description => "Spark version",
+          :type => 'string'
