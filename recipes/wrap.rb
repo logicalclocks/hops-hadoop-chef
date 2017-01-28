@@ -3,11 +3,11 @@ node.override.apache_hadoop.version                   = node.hops.version
 node.override.apache_hadoop.dir                       = node.hops.dir
 node.override.apache_hadoop.home                      = node.hops.dir + "/hadoop-" + node.hops.version
 node.override.apache_hadoop.base_dir                  = node.hops.dir + "/hadoop"
-node.override.apache_hadoop.logs_dir                  = node.apache_hadoop.home + "/logs"
-node.override.apache_hadoop.tmp_dir                   = "#{node.apache_hadoop.home}/tmp"
-node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.home}/etc/hadoop"
-node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.home}/sbin"
-node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.home}/bin"
+node.override.apache_hadoop.logs_dir                  = node.apache_hadoop.base_dir + "/logs"
+node.override.apache_hadoop.tmp_dir                   = "#{node.apache_hadoop.base_dir}/tmp"
+node.override.apache_hadoop.conf_dir                  = "#{node.apache_hadoop.base_dir}/etc/hadoop"
+node.override.apache_hadoop.sbin_dir                  = "#{node.apache_hadoop.base_dir}/sbin"
+node.override.apache_hadoop.bin_dir                   = "#{node.apache_hadoop.base_dir}/bin"
 node.override.apache_hadoop.use_systemd               = node.hops.use_systemd
 
 node.override.apache_hadoop.nn.format_options         = node.hops.nn.format_options
