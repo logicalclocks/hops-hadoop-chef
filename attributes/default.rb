@@ -110,9 +110,9 @@ default.hops.nn.format_options                      = "-formatAll"
 default.hops.trash.interval                         = 360
 default.hops.trash.checkpoint.interval              = 60
 
-#capacit scheduler queue configuration
+#capacity scheduler queue configuration
 default.apache_hadoop.capacity.max_app                                  =10000
-default.apache_hadoop.capacity.max_am_percent                           =0.1
+default.apache_hadoop.capacity.max_am_percent                           =0.3
 default.apache_hadoop.capacity.resource_calculator_class                ="org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 default.apache_hadoop.capacity.root_queues                              ="default"
 default.apache_hadoop.capacity.default_capacity                         =100
