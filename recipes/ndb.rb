@@ -45,6 +45,11 @@ link "#{node.apache_hadoop.dir}/ndb-hops/ndb-dal.jar" do
 end
 
 
+mysql_ip = my_ip
+if node.mysql.localhost == "true"
+  mysql_ip = "localhost"
+end
+
 template "#{node.apache_hadoop.home}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
   owner node.apache_hadoop.hdfs.user
@@ -52,7 +57,7 @@ template "#{node.apache_hadoop.home}/etc/hadoop/ndb.props" do
   mode "755"
   variables({
               :ndb_connectstring => node.ndb.connectstring,
-              :mysql_host => my_ip
+              :mysql_host => mysql_ip
             })
 end
 
