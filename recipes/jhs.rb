@@ -8,7 +8,7 @@ for d in %w{ /raidrs /parity }
     action :create_as_superuser
     owner node.apache_hadoop.hdfs.user
     group node.apache_hadoop.group
-    mode "1775"
+    mode "1777"
     not_if ". #{node.apache_hadoop.home}/sbin/set-env.sh && #{node.apache_hadoop.home}/bin/hdfs dfs -test -d #{d}"
   end
 end
