@@ -22,3 +22,7 @@ dependencies:
   - recipe: hops::client
     global:  
       - hops::nn
+  - recipe: hops::jhs
+    global:  
+      - apache_hadoop::nn
+      - apache_hadoop::dn

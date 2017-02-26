@@ -1,10 +1,10 @@
 name             "hops"
 maintainer       "Jim Dowling"
 maintainer_email "jdowling@kth.se"
-license          "GPL 2.0"
-description      'Installs/Configures HOPS distribution'
+license          "Apache v2.0"
+description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.1.1"
+version          "0.2.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -24,8 +24,9 @@ recipe            "hops::purge-ndb", "Drops  hops db from NDB"
 depends 'java'
 depends 'kagent'
 depends 'ndb'
-depends 'apache_hadoop'
 depends 'magic_shell'
+depends 'sysctl'
+depends 'cmake'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -43,8 +44,8 @@ attribute "java/java_home",
           :description =>  "JAVA_HOME",
           :type => 'string'
 
-attribute "hops/yarn/rm_heartbeat",
-          :description => "NodeManager heartbeat timeout",
+attribute "hops/dir",
+          :description => "Base installation directory for HopsFS",
           :type => 'string'
 
 attribute "mysql/user",
@@ -65,14 +66,6 @@ attribute "hops/erasure_coding",
           :description => "'true' or 'false' - true to enable erasure-coding replication",
           :type => 'string'
 
-attribute "hops/nn/direct_memory_size",
-          :description => "Size of the direct memory size for the NameNode in MBs",
-          :type => 'string'
-
-attribute "hops/nn/heap_size",
-          :description => "Size of the NameNode heap in MBs",
-          :type => 'string'
-
 attribute "hops/nn/cache",
           :description => "'true' or 'false' - true to enable the path cache in the NameNode",
           :type => 'string'
@@ -89,129 +82,21 @@ attribute "hops/install_db",
           :description => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
           :type => 'string'
 
-attribute "hops/dir",
-          :description => "Base installation directory for HopsFS",
-          :type => 'string'
-
-attribute "hops/hdfs/blocksize",
-          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
-          :type => 'string'
-
 attribute "hops/use_systemd",
           :description => "Use systemd startup scripts, default 'false'",
           :type => "string"
 
-attribute "hops/data_dir",
-          :description => "The directory in which Hadoop's DataNodes and NameNodes store their data",
-          :type => 'string'
-
-attribute "hops/dn/data_dir",
-          :description => "The directory in which Hadoop's DataNodes store their data",
-          :type => 'string'
-
-attribute "apache_hadoop/group",
-          :description => "Group to run hdfs/yarn/mr as",
-          :type => 'string'
-
-#
-# wrapper parameters 
-#
-
-attribute "apache_hadoop/yarn/nm/memory_mbs",
-          :description => "Apache_Hadoop NodeManager Memory in MB",
-          :type => 'string'
-
-attribute "apache_hadoop/yarn/vcores",
-          :description => "Apache_Hadoop NodeManager Number of Virtual Cores",
-          :type => 'string'
-
-attribute "apache_hadoop/yarn/max_vcores",
-          :description => "Hadoop NodeManager Maximum Virtual Cores per container",
-          :type => 'string'
-
-attribute "apache_hadoop/version",
-          :description => "Hadoop version",
-          :type => 'string'
-
-attribute "apache_hadoop/num_replicas",
-          :description => "HDFS replication factor",
-          :type => 'string'
-
-attribute "apache_hadoop/container_cleanup_delay_sec",
-          :description => "The number of seconds container data is retained after termination",
-          :type => 'string'
-
-attribute "apache_hadoop/yarn/user",
-          :description => "Username to run yarn as",
-          :type => 'string'
-
-attribute "apache_hadoop/mr/user",
-          :description => "Username to run mapReduce as",
-          :type => 'string'
-
-attribute "apache_hadoop/hdfs/user",
-          :description => "Username to run hdfs as",
-          :type => 'string'
-
-attribute "apache_hadoop/format",
+attribute "hops/format",
           :description => "Format HDFS",
           :type => 'string'
 
-attribute "apache_hadoop/tmp_dir",
-          :description => "The directory in which Hadoop stores temporary data, including container data",
-          :type => 'string'
-
-attribute "apache_hadoop/nm/log_dir",
+attribute "hops/nm/log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
 
-attribute "apache_hadoop/yarn/nodemanager_hb_ms",
-          :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
+attribute "hops/yarn/memory_mbs",
+          :description => "Apache_Hadoop NodeManager Memory in MB",
           :type => 'string'
-
-attribute "apache_hadoop/container_cleanup_delay_sec",
-          :description => "The number of seconds container data is retained after termination",
-          :type => 'string'
-
-attribute "apache_hadoop/rm/scheduler_class",
-          :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
-          :type => 'string'
-
-attribute "apache_hadoop/rm/scheduler_capacity/calculator_class",
-          :description => "YARN resource calculator class. Switch to DominantResourseCalculator for multiple resource scheduling",
-          :type => 'string'
-
-attribute "apache_hadoop/user_envs",
-          :description => "Update the PATH environment variable for the hdfs and yarn users to include hadoop/bin in the PATH ",
-          :type => 'string'
-
-attribute "apache_hadoop/logging_level",
-          :description => "Log levels are: TRACE, DEBUG, INFO, WARN",
-          :type => 'string'
-
-attribute "apache_hadoop/nn/heap_size",
-          :description => "Size of the NameNode heap in MBs",
-          :type => 'string'
-
-attribute "apache_hadoop/nn/direct_memory_size",
-          :description => "Size of the direct memory size for the NameNode in MBs",
-          :type => 'string'
-
-attribute "apache_hadoop/ha_enabled",
-          :description => "'true' to enable HA, else 'false'",
-          :type => 'string'
-
-attribute "apache_hadoop/yarn/rt",
-          :description => "Hadoop Resource Tracker enabled on this nodegroup",
-          :type => 'string'
-
-attribute "apache_hadoop/dir",
-          :description => "Hadoop installation directory",
-          :type => 'string'
-
-attribute "hops/yarn/rm_distributed",
-          :description => "Set to 'true' for distribute yarn",
-          :type => "string"
 
 attribute "hops/yarn/nodemanager_ha_enabled",
           :description => "",
@@ -281,10 +166,6 @@ attribute "hops/trash/checkpoint/interval",
           :description => "How long in minutes until a new directory bucket is created in /user/<glassfish>/.Trash with a timestamp. ",
           :type => "string"
 
-attribute "apache_hadoop/yarn/aux_services",
-          :description => "mapreduce_shuffle, spark_shuffle",
-          :type => "string"
-
 attribute "hops/nn/private_ips",
           :description => "Set ip addresses",
           :type => "array"
@@ -293,43 +174,132 @@ attribute "hops/rm/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
-attribute "apache_hadoop/capacity/max_ap",
-          :description => "Maximum number of applications that can be pending and running.",
-          :type => "string"
-attribute "apache_hadoop/capacity/max_am_percent",
-          :description => "Maximum percent of resources in the cluster which can be used to run application masters i.e. controls number of concurrent running applications.",
-          :type => "string"
-attribute "apache_hadoop/capacity/resource_calculator_class",
-          :description => "The ResourceCalculator implementation to be used to compare Resources in the scheduler. The default i.e. DefaultResourceCalculator only uses Memory while DominantResourceCalculator uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.",
-          :type => "string"
-attribute "apache_hadoop/capacity/root_queues",
-          :description => "The queues at the root level (root is the root queue).",
-          :type => "string"
-attribute "apache_hadoop/capacity/default_capacity",
-          :description => "Default queue target capacity.",
-          :type => "string"
-attribute "apache_hadoop/capacity/user_limit_factor",
-          :description => " Default queue user limit a percentage from 0.0 to 1.0.",
-          :type => "string"
-attribute "apache_hadoop/capacity/default_max_capacity",
-          :description => "The maximum capacity of the default queue.",
-          :type => "string"
-attribute "apache_hadoop/capacity/default_state",
-          :description => "The state of the default queue. State can be one of RUNNING or STOPPED.",
-          :type => "string"
-attribute "apache_hadoop/capacity/default_acl_submit_applications",
-          :description => "The ACL of who can submit jobs to the default queue.",
-          :type => "string"
-attribute "apache_hadoop/capacity/default_acl_administer_queue",
-          :description => "The ACL of who can administer jobs on the default queue.",
-          :type => "string"
-attribute "apache_hadoop/capacity/queue_mapping",
-          :description => "A list of mappings that will be used to assign jobs to queues The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]* Typically this list will be used to map users to queues, for example, u:%user:%user maps all users to queues with the same name as the user.",
-          :type => "string"
-attribute "apache_hadoop/capacity/queue_mapping_override.enable",
-          :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
-          :type => "string"
-
+# Needed to find the jar file for yan-spark-shuffle
 attribute "hadoop_spark/version",
           :description => "Spark version",
           :type => 'string'
+
+attribute "hops/yarn/vcores",
+          :description => "Hops NodeManager Number of Virtual Cores",
+          :type => 'string'
+
+attribute "hops/yarn/max_vcores",
+          :description => "Hadoop NodeManager Maximum Virtual Cores per container",
+          :type => 'string'
+
+attribute "hops/version",
+          :description => "Version of hops",
+          :type => 'string'
+
+attribute "hops/num_replicas",
+          :description => "Number of replicates for each file stored in HDFS",
+          :type => 'string'
+
+attribute "hops/container_cleanup_delay_sec",
+          :description => "The number of seconds container data is retained after termination",
+          :type => 'string'
+
+attribute "hops/group",
+          :description => "Group to run hdfs/yarn/mr as",
+          :type => 'string'
+
+attribute "hops/yarn/user",
+          :description => "Username to run yarn as",
+          :type => 'string'
+
+attribute "hops/mr/user",
+          :description => "Username to run mapReduce as",
+          :type => 'string'
+
+attribute "hops/hdfs/user",
+          :description => "Username to run hdfs as",
+          :type => 'string'
+
+attribute "hops/hdfs/blocksize",
+          :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
+          :type => 'string'
+
+attribute "hops/format",
+          :description => "Format HDFS, Run 'hdfs namenode -format",
+          :type => 'string'
+
+attribute "hops/tmp_dir",
+          :description => "The directory in which Hadoop stores temporary data, including container data",
+          :type => 'string'
+
+attribute "hops/nn/name_dir",
+          :description => "Directory for NameNode's state",
+          :type => 'string'
+
+attribute "hops/dn/data_dir",
+          :description => "The directory in which Hadoop's DataNodes store their data",
+          :type => 'string'
+
+attribute "hops/yarn/nodemanager_hb_ms",
+          :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
+          :type => 'string'
+
+attribute "hops/rm/scheduler_class",
+          :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
+          :type => 'string'
+
+attribute "hops/user_envs",
+          :description => "Update the PATH environment variable for the hdfs and yarn users to include hadoop/bin in the PATH ",
+          :type => 'string'
+
+attribute "hops/logging_level",
+          :description => "Log levels are: TRACE, DEBUG, INFO, WARN",
+          :type => 'string'
+
+attribute "hops/nn/heap_size",
+          :description => "Size of the NameNode heap in MBs",
+          :type => 'string'
+
+attribute "hops/nn/direct_memory_size",
+          :description => "Size of the direct memory size for the NameNode in MBs",
+          :type => 'string'
+
+attribute "hops/yarn/aux_services",
+          :description => "mapreduce_shuffle, spark_shuffle",
+          :type => "string"
+
+attribute "hops/capacity/max_ap",
+          :description => "Maximum number of applications that can be pending and running.",
+          :type => "string"
+attribute "hops/capacity/max_am_percent",
+          :description => "Maximum percent of resources in the cluster which can be used to run application masters i.e. controls number of concurrent running applications.",
+          :type => "string"
+attribute "hops/capacity/resource_calculator_class",
+          :description => "The ResourceCalculator implementation to be used to compare Resources in the scheduler. The default i.e. DefaultResourceCalculator only uses Memory while DominantResourceCalculator uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.",
+          :type => "string"
+attribute "hops/capacity/root_queues",
+          :description => "The queues at the root level (root is the root queue).",
+          :type => "string"
+attribute "hops/capacity/default_capacity",
+          :description => "Default queue target capacity.",
+          :type => "string"
+attribute "hops/capacity/user_limit_factor",
+          :description => " Default queue user limit a percentage from 0.0 to 1.0.",
+          :type => "string"
+attribute "hops/capacity/default_max_capacity",
+          :description => "The maximum capacity of the default queue.",
+          :type => "string"
+attribute "hops/capacity/default_state",
+          :description => "The state of the default queue. State can be one of RUNNING or STOPPED.",
+          :type => "string"
+attribute "hops/capacity/default_acl_submit_applications",
+          :description => "The ACL of who can submit jobs to the default queue.",
+          :type => "string"
+attribute "hops/capacity/default_acl_administer_queue",
+          :description => "The ACL of who can administer jobs on the default queue.",
+          :type => "string"
+attribute "hops/capacity/queue_mapping",
+          :description => "A list of mappings that will be used to assign jobs to queues The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]* Typically this list will be used to map users to queues, for example, u:%user:%user maps all users to queues with the same name as the user.",
+          :type => "string"
+attribute "hops/capacity/queue_mapping_override.enable",
+          :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
+          :type => "string"
+          
+attribute "kagent/enabled",
+          :description => "Set to 'true' to enable, 'false' to disable kagent",
+          :type => "string"

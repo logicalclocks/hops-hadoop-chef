@@ -1,0 +1,10 @@
+#!/bin/bash
+
+EXEC_WITH_USER="su <%= node.hops.hdfs.user %> -c"
+
+$EXEC_WITH_USER "<%= node.hops.base_dir %>/bin/hadoop $@"
+
+
+exit $?
+
+

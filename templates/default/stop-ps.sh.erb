@@ -1,0 +1,9 @@
+#!/bin/bash
+
+command=proxyserver
+pidDir=<%= node.hops.logs_dir %>
+service=yarn
+
+<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.yarn.user %> $command $pidDir
+
+exit $?
