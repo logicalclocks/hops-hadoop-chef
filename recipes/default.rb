@@ -1,11 +1,3 @@
-# Cookbook Name:: hadoop
-# Recipe:: default
-#
-# Copyright 2015, Dowling
-#
-# All rights reserved - Do Not Redistribute
-#
-
 
 require 'resolv'
 
