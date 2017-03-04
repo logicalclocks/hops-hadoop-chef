@@ -50,10 +50,13 @@ end
 include_recipe "java"
 
 
-#group node.hops.group do
-#  action :create
-#  not_if "getent group #{node.hops.group}"
-#end
+if "#{node.hops.group}" != "#{node.hops.hdfs.user}"
+  group node.hops.group do
+    action :create
+    not_if "getent group #{node.hops.group}"
+  end
+end
+
 
 user node.hops.hdfs.user do
   home "/home/#{node.hops.hdfs.user}"
@@ -264,7 +267,7 @@ remote_file cached_package_filename do
 end
 
 hin = "#{node.hops.home}/.#{base_package_filename}_downloaded"
-base_name = File.basename(base_package_filename, ".tar.gz")
+base_name = File.basename(base_package_filename, ".tgz")
 # Extract and install hadoop
 bash 'extract-hadoop' do
   user "root"
@@ -337,8 +340,6 @@ end
    action :create
  end
 
-include_recipe "hops"
-
 
 bash 'update_permissions_etc_dir' do
   user "root"
@@ -389,6 +390,9 @@ magic_shell_environment 'PATH' do
   value "$PATH:#{node.hops.base_dir}/bin"
 end
 
+magic_shell_environment 'JAVA_HOME' do
+  value "#{node.java.java_home}"
+end
 
 magic_shell_environment 'HADOOP_HOME' do
   value node.hops.base_dir

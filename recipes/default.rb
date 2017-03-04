@@ -1,3 +1,9 @@
+case node.platform
+when "ubuntu"
+ if node.platform_version.to_f <= 14.04
+   node.override.hops.systemd = "false"
+ end
+end
 
 require 'resolv'
 
@@ -52,10 +58,10 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
             })
 end
 
-file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
+# file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
+#   owner node.hops.hdfs.user
+#   action :delete
+# end
 
 template "#{node.hops.conf_dir}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
@@ -66,28 +72,32 @@ template "#{node.hops.conf_dir}/hdfs-site.xml" do
   variables({
               :firstNN => firstNN
             })
+  action :create_if_missing  
 end
+
+# file "#{node.hops.home}/etc/hadoop/erasure-coding-site.xml" do 
+#   owner node.hops.hdfs.user
+#   action :delete
+# end
 
 template "#{node.hops.conf_dir}/erasure-coding-site.xml" do
   source "erasure-coding-site.xml.erb"
   owner node.hops.hdfs.user
   group node.hops.group
   mode "755"
+  action :create_if_missing
 end
 
-file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
+# file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
+#   owner node.hops.hdfs.user
+#   action :delete
+# end
 
 container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
 if node.hops.cgroups.eql? "true" 
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
-
-
 node.normal.hops.yarn.aux_services = "spark_shuffle"
-
 
 template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
@@ -98,7 +108,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   variables({
               :rm_private_ip => rm_dest_ip,
               :rm_public_ip => rm_public_ip,
-              :available_mem_mb => node.hops.yarn.nm.memory_mbs,
+              :available_mem_mb => node.hops.yarn.memory_mbs,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :container_executor => container_executor

@@ -100,7 +100,7 @@ Vagrant.configure("2") do |c|
      },
      "hops"  =>    {
                  "dir" => "/srv/hops",
-		 "use_hopsworks" => "true",
+		 "use_hopsworks" => "false",
 		 "rm" =>    { 
        	  	      "private_ips" => ["10.0.2.15"]
                  },
@@ -127,12 +127,15 @@ Vagrant.configure("2") do |c|
                  },
                  "data_dir" => "/srv/hops/data",
       },
-     "kagent" => {
+     "services" => {
+	  "enabled" => "true"
+     },
+       "kagent" => {
 	  "user" => "glassfish",
           "group" => "glassfish",
           "dir" => "/srv/hops",
           "allow_ssh_access" => "true",
-          "enabled" => "true",
+          "enabled" => "false",
 	  "default" =>      { 
    	  	       "private_ips" => ["10.0.2.15"]
 	       },

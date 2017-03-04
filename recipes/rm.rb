@@ -1,11 +1,4 @@
-
-case node.platform
-when "ubuntu"
- if node.platform_version.to_f <= 14.04
-   node.override.hops.systemd = "false"
- end
-end
-
+include_recipe "hops::default"
 
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
@@ -37,35 +30,6 @@ end
 
 
 
-container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
-if node.hops.cgroups.eql? "true" 
-  container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
-end
-
-file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
-
-template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
-  source "yarn-site.xml.erb"
-  owner node.hops.yarn.user
-  group node.hops.group
-  mode "666"
-  variables({
-              :rm_private_ip => rm_dest_ip,
-              :rm_public_ip => rm_public_ip,
-              :available_mem_mb => node.hops.yarn.nm.memory_mbs,
-              :my_public_ip => my_public_ip,
-              :my_private_ip => my_ip,
-              :container_executor => container_executor
-            })
-  action :create_if_missing
-end
-
-
-# TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
-
 service_name="resourcemanager"
 if node.hops.systemd == "true"
   service "#{service_name}" do
@@ -80,7 +44,7 @@ else  #sysv
     action :restart
   end
 end
-include_recipe "hops::yarn"
+
 
 yarn_service="rm"
 service_name="resourcemanager"
@@ -105,7 +69,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
-              :available_mem_mb => node.hops.yarn.nm.memory_mbs,
+              :available_mem_mb => node.hops.yarn.memory_mbs,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :container_executor => container_executor

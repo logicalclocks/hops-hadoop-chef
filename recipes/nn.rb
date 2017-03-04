@@ -1,12 +1,6 @@
+include_recipe "hops::default"
+
 my_ip = my_private_ip()
-
-case node.platform
-when "ubuntu"
- if node.platform_version.to_f <= 14.04
-   node.override.hops.systemd = "false"
- end
-end
-
 
 nnPort = node.hops.nn.port
 
@@ -93,35 +87,26 @@ template "#{node.hops.home}/sbin/root-test-drop-full-recreate.sh" do
 end
 
 
-include_recipe "hops::nn"
+include_recipe "hops::default"  # 
 
 
 # TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
 
-service_name="namenode"
-if node.hops.systemd == "true"
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Systemd
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :restart
-  end
-else  #sysv
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Init::Debian
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :restart
-  end
-end
+# service_name="namenode"
+# if node.hops.systemd == "true"
+#   service "#{service_name}" do
+#     provider Chef::Provider::Service::Systemd
+#     supports :restart => true, :stop => true, :start => true, :status => true
+#     action :restart
+#   end
+# else  #sysv
+#   service "#{service_name}" do
+#     provider Chef::Provider::Service::Init::Debian
+#     supports :restart => true, :stop => true, :start => true, :status => true
+#     action :restart
+#   end
+# end
 
-case node.platform
-when "ubuntu"
- if node.platform_version.to_f <= 14.04
-   node.override.hops.systemd = "false"
- end
-end
-
-private_ip = my_private_ip()
-public_ip = my_public_ip()
 
 for script in node.hops.nn.scripts
   template "#{node.hops.home}/sbin/#{script}" do
@@ -149,17 +134,16 @@ end
 isThisFirstNN = true
 
 active_ip = private_recipe_ip("hops","nn")
-my_ip = my_private_ip()
+
 # it is ok if all namenodes format the fs. Unless you add a new one later..
 # if the nn has already been formatted, re-formatting it returns error
 # TODO: test if the NameNode is running
 if ::File.exist?("#{node.hops.home}/.nn_formatted") === false || "#{node.hops.reformat}" === "true"
   if isThisFirstNN == true
-    sleep 10
+    sleep 5
     if "#{my_ip}" == "#{active_ip}"
        hops_start "format-nn" do
          action :format_nn
-         ha_enabled ha_enabled
        end
     end
   else
@@ -169,36 +153,6 @@ if ::File.exist?("#{node.hops.home}/.nn_formatted") === false || "#{node.hops.re
   end
 else 
   Chef::Log.info "Not formatting the NameNode. Remove this directory before formatting: (sudo rm -rf #{node.hops.nn.name_dir}/current) and set node.hops.reformat to true"
-end
-
-if ha_enabled == true
-
-  template "#{node.hops.home}/sbin/start-zkfc.sh" do
-    source "start-zkfc.sh.erb"
-    owner node.hops.hdfs.user
-    group node.hops.group
-    mode 0754
-  end
-
-  template "#{node.hops.home}/sbin/start-standby-nn.sh" do
-    source "start-standby-nn.sh.erb"
-    owner node.hops.hdfs.user
-    group node.hops.group
-    mode 0754
-  end
-
-
-  hops_start "zookeeper-format" do
-    action :zkfc
-    ha_enabled ha_enabled
-  end
-
-  if isThisFirstNN == false
-    hops_start "standby-nn" do
-      action :standby
-      ha_enabled ha_enabled
-    end
-  end
 end
 
 service_name="namenode"

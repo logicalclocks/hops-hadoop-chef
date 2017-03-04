@@ -32,6 +32,7 @@ action :format_nn do
   
     bash 'format-nn' do
       user node.hops.hdfs.user
+      group node.hops.group
       code <<-EOH
         set -e
         #{node.hops.base_dir}/sbin/format-nn.sh

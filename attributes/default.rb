@@ -28,8 +28,8 @@ default.hops.nm.log_dir               = "#{node.hops.logs_dir}/userlogs"
 default.hops.hdfs.user_home           = "/user"
 default.hops.hdfs.blocksize           = "134217728"
 
-default.hops.url.primary              = "#{download_url}/hops-#{node.hops.version}.tar.gz"
-default.hops.url.secondary            = "https://hops.site/hops-#{node.hops.version}.tar.gz"
+default.hops.url.primary              = "#{download_url}/hops-#{node.hops.version}.tgz"
+default.hops.url.secondary            = "https://hops.site/hops-#{node.hops.version}.tgz"
 
 default.hops.install_protobuf         = "false"
 default.hops.protobuf_url             = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
@@ -142,7 +142,7 @@ default.maven.checksum                         = ""
 
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
-default.hops.yarn.nm.memory_mbs       = 2500
+default.hops.yarn.memory_mbs          = 2500
 default.hops.yarn.memory_percent      = "75"
 
 default.hops.limits.nofile            = '32768'
