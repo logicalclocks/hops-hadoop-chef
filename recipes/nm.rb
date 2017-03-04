@@ -1,20 +1,25 @@
-include_recipe "apache_hadoop::yarn"
+case node.platform
+when "ubuntu"
+ if node.platform_version.to_f <= 14.04
+   node.override.hops.systemd = "false"
+ end
+end
 
 
 yarn_service="nm"
 service_name="nodemanager"
 
-for script in node.apache_hadoop.yarn.scripts
-  template "#{node.apache_hadoop.home}/sbin/#{script}-#{yarn_service}.sh" do
+for script in node.hops.yarn.scripts
+  template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
-    owner node.apache_hadoop.yarn.user
-    group node.apache_hadoop.group
+    owner node.hops.yarn.user
+    group node.hops.group
     mode 0775
   end
 end 
 
 
-if node.apache_hadoop.systemd == "true"
+if node.hops.systemd == "true"
 
   service service_name do
     provider Chef::Provider::Service::Systemd
@@ -55,7 +60,7 @@ end
     action :create
   end 
 
-  apache_hadoop_start "reload_nn" do
+  hops_start "reload_nn" do
     action :systemd_reload
   end  
 
@@ -84,8 +89,8 @@ end
 if node.kagent.enabled == "true" 
   kagent_config service_name do
     service "YARN"
-    log_file "#{node.apache_hadoop.logs_dir}/yarn-#{node.apache_hadoop.yarn.user}-#{service_name}-#{node.hostname}.log"
-    web_port node.apache_hadoop["#{yarn_service}"][:http_port]
+    log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
+    web_port node.hops["#{yarn_service}"][:http_port]
   end
 end
 

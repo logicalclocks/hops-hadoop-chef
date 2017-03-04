@@ -1,5 +1,10 @@
-include_recipe "hops::wrap"
-include_recipe "hops::rm"
+
+case node.platform
+when "ubuntu"
+ if node.platform_version.to_f <= 14.04
+   node.override.hops.systemd = "false"
+ end
+end
 
 
 my_ip = my_private_ip()
@@ -75,32 +80,32 @@ else  #sysv
     action :restart
   end
 end
-include_recipe "apache_hadoop::yarn"
+include_recipe "hops::yarn"
 
 yarn_service="rm"
 service_name="resourcemanager"
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
-if node.apache_hadoop.cgroups.eql? "true" 
+if node.hops.cgroups.eql? "true" 
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
 
 
-file "#{node.apache_hadoop.home}/etc/hadoop/yarn-site.xml" do 
-  owner node.apache_hadoop.yarn.user
+file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
+  owner node.hops.yarn.user
   action :delete
 end
 
-template "#{node.apache_hadoop.home}/etc/hadoop/yarn-site.xml" do
+template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
-  owner node.apache_hadoop.yarn.user
-  group node.apache_hadoop.group
+  owner node.hops.yarn.user
+  group node.hops.group
   mode "666"
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
-              :available_mem_mb => node.apache_hadoop.yarn.nm.memory_mbs,
+              :available_mem_mb => node.hops.yarn.nm.memory_mbs,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :container_executor => container_executor
@@ -109,24 +114,24 @@ template "#{node.apache_hadoop.home}/etc/hadoop/yarn-site.xml" do
 end
 
 
-for script in node.apache_hadoop.yarn.scripts
-  template "#{node.apache_hadoop.home}/sbin/#{script}-#{yarn_service}.sh" do
+for script in node.hops.yarn.scripts
+  template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
-    owner node.apache_hadoop.yarn.user
-    group node.apache_hadoop.group
+    owner node.hops.yarn.user
+    group node.hops.group
     mode 0775
   end
 end 
 
-template "#{node.apache_hadoop.home}/sbin/yarn.sh" do
+template "#{node.hops.home}/sbin/yarn.sh" do
   source "yarn.sh.erb"
-  owner node.apache_hadoop.yarn.user
-  group node.apache_hadoop.group
+  owner node.hops.yarn.user
+  group node.hops.group
   mode 0775
 end
 
 
-if node.apache_hadoop.systemd == "true"
+if node.hops.systemd == "true"
 
   case node.platform_family
   when "rhel"
@@ -168,7 +173,7 @@ end
     action :create
   end 
 
-  apache_hadoop_start "reload_nn" do
+  hops_start "reload_nn" do
     action :systemd_reload
   end  
 
@@ -199,30 +204,30 @@ end
 if node.kagent.enabled == "true" 
   kagent_config "resourcemanager" do
     service "YARN"
-    log_file "#{node.apache_hadoop.logs_dir}/yarn-#{node.apache_hadoop.yarn.user}-#{service_name}-#{node.hostname}.log"
-    config_file "#{node.apache_hadoop.conf_dir}/yarn-site.xml"
-    web_port node.apache_hadoop["#{yarn_service}"][:http_port]
+    log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
+    config_file "#{node.hops.conf_dir}/yarn-site.xml"
+    web_port node.hops["#{yarn_service}"][:http_port]
   end
 end
 
-tmp_dirs   = [node.apache_hadoop.hdfs.user_home + "/" + node.apache_hadoop.yarn.user]
+tmp_dirs   = [node.hops.hdfs.user_home + "/" + node.hops.yarn.user]
 for d in tmp_dirs
-  apache_hadoop_hdfs_directory d do
+  hops_hdfs_directory d do
     action :create_as_superuser
-    owner node.apache_hadoop.yarn.user
-    group node.apache_hadoop.group
+    owner node.hops.yarn.user
+    group node.hops.group
     mode "1775"
-    not_if ". #{node.apache_hadoop.home}/sbin/set-env.sh && #{node.apache_hadoop.home}/bin/hdfs dfs -test -d #{d}"
+    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end
 
-tmp_dirs   = [node.apache_hadoop.yarn.nodemanager.remote_app_log_dir]
+tmp_dirs   = [node.hops.yarn.nodemanager.remote_app_log_dir]
 for d in tmp_dirs
-  apache_hadoop_hdfs_directory d do
+  hops_hdfs_directory d do
     action :create_as_superuser
-    owner node.apache_hadoop.yarn.user
-    group node.apache_hadoop.group
+    owner node.hops.yarn.user
+    group node.hops.group
     mode "1773"
-    not_if ". #{node.apache_hadoop.home}/sbin/set-env.sh && #{node.apache_hadoop.home}/bin/hdfs dfs -test -d #{d}"
+    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end

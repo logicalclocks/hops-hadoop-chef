@@ -2,23 +2,23 @@
 case node.platform
 when "ubuntu"
  if node.platform_version.to_f <= 14.04
-   node.override.apache_hadoop.systemd = "false"
+   node.override.hops.systemd = "false"
  end
 end
 
-for script in node.apache_hadoop.dn.scripts
-  template "#{node.apache_hadoop.home}/sbin/#{script}" do
+for script in node.hops.dn.scripts
+  template "#{node.hops.home}/sbin/#{script}" do
     source "#{script}.erb"
-    owner node.apache_hadoop.hdfs.user
-    owner node.apache_hadoop.hdfs.user
-    group node.apache_hadoop.group
+    owner node.hops.hdfs.user
+    owner node.hops.hdfs.user
+    group node.hops.group
     mode 0775
   end
 end 
 
 service_name="datanode"
 
-if node.apache_hadoop.systemd == "true"
+if node.hops.systemd == "true"
 
   case node.platform_family
   when "rhel"
@@ -59,7 +59,7 @@ end
     action :create
   end 
 
-  apache_hadoop_start "reload_nn" do
+  hops_start "reload_nn" do
     action :systemd_reload
   end  
 
@@ -87,8 +87,8 @@ end
 if node.kagent.enabled == "true" 
   kagent_config "#{service_name}" do
     service "HDFS"
-    log_file "#{node.apache_hadoop.logs_dir}/hadoop-#{node.apache_hadoop.hdfs.user}-#{service_name}-#{node.hostname}.log"
-    config_file "#{node.apache_hadoop.conf_dir}/hdfs-site.xml"
-    web_port node.apache_hadoop.dn.http_port
+    log_file "#{node.hops.logs_dir}/hadoop-#{node.hops.hdfs.user}-#{service_name}-#{node.hostname}.log"
+    config_file "#{node.hops.conf_dir}/hdfs-site.xml"
+    web_port node.hops.dn.http_port
   end
 end
