@@ -63,6 +63,46 @@ end
 #   action :delete
 # end
 
+
+
+template "#{node.hops.home}/etc/hadoop/hadoop-env.sh" do
+  source "hadoop-env.sh.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "755"
+end
+
+
+template "#{node.hops.home}/etc/hadoop/jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "600"
+end
+
+template "#{node.hops.home}/etc/hadoop/yarn-jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  mode "600"
+end
+
+
+template "#{node.hops.home}/sbin/kill-process.sh" do
+  source "kill-process.sh.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "754"
+end
+
+template "#{node.hops.home}/sbin/set-env.sh" do 
+  source "set-env.sh.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "774"
+end
+
+
 template "#{node.hops.conf_dir}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node.hops.hdfs.user

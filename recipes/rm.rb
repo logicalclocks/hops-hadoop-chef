@@ -10,39 +10,12 @@ ndb_connectstring()
 
 template "#{node.hops.home}/etc/hadoop/RM_EventAPIConfig.ini" do 
   source "RM_EventAPIConfig.ini.erb"
-  owner node.hops.hdfs.user
+  owner node.hops.yarn.user
   group node.hops.group
   mode "755"
   variables({
               :ndb_connectstring => node.ndb.connectstring
             })
-end
-
-template "#{node.hops.home}/etc/hadoop/RT_EventAPIConfig.ini" do 
-  source "RT_EventAPIConfig.ini.erb"
-  owner node.hops.hdfs.user
-  group node.hops.group
-  mode "755"
-  variables({
-              :ndb_connectstring => node.ndb.connectstring
-            })
-end
-
-
-
-service_name="resourcemanager"
-if node.hops.systemd == "true"
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Systemd
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :restart
-  end
-else  #sysv
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Init::Debian
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :restart
-  end
 end
 
 
@@ -55,7 +28,6 @@ if node.hops.cgroups.eql? "true"
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
 
-
 file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
   owner node.hops.yarn.user
   action :delete
@@ -65,7 +37,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "666"
+  mode "660"
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
@@ -82,7 +54,7 @@ for script in node.hops.yarn.scripts
   template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node.hops.yarn.user
-    group node.hops.group
+     group node.hops.group
     mode 0775
   end
 end 
@@ -115,7 +87,7 @@ if node.hops.systemd == "true"
     source "#{service_name}.service.erb"
     owner "root"
     group "root"
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
@@ -133,7 +105,7 @@ end
   template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
     source "limits.conf.erb"
     owner "root"
-    mode 0774
+    mode 0664
     action :create
   end 
 
@@ -154,7 +126,7 @@ else #sysv
     source "#{service_name}.erb"
     owner "root"
     group "root"
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end

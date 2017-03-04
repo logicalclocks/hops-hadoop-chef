@@ -35,7 +35,7 @@ if node.hops.systemd == "true"
     source "#{service_name}.service.erb"
     owner "root"
     group "root"
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, "service[#{service_name}]"
 end
@@ -57,7 +57,7 @@ else # sysv
     source "#{service_name}.erb"
     owner node.hops.yarn.user
     group node.hops.group
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, "service[#{service_name}]"
 end

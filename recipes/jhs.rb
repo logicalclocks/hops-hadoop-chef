@@ -58,7 +58,7 @@ if node.hops.systemd == "true"
     source "#{service_name}.service.erb"
     owner "root"
     group "root"
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, resources(:service => service_name)
 end
@@ -98,7 +98,7 @@ else #sysv
     source "#{service_name}.erb"
     owner "root"
     group "root"
-    mode 0754
+    mode 0664
 if node.services.enabled == "true"
     notifies :enable, resources(:service => service_name)
 end
