@@ -22,3 +22,6 @@ dependencies:
   - recipe: hops::client
     global:  
       - hops::nn
+  - recipe: hops::jhs
+    global:  
+      - hops::dn

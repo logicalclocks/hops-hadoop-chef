@@ -1,0 +1,91 @@
+#!/bin/sh
+#
+# Startup script for namenode
+#
+### BEGIN INIT INFO
+# Provides:                     datanode-*
+# Required-Start:                 
+# Should-Start:                 
+# Required-Stop:                  
+# Default-Start:                2 3 4 5
+# Default-Stop:                 0 1 6
+# Short-Description:            start and stop datanode-*
+# Description:                  Start/Stop/Restart datanode
+### END INIT INFO
+
+# Variables
+
+START_PROG="<%= node.hops.base_dir %>/sbin/start-dn.sh"  
+STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-dn.sh"  
+
+EXEC_WITH_USER="su <%= node.hops.hdfs.user %> -c"
+
+start() {
+  rm -f <%= node.hops.logs_dir %>/hadoop.log
+  ulimit -n 65000 2>&1 > /dev/null
+  $EXEC_WITH_USER "$START_PROG"
+  return $?
+}
+
+stop() {
+  "$STOP_PROG"
+  return $?
+}
+
+status() {
+  PID_FILE=<%= "#{node.hops.logs_dir}" %>/hadoop-<%= "#{node.hops.hdfs.user}" %>-datanode.pid
+  res=1
+  if [ -f $PID_FILE ] ; then
+     PID=`cat $PID_FILE`
+     kill -0 $PID
+     res=$?
+  fi
+  if [ $res -eq 0 ] ; then
+   echo "datanode($PID) is running"
+  else
+   echo "datanode is not running"
+  fi
+  return $res
+}
+
+restart() {
+  status
+  if [ $? -eq 0 ] ; then
+    stop
+    sleep 3
+  fi
+  start
+  return $?
+}
+
+
+# user-supplied parameter to stop/start/restart process.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  reload)
+    restart
+    ;;
+  status)
+    status
+    ;;
+  -h|--help)
+    echo ""
+    echo "usage: <prog> start|stop|restart|status"
+    echo ""
+    exit 0
+    ;;
+  *)
+    echo $"Usage: <prog> {start|stop|restart|status}"
+    exit 1
+  esac
+
+
+exit $?

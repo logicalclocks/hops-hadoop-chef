@@ -1,0 +1,15 @@
+#!/bin/bash
+
+command=historyserver
+pidDir=/tmp
+service=mapred
+bin=`dirname "${BASH_SOURCE-$0}"`
+bin=`cd "$bin"; pwd`
+DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. $HADOOP_LIBEXEC_DIR/hadoop-config.sh
+. ${bin}/set-env.sh
+
+<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.yarn.user %> $command $pidDir
+
+exit $?

@@ -1,22 +1,20 @@
 require 'resolv'
 
-include_recipe "hops::wrap"
-
 ndb_connectstring()
 my_ip = my_private_ip()
 
-directory "#{node.apache_hadoop.dir}/ndb-hops-#{node.apache_hadoop.version}-#{node.ndb.version}" do
-  owner node.apache_hadoop.hdfs.user
-  group node.apache_hadoop.group
+directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
+  owner node.hops.hdfs.user
+  group node.hops.group
   mode "755"
   action :create
   recursive true
 end
 
-link "#{node.apache_hadoop.dir}/ndb-hops" do
-  owner node.apache_hadoop.hdfs.user
-  group node.apache_hadoop.group
-  to "#{node.apache_hadoop.dir}/ndb-hops-#{node.apache_hadoop.version}-#{node.ndb.version}"
+link "#{node.hops.dir}/ndb-hops" do
+  owner node.hops.hdfs.user
+  group node.hops.group
+  to "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}"
 end
 
 
@@ -25,8 +23,8 @@ base_filename = File.basename(package_url)
 
 remote_file "#{Chef::Config.file_cache_path}/#{base_filename}" do
   source package_url
-  owner node.apache_hadoop.hdfs.user
-  group node.apache_hadoop.group
+  owner node.hops.hdfs.user
+  group node.hops.group
   mode "0755"
   # TODO - checksum
   action :create_if_missing
@@ -38,10 +36,10 @@ hops_ndb "extract_ndb_hops" do
   action :install_ndb_hops
 end
 
-link "#{node.apache_hadoop.dir}/ndb-hops/ndb-dal.jar" do
-  owner node.apache_hadoop.hdfs.user
-  group node.apache_hadoop.group
-  to "#{node.apache_hadoop.dir}/ndb-hops/ndb-dal-#{node.apache_hadoop.version}-#{node.ndb.version}.jar"
+link "#{node.hops.dir}/ndb-hops/ndb-dal.jar" do
+  owner node.hops.hdfs.user
+  group node.hops.group
+  to "#{node.hops.dir}/ndb-hops/ndb-dal-#{node.hops.version}-#{node.ndb.version}.jar"
 end
 
 
@@ -50,10 +48,10 @@ if node.mysql.localhost == "true"
   mysql_ip = "localhost"
 end
 
-template "#{node.apache_hadoop.home}/etc/hadoop/ndb.props" do
+template "#{node.hops.home}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
-  owner node.apache_hadoop.hdfs.user
-  group node.apache_hadoop.group
+  owner node.hops.hdfs.user
+  group node.hops.group
   mode "755"
   variables({
               :ndb_connectstring => node.ndb.connectstring,

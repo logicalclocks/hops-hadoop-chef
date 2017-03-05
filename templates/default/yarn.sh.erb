@@ -1,0 +1,9 @@
+#!/bin/bash
+
+command=yarn
+
+sudo -u <%= node.hops.hdfs.user %> bash -l <<EOF
+<%= node.hops.base_dir %>/bin/$command $@
+EOF
+
+exit $?

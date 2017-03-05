@@ -15,7 +15,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.maximum-applications</name>
-    <value><%= node.apache_hadoop.capacity.max_app %></value>
+    <value><%= node.hops.capacity.max_app %></value>
     <description>
       Maximum number of applications that can be pending and running.
     </description>
@@ -23,7 +23,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.maximum-am-resource-percent</name>
-    <value><%= node.apache_hadoop.capacity.max_am_percent %></value>
+    <value><%= node.hops.capacity.max_am_percent %></value>
     <description>
       Maximum percent of resources in the cluster which can be used to run 
       application masters i.e. controls number of concurrent running
@@ -33,7 +33,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.resource-calculator</name>
-    <value><%= node.apache_hadoop.capacity.resource_calculator_class %></value>
+    <value><%= node.hops.capacity.resource_calculator_class %></value>
     <description>
       The ResourceCalculator implementation to be used to compare 
       Resources in the scheduler.
@@ -45,7 +45,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.queues</name>
-    <value><%= node.apache_hadoop.capacity.root_queues %></value>
+    <value><%= node.hops.capacity.root_queues %></value>
     <description>
       The queues at the this level (root is the root queue).
     </description>
@@ -53,13 +53,13 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.default.capacity</name>
-    <value><%= node.apache_hadoop.capacity.default_capacity %></value>
+    <value><%= node.hops.capacity.default_capacity %></value>
     <description>Default queue target capacity.</description>
   </property>
 
   <property>
     <name>yarn.scheduler.capacity.root.default.user-limit-factor</name>
-    <value><%= node.apache_hadoop.capacity.user_limit_factor %></value>
+    <value><%= node.hops.capacity.user_limit_factor %></value>
     <description>
       Default queue user limit a percentage from 0.0 to 1.0.
     </description>
@@ -67,7 +67,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.default.maximum-capacity</name>
-    <value><%= node.apache_hadoop.capacity.default_max_capacity %></value>
+    <value><%= node.hops.capacity.default_max_capacity %></value>
     <description>
       The maximum capacity of the default queue. 
     </description>
@@ -75,7 +75,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.default.state</name>
-    <value><%= node.apache_hadoop.capacity.default_state %></value>
+    <value><%= node.hops.capacity.default_state %></value>
     <description>
       The state of the default queue. State can be one of RUNNING or STOPPED.
     </description>
@@ -83,7 +83,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.default.acl_submit_applications</name>
-    <value><%= node.apache_hadoop.capacity.default_acl_submit_applications %></value>
+    <value><%= node.hops.capacity.default_acl_submit_applications %></value>
     <description>
       The ACL of who can submit jobs to the default queue.
     </description>
@@ -91,7 +91,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.root.default.acl_administer_queue</name>
-    <value><%= node.apache_hadoop.capacity.default_acl_administer_queue %></value>
+    <value><%= node.hops.capacity.default_acl_administer_queue %></value>
     <description>
       The ACL of who can administer jobs on the default queue.
     </description>
@@ -110,7 +110,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.queue-mappings</name>
-    <value><%= node.apache_hadoop.capacity.queue_mapping %></value>
+    <value><%= node.hops.capacity.queue_mapping %></value>
     <description>
       A list of mappings that will be used to assign jobs to queues
       The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]*
@@ -122,7 +122,7 @@
 
   <property>
     <name>yarn.scheduler.capacity.queue-mappings-override.enable</name>
-    <value><%= node.apache_hadoop.capacity.queue_mapping_override.enable %></value>
+    <value><%= node.hops.capacity.queue_mapping_override.enable %></value>
     <description>
       If a queue mapping is present, will it override the value specified
       by the user? This can be used by administrators to place jobs in queues
