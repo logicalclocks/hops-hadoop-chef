@@ -98,7 +98,7 @@ else #sysv
     source "#{service_name}.erb"
     owner "root"
     group "root"
-    mode 0664
+    mode 0755    
 if node.services.enabled == "true"
     notifies :enable, resources(:service => service_name)
 end
