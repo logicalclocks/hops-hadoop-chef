@@ -303,3 +303,8 @@ attribute "hops/capacity/queue_mapping_override.enable",
 attribute "kagent/enabled",
           :description => "Set to 'true' to enable, 'false' to disable kagent",
           :type => "string"
+
+attribute "install/dir",
+          :description => "Set to a base directory under which we will install.",
+          :type => "string"
+
