@@ -50,16 +50,14 @@ end
 include_recipe "java"
 
 
-if "#{node.hops.group}" != "#{node.hops.hdfs.user}"
-  group node.hops.group do
-    action :create
-    not_if "getent group #{node.hops.group}"
-  end
+group node.hops.group do
+  action :create
+  not_if "getent group #{node.hops.group}"
 end
-
 
 user node.hops.hdfs.user do
   home "/home/#{node.hops.hdfs.user}"
+  gid node.hops.group
   system true
   shell "/bin/bash"
   manage_home true
@@ -69,7 +67,8 @@ end
 
 user node.hops.yarn.user do
   home "/home/#{node.hops.yarn.user}"
-#  system true
+  gid node.hops.group
+  system true
   shell "/bin/bash"
   manage_home true
   action :create
@@ -78,6 +77,7 @@ end
 
 user node.hops.mr.user do
   home "/home/#{node.hops.mr.user}"
+  gid node.hops.group  
   system true
   shell "/bin/bash"
   manage_home true
