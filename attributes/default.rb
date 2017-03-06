@@ -11,7 +11,7 @@ default.hops.mr.user                  = "mapred"
 default.hops.jmx.username             = "monitorRole"
 default.hops.jmx.password             = "hadoop"
 
-default.hops.dir                      = node.install.dir.empty? ? node.install.dir : "/srv"
+default.hops.dir                      = node.install.dir.empty? ? "/srv" : node.install.dir
 default.hops.base_dir                 = "#{node.hops.dir}/hadoop"
 default.hops.home                     = "#{node.hops.dir}/hadoop-#{node.hops.version}"
 default.hops.logs_dir                 = "#{node.hops.base_dir}/logs"
