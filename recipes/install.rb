@@ -217,13 +217,30 @@ directory node.hops.data_dir do
   action :create
 end
 
-
-directory node.hops.dn.data_dir do
-  owner node.hops.hdfs.user
-  group node.hops.group
-  mode "0774"
-  recursive true
-  action :create
+if "#{node.hops.dn.data_dir}".include? ","
+  dirs = node.hops.dn.data_dir.split(",")
+  for d in dirs do
+    bash 'chown_datadirs_if_exist' do
+      user "root"
+      code <<-EOH
+        set -e
+        if [ -d #{d} ] ; then
+          chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
+        else
+          mkdir #{d}
+          chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
+        fi     
+      EOH
+    end
+   end
+else
+  directory node.hops.dn.data_dir do
+    owner node.hops.hdfs.user
+    group node.hops.group
+    mode "0774"
+    recursive true
+    action :create
+  end
 end
 
 directory node.hops.nn.name_dir do
