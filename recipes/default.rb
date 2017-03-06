@@ -39,6 +39,20 @@ if node.hops.use_hopsworks.eql? "true"
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
+
+file "#{node.hops.home}/etc/hadoop/log4j.properties" do 
+  owner node.hops.hdfs.user
+  action :delete
+end
+
+template "#{node.hops.home}/etc/hadoop/log4j.properties" do
+  source "log4j.properties.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "666"
+  action :create_if_missing
+end
+
 file "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   owner node.hops.hdfs.user
   action :delete
