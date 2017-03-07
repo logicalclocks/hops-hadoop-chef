@@ -304,6 +304,10 @@ attribute "kagent/enabled",
           :description => "Set to 'true' to enable, 'false' to disable kagent",
           :type => "string"
 
+attribute "mysql/dir",
+          :description => "MySQL installation directory.",
+          :type => "string"
+
 attribute "install/dir",
           :description => "Set to a base directory under which we will install.",
           :type => "string"

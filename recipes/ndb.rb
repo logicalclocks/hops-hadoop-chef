@@ -21,7 +21,7 @@ end
 package_url = node.dal.download_url
 base_filename = File.basename(package_url)
 
-remote_file "#{Chef::Config.file_cache_path}/#{base_filename}" do
+remote_file "#{node.hops.dir}/ndb-hops/#{base_filename}" do
   source package_url
   owner node.hops.hdfs.user
   group node.hops.group
