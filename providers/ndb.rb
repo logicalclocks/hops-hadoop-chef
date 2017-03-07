@@ -86,7 +86,7 @@ action :install_ndb_hops do
   link "#{node.hops.home}/lib/native/libhopsyarn.so" do
     owner node.hops.hdfs.user
     group node.hops.group
-    to "#{node.hops.home}/lib/native/#{lib}"
+    to "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}/libhopsyarn-#{node.hops.version}-#{node.ndb.version}.so"
   end
 
 end

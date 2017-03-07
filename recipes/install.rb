@@ -395,14 +395,6 @@ if node.hops.cgroups.eql? "true"
 
 end
 
- directory "#{node.hops.home}/journal" do
-   owner node.hops.hdfs.user
-   group node.hops.group
-   mode "0775"
-   action :create
- end
-
-
 magic_shell_environment 'PATH' do
   value "$PATH:#{node.hops.base_dir}/bin"
 end
