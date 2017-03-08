@@ -3,10 +3,10 @@ include_attribute "ndb"
 
 default.hops.version                  = "2.7.3"
 
-default.hops.hdfs.user                = "hdfs"
-default.hops.group                    = "hadoop"
-default.hops.yarn.user                = "yarn"
-default.hops.mr.user                  = "mapred"
+default.hops.hdfs.user                = node.install.user.empty? ? "hdfs" : node.install.user
+default.hops.group                    = node.install.user.empty? ? "hadoop" : node.install.user
+default.hops.yarn.user                = node.install.user.empty? ? "yarn" : node.install.user
+default.hops.mr.user                  = node.install.user.empty? ? "mapred" : node.install.user
 
 default.hops.jmx.username             = "monitorRole"
 default.hops.jmx.password             = "hadoop"

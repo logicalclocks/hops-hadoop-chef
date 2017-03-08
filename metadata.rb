@@ -312,3 +312,6 @@ attribute "install/dir",
           :description => "Set to a base directory under which we will install.",
           :type => "string"
 
+attribute "install/user",
+          :description => "User to install the services as",
+          :type => "string"
