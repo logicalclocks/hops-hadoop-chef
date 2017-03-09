@@ -237,6 +237,7 @@ else
     owner node.hops.hdfs.user
     group node.hops.group
     mode "0774"
+    recursive true    
     action :create
   end
 end
@@ -245,6 +246,7 @@ directory node.hops.nn.name_dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0774"
+  recursive true  
   action :create
 end
 
@@ -343,6 +345,7 @@ end
    owner node.hops.hdfs.user
    group node.hops.group
    mode "0775"
+   
    action :create
  end
 
