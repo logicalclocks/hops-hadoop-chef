@@ -153,7 +153,6 @@ container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerEx
 if node.hops.cgroups.eql? "true" 
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
-#node.normal.hops.yarn.aux_services = "spark_shuffle"
 
 template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
@@ -164,7 +163,6 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   variables({
               :rm_private_ip => rm_dest_ip,
               :rm_public_ip => rm_public_ip,
-              :available_mem_mb => node.hops.yarn.memory_mbs,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :container_executor => container_executor
