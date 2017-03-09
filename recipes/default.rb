@@ -153,7 +153,7 @@ container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerEx
 if node.hops.cgroups.eql? "true" 
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
-node.normal.hops.yarn.aux_services = "spark_shuffle"
+#node.normal.hops.yarn.aux_services = "spark_shuffle"
 
 template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"

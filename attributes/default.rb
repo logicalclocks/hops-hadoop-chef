@@ -73,7 +73,7 @@ default.hops.yarn.nodemanager_hb_ms   = "1000"
  
 default.hops.am.max_retries           = 2
 
-default.hops.yarn.aux_services        = "mapreduce_shuffle"
+default.hops.yarn.aux_services        = "spark_shuffle,mapreduce_shuffle"
 
 default.hops.mr.shuffle_class         = "org.apache.hadoop.mapred.ShuffleHandler"
 
