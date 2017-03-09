@@ -204,7 +204,6 @@ directory node.hops.dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0775"
-  recursive true
   action :create
   not_if { File.directory?("#{node.hops.dir}") }
 end
@@ -213,7 +212,6 @@ directory node.hops.data_dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0775"
-  recursive true
   action :create
 end
 
@@ -238,7 +236,6 @@ else
     owner node.hops.hdfs.user
     group node.hops.group
     mode "0774"
-    recursive true
     action :create
   end
 end
@@ -247,7 +244,6 @@ directory node.hops.nn.name_dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0774"
-  recursive true
   action :create
 end
 
@@ -347,7 +343,6 @@ end
    group node.hops.group
    mode "0775"
    action :create
-   recursive true
  end
 
  directory node.hops.tmp_dir do
