@@ -212,6 +212,7 @@ directory node.hops.data_dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0775"
+  recursive true
   action :create
 end
 
