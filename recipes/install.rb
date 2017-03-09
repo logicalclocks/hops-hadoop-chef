@@ -91,6 +91,13 @@ group node.hops.group do
   append true
 end
 
+group node.kagent.certs_group do
+  action :modify
+  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}"]
+  append true
+end
+
+
 case node.platform_family
 when "debian"
   package "openssh-server" do
