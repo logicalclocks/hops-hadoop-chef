@@ -18,11 +18,6 @@ else
 end
 
 
-file "#{node.hops.home}/etc/hadoop/core-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
-
 myNN = "#{my_ip}:#{nnPort}"
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
@@ -46,11 +41,6 @@ if node.hops.nn.partition_key.eql? "false"
    partition_key = "false"
 end
 
-
-file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
 
 template "#{node.hops.conf_dir}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"

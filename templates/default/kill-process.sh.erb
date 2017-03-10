@@ -14,7 +14,7 @@ res=1
 NOT_FOUND=99
 
 function kill_named {
-    PID=`ps aux | grep -i $COMMAND | grep $SERVICE | awk '{print $2}'`
+    PID=`ps aux | grep -i $COMMAND | grep $SERVICE | grep -v grep | awk '{print $2}'`
     if [ "$PID" != "" ] ; then
 	kill -9 $PID > /dev/null 2>&1
         res=$?
