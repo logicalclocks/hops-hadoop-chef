@@ -182,7 +182,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
-    <value><%= @available_mem_mb %></value>
+    <value><%= node.hops.yarn.memory_mbs %></value>
     <description>the amount of memory on the NodeManager in MB</description>
   </property>
   <property>

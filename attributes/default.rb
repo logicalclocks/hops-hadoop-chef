@@ -3,10 +3,10 @@ include_attribute "ndb"
 
 default.hops.version                  = "2.7.3"
 
-default.hops.hdfs.user                = "hdfs"
-default.hops.group                    = "hadoop"
-default.hops.yarn.user                = "yarn"
-default.hops.mr.user                  = "mapred"
+default.hops.hdfs.user                = node.install.user.empty? ? "hdfs" : node.install.user
+default.hops.group                    = node.install.user.empty? ? "hadoop" : node.install.user
+default.hops.yarn.user                = node.install.user.empty? ? "yarn" : node.install.user
+default.hops.mr.user                  = node.install.user.empty? ? "mapred" : node.install.user
 
 default.hops.jmx.username             = "monitorRole"
 default.hops.jmx.password             = "hadoop"
@@ -19,7 +19,7 @@ default.hops.tmp_dir                  = "#{node.hops.base_dir}/tmp"
 default.hops.conf_dir                 = "#{node.hops.base_dir}/etc/hadoop"
 default.hops.sbin_dir                 = "#{node.hops.base_dir}/sbin"
 default.hops.bin_dir                  = "#{node.hops.base_dir}/bin"
-default.hops.data_dir                 = "#{node.hops.dir}/hopsdata/hadoop"
+default.hops.data_dir                 = "/var/data/hopsdata"
 default.hops.dn.data_dir              = "file://#{node.hops.data_dir}/hdfs/dn"
 default.hops.nn.name_dir              = "file://#{node.hops.data_dir}/hdfs/nn"
 
@@ -73,7 +73,7 @@ default.hops.yarn.nodemanager_hb_ms   = "1000"
  
 default.hops.am.max_retries           = 2
 
-default.hops.yarn.aux_services        = "mapreduce_shuffle"
+default.hops.yarn.aux_services        = "spark_shuffle,mapreduce_shuffle"
 
 default.hops.mr.shuffle_class         = "org.apache.hadoop.mapred.ShuffleHandler"
 
@@ -142,7 +142,7 @@ default.maven.checksum                         = ""
 
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
-default.hops.yarn.memory_mbs          = 2500
+default.hops.yarn.memory_mbs          = 6000
 default.hops.yarn.memory_percent      = "75"
 
 default.hops.limits.nofile            = '32768'

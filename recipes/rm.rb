@@ -41,7 +41,6 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
-              :available_mem_mb => node.hops.yarn.memory_mbs,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :container_executor => container_executor
@@ -99,7 +98,6 @@ end
     group "root"
     mode "755"
     action :create
-    recursive true
   end
 
   template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do

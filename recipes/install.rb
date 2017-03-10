@@ -91,6 +91,13 @@ group node.hops.group do
   append true
 end
 
+group node.kagent.certs_group do
+  action :modify
+  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}"]
+  append true
+end
+
+
 case node.platform_family
 when "debian"
   package "openssh-server" do
@@ -204,7 +211,6 @@ directory node.hops.dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0775"
-  recursive true
   action :create
   not_if { File.directory?("#{node.hops.dir}") }
 end
@@ -238,7 +244,7 @@ else
     owner node.hops.hdfs.user
     group node.hops.group
     mode "0774"
-    recursive true
+    recursive true    
     action :create
   end
 end
@@ -247,7 +253,7 @@ directory node.hops.nn.name_dir do
   owner node.hops.hdfs.user
   group node.hops.group
   mode "0774"
-  recursive true
+  recursive true  
   action :create
 end
 
@@ -346,8 +352,8 @@ end
    owner node.hops.hdfs.user
    group node.hops.group
    mode "0775"
+   
    action :create
-   recursive true
  end
 
  directory node.hops.tmp_dir do

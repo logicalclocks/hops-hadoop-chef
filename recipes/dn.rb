@@ -43,7 +43,6 @@ end
     group "root"
     mode "755"
     action :create
-    recursive true
   end
 
   template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
