@@ -1,4 +1,3 @@
-include_attribute "kagent"
 include_attribute "ndb"
 
 default.hops.version                  = "2.7.3"
