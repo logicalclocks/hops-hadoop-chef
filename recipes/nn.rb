@@ -187,6 +187,7 @@ end
     owner "root"
     mode 0664
     action :create
+    notifies :restart, "service[#{service_name}]"    
   end 
 
   hops_start "reload_nn" do
