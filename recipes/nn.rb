@@ -233,6 +233,5 @@ for d in tmp_dirs
     owner node.hops.hdfs.user
     group node.hops.group
     mode "1775"
-    not_if ". #{node.hops.base_dir}/sbin/set-env.sh && #{node.hops.base_dir}/bin/hdfs dfs -test -d #{d}"
   end
 end

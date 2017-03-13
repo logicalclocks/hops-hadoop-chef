@@ -151,7 +151,6 @@ for d in tmp_dirs
     owner node.hops.yarn.user
     group node.hops.group
     mode "1775"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end
 
@@ -162,6 +161,5 @@ for d in tmp_dirs
     owner node.hops.yarn.user
     group node.hops.group
     mode "1773"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end

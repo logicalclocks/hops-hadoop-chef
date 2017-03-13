@@ -23,7 +23,6 @@ tmp_dirs   = ["/mr-history", node.hops.jhs.inter_dir, node.hops.jhs.done_dir]
     owner node.hops.mr.user
     group node.hops.group
     mode "1775"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
    end
  end
 
@@ -35,7 +34,6 @@ node.normal.mr.dirs = [node.hops.mr.staging_dir, node.hops.mr.tmp_dir, node.hops
     owner node.hops.mr.user
     group node.hops.group
     mode "0775"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
    end
  end
 
