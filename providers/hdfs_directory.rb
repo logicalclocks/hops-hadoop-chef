@@ -16,7 +16,7 @@ action :create do
         #{node.hops.base_dir}/bin/hadoop fs -chmod #{new_resource.mode} #{new_resource.name} 
      fi
     EOF
-#  not_if ". #{node.hops.base_dir}/sbin/set-env.sh && #{node.hops.base_dir}/bin/hdfs dfs -test -d #{new_resource.name}"
+  not_if "su -c #{new_resource.owner} \". #{node.hops.base_dir}/sbin/set-env.sh && #{node.hops.base_dir}/bin/hdfs dfs -test -d #{new_resource.name}\""
   end
  
 end
