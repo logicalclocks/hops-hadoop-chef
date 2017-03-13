@@ -77,7 +77,7 @@ template "#{node.hops.home}/sbin/root-test-drop-full-recreate.sh" do
 end
 
 
-include_recipe "hops::default"  # 
+include_recipe "hops::default" 
 
 
 # TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
@@ -137,9 +137,8 @@ if ::File.exist?("#{node.hops.home}/.nn_formatted") === false || "#{node.hops.re
        end
     end
   else
-    # wait for the active nn to come up
-    # TODO - copy fsimage over from the active nn
-    sleep 100
+    # wait for the first nn to come up
+    sleep 30
   end
 else 
   Chef::Log.info "Not formatting the NameNode. Remove this directory before formatting: (sudo rm -rf #{node.hops.nn.name_dir}/current) and set node.hops.reformat to true"
