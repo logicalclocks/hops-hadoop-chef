@@ -27,6 +27,7 @@ depends 'ndb'
 depends 'magic_shell'
 depends 'sysctl'
 depends 'cmake'
+depends 'hopsmonitor'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -314,4 +315,8 @@ attribute "install/dir",
 
 attribute "install/user",
           :description => "User to install the services as",
+          :type => "string"
+
+attribute "influxdb/graphite/port",
+          :description => "Port for influxdb graphite connector",
           :type => "string"
