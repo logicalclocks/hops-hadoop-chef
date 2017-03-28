@@ -18,7 +18,7 @@ default.hops.tmp_dir                  = "#{node.hops.base_dir}/tmp"
 default.hops.conf_dir                 = "#{node.hops.base_dir}/etc/hadoop"
 default.hops.sbin_dir                 = "#{node.hops.base_dir}/sbin"
 default.hops.bin_dir                  = "#{node.hops.base_dir}/bin"
-default.hops.data_dir                 = "/var/data/hopsdata"
+default.hops.data_dir                 = "#{node.hops.dir}/hopsdata"
 default.hops.dn.data_dir              = "file://#{node.hops.data_dir}/hdfs/dn"
 default.hops.nn.name_dir              = "file://#{node.hops.data_dir}/hdfs/nn"
 
