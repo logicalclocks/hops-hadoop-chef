@@ -230,12 +230,8 @@ if "#{node.hops.dn.data_dir}".include? ","
       user "root"
       code <<-EOH
         set -e
-        if [ -d #{d} ] ; then
-          chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
-        else
-          mkdir -p #{d}
-          chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
-        fi     
+        mkdir -p #{d}
+        chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
       EOH
     end
    end
