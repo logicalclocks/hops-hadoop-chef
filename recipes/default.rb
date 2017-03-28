@@ -40,22 +40,12 @@ if node.hops.use_hopsworks.eql? "true"
 end
 
 
-file "#{node.hops.home}/etc/hadoop/log4j.properties" do 
-  owner node.hops.hdfs.user
-  action :delete
-end
-
 template "#{node.hops.home}/etc/hadoop/log4j.properties" do
   source "log4j.properties.erb"
   owner node.hops.hdfs.user
   group node.hops.group
   mode "666"
   action :create_if_missing
-end
-
-file "#{node.hops.home}/etc/hadoop/core-site.xml" do 
-  owner node.hops.hdfs.user
-  action :delete
 end
 
 if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms.to_i
@@ -74,11 +64,22 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
             })
 end
 
+
+
+template "#{node.hops.home}/etc/hadoop/mapred-site.xml" do 
+  source "mapred-site.xml.erb"
+  owner node.hops.mr.user
+  group node.hops.group
+  mode "755"
+  variables({
+              :rm_private_ip => rm_private_ip
+            })
+end
+
 # file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
 #   owner node.hops.hdfs.user
 #   action :delete
 # end
-
 
 
 template "#{node.hops.home}/etc/hadoop/hadoop-env.sh" do

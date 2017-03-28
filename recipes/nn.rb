@@ -121,25 +121,13 @@ end
 
 
 
-isThisFirstNN = true
-
-active_ip = private_recipe_ip("hops","nn")
-
 # it is ok if all namenodes format the fs. Unless you add a new one later..
 # if the nn has already been formatted, re-formatting it returns error
 # TODO: test if the NameNode is running
 if ::File.exist?("#{node.hops.home}/.nn_formatted") === false || "#{node.hops.reformat}" === "true"
-  if isThisFirstNN == true
-    sleep 5
-    if "#{my_ip}" == "#{active_ip}"
-       hops_start "format-nn" do
-         action :format_nn
-       end
-    end
-  else
-    # wait for the first nn to come up
-    sleep 30
-  end
+   hops_start "format-nn" do
+     action :format_nn
+   end
 else 
   Chef::Log.info "Not formatting the NameNode. Remove this directory before formatting: (sudo rm -rf #{node.hops.nn.name_dir}/current) and set node.hops.reformat to true"
 end
