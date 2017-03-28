@@ -123,7 +123,7 @@ if node.hops.native_libraries.eql? "true"
 
     protobuf_url = node.hops.protobuf_url
     base_protobuf_filename = File.basename(protobuf_url)
-    cached_protobuf_filename = "/tmp/#{base_protobuf_filename}"
+    cached_protobuf_filename = "#{Chef::Config[:file_cache_path]}/#{base_protobuf_filename}"
 
     remote_file cached_protobuf_filename do
       source protobuf_url
@@ -193,7 +193,7 @@ if node.hops.native_libraries.eql? "true"
       user "root"
       code <<-EOH
         set -e
-        cd /tmp
+        cd #{Chef::Config[:file_cache_path]}
 	tar -zxf #{cached_protobuf_filename} 
         cd #{protobuf_name_no_extension}
         ./configure --prefix=#{protobuf_lib_prefix}
@@ -262,7 +262,7 @@ secondary_url = node.hops.url.secondary
 Chef::Log.info "Attempting to download hadoop binaries from #{primary_url} or, alternatively, #{secondary_url}"
 
 base_package_filename = File.basename(primary_url)
-cached_package_filename = "/tmp/#{base_package_filename}"
+cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
 
 remote_file cached_package_filename do
   source primary_url
@@ -276,7 +276,7 @@ remote_file cached_package_filename do
 end
 
 base_package_filename = File.basename(secondary_url)
-cached_package_filename = "/tmp/#{base_package_filename}"
+cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
 
 remote_file cached_package_filename do
   source secondary_url
@@ -318,7 +318,7 @@ if node.hops.native_libraries == "true"
 
   hadoop_src_url = node.hops.hadoop_src_url
   base_hadoop_src_filename = File.basename(hadoop_src_url)
-  cached_hadoop_src_filename = "/tmp/#{base_hadoop_src_filename}"
+  cached_hadoop_src_filename = "#{Chef::Config[:file_cache_path]}/#{base_hadoop_src_filename}"
 
   remote_file cached_hadoop_src_filename do
     source hadoop_src_url
@@ -335,7 +335,7 @@ if node.hops.native_libraries == "true"
     user node.hops.hdfs.user
     code <<-EOH
         set -e
-        cd /tmp
+        cd #{Chef::Config[:file_cache_path]}
 	tar -xf #{cached_hadoop_src_filename} 
         cd #{hadoop_src_name}
         mvn package -Pdist,native -DskipTests -Dtar
