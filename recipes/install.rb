@@ -230,7 +230,10 @@ if "#{node.hops.dn.data_dir}".include? ","
       user "root"
       code <<-EOH
         set -e
-        mkdir -p #{d}
+        # -e tests for dir, file, symbolic link. It should be a dir.
+        if [ ! -e #{d} ] ; then
+           mkdir -p #{d}
+        fi
         chown -R #{node.hops.hdfs.user}:#{node.hops.group} #{d}
       EOH
     end
