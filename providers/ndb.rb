@@ -55,7 +55,7 @@ action :install_ndb_hops do
   link "#{node.hops.dir}/ndb-hops/libhopsyarn.so" do
     owner node.hops.hdfs.user
     group node.hops.group
-    to "#{node.hops.dir}/ndb-hops/#{lib_url}"
+    to "#{node.hops.dir}/ndb-hops/#{lib}"
   end
 
   link "#{node.hops.home}/#{common}/ndb-dal.jar" do
