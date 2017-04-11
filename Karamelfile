@@ -28,3 +28,6 @@ dependencies:
   - recipe: hops::jhs
     global:  
       - hops::dn
+  - recipe: hops::test
+    global:  
+      - hops::dn
