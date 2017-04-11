@@ -5,6 +5,7 @@ metadata
 cookbook 'java'
 cookbook 'kagent', github: "karamelchef/kagent-chef", branch: "master"
 cookbook 'ndb', github: "hopshadoop/ndb-chef", branch: "master"
+cookbook 'conda', github: "hopshadoop/conda-chef", branch: "master"
 
 cookbook 'magic_shell'
 cookbook 'sysctl', '~> 0.7.0'
