@@ -48,6 +48,11 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
+file "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do 
+  owner node.hops.yarn.user
+  action :delete
+end
+
 template "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
   owner node.hops.yarn.user
