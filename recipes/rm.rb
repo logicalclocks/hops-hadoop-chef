@@ -48,6 +48,13 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
+template "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do
+  source "capacity-scheduler.xml.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  mode "660"
+  action :create_if_missing
+end
 
 for script in node.hops.yarn.scripts
   template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
