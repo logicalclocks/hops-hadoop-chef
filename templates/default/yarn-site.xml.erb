@@ -44,10 +44,6 @@
   </property>
 
   <property>
-    <name>yarn.web-proxy.address</name>
-    <value><%= @rm_private_ip %>:<%= node.apache_hadoop.yarn.ps_port %></value>
-  </property>
-  <property>
     <name>yarn.resourcemanager.webapp.address</name>
     <value>0.0.0.0:8088</value>
     <description>The http address of the RM web application.</description>
@@ -55,7 +51,7 @@
 
   <property>
     <name>yarn.nodemanager.delete.debug-delay-sec</name>
-    <value><%= node.apache_hadoop.container_cleanup_delay_sec %></value>
+    <value><%= node.hops.container_cleanup_delay_sec %></value>
   </property>
   <property>
     <description>NM Webapp address.</description>
@@ -72,11 +68,11 @@
   </property>
   <property>
     <name>yarn.application.classpath</name>
-    <value><%= node.apache_hadoop.yarn.app_classpath %></value>
+    <value><%= node.hops.yarn.app_classpath %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.class</name>
-    <value><%= node.apache_hadoop.rm.scheduler_class %></value>
+    <value><%= node.hops.rm.scheduler_class %></value>
     <description>In case you do not want to use the default scheduler</description>
   </property>
 
@@ -87,7 +83,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.group</name>
-    <value><%= node.apache_hadoop.group %></value>
+    <value><%= node.hops.group %></value>
   </property>
 <property>
   <name>yarn.nodemanager.container-executor.resources-handler.class</name>
@@ -138,49 +134,55 @@
   </property>
   <property>
     <name>yarn.nodemanager.local-dirs</name>
-    <value><%= node.apache_hadoop.tmp_dir %>/nm-local-dir</value>
+    <value><%= node.hops.tmp_dir %>/nm-local-dir</value>
     <description>the local directories used by the nodemanager to store its localized files</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.log-dirs</name>
-    <value></value>
+    <value><%= node.hops.logs_dir %>/userlogs</value>
     <description>the local directories used by the nodemanager to store its localized logs</description>
   </property>
   <property>
     <name>yarn.nodemanager.remote-app-log-dir</name>
-    <value><%= node.apache_hadoop.yarn.nodemanager.remote_app_log_dir %></value>
+    <value><%= node.hops.yarn.nodemanager.remote_app_log_dir %></value>
     <description>the directory where the logs are aggregated</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value><%= node.apache_hadoop.yarn.aux_services %></value>
-    <description>shuffle service that needs to be set for Map Reduce to run</description>
+    <value><%= node.hops.yarn.aux_services %></value>
+    <description>shuffle service that needs to be set for Spark external shuffle service (dynamic allocators) and  MapReduce to run</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+    <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+    <description>The exact name of the class for the Spark external shuffle service</description>
   </property>
   <property>
     <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
-    <value><%= node.apache_hadoop.mr.shuffle_class %></value>
+    <value><%= node.hops.mr.shuffle_class %></value>
     <description>The exact name of the class for shuffle service</description>
   </property>
+  
   <property>
     <name>yarn.nodemanager.vmem-pmem-ratio</name>
-    <value><%= node.apache_hadoop.yarn.vpmem_ratio %></value>
+    <value><%= node.hops.yarn.vpmem_ratio %></value>
     <description>The virtual memory (physical + paged memory) upper limit for each Map and Reduce task is determined by the virtual memory ratio each YARN Container is allowed.</description>
   </property>
   <property>
     <name>yarn.nodemanager.vmem-check-enabled</name>
-    <value><%= node.apache_hadoop.yarn.vmem_check %></value>
+    <value><%= node.hops.yarn.vmem_check %></value>
     <description></description>
   </property>
   <property>
     <name>yarn.nodemanager.pmem-check-enabled</name>
-    <value><%= node.apache_hadoop.yarn.pmem_check %></value>
+    <value><%= node.hops.yarn.pmem_check %></value>
     <description></description>
   </property>
   <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
-    <value><%= @available_mem_mb %></value>
+    <value><%= node.hops.yarn.memory_mbs %></value>
     <description>the amount of memory on the NodeManager in MB</description>
   </property>
   <property>
@@ -189,52 +191,52 @@
   </property>
   <property>
     <name>yarn.scheduler.maximum-allocation-mb</name>
-    <value><%= node.apache_hadoop.yarn.nm.memory_mbs %></value>
+    <value><%= node.hops.yarn.memory_mbs %></value>
     <description>The maximum allocation for every container request at the RM, in MBs. Memory requests higher than this won't take effect, and will get capped to this value.</description>
   </property>
   <property>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
-    <value><%= node.apache_hadoop.yarn.vcores %></value>
+    <value><%= node.hops.yarn.vcores %></value>
     <description>Number of CPU cores that can be allocated for containers.</description>
   </property>
   <property>
     <name>yarn.scheduler.minimum-allocation-vcores</name>
-    <value><%= node.apache_hadoop.yarn.min_vcores %></value>
+    <value><%= node.hops.yarn.min_vcores %></value>
     <description>The minimum allocation for every container request at the RM, in terms of virtual CPU cores. Requests lower than this won't take effect, and the specified value will get allocated the minimum.</description>
   </property>
   <property>
     <name>yarn.scheduler.maximum-allocation-vcores</name>
-    <value><%= node.apache_hadoop.yarn.max_vcores %></value>
+    <value><%= node.hops.yarn.max_vcores %></value>
     <description>The maximum allocation for every container request at the RM, in terms of virtual CPU cores. Requests higher than this won't take effect, and will get capped to this value.</description>
   </property>
   <property>
     <name>yarn.nodemanager.log.retain-seconds</name>
-    <value><%= node.apache_hadoop.yarn.log_retain_secs %></value>
+    <value><%= node.hops.yarn.log_retain_secs %></value>
     <description>Default time (in seconds) to retain log files on the NodeManager Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.resourcemanager.am.max-retries</name>
-    <value><%= node.apache_hadoop.am.max_retries %></value>
+    <value><%= node.hops.am.max_retries %></value>
     <description>Number of times to try to restart the ApplicationMaster by the ResourceManager if its NodeManager fails.</description>
   </property>
   <property>
     <name>yarn.log-aggregation-enable</name>
-    <value><%= node.apache_hadoop.yarn.log_aggregation %></value>
+    <value><%= node.hops.yarn.log_aggregation %></value>
     <description>Enable Default aggregatioin of log files HDFS, deleting them from the NodeManager.</description>
   </property>
   <property>
     <name>yarn.log-aggregation.retain-seconds</name>
-    <value><%= node.apache_hadoop.yarn.log_retain_secs %></value>
+    <value><%= node.hops.yarn.log_retain_secs %></value>
     <description>Default time (in seconds) to retain log files in HDFS. Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.log-aggregation.retain-check-interval-seconds</name>
-    <value><%= node.apache_hadoop.yarn.log_retain_check %></value>
+    <value><%= node.hops.yarn.log_retain_check %></value>
     <description>Default time (in seconds) between checks for retained log files in HDFS. Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.nodemanager.heartbeat.interval-ms</name>
-    <value><%= node.apache_hadoop.yarn.nodemanager_hb_ms %></value>
+    <value><%= node.hops.yarn.nodemanager_hb_ms %></value>
     <description>Time in ms between heartbeats sent from the NodeManager to the ResourceManager.</description>
   </property>
 
@@ -292,7 +294,7 @@
 
   <property>
     <name>yarn.resourcemanager.store.class</name>
-    <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.NDBRMStateStore</value>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.DBRMStateStore</value>
   </property>
   <property>
     <name>dfs.leader.check.interval</name>
@@ -351,6 +353,10 @@
     <name>yarn.quotas.containers-logs.checkpoints-minticks</name>
     <value><%= node.hops.yarn.quota_checkpoint_nbticks %></value>
   </property>
+  <property> 
+    <name>yarn.resourcemanager.proxy-user-privileges.enabled</name>
+    <value>true</value>
+  </property>
 
 <!-- uber pricing -->
 <property>
@@ -381,4 +387,13 @@
     <value><%= node.hops.yarn.nodemanager.webapp.https.address %></value>
 </property>
 
+</configuration>
+  
+<!-- container monitoring and metrics period -->
+  <property>
+    <name>yarn.nodemanager.container-metrics.period-ms</name>
+    <value>2000</value>
+    <description>Container metrics flush period in ms. Set to -1 for flush on completion.</description>
+  </property>
+  
 </configuration>

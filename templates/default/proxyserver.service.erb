@@ -1,0 +1,16 @@
+[Unit]
+Description = Hadoop YARN ProxyServer.
+After = syslog.target network.target remote-fs.target
+
+[Service]
+User = <%= node.hops.yarn.user %>
+
+PIDFile = /tmp/yarn-<%= node.hops.yarn.user %>-proxyserver.pid
+ExecStart = <%= node.hops.base_dir %>/sbin/start-ps.sh
+ExecStop = <%= node.hops.base_dir %>/sbin/stop-ps.sh
+ExecReload = <%= node.hops.base_dir %>/sbin/restart-ps.sh
+
+Type = forking
+
+[Install]
+WantedBy = multi-user.target

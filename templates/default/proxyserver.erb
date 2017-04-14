@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# Startup script for resource-manager
+#
+### BEGIN INIT INFO
+# Provides:                     resource-manager-*
+# Required-Start:                 
+# Should-Start:                 
+# Required-Stop:                  
+# Default-Start:                2 3 4 5
+# Default-Stop:                 0 1 6
+# Short-Description:            start and stop proxyserver
+# Description:                  Start/Stop/Restart YARN's proxyserver
+### END INIT INFO
+
+# Variables
+
+START_PROG="<%= node.hops.base_dir %>/sbin/start-ps.sh"
+STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-ps.sh"
+
+RETVAL=0
+
+EXEC_WITH_USER="su <%= node.hops.yarn.user %> -c"
+
+start() {
+  $EXEC_WITH_USER "$START_PROG"
+  return $?
+}
+
+stop() {
+  "$STOP_PROG"
+  return $?
+}
+
+restart() {
+  status
+  if [ $? -eq 0 ] ; then
+    stop
+    sleep 3
+  fi
+  start
+  return $?
+}
+
+status() {
+  PID_FILE=<%= "#{node.hops.logs_dir}" %>/yarn-<%= "#{node.hops.yarn.user}" %>-proxyserver.pid
+  if [ -f $PID_FILE ] ; then
+     PID=`cat $PID_FILE`
+     kill -0 $PID
+     res=$?
+  else 
+     res=1
+  fi
+  if [ $res -eq 0 ] ; then
+   echo "proxyserver($PID) is running"
+  else
+   echo "proxyserver is not running"
+  fi
+  return $res
+}
+
+
+# user-supplied parameter to stop/start/restart process.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  reload)
+    restart
+    ;;
+  status)
+    status
+    ;;
+  -h|--help)
+    echo ""
+    echo "usage: <prog> start|stop|restart|status"
+    echo ""
+    exit 0
+    ;;
+  *)
+    echo $"Usage: <prog> {start|stop|restart|status}"
+    exit 1
+  esac
+
+
+exit $RETVAL

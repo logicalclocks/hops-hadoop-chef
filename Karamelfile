@@ -1,4 +1,7 @@
 dependencies: 
+  - recipe: hops::install
+    local:  
+      - kagent::install
   - recipe: hops::ndb
     global:  
       - ndb::mysqld
@@ -8,6 +11,8 @@ dependencies:
   - recipe: hops::rm
     local:  
       - hops::ndb
+    global:  
+      - hops::dn
   - recipe: hops::dn
     global:  
       - hops::nn
@@ -20,3 +25,9 @@ dependencies:
   - recipe: hops::client
     global:  
       - hops::nn
+  - recipe: hops::jhs
+    global:  
+      - hops::dn
+  - recipe: hops::test
+    global:  
+      - hops::dn

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+bin=`dirname "${BASH_SOURCE-$0}"`
+bin=`cd "$bin"; pwd`
+
+service namenode stop
+service datanode stop
+service resourcemanager stop
+service nodemanager stop
+service historyserver stop
+
+"$bin"/root-drop-and-recreate-hops-db.sh
+rm -rf <%= node.hops.dn.data_dir %>
+rm -rf <%= node.hops.nn.name_dir %>
+"$bin"/format-nn.sh
+
+service namenode start
+service datanode start
+service resourcemanager start
+service nodemanager start
+service historyserver start

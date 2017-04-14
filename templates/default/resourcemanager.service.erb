@@ -1,0 +1,18 @@
+[Unit]
+Description = ResourceManager. The scheduler for YARN.
+After = syslog.target network.target remote-fs.target
+
+[Service]
+User = <%= node.hops.yarn.user %>
+
+PIDFile = <%= node.hops.logs_dir %>/yarn-<%= node.hops.yarn.user %>-resourcemanager.pid
+ExecStart = <%= node.hops.base_dir %>/sbin/start-rm.sh
+ExecStop = <%= node.hops.base_dir %>/sbin/stop-rm.sh
+ExecReload = <%= node.hops.base_dir %>/sbin/restart-nn.sh
+LimitNOFILE = 65000
+LimitNPROC = 10000
+
+Type = forking
+
+[Install]
+WantedBy = multi-user.target
