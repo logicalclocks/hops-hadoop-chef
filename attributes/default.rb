@@ -264,6 +264,3 @@ default.hops.capacity.queue_mapping                     =""
 default.hops.capacity.queue_mapping_override.enable     ="false"
 
 
-
-default.hops.hops_util.url                    = "#{node.download_url}/hops-util-0.1.jar"
-default.hops.hops_spark_kafka_example.url     = "#{node.download_url}/hops-spark-0.1.jar"
