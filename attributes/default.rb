@@ -28,7 +28,7 @@ default.hops.nm.log_dir               = "#{node.hops.logs_dir}/userlogs"
 default.hops.hdfs.user_home           = "/user"
 default.hops.hdfs.blocksize           = "134217728"
 
-default.hops.url.primary              = "#{download_url}/hops-#{node.hops.version}.tgz"
+default.hops.url.primary              = "#{node.download_url}/hops-#{node.hops.version}.tgz"
 default.hops.url.secondary            = "https://hops.site/hops-#{node.hops.version}.tgz"
 
 default.hops.install_protobuf         = "false"
@@ -196,16 +196,15 @@ default.hops.recipes                  = %w{ nn dn rm nm jhs ps }
 default.hops.limits.nofile            = '32768'
 default.hops.limits.nproc             = '65536'
 
-<<<<<<< HEAD
 default.hops.jhs.https.port 		 = "19443"
 default.hops.rm.https.port 			 = "8090"
 default.hops.nm.https.port  		 = "45443"
 
 default.hops.yarn.resource_tracker   = "false"
-=======
+
 default.hops.nn.direct_memory_size    = 50
 default.hops.nn.heap_size             = 100
->>>>>>> 40a641c04ee29ad1088966bd00ff337dcbaf08b0
+
 
 default.hops.nn.public_ips            = ['10.0.2.15']
 default.hops.nn.private_ips           = ['10.0.2.15']
@@ -258,7 +257,6 @@ default.hops.yarn.quota_ticks_per_credit            = 60
 default.hops.yarn.quota_min_ticks_charge            = 600
 default.hops.yarn.quota_checkpoint_nbticks          = 600
 
-<<<<<<< HEAD
 node.default.apache_hadoop.yarn.log_aggregation     = "true"
 
 ## SSL Config Attributes##
@@ -289,7 +287,7 @@ default.hops.ssl.server.truststore.password     	 	= node.hopsworks.master.passw
 #ssl-client.xml 
 default.hops.ssl.client.truststore.password  			= node.hopsworks.master.password
 default.hops.ssl.client.truststore.location   			= "#{node.kagent.keystore_dir}/node_client_truststore.jks"
-=======
+
 #capacity scheduler queue configuration
 default.hops.capacity.max_app                           =10000
 default.hops.capacity.max_am_percent                    =0.3
@@ -305,8 +303,3 @@ default.hops.capacity.queue_mapping                     =""
 default.hops.capacity.queue_mapping_override.enable     ="false"
 
 
-
-
-
-
->>>>>>> 40a641c04ee29ad1088966bd00ff337dcbaf08b0
