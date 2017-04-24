@@ -222,3 +222,49 @@ for d in tmp_dirs
     mode "1775"
   end
 end
+
+
+hopsworks_user=node["hops"]["hdfs"]["user"]
+
+if node.attribute?('hopsworks') == true
+  if node['hopsworks'].attribute?('user') == true
+     hopsworks_user = node['hopsworks']['user']
+  end
+end
+
+hopsUtil=File.basename(node["hops"]["hops_util"]["url"])
+ 
+remote_file "#{Chef::Config["file_cache_path"]}/#{hopsUtil}" do
+  source node["hops"]["hops_util"]["url"]
+  owner hopsworks_user
+  group node["hops"]["group"]
+  mode "1775"
+  action :create
+end
+
+hops_hdfs_directory "#{Chef::Config["file_cache_path"]}/hops-util-0.1.jar" do
+  action :put_as_superuser
+  owner hopsworks_user
+  group node["hops"]["group"]
+  mode "1755"
+  dest "/user/#{hopsworks_user}/hops-util-0.1.jar"
+end
+
+hopsKafkaJar=File.basename(node["hops"]["hops_spark_kafka_example"]["url"])
+ 
+remote_file "#{Chef::Config["file_cache_path"]}/#{hopsKafkaJar}" do
+  source node["hops"]["hops_spark_kafka_example"]["url"]
+  owner hopsworks_user
+  group hopsworks_user
+  mode "1775"
+  action :create
+end
+
+hops_hdfs_directory "#{Chef::Config["file_cache_path"]}/#{hopsKafkaJar}" do
+  action :put_as_superuser
+  owner hopsworks_user
+  group node["hops"]["group"]
+  mode "1755"
+  dest "/user/#{hopsworks_user}/#{hopsKafkaJar}"
+end
+

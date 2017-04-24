@@ -27,7 +27,7 @@ default.hops.nm.log_dir               = "#{node.hops.logs_dir}/userlogs"
 default.hops.hdfs.user_home           = "/user"
 default.hops.hdfs.blocksize           = "134217728"
 
-default.hops.url.primary              = "#{download_url}/hops-#{node.hops.version}.tgz"
+default.hops.url.primary              = "#{node.download_url}/hops-#{node.hops.version}.tgz"
 default.hops.url.secondary            = "https://hops.site/hops-#{node.hops.version}.tgz"
 
 default.hops.install_protobuf         = "false"
@@ -265,6 +265,5 @@ default.hops.capacity.queue_mapping_override.enable     ="false"
 
 
 
-
-
-
+default.hops.hops_util.url                    = "#{node.download_url}/hops-util-0.1.jar"
+default.hops.hops_spark_kafka_example.url     = "#{node.download_url}/hops-spark-0.1.jar"
