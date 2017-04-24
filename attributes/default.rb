@@ -248,6 +248,7 @@ default["hops"]["yarn"]["nodemanager_auto_failover_enabled"] = "false"
 default["hops"]["yarn"]["nodemanager_recovery_enabled"]      = "true"
 # NM heartbeats need to be at least twice as long as NDB transaction timeouts
 
+
 default["hops"]["yarn"]["rm_heartbeat"]                      = 1000
 default["hops"]["yarn"]["nodemanager_rpc_batch_max_size"]    = 60
 default["hops"]["yarn"]["nodemanager_rpc_batch_max_duration"]= 60
@@ -287,6 +288,7 @@ default["hops"]["ssl"]["server"]["truststore"]["location"]   		= "#{node['kagent
 default["hops"]["ssl"]["server"]["truststore"]["password"]     	 	= node["hopsworks"]["master"]["password"]
 
 #ssl-client.xml 
+
 default["hops"]["ssl"]["client"]["truststore"]["password"]		= node["hopsworks"]["master"]["password"]
 default["hops"]["ssl"]["client"]["truststore"]["location"]		= "#{node['kagent']['keystore_dir']}/node_client_truststore.jks"
 
@@ -309,4 +311,5 @@ default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
 
 default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-0.1.jar"
 default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-0.1.jar"
+
 
