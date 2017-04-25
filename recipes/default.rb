@@ -171,3 +171,14 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
+template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
+  source "hadoop-metrics2.properties.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "755"
+  variables({
+              :my_private_ip => my_ip,
+            })
+  action :create_if_missing
+end
+
