@@ -1,5 +1,4 @@
 include_attribute "ndb"
-include_attribute "hopsworks"
 
 default["hops"]["version"]                     = "2.7.3"
 
@@ -187,7 +186,7 @@ default["hops"]["dn"]["data_dir"]           = "file://#{node['hops']['data_dir']
 default["hops"]["hdfs"]["blocksize"]        = "134217728"
 
 default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version}-#{node['ndb']['version']}.so"
+default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 
 default["hadoop_spark"]["version"]          = "2.1.0"
 default["yarn"]["spark"]["shuffle_jar"]     = "spark-#{node['hadoop_spark']['version']}-yarn-shuffle.jar"
@@ -272,13 +271,13 @@ default["hops"]["dfs"]["namenode"]["https-address"]   	     = "0.0.0.0:50470"
 
 #mapred-site.xml 
 default["hops"]["mapreduce"]["jobhistory"]["http"]["policy"] = "HTTPS_ONLY"
-default["hops"]["mapreduce"]["jobhistory"]["webapp"]["https"]["address"]  = "#{default['hops']['jhs']['public_ips']}:#{default['hops']['jhs']['https']['port']}"
+default["hops"]["mapreduce"]["jobhistory"]["webapp"]["https"]["address"]  = "#{node['hops']['jhs']['public_ips']}:#{node['hops']['jhs']['https']['port']}"
 
 #yarn-site.xml 
 default["hops"]["yarn"]["http"]["policy"]                    = "HTTPS_ONLY"
-default["hops"]["yarn"]["log"]["server"]["url"]              = "https://#{default['hops']['jhs']['private_ips']}:#{default['hops']['jhs']['https']['port']}/jobhistory/logs"
-default["hops"]["yarn"]["resourcemanager"]["webapp"]["https"]["address"]  = "#{default["hops"]["rm"]["private_ips}:#{default["hops"]["rm"]["https"]["port}"
-default["hops"]["yarn"]["nodemanager"]["webapp"]["https"]["address"] 		= "0.0.0.0:#{default['hops']['nm']['https']['port']}"
+default["hops"]["yarn"]["log"]["server"]["url"]              = "https://#{node['hops']['jhs']['private_ips']}:#{node['hops']['jhs']['https']['port']}/jobhistory/logs"
+default["hops"]["yarn"]["resourcemanager"]["webapp"]["https"]["address"]  = "#{node['hops']['rm']['private_ips']}:#{node['hops']['rm']['https']['port']}"
+default["hops"]["yarn"]["nodemanager"]["webapp"]["https"]["address"] 		= "0.0.0.0:#{node['hops']['nm']['https']['port']}"
 
 #ssl-server.xml 
 default["hops"]["ssl"]["server"]["keystore"]["password"]   		= node["hopsworks"]["master"]["password"]
