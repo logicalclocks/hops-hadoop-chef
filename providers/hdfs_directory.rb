@@ -35,7 +35,7 @@ action :put do
      . #{node.hops.base_dir}/sbin/set-env.sh
      #{node.hops.base_dir}/bin/hdfs dfs -test -e #{new_resource.dest}
      if [ $? -ne 0 ] ; then
-        #{node.hops.base_dir}/bin/hdfs dfs -put #{new_resource.name} #{new_resource.dest}
+        #{node.hops.base_dir}/bin/hdfs dfs -copyFromLocal #{new_resource.name} #{new_resource.dest}
         #{node.hops.base_dir}/bin/hdfs dfs -chgrp #{new_resource.group} #{new_resource.dest}
         if [ "#{new_resource.mode}" != "" ] ; then
            #{node.hops.base_dir}/bin/hadoop fs -chmod #{new_resource.mode} #{new_resource.dest} 
@@ -57,7 +57,7 @@ action :put_as_superuser do
      . #{node.hops.base_dir}/sbin/set-env.sh
      #{node.hops.base_dir}/bin/hdfs dfs -test -e #{new_resource.dest}
      if [ $? -ne 0 ] ; then
-        #{node.hops.base_dir}/bin/hdfs dfs -put #{new_resource.name} #{new_resource.dest}
+        #{node.hops.base_dir}/bin/hdfs dfs -copyFromLocal #{new_resource.name} #{new_resource.dest}
         #{node.hops.base_dir}/bin/hdfs dfs -chown #{new_resource.owner} #{new_resource.dest}
         #{node.hops.base_dir}/bin/hdfs dfs -chgrp #{new_resource.group} #{new_resource.dest}
         if [ "#{new_resource.mode}" != "" ] ; then
