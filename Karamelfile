@@ -1,20 +1,16 @@
 dependencies: 
   - recipe: hops::install
-    local:  
+    global:  
       - kagent::install
   - recipe: hops::ndb
     global:  
       - ndb::mysqld
   - recipe: hops::nn
     global:  
-      - hops::ndb
       - kagent::default
-      - ndb::mysqld      
   - recipe: hops::rm
     global:  
-      - hops::ndb
       - kagent::default      
-      - hops::dn
   - recipe: hops::dn
     global:  
       - hops::nn
