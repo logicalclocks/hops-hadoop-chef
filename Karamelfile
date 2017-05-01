@@ -6,31 +6,24 @@ dependencies:
     global:  
       - ndb::mysqld
   - recipe: hops::nn
-    local:  
+    global:  
       - hops::ndb
       - kagent::default
       - ndb::mysqld      
   - recipe: hops::rm
-    local:  
+    global:  
       - hops::ndb
       - kagent::default      
-    global:  
       - hops::dn
   - recipe: hops::dn
     global:  
       - hops::nn
-    local:
-      - kagent::default    
   - recipe: hops::nm
     global:  
       - hops::rm
-    local:
-      - kagent::default    
   - recipe: hops::jhs
     global:  
       - hops::dn
-    local:
-      - kagent::default    
   - recipe: hops::client
     global:  
       - hops::nn
