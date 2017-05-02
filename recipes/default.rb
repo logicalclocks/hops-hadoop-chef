@@ -15,7 +15,7 @@ my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
-
+influxdb_ip = private_recipe_ip("hopsmonitor","default")
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -166,3 +166,13 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
+template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
+  source "hadoop-metrics2.properties.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "755"
+  variables({
+              :influxdb_ip => influxdb_ip,
+            })
+  action :create_if_missing
+end
