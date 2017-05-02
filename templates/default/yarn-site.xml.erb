@@ -370,10 +370,16 @@
 </property>
   
 <!-- container monitoring and metrics period -->
-  <property>
-    <name>yarn.nodemanager.container-metrics.period-ms</name>
-    <value>2000</value>
-    <description>Container metrics flush period in ms. Set to -1 for flush on completion.</description>
-  </property>
+<property>
+  <name>yarn.nodemanager.container-metrics.period-ms</name>
+  <value>2000</value>
+  <description>Container metrics flush period in ms. Set to -1 for flush on completion.</description>
+</property>
+
+<property>
+  <name>yarn.nodemanager.container-monitor.interval-ms</name>
+  <value>2000</value>
+  <description>How often to monitor containers.</description>
+</property>
   
 </configuration>
