@@ -1,3 +1,7 @@
+group node["kagent"]["certs_group"] do
+  action :create
+  not_if "getent group #{node["kagent"]["certs_group"]}"
+end
 
 
 magic_shell_environment 'LD_LIBRARY_PATH' do
