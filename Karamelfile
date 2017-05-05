@@ -9,7 +9,8 @@ dependencies:
     global:  
       - kagent::default
   - recipe: hops::rm
-    global:  
+    global:
+      - hops::dn
       - kagent::default      
   - recipe: hops::dn
     global:  
