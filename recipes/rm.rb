@@ -28,16 +28,12 @@ if node.hops.cgroups.eql? "true"
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
 
-file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
-  owner node.hops.yarn.user
-  action :delete
-end
 
 template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "660"
+  mode "664"
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
@@ -45,20 +41,15 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
               :my_private_ip => my_ip,
               :container_executor => container_executor
             })
-  action :create_if_missing
-end
-
-file "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do 
-  owner node.hops.yarn.user
-  action :delete
+  action :create
 end
 
 template "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "660"
-  action :create_if_missing
+  mode "664"
+  action :create
 end
 
 for script in node.hops.yarn.scripts

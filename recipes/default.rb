@@ -44,7 +44,7 @@ template "#{node.hops.home}/etc/hadoop/log4j.properties" do
   source "log4j.properties.erb"
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "666"
+  mode "664"
   action :create_if_missing
 end
 
@@ -145,11 +145,6 @@ template "#{node.hops.conf_dir}/erasure-coding-site.xml" do
   action :create_if_missing
 end
 
-# file "#{node.hops.home}/etc/hadoop/yarn-site.xml" do 
-#   owner node.hops.hdfs.user
-#   action :delete
-# end
-
 container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
 if node.hops.cgroups.eql? "true" 
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
@@ -160,7 +155,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   owner node.hops.yarn.user
   group node.hops.group
   cookbook "hops"
-  mode "666"
+  mode "664"
   variables({
               :rm_private_ip => rm_dest_ip,
               :rm_public_ip => rm_public_ip,

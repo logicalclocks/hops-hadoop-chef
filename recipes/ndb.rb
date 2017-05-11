@@ -52,7 +52,7 @@ template "#{node.hops.home}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "755"
+  mode "750"
   variables({
               :ndb_connectstring => node.ndb.connectstring,
               :mysql_host => mysql_ip
