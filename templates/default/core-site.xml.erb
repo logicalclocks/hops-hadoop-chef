@@ -61,14 +61,22 @@
   </property>
 -->
 
-  <property>
-    <name>hadoop.proxyuser.<%= node.hops.yarn.user %>.hosts</name>
-    <value>*</value>
-  </property>
-  <property>
-    <name>hadoop.proxyuser.<%= node.hops.yarn.user %>.groups</name>
-    <value>*</value>
-  </property>
+<property>
+  <name>hadoop.proxyuser.<%= node.hops.yarn.user %>.hosts</name>
+  <value>*</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.<%= node.hops.yarn.user %>.groups</name>
+  <value>*</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.jupyter.hosts</name>
+  <value>*</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.jupyter.groups</name>
+  <value>*</value>
+</property>
 
 <property>
   <name>dfs.leader.check.interval</name>
