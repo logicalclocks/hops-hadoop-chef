@@ -21,7 +21,7 @@
 # Send the metrics to graphite endpoint
 *.sink.graphite.class=org.apache.hadoop.metrics2.sink.GraphiteSink
 # default sampling period, in seconds
-*.period=2
+*.period=10
 
 nodemanager.sink.graphite.server_host=<%= @influxdb_ip %>
 nodemanager.sink.graphite.server_port=<%= node.influxdb.graphite.port %>
