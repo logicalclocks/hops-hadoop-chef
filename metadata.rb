@@ -179,6 +179,10 @@ attribute "hadoop_spark/version",
           :description => "Spark version",
           :type => 'string'
 
+attribute "hops/url/primary",
+          :description => "Primary download url of hops distribution",
+          :type => 'string'
+
 attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'
