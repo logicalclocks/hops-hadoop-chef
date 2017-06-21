@@ -87,21 +87,21 @@
   </property>
 <property>
   <name>yarn.nodemanager.container-executor.resources-handler.class</name>
-  <value>org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler</value>
+  <value>org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandlerGPU</value>
 </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.hierarchy</name>
-    <value>/yarn</value>
+    <value>hops-yarn</value>
     <description>LinuxContainerExecutor CGroups hierarchy.</description>
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.mount-path</name>
-    <value>/cgroup</value>
+    <value>/sys/fs/cgroup</value>
     <description>LinuxContainerExecutor CGroups mount-path.</description>
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.mount</name>
-    <value>true</value>
+    <value>false</value>
     <description>Whether the LCE should attempt to mount cgroups if not found. Only used when the LCE resources handler is set to the CgroupsLCEResourcesHandler.</description>
   </property>
 <property>
@@ -422,9 +422,9 @@
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>
     <value><%= node.hops.yarn.linux_container_local_user %></value>
 </property>
-<property> 
+<!--<property> 
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit.users</name>
     <value><%= node.hops.yarn.linux_container_limit_users %></value>
-</property>
+</property>-->
   
 </configuration>
