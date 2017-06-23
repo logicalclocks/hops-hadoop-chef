@@ -10,6 +10,7 @@ end
 require 'resolv'
 
 nnPort=node.hops.nn.port
+hops_group=node.hops.group
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
@@ -165,6 +166,19 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
             })
   action :create_if_missing
 end
+
+template "#{node.hops.home}/#{node.hops.conf_dir}/container-executor.cfg" do
+  source "container-executor.cfg.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  cookbook "hops"
+  mode "664"
+  variables({
+              :hops_group => hops_group
+            })
+  action :create_if_missing
+end
+
 
 template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
