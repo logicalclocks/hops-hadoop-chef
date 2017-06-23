@@ -394,10 +394,10 @@ if node.hops.cgroups.eql? "true"
     code <<-EOH
     set -e
     if [ ! -d "/sys/fs/cgroup/cpu/hops-yarn" ] ; then
-       mkdir /sys/fs/cgroup/cpu/hops-yarn
+       mkdir -p /sys/fs/cgroup/cpu/hops-yarn
     fi
     if [ ! -d "/sys/fs/cgroup/devices/hops-yarn" ] ; then
-       mkdir /sys/fs/cgroup/devices/hops-yarn
+       mkdir -p /sys/fs/cgroup/devices/hops-yarn
     fi
     # mount -t cgroup -o cpu cpu /cgroup
     touch #{cgroups_mounted}
@@ -411,16 +411,16 @@ bash 'update_owner_for_gpu' do
   user "root"
   code <<-EOH
     set -e
-    chown root:#{node.hops.group} #{node.hops.dir}
-    chown root:#{node.hops.group} #{node.hops.home}
-    chmod go-w #{node.hops.home}
-    chown root:#{node.hops.group} #{node.hops.conf_dir_parent}
-    chmod go-w #{node.hops.conf_dir_parent}
-    chown root:#{node.hops.group} #{node.hops.conf_dir}
-    chmod go-w #{node.hops.conf_dir}
-    chown root:#{node.hops.group} #{node.hops.conf_dir}/container-executor.cfg
-    chmod go-w #{node.hops.conf_dir}/container-executor.cfg
-    chown root:#{node.hops.group} #{node.hops.bin_dir}/container-executor
+    chown root #{node.hops.dir}
+    chown root #{node.hops.home}
+    chmod 755 #{node.hops.home}
+    chown root #{node.hops.conf_dir_parent}
+    chmod 755 #{node.hops.conf_dir_parent}
+    chown root #{node.hops.conf_dir}
+    chmod 755 #{node.hops.conf_dir}
+    chown root #{node.hops.conf_dir}/container-executor.cfg
+    chmod 755 #{node.hops.conf_dir}/container-executor.cfg
+    chown root #{node.hops.bin_dir}/container-executor
     chmod 6050 #{node.hops.bin_dir}/container-executor
   EOH
 end
