@@ -318,7 +318,7 @@ default["hops"]["yarn"]["max_allocation_gpus"]         = 1
 default["hops"]["yarn"]["gpus_enabled"]                = "true"
 default["hops"]["yarn"]["gpus"]                        = 0
 default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
-#default["hops"]["yarn"]["linux_container_limit_users"] = "false"
+default["hops"]["yarn"]["linux_container_limit_users"] = "false"
 
 
 
