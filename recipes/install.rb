@@ -306,6 +306,7 @@ bash 'extract-hadoop' do
         chown -RL #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}
         # remove the config files that we would otherwise overwrite
         rm -f #{node.hops.home}/etc/hadoop/yarn-site.xml
+	rm -f #{node.hops.home}/etc/hadoop/container-executor.cfg
         rm -f #{node.hops.home}/etc/hadoop/core-site.xml
         rm -f #{node.hops.home}/etc/hadoop/hdfs-site.xml
         rm -f #{node.hops.home}/etc/hadoop/mapred-site.xml

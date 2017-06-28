@@ -167,7 +167,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
-template "#{node.hops.conf_dir}/container-executor.cfg" do
+template "#{node.hops.home}/etc/hadoop/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner node.hops.yarn.user
   group node.hops.group
