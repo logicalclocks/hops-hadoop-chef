@@ -408,24 +408,6 @@ if node.hops.cgroups.eql? "true"
 
 end
 
-bash 'update_owner_for_gpu' do
-  user "root"
-  code <<-EOH
-    set -e
-    chown root #{node.hops.dir}
-    chown root #{node.hops.home}
-    chmod 775 #{node.hops.home}
-    chown root #{node.hops.conf_dir_parent}
-    chmod 775 #{node.hops.conf_dir_parent}
-    chown root #{node.hops.conf_dir}
-    chmod 775 #{node.hops.conf_dir}
-    chown root #{node.hops.conf_dir}/container-executor.cfg
-    chmod 775 #{node.hops.conf_dir}/container-executor.cfg
-    chown root #{node.hops.bin_dir}/container-executor
-    chmod 6050 #{node.hops.bin_dir}/container-executor
-  EOH
-end
-
 magic_shell_environment 'PATH' do
   value "$PATH:#{node.hops.base_dir}/bin"
 end
