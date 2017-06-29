@@ -25,7 +25,7 @@ end
 
 action :format_nn do
 
-  formatMarker="#{node.hops.home}/.nn_formatted"
+  formatMarker="#{node.hops.tmp_dir}/.nn_formatted"
   if "#{node.hops.reformat}" === "true"
     ::File.delete(formatMarker)
   end
