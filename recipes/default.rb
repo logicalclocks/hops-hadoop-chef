@@ -174,7 +174,6 @@ template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   variables({
               :influxdb_ip => influxdb_ip,
             })
-  action :create_if_missing
 end
 
 template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
