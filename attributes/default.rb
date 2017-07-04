@@ -51,8 +51,6 @@ default["hops"]["reformat"]                    = "false"
 default["hops"]["io_buffer_sz"]                = 131072
 default["hops"]["container_cleanup_delay_sec"] = 0
 
-default["hops"]["nn"]["heap_size"]             = 500
-
 default["hops"]["yarn"]["scripts"]             = %w{ start stop restart root-start }
 default["hops"]["yarn"]["ps_port"]             = 20888
 
@@ -209,7 +207,7 @@ default["hops"]["nm"]["https"]["port"]      = "45443"
 
 default["hops"]["yarn"]["resource_tracker"] = "false"
 default["hops"]["nn"]["direct_memory_size"] = 50
-default["hops"]["nn"]["heap_size"]          = 100
+default["hops"]["nn"]["heap_size"]          = 500
 
 default["hops"]["nn"]["public_ips"]         = ['10.0.2.15']
 default["hops"]["nn"]["private_ips"]        = ['10.0.2.15']
@@ -261,6 +259,8 @@ default["hops"]["yarn"]["quota_monitor_interval"]            = 1000
 default["hops"]["yarn"]["quota_ticks_per_credit"]            = 60
 default["hops"]["yarn"]["quota_min_ticks_charge"]            = 600
 default["hops"]["yarn"]["quota_checkpoint_nbticks"]          = 600
+default["hops"]["yarn"]["nm_heapsize_mbs"]                   = 1000
+default["hops"]["yarn"]["rm_heapsize_mbs"]                   = 1000
 
 ## SSL Config Attributes##
 

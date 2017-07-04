@@ -209,3 +209,10 @@ bash 'update_owner_for_gpu' do
   EOH
 end
 
+template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
+  source "yarn-env.sh.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  mode "664"
+  action :create
+end

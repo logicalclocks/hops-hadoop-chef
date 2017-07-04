@@ -158,6 +158,14 @@ attribute "hops/yarn/quota_checkpoint_nbticks",
           :description => "",
           :type => "string"
 
+attribute "hops/yarn/nm_heapsize_mbs",
+          :description => "Increase this value if using the YARN external shuffle service. (default: 1000)",
+          :type => 'string'
+
+attribute "hops/yarn/rm_heapsize_mbs",
+          :description => "Resource manager heapsize. (default: 1000)",
+          :type => 'string'
+
 attribute "hops/trash/interval",
           :description => "How long in minutes trash survives in /user/<glassfish>/.Trash/<interval-bucket>/...",
           :type => "string"
