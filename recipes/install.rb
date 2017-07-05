@@ -306,6 +306,7 @@ bash 'extract-hadoop' do
         chown -RL #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}
         # remove the config files that we would otherwise overwrite
         rm -f #{node.hops.home}/etc/hadoop/yarn-site.xml
+	rm -f #{node.hops.home}/etc/hadoop/container-executor.cfg
         rm -f #{node.hops.home}/etc/hadoop/core-site.xml
         rm -f #{node.hops.home}/etc/hadoop/hdfs-site.xml
         rm -f #{node.hops.home}/etc/hadoop/mapred-site.xml
@@ -393,10 +394,13 @@ if node.hops.cgroups.eql? "true"
     user "root"
     code <<-EOH
     set -e
-    if [ ! -d "/cgroup" ] ; then
-       mkdir /cgroup
+    if [ ! -d "/sys/fs/cgroup/cpu/hops-yarn" ] ; then
+       mkdir -p /sys/fs/cgroup/cpu/hops-yarn
     fi
-    mount -t cgroup -o cpu cpu /cgroup
+    if [ ! -d "/sys/fs/cgroup/devices/hops-yarn" ] ; then
+       mkdir -p /sys/fs/cgroup/devices/hops-yarn
+    fi
+    # mount -t cgroup -o cpu cpu /cgroup
     touch #{cgroups_mounted}
   EOH
      not_if { ::File.exist?("#{cgroups_mounted}") }
