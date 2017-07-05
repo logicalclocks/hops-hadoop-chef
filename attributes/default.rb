@@ -1,4 +1,5 @@
 include_attribute "ndb"
+include_attribute "hopsmonitor"
 
 default["hops"]["version"]                     = "2.7.3"
 

@@ -188,7 +188,6 @@ template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   variables({
               :influxdb_ip => influxdb_ip,
             })
-  action :create_if_missing
 end
 
 bash 'update_owner_for_gpu' do
