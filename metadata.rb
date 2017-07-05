@@ -331,3 +331,29 @@ attribute "install/user",
 attribute "influxdb/graphite/port",
           :description => "Port for influxdb graphite connector",
           :type => "string"
+#GPU settings
+attribute "hops/yarn/min_allocation_gpus",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/max_allocation_gpus",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/groups_enabled",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/groups",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/linux_container_local_user",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/linux_container_limit_users",
+          :description => "",
+          :type => "string"
+
+

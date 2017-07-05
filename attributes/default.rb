@@ -15,6 +15,7 @@ default["hops"]["base_dir"]                    = node["hops"]["dir"] + "/hadoop"
 default["hops"]["home"]                        = node["hops"]["dir"] + "/hadoop-" + node["hops"]["version"]
 default["hops"]["logs_dir"]                    = node["hops"]["base_dir"] + "/logs"
 default["hops"]["tmp_dir"]                     = node["hops"]["base_dir"] + "/tmp"
+default["hops"]["conf_dir_parent"]             = node["hops"]["base_dir"] + "/etc"
 default["hops"]["conf_dir"]                    = node["hops"]["base_dir"] + "/etc/hadoop"
 default["hops"]["sbin_dir"]                    = node["hops"]["base_dir"] + "/sbin"
 default["hops"]["bin_dir"]                     = node["hops"]["base_dir"] + "/bin"
@@ -55,7 +56,7 @@ default["hops"]["yarn"]["ps_port"]             = 20888
 
 case node["platform_family"]
 when "debian"
-default["hops"]["yarn"]["vpmem_ratio"]         = 4.1
+default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
 default["hops"]["yarn"]["vmem_check"]          = true
 when "redhat"
 default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
@@ -64,9 +65,9 @@ end
 
 
 default["hops"]["yarn"]["pmem_check"]          = true
-default["hops"]["yarn"]["vcores"]              = 4
+default["hops"]["yarn"]["vcores"]              = 8
 default["hops"]["yarn"]["min_vcores"]          = 1
-default["hops"]["yarn"]["max_vcores"]          = 4
+default["hops"]["yarn"]["max_vcores"]          = 8
 default["hops"]["yarn"]["log_aggregation"]     = "true"
 default["hops"]["yarn"]["nodemanager"]["remote_app_log_dir"] = node["hops"]["hdfs"]["user_home"] + "/" + node["hops"]["yarn"]["user"] + "/logs"
 default["hops"]["yarn"]["log_retain_secs"]     = 86400
@@ -140,14 +141,14 @@ default["hops"]["nn"]["addrs"]                 = []
 
 # build the native libraries. Is much slower, but removes warning when using services.
 default["hops"]["native_libraries"]            = "false"
-default["hops"]["cgroups"]                     = "false"
+default["hops"]["cgroups"]                     = "true"
 
 default["maven"]["version"]                    = "3.2.5"
 default["maven"]["checksum"]                   = ""
 
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
-default["hops"]["yarn"]["memory_mbs"]          = 6000
+default["hops"]["yarn"]["memory_mbs"]          = 10000
 default["hops"]["yarn"]["memory_percent"]      = "75"
 
 default["hops"]["limits"]["nofile"]            = '32768'
@@ -310,5 +311,14 @@ default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
 
 default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-0.1.jar"
 default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-0.1.jar"
+
+#GPU
+default["hops"]["yarn"]["min_allocation_gpus"]         = 0
+default["hops"]["yarn"]["max_allocation_gpus"]         = 1
+default["hops"]["yarn"]["gpus_enabled"]                = "true"
+default["hops"]["yarn"]["gpus"]                        = 0
+default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
+default["hops"]["yarn"]["linux_container_limit_users"] = "false"
+
 
 
