@@ -5,6 +5,8 @@ attribute :mode, :kind_of => String, :default => ""
 attribute :owner, :kind_of => String, :default => ""
 attribute :group, :kind_of => String, :default => ""
 attribute :dest, :kind_of => String, :default => ""
-attribute :recursive, :kind_of => [TrueClass, FalseClass], :default => true 
+attribute :recursive, :kind_of => [TrueClass, FalseClass], :default => true
+attribute :isDir, :kind_of => [TrueClass, FalseClass], :default => false
 
 default_action :create
+
