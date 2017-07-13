@@ -148,7 +148,7 @@ default["maven"]["checksum"]                   = ""
 
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
-default["hops"]["yarn"]["memory_mbs"]          = 10000
+default["hops"]["yarn"]["memory_mbs"]          = 12000
 default["hops"]["yarn"]["memory_percent"]      = "75"
 
 default["hops"]["limits"]["nofile"]            = '32768'
