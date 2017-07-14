@@ -53,6 +53,11 @@ if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
+rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
+if node.hops.ipc.server.ssl.enabled.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
+end
+
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node.hops.hdfs.user
@@ -61,7 +66,10 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => allNNIps
+              :allNNs => allNNIps,
+              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
+              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
+              :rpcSocketFactory => rpcSocketFactory
             })
 end
 
@@ -179,6 +187,17 @@ template "#{node.hops.home}/etc/hadoop/container-executor.cfg" do
   action :create_if_missing
 end
 
+template "#{node.hops.home}/etc/hadoop/ssl-server.xml" do
+  source "ssl-server.xml.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  mode "622"
+  variables({
+              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
+              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks"
+            })
+  action :create
+end
 
 template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
