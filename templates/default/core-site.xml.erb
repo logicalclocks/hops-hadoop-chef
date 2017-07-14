@@ -164,4 +164,82 @@
    <value>1</value>
  </property>
 
+ <property>
+   <name>ipc.server.read.threadpool.size</name>
+   <value><%= node.hops.server.threadpool %></value>
+ </property>
+ 
+ <!-- RPC TLS support -->
+ <property>
+   <name>ipc.server.ssl.enabled</name>
+   <value><%= node.hops.ipc.server.ssl.enabled %></value>
+ </property>
+
+ <property>
+   <name>hadoop.ssl.hostname.verifier</name>
+   <value><%= node.hops.hadoop.ssl.hostname.verifier %></value>
+ </property>
+
+ <property>
+   <name>hadoop.rpc.socket.factory.class.default</name>
+   <value><%= @rpcSocketFactory %></value>
+ </property>
+
+ <property>
+   <name>hadoop.ssl.enabled.protocols</name>
+   <value><%= node.hops.hadoop.ssl.enabled.protocols %></value>
+ </property>
+
+ <!--
+     Directory where service certificates exist. It is used by
+     HopsSSLSocketFactory for superuser.
+     Default: /srv/hops/kagent-certs/keystores
+ -->
+ <property>
+   <name>hops.service.certificates.directory</name>
+   <value><%= node.kagent.keystore_dir %></value>
+ </property>
+
+ <!--
+     Directory where users' certificates are materialized from
+     Hopsworks. It is used by HopsSSLSocketFactory to setup the
+     correct crypto material for non-superuser.
+     Default: /srv/hops/domains/domain1/kafkacerts
+ -->
+  <property>
+   <name>client.materialize.directory</name>
+   <value><%= node.certs.dir %>/transient</value>
+  </property>
+  
+ <!-- TLS client configuration -->
+ <property>
+   <name>client.rpc.ssl.keystore.filepath</name>
+   <value><%= @kstore %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.keystore.password</name>
+   <value><%= node.hops.ssl.server.keystore.password %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.keypassword</name>
+   <value><%= node.hops.ssl.server.keystore.keypassword %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.truststore.filepath</name>
+   <value><%= @tstore %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.truststore.password</name>
+   <value><%= node.hops.ssl.server.truststore.password %></value>
+ </property>
+ 
+ <property>
+   <name>client.rpc.ssl.enabled.protocol</name>
+   <value>TLSv1.2</value>
+ </property>
+ 
 </configuration>

@@ -191,6 +191,14 @@ attribute "hops/url/primary",
           :description => "Primary download url of hops distribution",
           :type => 'string'
 
+attribute "hops/url/secondary",
+          :description => "Secondary download url of hops distribution",
+          :type => 'string'
+
+attribute "hops/ipc/server/ssl/enabled",
+          :description => "'true' will enable RPC TLS and 'false' will disable it",
+          :type => 'string'
+
 attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'

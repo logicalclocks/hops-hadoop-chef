@@ -283,8 +283,13 @@ default["hops"]["yarn"]["nodemanager"]["webapp"]["https"]["address"] 		= "0.0.0.
 #ssl-server.xml 
 default["hops"]["ssl"]["server"]["keystore"]["password"]   		= node["hopsworks"]["master"]["password"]
 default["hops"]["ssl"]["server"]["keystore"]["keypassword"]   		= node["hopsworks"]["master"]["password"]
+
+## Keystore and truststore locations are substitued in recipes/default.rb
+## They should be removed from here. They are not used anywhere
 default["hops"]["ssl"]["server"]["keystore"]["location"] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
 default["hops"]["ssl"]["server"]["truststore"]["location"]   		= "#{node['kagent']['keystore_dir']}/node_server_truststore.jks"
+##
+
 default["hops"]["ssl"]["server"]["truststore"]["password"]     	 	= node["hopsworks"]["master"]["password"]
 
 #ssl-client.xml 
@@ -292,6 +297,18 @@ default["hops"]["ssl"]["server"]["truststore"]["password"]     	 	= node["hopswo
 default["hops"]["ssl"]["client"]["truststore"]["password"]		= node["hopsworks"]["master"]["password"]
 default["hops"]["ssl"]["client"]["truststore"]["location"]		= "#{node['kagent']['keystore_dir']}/node_client_truststore.jks"
 
+# Number of reader threads of the IPC/RPC server
+# Default is 1, when TLS is enabled it is advisable to increase it
+default["hops"]["server"]["threadpool"] = 3
+
+# RPC TLS
+default["hops"]["ipc"]["server"]["ssl"]["enabled"] = "false"
+
+# Do not verify the hostname
+default["hops"]["hadoop"]["ssl"]["hostname"]["verifier"] = "ALLOW_ALL"
+# Socket factory for the client
+default["hops"]["hadoop"]["rpc"]["socket"]["factory"] = "org.apache.hadoop.net.HopsSSLSocketFactory"
+default["hops"]["hadoop"]["ssl"]["enabled"]["protocols"] = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
 
 #capacity scheduler queue configuration
 default["hops"]["capacity"]["max_app"]                           =10000
@@ -319,6 +336,3 @@ default["hops"]["yarn"]["gpus_enabled"]                = "true"
 default["hops"]["yarn"]["gpus"]                        = 0
 default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
 default["hops"]["yarn"]["linux_container_limit_users"] = "false"
-
-
-
