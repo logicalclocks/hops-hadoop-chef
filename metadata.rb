@@ -11,7 +11,7 @@ source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a HopsFs NameNode"
 recipe            "hops::ndb", "Installs MySQL Cluster (ndb) dal driver for Hops"
-recipe            "hops::format_nn", "Format a HopsFs NameNode"
+recipe            "hops::format", "Format a HopsFs NameNode"
 recipe            "hops::dn", "Installs a HopsFs DataNode"
 #link:<a target='_blank' href='http://%host%:8088/'>Launch the WebUI for the ResourceManager</a>
 recipe            "hops::rm", "Installs a YARN ResourceManager"
