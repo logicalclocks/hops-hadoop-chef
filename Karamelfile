@@ -7,6 +7,7 @@ dependencies:
       - ndb::mysqld
   - recipe: hops::format_nn
     global:  
+      - hops::ndb
       - kagent::default
   - recipe: hops::nn
     global:  
