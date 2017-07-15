@@ -8,10 +8,8 @@ dependencies:
   - recipe: hops::format_nn
     global:  
       - hops::ndb
-      - kagent::default
   - recipe: hops::nn
     global:  
-      - kagent::default
       - hops::format_nn
   - recipe: hops::rm
     global:
