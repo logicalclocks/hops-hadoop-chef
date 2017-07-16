@@ -65,3 +65,22 @@ end
     action :install_hops
   only_if { ::File.exist? "#{node.ndb.scripts_dir}/mysql-client.sh" }
   end
+
+
+
+#
+# Format the NameNode if a NameNode is being installed on this host
+#
+if node.hops.nn.nil? == false && node.hops.nn.default.private_ips.nil? == false
+
+  my_ip = my_private_ip()
+
+  for nn_ip in node.hops.nn.private_ips
+    if my_ip.eql? nn_ip
+
+      include_recipe "hops::format"
+      
+    end
+  end
+end
+  
