@@ -5,11 +5,11 @@ my_ip = my_private_ip()
 nnPort = node.hops.nn.port
 
 hopsworksNodes = ""
-if node.hops.use_hopsworks.eql? "true"
+#if node.hops.use_hopsworks.eql? "true"
   if node.hopsworks.nil? == false && node.hopsworks.default.nil? == false && node.hopsworks.default.private_ips.nil? == false
     hopsworksNodes = node.hopsworks.default.private_ips.join(",")
   end
-end
+#end
 
 if node.hops.nn.private_ips.length > 1 
   allNNs = node.hops.nn.private_ips.join(":#{nnPort},") + ":#{nnPort}"
