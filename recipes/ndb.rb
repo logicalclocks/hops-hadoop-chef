@@ -71,7 +71,7 @@ end
 #
 # Format the NameNode if a NameNode is being installed on this host
 #
-if node['hops']['nn'].nil? == false && node['hops']['nn']['default']['private_ips'].nil? == false
+if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:default) == true && node['hops']['nn']['default'].attribute?(:private_ips) == true
 
   my_ip = my_private_ip()
 
