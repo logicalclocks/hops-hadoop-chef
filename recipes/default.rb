@@ -235,3 +235,10 @@ template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
   mode "664"
   action :create
 end
+
+bash 'add-acl-to-keystore' do
+  user 'root'
+  code <<-EOH
+       setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.keystore_dir}
+  EOH
+end
