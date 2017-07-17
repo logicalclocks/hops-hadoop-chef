@@ -52,7 +52,7 @@ action :put_as_superuser do
 
   bash "hdfs-put-dir-#{new_resource.name}" do
     user node.hops.hdfs.user
-    group node.hops.group
+    group node.kagent.certs_group
     code <<-EOF
      EXISTS = 1
      . #{node.hops.base_dir}/sbin/set-env.sh
@@ -84,7 +84,7 @@ action :create_as_superuser do
 
   bash "mk-dir-#{new_resource.name}" do
     user node.hops.hdfs.user
-    group node.hops.group
+    group node.kagent.certs_group
     code <<-EOF
      . #{node.hops.base_dir}/sbin/set-env.sh
      #{node.hops.base_dir}/bin/hdfs dfs -mkdir #{recursive} #{new_resource.name}
