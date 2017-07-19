@@ -191,6 +191,17 @@ template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   action :create_if_missing
 end
 
+bash 'create_libhopsnvml_symlink' do
+  user node.hops.hdfs.user
+  group node.hops.group
+  code <<-EOH
+    set -e
+    if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
+      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
+    fi
+  EOH
+end
+
 bash 'update_owner_for_gpu' do
   user "root"
   code <<-EOH
@@ -206,17 +217,6 @@ bash 'update_owner_for_gpu' do
     chmod 750 #{node.hops.conf_dir}/container-executor.cfg
     chown root #{node.hops.bin_dir}/container-executor
     chmod 6050 #{node.hops.bin_dir}/container-executor
-  EOH
-end
-
-bash 'create_libhopsnvml_symlink' do
-  user "root"
-  code <<-EOH
-    set -e
-    if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
-      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-1.0.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
-    fi
-    chown #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}/lib/native/libhopsnvml.so
   EOH
 end
 
