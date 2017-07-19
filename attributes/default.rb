@@ -186,6 +186,7 @@ default["hops"]["hdfs"]["blocksize"]        = "134217728"
 
 default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
+default["hops"]["libhopsnvml_version"]      = "1.0"
 
 default["hadoop_spark"]["version"]          = "2.1.0"
 default["yarn"]["spark"]["shuffle_jar"]     = "spark-#{node['hadoop_spark']['version']}-yarn-shuffle.jar"

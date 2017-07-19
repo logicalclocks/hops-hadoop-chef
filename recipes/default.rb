@@ -210,13 +210,13 @@ bash 'update_owner_for_gpu' do
 end
 
 bash 'create_libhopsnvml_symlink' do
-  user "root"
+  owner node.hops.hdfs.user
+  group node.hops.group
   code <<-EOH
     set -e
     if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
-      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-1.0.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
+      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
     fi
-    chown #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}/lib/native/libhopsnvml.so
   EOH
 end
 

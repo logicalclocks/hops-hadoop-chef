@@ -358,4 +358,7 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
+attribute "hops/libhopsnvml_version",
+          :description => "",
+          :type => "string"
 
