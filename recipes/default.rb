@@ -210,8 +210,7 @@ bash 'update_owner_for_gpu' do
 end
 
 bash 'create_libhopsnvml_symlink' do
-  owner node.hops.hdfs.user
-  group node.hops.group
+  user node.hops.hdfs.user
   code <<-EOH
     set -e
     if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
