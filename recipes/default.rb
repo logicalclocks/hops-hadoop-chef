@@ -209,6 +209,15 @@ bash 'update_owner_for_gpu' do
   EOH
 end
 
+bash 'create_libhopsnvml_symlink' do
+  user "root"
+  code <<-EOH
+    set -e
+    ln -s #{node.hops.home}/share/hadoop/yarn/lib/libhopsnvml-1.0.so #{node.hops.home}/lib/native/libhopsnvml.so
+    chown #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.home}/lib/native/libhopsnvml.so
+  EOH
+end
+
 template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
   source "yarn-env.sh.erb"
   owner node.hops.yarn.user
