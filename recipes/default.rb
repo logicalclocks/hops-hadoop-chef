@@ -193,6 +193,7 @@ end
 
 bash 'create_libhopsnvml_symlink' do
   user node.hops.hdfs.user
+  group node.hops.group
   code <<-EOH
     set -e
     if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
