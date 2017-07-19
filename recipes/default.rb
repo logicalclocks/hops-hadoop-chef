@@ -213,7 +213,10 @@ bash 'create_libhopsnvml_symlink' do
   user "root"
   code <<-EOH
     set -e
-    ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-1.0.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
+    if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
+      echo "libhopsnvml.so already exists"
+      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-1.0.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
+    fi
     chown #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}/lib/native/libhopsnvml.so
   EOH
 end
