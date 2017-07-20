@@ -17,6 +17,10 @@ else
   allNNs = "#{node.hops.nn.private_ips[0]}" + ":#{nnPort}"
 end
 
+rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
+if node.hops.rpc.ssl_enabled.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
+end
 
 myNN = "#{my_ip}:#{nnPort}"
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
@@ -27,7 +31,10 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => "hdfs://" + myNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => myNN
+              :allNNs => myNN,
+              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
+              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
+              :rpcSocketFactory => rpcSocketFactory
             })
 end
 
