@@ -370,3 +370,6 @@ attribute "hops/libhopsnvml_version",
           :description => "",
           :type => "string"
 
+attribute "hops/util_version",
+          :description => "Version of the hops-util jar file.",
+          :type => "string"
