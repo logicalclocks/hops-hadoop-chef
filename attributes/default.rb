@@ -326,7 +326,7 @@ default["hops"]["capacity"]["queue_mapping"]                     =""
 default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
 
 
-default["hops"]["util_version"]                        = "0.1"
+default["hops"]["util_version"]                        = "0.1.1"
 
 default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-#{node['hops']['util_version']}.jar"
 default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-#{node['hops']['util_version']}.jar"
