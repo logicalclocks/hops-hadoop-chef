@@ -53,6 +53,11 @@ if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
+rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
+if node.hops.rpc.ssl_enabled.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
+end
+
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node.hops.hdfs.user
@@ -61,7 +66,10 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => allNNIps
+              :allNNs => allNNIps,
+              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
+              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
+              :rpcSocketFactory => rpcSocketFactory
             })
 end
 
@@ -179,6 +187,17 @@ template "#{node.hops.home}/etc/hadoop/container-executor.cfg" do
   action :create_if_missing
 end
 
+template "#{node.hops.home}/etc/hadoop/ssl-server.xml" do
+  source "ssl-server.xml.erb"
+  owner node.hops.yarn.user
+  group node.hops.group
+  mode "622"
+  variables({
+              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
+              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks"
+            })
+  action :create
+end
 
 template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
@@ -189,6 +208,17 @@ template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
               :influxdb_ip => influxdb_ip,
             })
   action :create_if_missing
+end
+
+bash 'create_libhopsnvml_symlink' do
+  user node.hops.hdfs.user
+  group node.hops.group
+  code <<-EOH
+    set -e
+    if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
+      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
+    fi
+  EOH
 end
 
 bash 'update_owner_for_gpu' do
@@ -215,4 +245,20 @@ template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
   group node.hops.group
   mode "664"
   action :create
+end
+
+if node.hops.rpc.ssl_enabled.eql? "true"
+  bash 'add-acl-to-keystore' do
+    user 'root'
+    if node.hops.hdfs.user.eql? node.hops.yarn.user
+      code <<-EOH
+           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.keystore_dir}
+           EOH
+    else
+      code <<-EOH
+           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.keystore_dir}
+           setfacl -Rm u:#{node.hops.yarn.user}:rx #{node.kagent.keystore_dir}
+           EOH
+    end
+  end
 end

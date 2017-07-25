@@ -193,6 +193,14 @@ attribute "hops/url/primary",
           :description => "Primary download url of hops distribution",
           :type => 'string'
 
+attribute "hops/url/secondary",
+          :description => "Secondary download url of hops distribution",
+          :type => 'string'
+
+attribute "hops/rpc/ssl_enabled",
+          :description => "'true' will enable RPC TLS and 'false' will disable it",
+          :type => 'string'
+
 attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'
@@ -358,4 +366,10 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
+attribute "hops/libhopsnvml_version",
+          :description => "",
+          :type => "string"
 
+attribute "hops/util_version",
+          :description => "Version of the hops-util jar file.",
+          :type => "string"
