@@ -33,6 +33,8 @@ action :format_nn do
     bash 'format-nn' do
       user node.hops.hdfs.user
       group node.hops.group
+      retries 2
+      retry_delay 10
       code <<-EOH
         set -e
         #{node.hops.base_dir}/sbin/format-nn.sh
