@@ -167,7 +167,8 @@
   
   <property>
     <name>yarn.nodemanager.vmem-pmem-ratio</name>
-    <value><%= node.hops.yarn.vpmem_ratio %></value>
+
+    <value><%= node['hops']['yarn']['vpmem_ratio'] %></value>
     <description>The virtual memory (physical + paged memory) upper limit for each Map and Reduce task is determined by the virtual memory ratio each YARN Container is allowed.</description>
   </property>
   <property>

@@ -56,10 +56,10 @@ default["hops"]["yarn"]["ps_port"]             = 20888
 
 case node["platform_family"]
 when "debian"
-default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
+default["hops"]["yarn"]["vpmem_ratio"]         = "50.1"
 default["hops"]["yarn"]["vmem_check"]          = true
-when "redhat"
-default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
+when "rhel"
+default["hops"]["yarn"]["vpmem_ratio"]         = "50.1"
 default["hops"]["yarn"]["vmem_check"]          = false  
 end
 
