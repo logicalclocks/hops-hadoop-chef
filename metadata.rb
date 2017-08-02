@@ -60,10 +60,6 @@ attribute "mysql/password",
           :type => 'string',
           :required => "required"
 
-attribute "hops/use_hopsworks",
-          :description => "'true' or 'false' - true to enable HopsWorks support",
-          :type => 'string'
-
 attribute "hops/erasure_coding",
           :description => "'true' or 'false' - true to enable erasure-coding replication",
           :type => 'string'

@@ -36,7 +36,7 @@ else
 end
 
 hopsworksNodes = ""
-if node.hops.use_hopsworks.eql? "true"
+if node.attribute?("hopsworks")
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 

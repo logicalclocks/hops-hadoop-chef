@@ -224,8 +224,6 @@ default["hops"]["ps"]["public_ips"]         = ['10.0.2.15']
 default["hops"]["ps"]["private_ips"]        = ['10.0.2.15'] 
 default["hops"]["yarn"]["resource_tracker"] = "false"
 
-default["hops"]["use_hopsworks"]            = "true"
-
 default["hops"]["erasure_coding"]           = "false"
 
 default["hops"]["nn"]["cache"]                 = "true"
