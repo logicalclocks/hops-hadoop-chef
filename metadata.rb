@@ -60,10 +60,6 @@ attribute "mysql/password",
           :type => 'string',
           :required => "required"
 
-attribute "hops/use_hopsworks",
-          :description => "'true' or 'false' - true to enable HopsWorks support",
-          :type => 'string'
-
 attribute "hops/erasure_coding",
           :description => "'true' or 'false' - true to enable erasure-coding replication",
           :type => 'string'
@@ -191,6 +187,14 @@ attribute "hadoop_spark/version",
 
 attribute "hops/url/primary",
           :description => "Primary download url of hops distribution",
+          :type => 'string'
+
+attribute "hops/url/secondary",
+          :description => "Secondary download url of hops distribution",
+          :type => 'string'
+
+attribute "hops/rpc/ssl_enabled",
+          :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
 attribute "hops/yarn/vcores",
@@ -362,3 +366,6 @@ attribute "hops/libhopsnvml_version",
           :description => "",
           :type => "string"
 
+attribute "hops/util_version",
+          :description => "Version of the hops-util jar file.",
+          :type => "string"

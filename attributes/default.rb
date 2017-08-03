@@ -56,10 +56,10 @@ default["hops"]["yarn"]["ps_port"]             = 20888
 
 case node["platform_family"]
 when "debian"
-default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
+default["hops"]["yarn"]["vpmem_ratio"]         = "50.1"
 default["hops"]["yarn"]["vmem_check"]          = true
-when "redhat"
-default["hops"]["yarn"]["vpmem_ratio"]         = 50.1
+when "rhel"
+default["hops"]["yarn"]["vpmem_ratio"]         = "50.1"
 default["hops"]["yarn"]["vmem_check"]          = false  
 end
 
@@ -224,8 +224,6 @@ default["hops"]["ps"]["public_ips"]         = ['10.0.2.15']
 default["hops"]["ps"]["private_ips"]        = ['10.0.2.15'] 
 default["hops"]["yarn"]["resource_tracker"] = "false"
 
-default["hops"]["use_hopsworks"]            = "false"
-
 default["hops"]["erasure_coding"]           = "false"
 
 default["hops"]["nn"]["cache"]                 = "true"
@@ -284,8 +282,13 @@ default["hops"]["yarn"]["nodemanager"]["webapp"]["https"]["address"] 		= "0.0.0.
 #ssl-server.xml 
 default["hops"]["ssl"]["server"]["keystore"]["password"]   		= node["hopsworks"]["master"]["password"]
 default["hops"]["ssl"]["server"]["keystore"]["keypassword"]   		= node["hopsworks"]["master"]["password"]
+
+## Keystore and truststore locations are substitued in recipes/default.rb
+## They should be removed from here. They are not used anywhere
 default["hops"]["ssl"]["server"]["keystore"]["location"] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
 default["hops"]["ssl"]["server"]["truststore"]["location"]   		= "#{node['kagent']['keystore_dir']}/node_server_truststore.jks"
+##
+
 default["hops"]["ssl"]["server"]["truststore"]["password"]     	 	= node["hopsworks"]["master"]["password"]
 
 #ssl-client.xml 
@@ -293,6 +296,18 @@ default["hops"]["ssl"]["server"]["truststore"]["password"]     	 	= node["hopswo
 default["hops"]["ssl"]["client"]["truststore"]["password"]		= node["hopsworks"]["master"]["password"]
 default["hops"]["ssl"]["client"]["truststore"]["location"]		= "#{node['kagent']['keystore_dir']}/node_client_truststore.jks"
 
+# Number of reader threads of the IPC/RPC server
+# Default is 1, when TLS is enabled it is advisable to increase it
+default["hops"]["server"]["threadpool"] = 3
+
+# RPC TLS
+default["hops"]["rpc"]["ssl_enabled"] = "false"
+
+# Do not verify the hostname
+default["hops"]["hadoop"]["ssl"]["hostname"]["verifier"] = "ALLOW_ALL"
+# Socket factory for the client
+default["hops"]["hadoop"]["rpc"]["socket"]["factory"] = "org.apache.hadoop.net.HopsSSLSocketFactory"
+default["hops"]["hadoop"]["ssl"]["enabled"]["protocols"] = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
 
 #capacity scheduler queue configuration
 default["hops"]["capacity"]["max_app"]                           =10000
@@ -309,9 +324,10 @@ default["hops"]["capacity"]["queue_mapping"]                     =""
 default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
 
 
+default["hops"]["util_version"]                        = "0.1.1"
 
-default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-0.1.jar"
-default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-0.1.jar"
+default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-#{node['hops']['util_version']}.jar"
+default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-#{node['hops']['util_version']}.jar"
 
 #GPU
 default["hops"]["yarn"]["min_allocation_gpus"]         = 0
@@ -320,6 +336,3 @@ default["hops"]["yarn"]["gpus_enabled"]                = "true"
 default["hops"]["yarn"]["gpus"]                        = 0
 default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
 default["hops"]["yarn"]["linux_container_limit_users"] = "false"
-
-
-
