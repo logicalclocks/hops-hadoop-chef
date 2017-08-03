@@ -191,8 +191,6 @@ default["hops"]["libhopsnvml_version"]      = "1.0"
 default["hadoop_spark"]["version"]          = "2.1.0"
 default["yarn"]["spark"]["shuffle_jar"]     = "spark-#{node['hadoop_spark']['version']}-yarn-shuffle.jar"
 default["yarn"]["spark"]["shuffle_url"]     = "#{node['download_url']}/#{node['yarn']['spark']['shuffle_jar']}"
-default["yarn"]["kafka"]["util_jar"]        = "kafka-util-0.1.jar"
-default["yarn"]["kafka"]["util_url"]        = "#{node['download_url']}/#{node['yarn']['kafka']['util_jar']}"
 default["dal"]["schema_url"]                = "#{node['download_url']}/hops.sql"
 
 
@@ -324,7 +322,7 @@ default["hops"]["capacity"]["queue_mapping"]                     =""
 default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
 
 
-default["hops"]["util_version"]                        = "0.1.1"
+default["hops"]["util_version"]                        = "0.1.0"
 
 default["hops"]["hops_util"]["url"]                    = "#{node['download_url']}/hops-util-#{node['hops']['util_version']}.jar"
 default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-#{node['hops']['util_version']}.jar"
