@@ -50,12 +50,17 @@ if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false")
   end
 end
 
-if "#{node['hops']['yarn']['gpus']}" == "0" or "#{node['hops']['yarn']['gpus']}" == "*"
+Chef::Log.info "Number of gpus set was: #{node['hops']['yarn']['gpus']}"
+
+if "#{node['hops']['yarn']['gpus']}".eql?("0") || "#{node['hops']['yarn']['gpus']}".eql?("*")
 
   bash 'count_num_gpus' do
   user "root"
   code <<-EOH
     nvidia-smi -L | wc -l > /tmp/num_gpus
+    if [ ! -f /tmp/num_gpus ] ; then
+      echo "0" > /tmp/num_gpus
+    fi
     chmod +r /tmp/num_gpus
   EOH
   end
