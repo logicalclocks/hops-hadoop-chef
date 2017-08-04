@@ -188,11 +188,6 @@ default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#
 default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default["hops"]["libhopsnvml_version"]      = "1.0"
 
-default["hadoop_spark"]["version"]          = node.attribte? ("hadoop_spark") ? node['hadoop_spark']['version'] : "2.2.0"
-default["yarn"]["spark"]["shuffle_jar"]     = "spark-#{node['hadoop_spark']['version']}-yarn-shuffle.jar"
-default["yarn"]["spark"]["shuffle_url"]     = "#{node['download_url']}/#{node['yarn']['spark']['shuffle_jar']}"
-default["yarn"]["kafka"]["util_jar"]        = "kafka-util-0.1.jar"
-default["yarn"]["kafka"]["util_url"]        = "#{node['download_url']}/#{node['yarn']['kafka']['util_jar']}"
 default["dal"]["schema_url"]                = "#{node['download_url']}/hops.sql"
 
 

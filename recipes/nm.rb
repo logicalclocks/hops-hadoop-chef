@@ -13,15 +13,6 @@ for script in node.hops.yarn.scripts
 end 
 
 
-remote_file "#{node.hops.dir}/hadoop/share/hadoop/yarn/lib/#{node.yarn.spark.shuffle_jar}"  do
-  user node.hops.yarn.user
-  group node.hops.group
-  source node.yarn.spark.shuffle_url
-  mode 0644
-  action :create_if_missing
-end
-
-
 if node.hops.systemd == "true"
 
   service service_name do
