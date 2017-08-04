@@ -185,6 +185,13 @@ if node.kagent.enabled == "true"
   end
 end
 
+ruby_block 'wait_until_nn_started' do
+  block do
+     sleep(5)
+  end
+  action :run
+end
+
 tmp_dirs   = [ "/tmp", node.hops.hdfs.user_home, node.hops.hdfs.user_home + "/" + node.hops.hdfs.user ]
 
 for d in tmp_dirs
