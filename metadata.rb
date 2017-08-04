@@ -352,7 +352,7 @@ attribute "hops/yarn/gpu_enabled",
           :type => "string"
 
 attribute "hops/yarn/gpus",
-          :description => "'*' (default) means all GPUs on the host. Otherwise, specify the number of GPUs to provide to YARN (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids (e.g., '0,1,2" or '0-3')",
+          :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
           :type => "string"
 
 
