@@ -50,8 +50,10 @@ if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false")
   end
 end
 
-
-node.override['hops']['yarn']['gpus'] = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+if "#{node['hops']['yarn']['gpus']}".eql?("*")
+    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
+end
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 template "#{node.hops.home}/etc/hadoop/log4j.properties" do
