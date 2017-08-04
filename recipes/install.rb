@@ -389,22 +389,23 @@ if node.hops.cgroups.eql? "true"
     package "libcgroup" do
     end
   end
-  cgroups_mounted= "/tmp/.cgroups_mounted"
-  bash 'setup_mount_cgroups' do
-    user "root"
-    code <<-EOH
-    set -e
-    if [ ! -d "/sys/fs/cgroup/cpu/hops-yarn" ] ; then
-       mkdir -p /sys/fs/cgroup/cpu/hops-yarn
-    fi
-    if [ ! -d "/sys/fs/cgroup/devices/hops-yarn" ] ; then
-       mkdir -p /sys/fs/cgroup/devices/hops-yarn
-    fi
-    # mount -t cgroup -o cpu cpu /cgroup
-    touch #{cgroups_mounted}
-  EOH
-     not_if { ::File.exist?("#{cgroups_mounted}") }
+
+  directory "/sys/fs/cgroup/cpu/hops-yarn" do
+    owner "root"
+    group "root"
+    mode "0755"
+    recursive true
+    action :create
   end
+
+  directory "/sys/fs/cgroup/devices/hops-yarn" do
+    owner "root"
+    group "root"
+    mode "0755"
+    recursive true
+    action :create
+  end
+
 
 end
 
@@ -433,18 +434,18 @@ magic_shell_environment 'HADOOP_PID_DIR' do
 end
 
 
-directory "/sys/fs/cgroup/cpu/hops-yarn" do
-  owner "root"
-  group "root"
-  mode "0755"
-  recursive true
-  action :create
-end
+Chef::Log.info "Number of gpus set was: #{node['hops']['yarn']['gpus']}"
 
-directory "/sys/fs/cgroup/devices/hops-yarn" do
-  owner "root"
-  group "root"
-  mode "0755"
-  recursive true
-  action :create
+if "#{node['hops']['yarn']['gpus']}".eql?("0") || "#{node['hops']['yarn']['gpus']}".eql?("*")
+
+  bash 'count_num_gpus' do
+  user "root"
+  code <<-EOH
+    nvidia-smi -L | wc -l > /tmp/num_gpus
+    if [ ! -f /tmp/num_gpus ] ; then
+      echo "0" > /tmp/num_gpus
+    fi
+    chmod +r /tmp/num_gpus
+  EOH
+  end
 end

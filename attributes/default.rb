@@ -188,9 +188,6 @@ default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#
 default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default["hops"]["libhopsnvml_version"]      = "1.0"
 
-default["hadoop_spark"]["version"]          = "2.1.0"
-default["yarn"]["spark"]["shuffle_jar"]     = "spark-#{node['hadoop_spark']['version']}-yarn-shuffle.jar"
-default["yarn"]["spark"]["shuffle_url"]     = "#{node['download_url']}/#{node['yarn']['spark']['shuffle_jar']}"
 default["dal"]["schema_url"]                = "#{node['download_url']}/hops.sql"
 
 
@@ -302,24 +299,24 @@ default["hops"]["server"]["threadpool"] = 3
 default["hops"]["rpc"]["ssl_enabled"] = "false"
 
 # Do not verify the hostname
-default["hops"]["hadoop"]["ssl"]["hostname"]["verifier"] = "ALLOW_ALL"
+default["hops"]["hadoop"]["ssl"]["hostname"]["verifier"]                = "ALLOW_ALL"
 # Socket factory for the client
-default["hops"]["hadoop"]["rpc"]["socket"]["factory"] = "org.apache.hadoop.net.HopsSSLSocketFactory"
-default["hops"]["hadoop"]["ssl"]["enabled"]["protocols"] = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
+default["hops"]["hadoop"]["rpc"]["socket"]["factory"]                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
+default["hops"]["hadoop"]["ssl"]["enabled"]["protocols"]                = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
 
 #capacity scheduler queue configuration
-default["hops"]["capacity"]["max_app"]                           =10000
-default["hops"]["capacity"]["max_am_percent"]                    =0.3
-default["hops"]["capacity"]["resource_calculator_class"]         ="org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
-default["hops"]["capacity"]["root_queues"]                       ="default"
-default["hops"]["capacity"]["default_capacity"]                  =100
-default["hops"]["capacity"]["user_limit_factor"]                 =1
-default["hops"]["capacity"]["default_max_capacity"]              =100
-default["hops"]["capacity"]["default_state"]                     ="RUNNING"
-default["hops"]["capacity"]["default_acl_submit_applications"]   ="*"
-default["hops"]["capacity"]["default_acl_administer_queue"]      ="*"
-default["hops"]["capacity"]["queue_mapping"]                     =""
-default["hops"]["capacity"]["queue_mapping_override"]["enable"]     ="false"
+default["hops"]["capacity"]["max_app"]                                  = 10000
+default["hops"]["capacity"]["max_am_percent"]                           = 0.3
+default["hops"]["capacity"]["resource_calculator_class"]                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
+default["hops"]["capacity"]["root_queues"]                              = "default"
+default["hops"]["capacity"]["default_capacity"]                         = 100
+default["hops"]["capacity"]["user_limit_factor"]                        = 1
+default["hops"]["capacity"]["default_max_capacity"]                     = 100
+default["hops"]["capacity"]["default_state"]                            = "RUNNING"
+default["hops"]["capacity"]["default_acl_submit_applications"]          = "*"
+default["hops"]["capacity"]["default_acl_administer_queue"]             = "*"
+default["hops"]["capacity"]["queue_mapping"]                            = ""
+default["hops"]["capacity"]["queue_mapping_override"]["enable"]         = "false"
 
 
 default["hops"]["util_version"]                        = "0.1.0"
@@ -328,9 +325,9 @@ default["hops"]["hops_util"]["url"]                    = "#{node['download_url']
 default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']}/hops-spark-#{node['hops']['util_version']}.jar"
 
 #GPU
-default["hops"]["yarn"]["min_allocation_gpus"]         = 0
-default["hops"]["yarn"]["max_allocation_gpus"]         = 1
-default["hops"]["yarn"]["gpus_enabled"]                = "true"
-default["hops"]["yarn"]["gpus"]                        = 0
+default["hops"]["yarn"]["min_gpus"]                    = 0
+default["hops"]["yarn"]["max_gpus"]                    = 10
+default["hops"]["yarn"]["gpu_enabled"]                 = "false"
+default["hops"]["yarn"]["gpus"]                        = "0"
 default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
 default["hops"]["yarn"]["linux_container_limit_users"] = "false"

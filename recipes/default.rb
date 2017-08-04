@@ -26,6 +26,7 @@ ndb_connectstring()
 
 jdbc_url()
 
+
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
@@ -40,6 +41,18 @@ if node.attribute?("hopsworks")
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
+
+# If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
+# Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
+if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false") 
+  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
+     node.override['hops']['yarn']['gpu_enabled'] = "true"
+  end
+end
+
+
+node.override['hops']['yarn']['gpus'] = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 template "#{node.hops.home}/etc/hadoop/log4j.properties" do
   source "log4j.properties.erb"
@@ -210,15 +223,10 @@ template "#{node.hops.home}/etc/hadoop/hadoop-metrics2.properties" do
   action :create_if_missing
 end
 
-bash 'create_libhopsnvml_symlink' do
-  user node.hops.hdfs.user
-  group node.hops.group
-  code <<-EOH
-    set -e
-    if [ ! -f #{node.hops.base_dir}/lib/native/libhopsnvml.so ]; then
-      ln -s #{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so #{node.hops.base_dir}/lib/native/libhopsnvml.so
-    fi
-  EOH
+link "#{node.hops.base_dir}/lib/native/libhopsnvml-#{node.hops.libhopsnvml_version}.so" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  to "#{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so"
 end
 
 bash 'update_owner_for_gpu' do

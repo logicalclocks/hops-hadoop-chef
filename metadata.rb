@@ -337,15 +337,26 @@ attribute "install/user",
 attribute "influxdb/graphite/port",
           :description => "Port for influxdb graphite connector",
           :type => "string"
+
 #GPU settings
-attribute "hops/yarn/min_allocation_gpus",
-          :description => "",
+attribute "hops/yarn/min_gpus",
+          :description => "Min number of GPUs per container",
           :type => "string"
 
-attribute "hops/yarn/max_allocation_gpus",
-          :description => "",
+attribute "hops/yarn/max_gpus",
+          :description => "Max number of GPUs per container",
           :type => "string"
 
+attribute "hops/yarn/gpu_enabled",
+          :description => "Are GPUs enabled for YARN? Default: false",
+          :type => "string"
+
+attribute "hops/yarn/gpus",
+          :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
+          :type => "string"
+
+
+#CGroups settings
 attribute "hops/yarn/groups_enabled",
           :description => "",
           :type => "string"
@@ -359,10 +370,6 @@ attribute "hops/yarn/linux_container_local_user",
           :type => "string"
 
 attribute "hops/yarn/linux_container_limit_users",
-          :description => "",
-          :type => "string"
-
-attribute "hops/libhopsnvml_version",
           :description => "",
           :type => "string"
 
