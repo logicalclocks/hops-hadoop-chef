@@ -433,3 +433,19 @@ magic_shell_environment 'HADOOP_PID_DIR' do
   value "#{node.hops.base_dir}/logs"
 end
 
+
+Chef::Log.info "Number of gpus set was: #{node['hops']['yarn']['gpus']}"
+
+if "#{node['hops']['yarn']['gpus']}".eql?("0") || "#{node['hops']['yarn']['gpus']}".eql?("*")
+
+  bash 'count_num_gpus' do
+  user "root"
+  code <<-EOH
+    nvidia-smi -L | wc -l > /tmp/num_gpus
+    if [ ! -f /tmp/num_gpus ] ; then
+      echo "0" > /tmp/num_gpus
+    fi
+    chmod +r /tmp/num_gpus
+  EOH
+  end
+end
