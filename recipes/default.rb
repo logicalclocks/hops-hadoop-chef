@@ -45,8 +45,8 @@ end
 # If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
 # Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
 if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false") 
-  if node.attribute?("cuda") and node['cuda'].attribute?("accept_nvidia_download_terms") and node['cuda']['accept_nvidia_download_terms'] == "true"
-     node['hops']['yarn']['gpu_enabled'] = "true"
+  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
+     node.override['hops']['yarn']['gpu_enabled'] = "true"
   end
 end
 
