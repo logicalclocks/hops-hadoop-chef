@@ -69,7 +69,7 @@ package "Bouncy Castle Remove" do
 end
 
 
-primary_url = node.hops.download_url.primary
+primary_url = node.hops.download_url.secondary
 base_package_filename = File.basename(primary_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
 
