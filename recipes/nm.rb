@@ -28,6 +28,11 @@ if node.hops.systemd == "true"
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
+  
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
@@ -36,7 +41,7 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
-    notifies :start, resources(:service => service_name)
+    notifies :restart, resources(:service => service_name)
   end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do

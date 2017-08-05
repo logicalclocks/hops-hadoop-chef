@@ -84,6 +84,10 @@ if node.hops.systemd == "true"
     action :nothing
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
 
   template systemd_script do
     source "#{service_name}.service.erb"
