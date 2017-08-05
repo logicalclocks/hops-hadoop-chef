@@ -22,6 +22,16 @@ EOF
     action :delete
     ignore_failure true
   end
+  file "/etc/systemd/system/#{d}.service" do
+    action :delete
+    ignore_failure true
+  end
+  directory "/etc/systemd/system/#{d}.service.d" do
+    recursive true
+    action :delete
+    ignore_failure true
+  end
+
 }
 
 directory "#{node.hops.dir}/hadoop-#{node.hops.version}" do
