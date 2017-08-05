@@ -139,7 +139,7 @@ end
 end
 
 if node.kagent.enabled == "true" 
-  kagent_config "resourcemanager" do
+  kagent_config service_name do
     service "YARN"
     log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
     config_file "#{node.hops.conf_dir}/yarn-site.xml"

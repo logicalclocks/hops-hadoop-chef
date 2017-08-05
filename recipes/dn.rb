@@ -79,7 +79,7 @@ end
 end
 
 if node.kagent.enabled == "true" 
-  kagent_config "#{service_name}" do
+  kagent_config service_name do
     service "HDFS"
     log_file "#{node.hops.logs_dir}/hadoop-#{node.hops.hdfs.user}-#{service_name}-#{node.hostname}.log"
     config_file "#{node.hops.conf_dir}/hdfs-site.xml"
