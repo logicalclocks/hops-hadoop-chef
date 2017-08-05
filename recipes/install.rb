@@ -449,3 +449,20 @@ if "#{node['hops']['yarn']['gpus']}".eql?("*")
   EOH
   end
 end
+
+
+directory "/sys/fs/cgroup/cpu/hops-yarn" do
+  owner "root"
+  group "root"
+  mode "0755"
+  recursive true
+  action :create
+end
+
+directory "/sys/fs/cgroup/devices/hops-yarn" do
+  owner "root"
+  group "root"
+  mode "0755"
+  recursive true
+  action :create
+end
