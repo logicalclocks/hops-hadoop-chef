@@ -91,3 +91,15 @@ directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" d
   ignore_failure true
 end
 
+
+directory "/sys/fs/cgroup/cpu/hops-yarn" do
+  recursive true
+  ignore_failure true
+  action :delete  
+end
+
+directory "/sys/fs/cgroup/devices/hops-yarn" do
+  recursive true
+  ignore_failure true
+  action :delete  
+end
