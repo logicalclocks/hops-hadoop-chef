@@ -20,11 +20,18 @@ end
 if node.hops.os_defaults == "true" then
 
   # http://blog.cloudera.com/blog/2015/01/how-to-deploy-apache-hadoop-clusters-like-a-boss/
-  node.default.sysctl.allow_sysctl_conf = true
-  node.default.sysctl.params.vm.swappiness = 1
-  node.default.sysctl.params.vm.overcommit_memory = 1
-  node.default.sysctl.params.vm.overcommit_ratio = 100
-  node.default.sysctl.params.net.core.somaxconn= 1024
+
+  # case node.platform
+  # when "ubuntu"
+  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.conf"
+  # when "rhel"
+  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.conf" 
+  # end
+  node.default['sysctl']['allow_sysctl_conf'] = true
+  node.default['sysctl']['params']['vm']['swappiness'] = 1
+  node.default['sysctl']['params']['vm']['overcommit_memory'] = 1
+  node.default['sysctl']['params']['vm']['overcommit_ratio'] = 100
+  node.default['sysctl']['params']['net']['core']['somaxconn'] = 1024
   include_recipe 'sysctl::apply'
 
   #
