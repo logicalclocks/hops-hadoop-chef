@@ -141,7 +141,7 @@ default["hops"]["nn"]["addrs"]                 = []
 
 # build the native libraries. Is much slower, but removes warning when using services.
 default["hops"]["native_libraries"]            = "false"
-default["hops"]["cgroups"]                     = "true"
+default["hops"]["cgroups"]                     = "false"
 
 default["maven"]["version"]                    = "3.2.5"
 default["maven"]["checksum"]                   = ""
