@@ -23,16 +23,18 @@ if node.hops.os_defaults == "true" then
 
   # case node.platform
   # when "ubuntu"
-  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.conf"
+  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.d/99-chef-hops.conf"
   # when "rhel"
-  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.conf" 
+  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.d/99-chef-hops.conf"
   # end
-  node.default['sysctl']['allow_sysctl_conf'] = true
-  node.default['sysctl']['params']['vm']['swappiness'] = 1
-  node.default['sysctl']['params']['vm']['overcommit_memory'] = 1
-  node.default['sysctl']['params']['vm']['overcommit_ratio'] = 100
-  node.default['sysctl']['params']['net']['core']['somaxconn'] = 1024
-  include_recipe 'sysctl::apply'
+
+
+  # node.default['sysctl']['allow_sysctl_conf'] = true
+  # node.default['sysctl']['params']['vm']['swappiness'] = 1
+  # node.default['sysctl']['params']['vm']['overcommit_memory'] = 1
+  # node.default['sysctl']['params']['vm']['overcommit_ratio'] = 100
+  # node.default['sysctl']['params']['net']['core']['somaxconn'] = 1024
+  # include_recipe 'sysctl::apply'
 
   #
   # http://www.slideshare.net/vgogate/hadoop-configuration-performance-tuning
