@@ -307,7 +307,8 @@ default["hops"]["hadoop"]["ssl"]["enabled"]["protocols"]                = "TLSv1
 #capacity scheduler queue configuration
 default["hops"]["capacity"]["max_app"]                                  = 10000
 default["hops"]["capacity"]["max_am_percent"]                           = 0.3
-default["hops"]["capacity"]["resource_calculator_class"]                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
+#default["hops"]["capacity"]["resource_calculator_class"]                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
+default["hops"]["capacity"]["resource_calculator_class"]                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 default["hops"]["capacity"]["root_queues"]                              = "default"
 default["hops"]["capacity"]["default_capacity"]                         = 100
 default["hops"]["capacity"]["user_limit_factor"]                        = 1
