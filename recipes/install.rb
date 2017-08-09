@@ -461,16 +461,16 @@ end
 
 
 directory "/sys/fs/cgroup/cpu/hops-yarn" do
-  owner "root"
-  group "root"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
   mode "0755"
   recursive true
   action :create
 end
 
 directory "/sys/fs/cgroup/devices/hops-yarn" do
-  owner "root"
-  group "root"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
   mode "0755"
   recursive true
   action :create
