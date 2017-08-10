@@ -41,7 +41,7 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, "service[#{service_name}]"
 end
-    notifies :restart, "service[#{service_name}]", :immediately
+    notifies :restart, "service[#{service_name}]"
   end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do
@@ -59,10 +59,11 @@ end
     notifies :restart, "service[#{service_name}]"    
   end 
 
-  hops_start "reload_dn" do
+  kagent_config "#{service_name}" do
     action :systemd_reload
-  end  
-
+  end
+  
+  
 else #sysv
 
   service "#{service_name}" do
