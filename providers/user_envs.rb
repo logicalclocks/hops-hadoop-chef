@@ -15,22 +15,22 @@ cp /home/#{username}/.bashrc /home/#{username}/.bashrc.bak
 rm /home/#{username}/.bash_profile
 
 echo export JAVA_HOME=#{node.java.java_home} >> /home/#{username}/.bash_profile
-echo export HADOOP_INSTALL=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
+echo export HADOOP_INSTALL=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
 # '' (single quoting) a string causes its variables not to be dereferenced
-echo 'export PATH=\$PATH:#{node.hops.dir}/hadoop/bin' >> /home/#{username}/.bash_profile
+echo 'export PATH=\$PATH:#{node.hops.base_dir}/bin' >> /home/#{username}/.bash_profile
 # \\ has the same effect as a single '\' on singly quoted string
-echo export PATH=\\$PATH:#{node.hops.dir}/hadoop/sbin >> /home/#{username}/.bash_profile
-echo export HADOOP_MAPRED_HOME=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
-echo export HADOOP_COMMON_HOME=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
-echo export HADOOP_HDFS_HOME=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
-echo export YARN_HOME=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
-echo export HADOOP_HOME=#{node.hops.dir}/hadoop >> /home/#{username}/.bash_profile
+echo export PATH=\\$PATH:#{node.hops.base_dir}/sbin >> /home/#{username}/.bash_profile
+echo export HADOOP_MAPRED_HOME=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
+echo export HADOOP_COMMON_HOME=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
+echo export HADOOP_HDFS_HOME=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
+echo export YARN_HOME=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
+echo export HADOOP_HOME=#{node.hops.base_dir} >> /home/#{username}/.bash_profile
 
-echo export HADOOP_CONF_DIR=#{node.hops.dir}/hadoop/etc/hadoop >> /home/#{username}/.bash_profile
-echo export YARN_CONF_DIR=#{node.hops.dir}/hadoop/etc/hadoop >> /home/#{username}/.bash_profile
+echo export HADOOP_CONF_DIR=#{node.hops.base_dir}/etc/hadoop >> /home/#{username}/.bash_profile
+echo export YARN_CONF_DIR=#{node.hops.base_dir}/etc/hadoop >> /home/#{username}/.bash_profile
 
-echo export HADOOP_PID_DIR=#{node.hops.dir}/hadoop/logs >> /home/#{username}/.bash_profile
-echo export YARN_PID_DIR=#{node.hops.dir}/hadoop/logs >> /home/#{username}/.bash_profile
+echo export HADOOP_PID_DIR=#{node.hops.base_dir}/logs >> /home/#{username}/.bash_profile
+echo export YARN_PID_DIR=#{node.hops.base_dir}/logs >> /home/#{username}/.bash_profile
 
 echo export 'HADOOP_CLASSPATH=:.:\$HADOOP_CONF_DIR:\$HADOOP_COMMON_HOME/share/hadoop/common/*:\$HADOOP_COMMON_HOME/share/hadoop/common/lib/*:\$HADOOP_HDFS_HOME/share/hadoop/hdfs/*:\$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/lib/*:\$HADOOP_YARN_HOME/share/hadoop/yarn/test/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*:\$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/test/*:\$HADOOP_COMMON_HOME/share/hadoop/tools/lib/*' >> /home/#{username}/.bash_profile
 
