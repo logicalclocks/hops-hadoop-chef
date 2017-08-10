@@ -75,12 +75,15 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
 
   my_ip = my_private_ip()
 
-  for nn_ip in node['hops']['nn']['private_ips']
-    if my_ip.eql? nn_ip
+#  for nn_ip in node['hops']['nn']['private_ips']
+  #    if my_ip.eql? nn_ip
+    if my_ip.eql? node['hops']['nn']['private_ips'][0]
 
       include_recipe "hops::format"
       
     end
-  end
+    #  end
+else
+  raise "Error. There is no NameNode recipe defined in the cluster definition. Add hops::nn to the cluster.yml file."
 end
   
