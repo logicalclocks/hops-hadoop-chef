@@ -88,18 +88,6 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
             })
 end
 
-
-
-template "#{node.hops.home}/etc/hadoop/mapred-site.xml" do 
-  source "mapred-site.xml.erb"
-  owner node.hops.mr.user
-  group node.hops.group
-  mode "755"
-  variables({
-              :rm_private_ip => rm_private_ip
-            })
-end
-
 # file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
 #   owner node.hops.hdfs.user
 #   action :delete

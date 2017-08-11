@@ -475,3 +475,17 @@ directory "/sys/fs/cgroup/devices/hops-yarn" do
   recursive true
   action :create
 end
+
+rm_private_ip = private_recipe_ip("hops","rm")
+# This is here because Pydoop consults mapred-site.xml
+# Pydoop is a dependancy of hdfscontents which is installed
+# in hopsworks-chef::default
+template "#{node.hops.home}/etc/hadoop/mapred-site.xml" do 
+  source "mapred-site.xml.erb"
+  owner node.hops.mr.user
+  group node.hops.group
+  mode "755"
+  variables({
+              :rm_private_ip => rm_private_ip
+            })
+end
