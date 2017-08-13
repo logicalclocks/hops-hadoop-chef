@@ -34,7 +34,7 @@ action :format_nn do
       user node.hops.hdfs.user
       group node.hops.group
       retries 1
-      retry_delay 10
+      retry_delay 30
       code <<-EOH
         set -e
         sleep 10 # 10 seconds
