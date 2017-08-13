@@ -376,3 +376,7 @@ attribute "hops/yarn/linux_container_limit_users",
 attribute "hops/util_version",
           :description => "Version of the hops-util jar file.",
           :type => "string"
+
+attribute "hops/cgroups",
+          :description => "'true' to enable cgroups, else (default) 'false'",
+          :type => "string"
