@@ -1,28 +1,6 @@
 include_recipe "hops::default" 
 
 
-for script in node.hops.nn.scripts
-  template "#{node.hops.home}/sbin/#{script}" do
-    source "#{script}.erb"
-    owner node.hops.hdfs.user
-    group node.hops.group
-    mode 0775
-  end
-end 
-
-
-Chef::Log.info "NameNode format option: #{node.hops.nn.format_options}"
-
-template "#{node.hops.home}/sbin/format-nn.sh" do
-  source "format-nn.sh.erb"
-  owner node.hops.hdfs.user
-  group node.hops.group
-  mode 0775
-  variables({
-            :format_opts => node.hops.nn.format_options
-        })
-end
-
 
 exec=node['ndb']['scripts_dir'] + "/mysql-client.sh"    
 

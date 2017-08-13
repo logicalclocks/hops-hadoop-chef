@@ -61,10 +61,10 @@ end
 
 # If a MySQL server has been installed locally, then install the tables
   
-  hops_ndb "install" do
-    action :install_hops
+hops_ndb "install" do
+  action :install_hops
   only_if { ::File.exist? "#{node.ndb.scripts_dir}/mysql-client.sh" }
-  end
+end
 
 
 
@@ -73,13 +73,37 @@ end
 #
 if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:private_ips) == true
 
+  for script in node.hops.nn.scripts
+    template "#{node.hops.home}/sbin/#{script}" do
+      source "#{script}.erb"
+      owner node.hops.hdfs.user
+      group node.hops.group
+      mode 0775
+    end
+  end 
+
+
+  Chef::Log.info "NameNode format option: #{node.hops.nn.format_options}"
+
+  template "#{node.hops.home}/sbin/format-nn.sh" do
+    source "format-nn.sh.erb"
+    owner node.hops.hdfs.user
+    group node.hops.group
+    mode 0775
+    variables({
+                :format_opts => node.hops.nn.format_options
+              })
+  end
+
+  
   my_ip = my_private_ip()
 
-#  for nn_ip in node['hops']['nn']['private_ips']
+  #  for nn_ip in node['hops']['nn']['private_ips']
   if my_ip.eql? node['hops']['nn']['private_ips'][0]
+    # Wait for db to start accepting requests (can be slow sometimes)
     include_recipe "hops::format"
   end
 else
   raise "Error. There is no NameNode recipe defined in the cluster definition. Add hops::nn to the cluster.yml file."
 end
-  
+
