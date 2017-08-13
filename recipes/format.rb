@@ -32,7 +32,7 @@ exec=node['ndb']['scripts_dir'] + "/mysql-client.sh"
 if ::File.exist?("#{node.hops.home}/.nn_formatted") === false || "#{node.hops.reformat}" === "true"
    hops_start "format-nn" do
      action :format_nn
-     not_if "#{exec} hops -e "select count(*) from hdfs_variables" | grep 4"
+     not_if "#{exec} hops -e 'select count(*) from hdfs_variables' | grep 25"
    end   
 else 
   Chef::Log.info "Not formatting the NameNode. Remove this directory before formatting: (sudo rm -rf #{node.hops.nn.name_dir}/current) and set node.hops.reformat to true"
@@ -46,7 +46,7 @@ begin
     bash "validate_formatting" do
      user "root"
      code <<-EOF
-       #{exec} hops -e "select count(*) from hdfs_variables" | grep 4
+       #{exec} hops -e 'select count(*) from hdfs_variables' | grep 25
     EOF
   end
 rescue
