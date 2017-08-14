@@ -365,7 +365,6 @@ end
    owner node.hops.hdfs.user
    group node.hops.group
    mode "0775"
-   
    action :create
  end
 
@@ -447,7 +446,6 @@ directory "/sys/fs/cgroup/cpu/hops-yarn" do
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   mode "0755"
-  recursive true
   action :create
 end
 
@@ -455,7 +453,6 @@ directory "/sys/fs/cgroup/devices/hops-yarn" do
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   mode "0755"
-  recursive true
   action :create
 end
 
