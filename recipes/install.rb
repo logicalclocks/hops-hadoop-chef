@@ -472,3 +472,10 @@ template "#{node.hops.home}/etc/hadoop/mapred-site.xml" do
               :rm_private_ip => rm_private_ip
             })
 end
+
+template "/etc/ld.so.conf.d/hops.conf" do
+  source "hops.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
