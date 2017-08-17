@@ -7,6 +7,7 @@ daemons.each { |d|
  service #{d} stop
  systemctl stop #{d}
  pkillall -9 #{d}
+ systemctl daemon-reload
  systemctl reset-failed
 EOF
   end
