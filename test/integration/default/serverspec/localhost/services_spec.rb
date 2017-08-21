@@ -45,7 +45,7 @@ describe command("su hdfs -l -c \"/srv/hadoop/bin/hdfs dfs -copyFromLocal /tmp/h
   its(:exit_status) { should eq 0 }
 end
 
-describe command("su yarn -l -c \"/srv/hadoop/bin/yarn jar /srv/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar pi 1 1000 \"") do
+describe command("su yarn -l -c \"/srv/hadoop/bin/yarn jar /srv/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.2.jar pi 1 1000 \"") do
   its (:stdout) { should match /Estimated value of Pi is/ }
 end
 
