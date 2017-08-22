@@ -91,3 +91,17 @@ if node.kagent.enabled == "true"
   end
 end
 
+
+directory "/sys/fs/cgroup/cpu/hops-yarn" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  action :create
+end
+
+directory "/sys/fs/cgroup/devices/hops-yarn" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  action :create
+end
