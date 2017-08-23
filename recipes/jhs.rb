@@ -66,7 +66,7 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, resources(:service => service_name)
 end
-    notifies :restart, resources(:service => service_name), :immediately
+    notifies :restart, resources(:service => service_name)
   end
 
   kagent_config "#{service_name}" do
