@@ -231,7 +231,7 @@ end
 directory node.hops.data_dir do
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "0775"
+  mode "0770"
   recursive true
   action :create
 end
@@ -255,7 +255,7 @@ else
   directory node.hops.dn.data_dir do
     owner node.hops.hdfs.user
     group node.hops.group
-    mode "0774"
+    mode "0770"
     recursive true    
     action :create
   end
@@ -264,7 +264,7 @@ end
 directory node.hops.nn.name_dir do
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "0774"
+  mode "0770"
   recursive true  
   action :create
 end
@@ -313,6 +313,7 @@ bash 'extract-hadoop' do
         # chown -L : traverse symbolic links
         chown -RL #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.home}
         chown -RL #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.base_dir}
+        chmod 770 #{node.hops.home}
         # remove the config files that we would otherwise overwrite
         rm -f #{node.hops.home}/etc/hadoop/yarn-site.xml
 	rm -f #{node.hops.home}/etc/hadoop/container-executor.cfg
@@ -364,14 +365,14 @@ end
  directory node.hops.logs_dir do
    owner node.hops.hdfs.user
    group node.hops.group
-   mode "0775"
+   mode "0770"
    action :create
  end
 
  directory node.hops.tmp_dir do
    owner node.hops.hdfs.user
    group node.hops.group
-   mode "1777"
+   mode "1770"
    action :create
  end
 
@@ -464,7 +465,7 @@ template "#{node.hops.home}/etc/hadoop/mapred-site.xml" do
   source "mapred-site.xml.erb"
   owner node.hops.mr.user
   group node.hops.group
-  mode "755"
+  mode "750"
   variables({
               :rm_private_ip => rm_private_ip
             })
