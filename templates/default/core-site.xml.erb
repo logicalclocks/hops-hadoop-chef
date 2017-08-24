@@ -213,6 +213,11 @@
   
  <!-- TLS client configuration -->
  <property>
+   <name>client.hopsworks.rest.endpoint</name>
+   <value><%= @hopsworks_endpoint %></value>
+ </property>
+ 
+ <property>
    <name>client.rpc.ssl.keystore.filepath</name>
    <value><%= @kstore %></value>
  </property>
