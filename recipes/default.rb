@@ -41,6 +41,11 @@ if node.attribute?("hopsworks")
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
 end
 
+livyUser = "livy"
+if node.attribute?("livy")
+  livyUser = node[:livy][:user]
+end
+
 
 # If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
 # Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
@@ -81,6 +86,7 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
+              :livyUser => livyUser,              
               :allNNs => allNNIps,
               :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
               :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
