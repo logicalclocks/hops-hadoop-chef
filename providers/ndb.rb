@@ -12,7 +12,7 @@ new_resource.updated_by_last_action(false)
   end
 
   bash "mysql-install-hops" do
-    user node.ndb.user
+    user "root"
     code <<-EOF
     set -e
     #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node.hops.db} CHARACTER SET latin1\"
