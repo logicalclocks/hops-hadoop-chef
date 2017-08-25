@@ -67,6 +67,14 @@
     <name>hadoop.proxyuser.<%= @livyUser %>.groups</name>
     <value>*</value>
   </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @hiveUser %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @hiveUser %>.groups</name>
+    <value>*</value>
+  </property>
 
   <property>
     <name>dfs.leader.check.interval</name>
@@ -114,26 +122,6 @@
   </property>
 
 
-  <property> 
-    <name>hadoop.proxyuser.yarn.hosts</name>
-    <value>*</value>
-  </property>
-  
-  <property>
-    <name>hadoop.proxyuser.yarn.groups</name>
-    <value>*</value>
-  </property>
-
-  <property>
-    <name>hadoop.proxyuser.hive.hosts</name>
-    <value>*</value>
-  </property>
-  <property>
-    <name>hadoop.proxyuser.hive.groups</name>
-    <value>*</value>
-  </property>
-
-  
   <property>
     <name>fs.defaultFS</name>
     <value><%= @firstNN %></value>
@@ -232,4 +220,40 @@
     <value>TLSv1.2</value>
   </property>
   
+ <!-- TLS client configuration -->
+ <property>
+   <name>client.hopsworks.rest.endpoint</name>
+   <value><%= @hopsworks_endpoint %></value>
+ </property>
+ 
+ <property>
+   <name>client.rpc.ssl.keystore.filepath</name>
+   <value><%= @kstore %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.keystore.password</name>
+   <value><%= node.hops.ssl.server.keystore.password %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.keypassword</name>
+   <value><%= node.hops.ssl.server.keystore.keypassword %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.truststore.filepath</name>
+   <value><%= @tstore %></value>
+ </property>
+
+ <property>
+   <name>client.rpc.ssl.truststore.password</name>
+   <value><%= node.hops.ssl.server.truststore.password %></value>
+ </property>
+ 
+ <property>
+   <name>client.rpc.ssl.enabled.protocol</name>
+   <value>TLSv1.2</value>
+ </property>
+ 
 </configuration>

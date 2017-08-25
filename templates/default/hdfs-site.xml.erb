@@ -267,7 +267,7 @@
 
   <property>
     <name>dfs.permissions.superusergroup</name>
-    <value>hdfs</value>    
+    <value><%= node['hops']['hdfs']['user'] %></value>    
     <description>The group for hdfs superusers</description>
   </property>
 
