@@ -1,6 +1,6 @@
 include_attribute "ndb"
 
-default["hops"]["version"]                     = "2.7.3"
+default["hops"]["version"]                     = "2.8.2"
 
 default["hops"]["hdfs"]["user"]                = node["install"]["user"].empty? ? "hdfs" : node["install"]["user"]
 default["hops"]["hdfs"]["superuser_group"]     = "hdfsadmin"
