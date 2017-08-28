@@ -3,6 +3,7 @@ include_attribute "ndb"
 default["hops"]["version"]                     = "2.7.3"
 
 default["hops"]["hdfs"]["user"]                = node["install"]["user"].empty? ? "hdfs" : node["install"]["user"]
+default["hops"]["hdfs"]["superuser_group"]     = "hdfsadmin"
 default["hops"]["group"]                       = node["install"]["user"].empty? ? "hadoop" : node["install"]["user"]
 default["hops"]["yarn"]["user"]                = node["install"]["user"].empty? ? "yarn" : node["install"]["user"]
 default["hops"]["mr"]["user"]                  = node["install"]["user"].empty? ? "mapred" : node["install"]["user"]

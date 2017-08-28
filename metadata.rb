@@ -232,6 +232,10 @@ attribute "hops/hdfs/user",
           :description => "Username to run hdfs as",
           :type => 'string'
 
+attribute "hops/hdfs/superuser_group",
+          :description => "Group for users with hdfs superuser privileges",
+          :type => 'string'
+
 attribute "hops/hdfs/blocksize",
           :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
@@ -378,4 +382,8 @@ attribute "hops/util_version",
 
 attribute "hops/cgroups",
           :description => "'true' to enable cgroups, else (default) 'false'",
+          :type => "string"
+
+attribute "livy/user",
+          :description => "Livy user that will be a proxy user",
           :type => "string"

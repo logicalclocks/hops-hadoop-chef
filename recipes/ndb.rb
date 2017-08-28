@@ -6,9 +6,8 @@ my_ip = my_private_ip()
 directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "755"
+  mode "750"
   action :create
-  recursive true
 end
 
 link "#{node.hops.dir}/ndb-hops" do
@@ -78,7 +77,7 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
       source "#{script}.erb"
       owner node.hops.hdfs.user
       group node.hops.group
-      mode 0775
+      mode 0770
     end
   end 
 
@@ -89,7 +88,7 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
     source "format-nn.sh.erb"
     owner node.hops.hdfs.user
     group node.hops.group
-    mode 0775
+    mode 0770
     variables({
                 :format_opts => node.hops.nn.format_options
               })
