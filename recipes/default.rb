@@ -43,12 +43,16 @@ end
 
 livyUser = "livy"
 if node.attribute?("livy")
-  livyUser = node[:livy][:user]
+  if node['livy'].attribute?("user")
+    livyUser = node[:livy][:user]
+  end
 end
 
 hiveUser = "hive"
 if node.attribute?("hive2")
-  hiveUser = node[:hive2][:user]
+  if node['hive2'].attribute?("user")
+    hiveUser = node[:hive2][:user]
+  end
 end
 
 

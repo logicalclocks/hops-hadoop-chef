@@ -383,3 +383,7 @@ attribute "hops/util_version",
 attribute "hops/cgroups",
           :description => "'true' to enable cgroups, else (default) 'false'",
           :type => "string"
+
+attribute "livy/user",
+          :description => "Livy user that will be a proxy user",
+          :type => "string"
