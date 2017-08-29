@@ -149,7 +149,7 @@
   <!-- RPC TLS support -->
   <property>
     <name>ipc.server.ssl.enabled</name>
-    <value><%= node.hops.rpc.ssl_enabled %></value>
+    <value><%= node.hops.rpc.ssl %></value>
   </property>
 
   <property>
@@ -188,66 +188,10 @@
     <value><%= node.certs.dir %>/transient</value>
   </property>
   
-  <!-- TLS client configuration -->
-  <property>
-    <name>client.rpc.ssl.keystore.filepath</name>
-    <value><%= @kstore %></value>
-  </property>
-
-  <property>
-    <name>client.rpc.ssl.keystore.password</name>
-    <value><%= node.hops.ssl.server.keystore.password %></value>
-  </property>
-
-  <property>
-    <name>client.rpc.ssl.keypassword</name>
-    <value><%= node.hops.ssl.server.keystore.keypassword %></value>
-  </property>
-
-  <property>
-    <name>client.rpc.ssl.truststore.filepath</name>
-    <value><%= @tstore %></value>
-  </property>
-
-  <property>
-    <name>client.rpc.ssl.truststore.password</name>
-    <value><%= node.hops.ssl.server.truststore.password %></value>
-  </property>
-  
-  <property>
-    <name>client.rpc.ssl.enabled.protocol</name>
-    <value>TLSv1.2</value>
-  </property>
-  
  <!-- TLS client configuration -->
  <property>
    <name>client.hopsworks.rest.endpoint</name>
    <value><%= @hopsworks_endpoint %></value>
- </property>
- 
- <property>
-   <name>client.rpc.ssl.keystore.filepath</name>
-   <value><%= @kstore %></value>
- </property>
-
- <property>
-   <name>client.rpc.ssl.keystore.password</name>
-   <value><%= node.hops.ssl.server.keystore.password %></value>
- </property>
-
- <property>
-   <name>client.rpc.ssl.keypassword</name>
-   <value><%= node.hops.ssl.server.keystore.keypassword %></value>
- </property>
-
- <property>
-   <name>client.rpc.ssl.truststore.filepath</name>
-   <value><%= @tstore %></value>
- </property>
-
- <property>
-   <name>client.rpc.ssl.truststore.password</name>
-   <value><%= node.hops.ssl.server.truststore.password %></value>
  </property>
  
  <property>

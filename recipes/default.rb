@@ -88,12 +88,9 @@ if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms
 end
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-if node.hops.rpc.ssl_enabled.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-end
-
 hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node.hops.rpc.ssl_enabled.eql? "true"
+if node.hops.rpc.ssl.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
   hopsworks_endpoint = "Could not access hopsworks-chef"
   if node.attribute?("hopsworks")
     hopsworks_ip = private_recipe_ip("hopsworks", "default")
@@ -114,8 +111,6 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
               :livyUser => livyUser,
               :hiveUser => hiveUser,              
               :allNNs => allNNIps,
-              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
-              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
             })
@@ -278,7 +273,7 @@ template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
   action :create
 end
 
-if node.hops.rpc.ssl_enabled.eql? "true"
+if node.hops.rpc.ssl.eql? "true"
   bash 'add-acl-to-keystore' do
     user 'root'
     if node.hops.hdfs.user.eql? node.hops.yarn.user

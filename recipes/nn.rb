@@ -18,12 +18,9 @@ else
 end
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-if node.hops.rpc.ssl_enabled.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-end
-
 hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node.hops.rpc.ssl_enabled.eql? "true"
+if node.hops.rpc.ssl.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
   hopsworks_endpoint = "Could not access hopsworks-chef"
   if node.attribute?("hopsworks")
     hopsworks_ip = private_recipe_ip("hopsworks", "default")
@@ -67,8 +64,6 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
               :hopsworksUser => hopsworksUser,
               :livyUser => livyUser,
               :hiveUser => hiveUser,              
-              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
-              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
             })
