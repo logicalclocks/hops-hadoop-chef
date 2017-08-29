@@ -43,14 +43,13 @@
 
 
   <property>
-    <name>hadoop.proxyuser.<%= node.hops.hdfs.user %>.hosts</name>
+    <name>hadoop.proxyuser.<%= @hopsworksUser %>.hosts</name>
     <value>*</value>
   </property>
   <property>
-    <name>hadoop.proxyuser.<%= node.hops.hdfs.user %>.groups</name>
+    <name>hadoop.proxyuser.<%= @hopsworksUser %>.groups</name>
     <value>*</value>
   </property>
-
   <property>
     <name>hadoop.proxyuser.<%= node.hops.yarn.user %>.hosts</name>
     <value>*</value>

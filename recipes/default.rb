@@ -37,8 +37,12 @@ else
 end
 
 hopsworksNodes = ""
+hopsworksUser = "glassfish"
 if node.attribute?("hopsworks")
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
+  if node['hopsworks'].attribute?("user")  
+    hopsworksUser = node[:hopsworks][:user]
+  end
 end
 
 livyUser = "livy"
@@ -105,6 +109,7 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => firstNN,
               :hopsworks => hopsworksNodes,
+              :hopsworksUser => hopsworksUser,              
               :livyUser => livyUser,
               :hiveUser => hiveUser,              
               :allNNs => allNNIps,
