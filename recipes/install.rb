@@ -68,6 +68,15 @@ group node.hops.group do
   not_if "getent group #{node.hops.group}"
 end
 
+#
+# hdfs superuser group is 'hdfs'
+#
+group node.hops.hdfs.user do
+  action :create
+  not_if "getent group #{node.hops.hfds.user}"
+end
+
+
 user node.hops.hdfs.user do
   home "/home/#{node.hops.hdfs.user}"
   gid node.hops.group
@@ -101,6 +110,12 @@ end
 group node.hops.group do
   action :modify
   members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}", "#{node.hops.mr.user}"]
+  append true
+end
+
+group node.hops.hdfs.user do
+  action :modify
+  members ["#{node.hops.hdfs.user}"]
   append true
 end
 
