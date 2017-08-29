@@ -32,21 +32,27 @@ if node.hops.rpc.ssl_enabled.eql? "true"
   end
 end
 
+hopsworksUser = "glassfish"
+if node.attribute?("hopsworks")
+  hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
+  if node['hopsworks'].attribute?("user")  
+    hopsworksUser = node[:hopsworks][:user]
+  end
+end
 
-# livyUser = "livy"
-# if node.attribute?("livy")
-#   if node['livy'].attribute?("user")
-#     livyUser = node[:livy][:user]
-#   end
-# end
+livyUser = "livy"
+if node.attribute?("livy")
+  if node['livy'].attribute?("user")
+    livyUser = node[:livy][:user]
+  end
+end
 
-# hiveUser = "hive"
-# if node.attribute?("hive2")
-#   if node['hive2'].attribute?("user")
-#     hiveUser = node[:hive2][:user]
-#   end
-# end
-
+hiveUser = "hive"
+if node.attribute?("hive2")
+  if node['hive2'].attribute?("user")
+    hiveUser = node[:hive2][:user]
+  end
+end
 
 myNN = "#{my_ip}:#{nnPort}"
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 

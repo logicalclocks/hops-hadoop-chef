@@ -37,6 +37,7 @@ else
 end
 
 hopsworksNodes = ""
+
 hopsworksUser = "glassfish"
 if node.attribute?("hopsworks")
   hopsworksNodes = node[:hopsworks][:default][:private_ips].join(",")
