@@ -192,7 +192,7 @@ attribute "hops/url/secondary",
           :description => "Secondary download url of hops distribution",
           :type => 'string'
 
-attribute "hops/rpc/ssl_enabled",
+attribute "hops/rpc/ssl",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
