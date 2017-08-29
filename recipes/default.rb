@@ -222,7 +222,7 @@ template "#{node.hops.home}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "622"
+  mode "750"
   variables({
               :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
               :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks"
