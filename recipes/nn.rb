@@ -24,7 +24,10 @@ if node.hops.rpc.ssl.eql? "true"
   hopsworks_endpoint = "Could not access hopsworks-chef"
   if node.attribute?("hopsworks")
     hopsworks_ip = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = node["hopsworks"]["port"]
+    hopsworks_port = "8080"
+    if node[:hopsworks].attribute?(:port)
+      hopsworks_port = node[:hopsworks][:port]
+    end
     hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
   end
 end
