@@ -192,7 +192,7 @@ end
 
 ruby_block 'wait_until_nn_started' do
   block do
-     sleep(5)
+     sleep(10)
   end
   action :run
 end
