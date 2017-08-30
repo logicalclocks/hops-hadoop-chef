@@ -17,20 +17,9 @@ else
   allNNs = "#{node.hops.nn.private_ips[0]}" + ":#{nnPort}"
 end
 
-rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node.hops.rpc.ssl.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-  hopsworks_endpoint = "Could not access hopsworks-chef"
-  if node.attribute?("hopsworks")
-    hopsworks_ip = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = "8080"
-    if node[:hopsworks].attribute?(:port)
-      hopsworks_port = node[:hopsworks][:port]
-    end
-    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
-  end
-end
+hopsworks_ip = private_recipe_ip("hopsworks", "default")
+hopsworks_endpoint = "http://#{hopsworks_ip}:#{node['hopsworks']['port']}"
+
 
 myNN = "#{my_ip}:#{nnPort}"
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
@@ -45,7 +34,7 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
               :livyUser => node[:livy][:user],
               :hiveUser => node[:hive2][:user],
               :allNNs => myNN,              
-              :rpcSocketFactory => rpcSocketFactory,
+              :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
               :hopsworks_endpoint => hopsworks_endpoint
             })
 end

@@ -27,6 +27,25 @@ ndb_connectstring()
 jdbc_url()
 
 
+rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
+hopsworks_endpoint = "RPC TLS NOT ENABLED"
+if node.hops.rpc.ssl.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
+  hopsworks_endpoint = "Could not access hopsworks-chef"
+  if node.attribute?("hopsworks")
+    hopsworks_ip = private_recipe_ip("hopsworks", "default")
+    hopsworks_port = "8080"
+    if node[:hopsworks].attribute?(:port)
+      hopsworks_port = node[:hopsworks][:port]
+    end
+    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
+  end
+end
+
+node.override[:hopsworks][:port] = hopsworks_port
+node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
+
+
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
@@ -102,21 +121,6 @@ end
 
 if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms.to_i
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
-end
-
-rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node.hops.rpc.ssl.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-  hopsworks_endpoint = "Could not access hopsworks-chef"
-  if node.attribute?("hopsworks")
-    hopsworks_ip = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = "8080"
-    if node[:hopsworks].attribute?(:port)
-      hopsworks_port = node[:hopsworks][:port]
-    end
-    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
-  end
 end
 
 #
