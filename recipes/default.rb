@@ -45,6 +45,7 @@ if node.attribute?("hopsworks")
     hopsworksUser = node[:hopsworks][:user]
   end
 end
+node.override[:hopsworks][:user] = hopsworksUser
 
 livyUser = "livy"
 if node.attribute?("livy")
@@ -52,6 +53,7 @@ if node.attribute?("livy")
     livyUser = node[:livy][:user]
   end
 end
+node.override[:livy][:user] = livyUser
 
 hiveUser = "hive"
 if node.attribute?("hive2")
@@ -59,7 +61,7 @@ if node.attribute?("hive2")
     hiveUser = node[:hive2][:user]
   end
 end
-
+node.override[:hive2][:user] = hiveUser
 
 # If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
 # Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
@@ -99,6 +101,11 @@ if node.hops.rpc.ssl.eql? "true"
   end
 end
 
+#
+# If there is a NN on this host, this will not override the NN's core-site.xml file which
+# may have already been created. The NN will overwrite this core-site.xml file if it runs
+# after the recipe that called this default.rb file.
+#
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node.hops.hdfs.user
@@ -114,6 +121,7 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
             })
+  action :create_if_missing
 end
 
 # file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
