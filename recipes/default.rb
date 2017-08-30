@@ -55,7 +55,7 @@ if node['hops']['yarn']['gpus'].eql?("*")
 end
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
-if node.hops.gpu_enabled.eql? "true"
+if node['hops']['yarn']['gpu_enabled'].eql? "true"
    node.override['hops']['cgroups'] = "true"
    node.override["hops"]["capacity"]["resource_calculator_class"] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"   
 end  
