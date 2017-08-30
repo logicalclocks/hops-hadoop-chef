@@ -350,7 +350,7 @@ attribute "hops/yarn/max_gpus",
           :description => "Max number of GPUs per container",
           :type => "string"
 
-attribute "hops/yarn/gpu_enabled",
+attribute "hops/gpu",
           :description => "Are GPUs enabled for YARN? Default: false",
           :type => "string"
 

@@ -41,11 +41,11 @@ end
 #
 
 
-# If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
-# Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
-if node['hops']['yarn']['gpu_enabled'].eql?("false") 
+# If the user specified "gpu" to be true in a cluster definition, then accept that.
+# Else, if cuda/accept_nvidia_download_terms is set to true, then make 'gpu' true.
+if node['hops']['gpu'].eql?("false") 
   if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
-     node.override['hops']['yarn']['gpu_enabled'] = "true"
+     node.override['hops']['gpu'] = "true"
   end
 end
 
@@ -55,7 +55,7 @@ if node['hops']['yarn']['gpus'].eql?("*")
 end
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
-if node.hops.gpu_enabled.eql? "true"
+if node.hops.gpu.eql? "true"
    node.override['hops']['cgroups'] = "true"
    node.override["hops"]["capacity"]["resource_calculator_class"] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"   
 end  

@@ -329,7 +329,7 @@ default["hops"]["hops_spark_kafka_example"]["url"]     = "#{node['download_url']
 #GPU
 default["hops"]["yarn"]["min_gpus"]                    = 0
 default["hops"]["yarn"]["max_gpus"]                    = 10
-default["hops"]["yarn"]["gpu_enabled"]                 = "false"
+default["hops"]["gpu"]                                 = "false"
 default["hops"]["yarn"]["gpus"]                        = "*"
 default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
 default["hops"]["yarn"]["linux_container_limit_users"] = "false"
