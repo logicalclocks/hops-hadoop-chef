@@ -36,6 +36,34 @@ else
   allNNIps = "#{node.hops.nn.private_ips[0]}" + ":#{nnPort}"
 end
 
+#
+# Constraints for Attributes - enforce them!
+#
+
+
+# If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
+# Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
+if node['hops']['yarn']['gpu_enabled'].eql?("false") 
+  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
+     node.override['hops']['yarn']['gpu_enabled'] = "true"
+  end
+end
+
+if node['hops']['yarn']['gpus'].eql?("*")
+    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
+end
+Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
+
+if node.hops.gpu_enabled.eql? "true"
+   node.override['hops']['cgroups'] = "true"
+   node.override["hops"]["capacity"]["resource_calculator_class"] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"   
+end  
+
+#
+# End Constraints
+#
+
 hopsworksNodes = ""
 
 hopsworksUser = "glassfish"
@@ -63,19 +91,6 @@ if node.attribute?("hive2")
 end
 node.override[:hive2][:user] = hiveUser
 
-# If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
-# Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
-if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false") 
-  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
-     node.override['hops']['yarn']['gpu_enabled'] = "true"
-  end
-end
-
-if "#{node['hops']['yarn']['gpus']}".eql?("*")
-    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
-    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
-end
-Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 template "#{node.hops.home}/etc/hadoop/log4j.properties" do
   source "log4j.properties.erb"
