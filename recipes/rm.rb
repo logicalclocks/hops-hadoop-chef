@@ -84,6 +84,10 @@ if node.hops.systemd == "true"
     action :nothing
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
 
   template systemd_script do
     source "#{service_name}.service.erb"
@@ -96,6 +100,10 @@ end
     notifies :restart, "service[#{service_name}]"
   end
 
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
+  
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
     group "root"
@@ -109,11 +117,6 @@ end
     mode 0664
     action :create
   end 
-
-  hops_start "reload_nn" do
-    action :systemd_reload
-  end  
-
 
 else #sysv
 
@@ -139,7 +142,7 @@ end
 end
 
 if node.kagent.enabled == "true" 
-  kagent_config "resourcemanager" do
+  kagent_config service_name do
     service "YARN"
     log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
     config_file "#{node.hops.conf_dir}/yarn-site.xml"

@@ -7,6 +7,8 @@ daemons.each { |d|
  service #{d} stop
  systemctl stop #{d}
  pkillall -9 #{d}
+ systemctl daemon-reload
+ systemctl reset-failed
 EOF
   end
 
@@ -22,6 +24,16 @@ EOF
     action :delete
     ignore_failure true
   end
+  file "/etc/systemd/system/#{d}.service" do
+    action :delete
+    ignore_failure true
+  end
+  directory "/etc/systemd/system/#{d}.service.d" do
+    recursive true
+    action :delete
+    ignore_failure true
+  end
+
 }
 
 directory "#{node.hops.dir}/hadoop-#{node.hops.version}" do
@@ -59,7 +71,8 @@ package "Bouncy Castle Remove" do
 end
 
 
-primary_url = node.hops.download_url.primary
+primary_url = node["hops"]["url"]["secondary"]
+
 base_package_filename = File.basename(primary_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
 
@@ -80,3 +93,15 @@ directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" d
   ignore_failure true
 end
 
+
+directory "/sys/fs/cgroup/cpu/hops-yarn" do
+  recursive true
+  ignore_failure true
+  action :delete  
+end
+
+directory "/sys/fs/cgroup/devices/hops-yarn" do
+  recursive true
+  ignore_failure true
+  action :delete  
+end

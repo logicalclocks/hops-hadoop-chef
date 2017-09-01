@@ -27,6 +27,12 @@ if node.hops.systemd == "true"
     action :nothing
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
+
+  
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
@@ -35,7 +41,7 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, "service[#{service_name}]"
 end
-    notifies :restart, "service[#{service_name}]", :immediately
+    notifies :restart, "service[#{service_name}]"
   end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do
@@ -53,10 +59,11 @@ end
     notifies :restart, "service[#{service_name}]"    
   end 
 
-  hops_start "reload_dn" do
+  kagent_config "#{service_name}" do
     action :systemd_reload
-  end  
-
+  end
+  
+  
 else #sysv
 
   service "#{service_name}" do
@@ -79,7 +86,7 @@ end
 end
 
 if node.kagent.enabled == "true" 
-  kagent_config "#{service_name}" do
+  kagent_config service_name do
     service "HDFS"
     log_file "#{node.hops.logs_dir}/hadoop-#{node.hops.hdfs.user}-#{service_name}-#{node.hostname}.log"
     config_file "#{node.hops.conf_dir}/hdfs-site.xml"

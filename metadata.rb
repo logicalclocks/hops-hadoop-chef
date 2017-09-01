@@ -11,7 +11,6 @@ source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 #link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
 recipe            "hops::nn", "Installs a HopsFs NameNode"
 recipe            "hops::ndb", "Installs MySQL Cluster (ndb) dal driver for Hops"
-recipe            "hops::format", "Format a HopsFs NameNode"
 recipe            "hops::dn", "Installs a HopsFs DataNode"
 #link:<a target='_blank' href='http://%host%:8088/'>Launch the WebUI for the ResourceManager</a>
 recipe            "hops::rm", "Installs a YARN ResourceManager"
@@ -193,7 +192,7 @@ attribute "hops/url/secondary",
           :description => "Secondary download url of hops distribution",
           :type => 'string'
 
-attribute "hops/rpc/ssl_enabled",
+attribute "hops/rpc/ssl",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
@@ -231,6 +230,10 @@ attribute "hops/mr/user",
 
 attribute "hops/hdfs/user",
           :description => "Username to run hdfs as",
+          :type => 'string'
+
+attribute "hops/hdfs/superuser_group",
+          :description => "Group for users with hdfs superuser privileges",
           :type => 'string'
 
 attribute "hops/hdfs/blocksize",
@@ -337,15 +340,26 @@ attribute "install/user",
 attribute "influxdb/graphite/port",
           :description => "Port for influxdb graphite connector",
           :type => "string"
+
 #GPU settings
-attribute "hops/yarn/min_allocation_gpus",
-          :description => "",
+attribute "hops/yarn/min_gpus",
+          :description => "Min number of GPUs per container",
           :type => "string"
 
-attribute "hops/yarn/max_allocation_gpus",
-          :description => "",
+attribute "hops/yarn/max_gpus",
+          :description => "Max number of GPUs per container",
           :type => "string"
 
+attribute "hops/gpu",
+          :description => "Are GPUs enabled for YARN? Default: false",
+          :type => "string"
+
+attribute "hops/yarn/gpus",
+          :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
+          :type => "string"
+
+
+#CGroups settings
 attribute "hops/yarn/groups_enabled",
           :description => "",
           :type => "string"
@@ -362,10 +376,14 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
-attribute "hops/libhopsnvml_version",
-          :description => "",
-          :type => "string"
-
 attribute "hops/util_version",
           :description => "Version of the hops-util jar file.",
+          :type => "string"
+
+attribute "hops/cgroups",
+          :description => "'true' to enable cgroups, else (default) 'false'",
+          :type => "string"
+
+attribute "livy/user",
+          :description => "Livy user that will be a proxy user",
           :type => "string"

@@ -17,10 +17,9 @@ else
   allNNs = "#{node.hops.nn.private_ips[0]}" + ":#{nnPort}"
 end
 
-rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-if node.hops.rpc.ssl_enabled.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-end
+hopsworks_ip = private_recipe_ip("hopsworks", "default")
+hopsworks_endpoint = "http://#{hopsworks_ip}:#{node['hopsworks']['port']}"
+
 
 myNN = "#{my_ip}:#{nnPort}"
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
@@ -31,10 +30,12 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
   variables({
               :firstNN => "hdfs://" + myNN,
               :hopsworks => hopsworksNodes,
-              :allNNs => myNN,
-              :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
-              :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks",
-              :rpcSocketFactory => rpcSocketFactory
+              :hopsworksUser => node[:hopsworks][:user],
+              :livyUser => node[:livy][:user],
+              :hiveUser => node[:hive2][:user],
+              :allNNs => myNN,              
+              :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
+              :hopsworks_endpoint => hopsworks_endpoint
             })
 end
 
@@ -123,6 +124,11 @@ if node.hops.systemd == "true"
     action :nothing
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
+
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
@@ -131,9 +137,12 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, "service[#{service_name}]"
 end
-    notifies :restart, "service[#{service_name}]", :immediately
+    notifies :restart, "service[#{service_name}]"
   end
 
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
@@ -149,10 +158,6 @@ end
     action :create
     notifies :restart, "service[#{service_name}]"    
   end 
-
-  hops_start "reload_nn" do
-    action :systemd_reload
-  end  
 
 else  #sysv
 
@@ -177,7 +182,7 @@ end
 
 
 if node.kagent.enabled == "true" 
-  kagent_config "#{service_name}" do
+  kagent_config service_name do
     service "HDFS"
     config_file "#{node.hops.conf_dir}/hdfs-site.xml"
     log_file "#{node.hops.logs_dir}/hadoop-#{node.hops.hdfs.user}-#{service_name}-#{node.hostname}.log"
@@ -185,14 +190,24 @@ if node.kagent.enabled == "true"
   end
 end
 
-tmp_dirs   = [ "/tmp", node.hops.hdfs.user_home, node.hops.hdfs.user_home + "/" + node.hops.hdfs.user ]
-
-for d in tmp_dirs
-  hops_hdfs_directory d do
-    action :create_as_superuser
-    owner node.hops.hdfs.user
-    group node.hops.group
-    mode "1775"
+ruby_block 'wait_until_nn_started' do
+  block do
+     sleep(10)
   end
+  action :run
 end
 
+tmp_dirs   = [ "/tmp", node.hops.hdfs.user_home, node.hops.hdfs.user_home + "/" + node.hops.hdfs.user ]
+
+# Only the first NN needs to create the directories
+if my_ip.eql? node['hops']['nn']['private_ips'][0]
+  for d in tmp_dirs
+    hops_hdfs_directory d do
+      action :create_as_superuser
+      owner node.hops.hdfs.user
+      group node.hops.group
+      mode "1775"
+    end
+  end
+
+end

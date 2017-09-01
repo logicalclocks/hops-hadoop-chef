@@ -85,6 +85,7 @@ action :create_as_superuser do
   bash "mk-dir-#{new_resource.name}" do
     user node.hops.hdfs.user
     group node.hops.group
+    retries 1
     code <<-EOF
      . #{node.hops.base_dir}/sbin/set-env.sh
      #{node.hops.base_dir}/bin/hdfs dfs -mkdir #{recursive} #{new_resource.name}

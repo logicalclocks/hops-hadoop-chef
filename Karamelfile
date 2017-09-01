@@ -5,13 +5,9 @@ dependencies:
   - recipe: hops::ndb
     global:  
       - ndb::mysqld
-  - recipe: hops::format
-    global:  
-      - kagent::default
   - recipe: hops::nn
     global:  
       - kagent::default
-      - hops::format
   - recipe: hops::rm
     global:
       - hops::dn

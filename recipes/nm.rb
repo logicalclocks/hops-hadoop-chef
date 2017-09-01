@@ -13,15 +13,6 @@ for script in node.hops.yarn.scripts
 end 
 
 
-remote_file "#{node.hops.dir}/hadoop/share/hadoop/yarn/lib/#{node.yarn.spark.shuffle_jar}"  do
-  user node.hops.yarn.user
-  group node.hops.group
-  source node.yarn.spark.shuffle_url
-  mode 0644
-  action :create_if_missing
-end
-
-
 if node.hops.systemd == "true"
 
   service service_name do
@@ -37,6 +28,11 @@ if node.hops.systemd == "true"
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
 
+  file systemd_script do
+    action :delete
+    ignore_failure true
+  end
+  
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
@@ -45,9 +41,13 @@ if node.hops.systemd == "true"
 if node.services.enabled == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
-    notifies :start, resources(:service => service_name)
+    notifies :restart, resources(:service => service_name)
   end
 
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
+  
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
     group "root"
@@ -61,11 +61,6 @@ end
     mode 0774
     action :create
   end 
-
-  hops_start "reload_nn" do
-    action :systemd_reload
-  end  
-
 
 else #sysv
 
@@ -96,3 +91,17 @@ if node.kagent.enabled == "true"
   end
 end
 
+
+directory "/sys/fs/cgroup/cpu/hops-yarn" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  action :create
+end
+
+directory "/sys/fs/cgroup/devices/hops-yarn" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  action :create
+end
