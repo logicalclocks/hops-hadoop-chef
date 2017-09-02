@@ -8,6 +8,8 @@ default["hops"]["group"]                       = node["install"]["user"].empty? 
 default["hops"]["yarn"]["user"]                = node["install"]["user"].empty? ? "yarn" : node["install"]["user"]
 default["hops"]["mr"]["user"]                  = node["install"]["user"].empty? ? "mapred" : node["install"]["user"]
 
+default["hops"]['password']["group"]           = node["install"]["user"].empty? ? "hopssh" : node["install"]["user"]
+
 default["hops"]["jmx"]["username"]             = "monitorRole"
 default["hops"]["jmx"]["password"]             = "hadoop"
 

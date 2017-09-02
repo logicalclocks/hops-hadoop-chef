@@ -3,6 +3,18 @@ require 'resolv'
 ndb_connectstring()
 my_ip = my_private_ip()
 
+group node['hops']['password']['group'] do
+  action :create
+  not_if "getent group #{node['hops']['password']['group']}"
+end
+
+group node['hops']['password']['group'] do
+  action :modify
+  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}"]
+  append true
+end
+
+
 directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
   owner node.hops.hdfs.user
   group node.hops.group
@@ -49,8 +61,8 @@ end
 
 template "#{node.hops.home}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
-  owner node.hops.hdfs.user
-  group node.hops.group
+  owner node['hops']['hdfs']['user']
+  group node['hops']['password']['group']
   mode "750"
   variables({
               :ndb_connectstring => node.ndb.connectstring,
@@ -64,8 +76,6 @@ hops_ndb "install" do
   action :install_hops
   only_if { ::File.exist? "#{node.ndb.scripts_dir}/mysql-client.sh" }
 end
-
-
 
 #
 # Format the NameNode if a NameNode is being installed on this host
