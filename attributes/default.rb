@@ -321,8 +321,8 @@ default["hops"]["capacity"]["queue_mapping"]                            = ""
 default["hops"]["capacity"]["queue_mapping_override"]["enable"]         = "false"
 
 
-default["hops"]["hopsutil_jar"]                        = "hops-util"
-default["hops"]["examples_jar"]                        = "hops-spark"
+default["hops"]["hopsutil_jar"]                        = "hops-util.jar"
+default["hops"]["examples_jar"]                        = "hops-spark.jar"
 default["hops"]["hopsutil_version"]                    = "0.1.0"
 default["hops"]["examples_version"]                    = "0.1.0"
 default["hops"]["hopsutil"]["url"]                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
