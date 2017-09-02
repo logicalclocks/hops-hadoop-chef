@@ -27,6 +27,25 @@ ndb_connectstring()
 jdbc_url()
 
 
+rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
+hopsworks_endpoint = "RPC TLS NOT ENABLED"
+if node.hops.rpc.ssl.eql? "true"
+  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
+  hopsworks_endpoint = "Could not access hopsworks-chef"
+  if node.attribute?("hopsworks")
+    hopsworks_ip = private_recipe_ip("hopsworks", "default")
+    hopsworks_port = "8080"
+    if node[:hopsworks].attribute?(:port)
+      hopsworks_port = node[:hopsworks][:port]
+    end
+    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
+  end
+end
+
+node.override[:hopsworks][:port] = hopsworks_port
+node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
+
+
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
@@ -35,6 +54,34 @@ if node.hops.nn.private_ips.length > 1
 else
   allNNIps = "#{node.hops.nn.private_ips[0]}" + ":#{nnPort}"
 end
+
+#
+# Constraints for Attributes - enforce them!
+#
+
+
+# If the user specified "gpu" to be true in a cluster definition, then accept that.
+# Else, if cuda/accept_nvidia_download_terms is set to true, then make 'gpu' true.
+if node['hops']['gpu'].eql?("false") 
+  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
+     node.override['hops']['gpu'] = "true"
+  end
+end
+
+if node['hops']['yarn']['gpus'].eql?("*")
+    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
+end
+Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
+
+if node['hops']['gpu'].eql? "true"
+   node.override['hops']['cgroups'] = "true"
+   node.override["hops"]["capacity"]["resource_calculator_class"] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"   
+end  
+
+#
+# End Constraints
+#
 
 hopsworksNodes = ""
 
@@ -45,6 +92,7 @@ if node.attribute?("hopsworks")
     hopsworksUser = node[:hopsworks][:user]
   end
 end
+node.override[:hopsworks][:user] = hopsworksUser
 
 livyUser = "livy"
 if node.attribute?("livy")
@@ -52,6 +100,7 @@ if node.attribute?("livy")
     livyUser = node[:livy][:user]
   end
 end
+node.override[:livy][:user] = livyUser
 
 hiveUser = "hive"
 if node.attribute?("hive2")
@@ -59,21 +108,8 @@ if node.attribute?("hive2")
     hiveUser = node[:hive2][:user]
   end
 end
+node.override[:hive2][:user] = hiveUser
 
-
-# If the user specified "gpu_enabled" to be true in a cluster definition, then accept that.
-# Else, if cuda/accept_nvidia_download_terms is set to true, then make gpu_enabled true.
-if "#{node['hops']['yarn']['gpu_enabled']}".eql?("false") 
-  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
-     node.override['hops']['yarn']['gpu_enabled'] = "true"
-  end
-end
-
-if "#{node['hops']['yarn']['gpus']}".eql?("*")
-    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
-    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
-end
-Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 template "#{node.hops.home}/etc/hadoop/log4j.properties" do
   source "log4j.properties.erb"
@@ -87,18 +123,11 @@ if node.ndb.TransactionInactiveTimeout.to_i < node.hops.leader_check_interval_ms
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
-rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node.hops.rpc.ssl.eql? "true"
-  rpcSocketFactory = node.hops.hadoop.rpc.socket.factory
-  hopsworks_endpoint = "Could not access hopsworks-chef"
-  if node.attribute?("hopsworks")
-    hopsworks_ip = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = node["hopsworks"]["port"]
-    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
-  end
-end
-
+#
+# If there is a NN on this host, this will not override the NN's core-site.xml file which
+# may have already been created. The NN will overwrite this core-site.xml file if it runs
+# after the recipe that called this default.rb file.
+#
 template "#{node.hops.home}/etc/hadoop/core-site.xml" do 
   source "core-site.xml.erb"
   owner node.hops.hdfs.user
@@ -114,6 +143,7 @@ template "#{node.hops.home}/etc/hadoop/core-site.xml" do
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
             })
+  action :create_if_missing
 end
 
 # file "#{node.hops.home}/etc/hadoop/hdfs-site.xml" do 
@@ -222,7 +252,7 @@ template "#{node.hops.home}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "622"
+  mode "750"
   variables({
               :kstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__kstore.jks",
               :tstore => "#{node.kagent.keystore_dir}/#{node['hostname']}__tstore.jks"

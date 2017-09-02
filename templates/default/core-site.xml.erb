@@ -41,7 +41,14 @@
   </property>
 
 
-
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['hdfs']['user'] %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['hdfs']['user'] %>.groups</name>
+    <value>*</value>
+  </property>
   <property>
     <name>hadoop.proxyuser.<%= @hopsworksUser %>.hosts</name>
     <value>*</value>
