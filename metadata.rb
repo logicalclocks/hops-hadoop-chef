@@ -376,8 +376,20 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
-attribute "hops/util_version",
+attribute "hops/hopsutil_jar",
+          :description => "Name of the HopsUtil jar file.",
+          :type => "string"
+
+attribute "hops/examples_jar",
+          :description => "Name of the examples file.",
+          :type => "string"
+
+attribute "hops/hopsutil_version",
           :description => "Version of the hops-util jar file.",
+          :type => "string"
+
+attribute "hops/examples_version",
+          :description => "Version of the hops-spark jar file.",
           :type => "string"
 
 attribute "hops/cgroups",
