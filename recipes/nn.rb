@@ -4,6 +4,13 @@ my_ip = my_private_ip()
 
 nnPort = node.hops.nn.port
 
+group node.hops.secure_group do
+  action :modify
+  members ["#{node.hops.hfds.user}"]
+  append true
+end
+
+
 hopsworksNodes = ""
 if node.attribute?('hopsworks')
   if node.hopsworks.nil? == false && node.hopsworks.default.nil? == false && node.hopsworks.default.private_ips.nil? == false

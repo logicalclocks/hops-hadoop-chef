@@ -3,17 +3,10 @@ require 'resolv'
 ndb_connectstring()
 my_ip = my_private_ip()
 
-group node['hops']['password']['group'] do
+group node['hops']['secure_group'] do
   action :create
   not_if "getent group #{node['hops']['password']['group']}"
 end
-
-group node['hops']['password']['group'] do
-  action :modify
-  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}"]
-  append true
-end
-
 
 directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
   owner node.hops.hdfs.user
@@ -62,7 +55,7 @@ end
 template "#{node.hops.home}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['password']['group']
+  group node['hops']['secure_group']
   mode "750"
   variables({
               :ndb_connectstring => node.ndb.connectstring,
