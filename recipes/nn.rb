@@ -6,7 +6,7 @@ nnPort = node.hops.nn.port
 
 group node.hops.secure_group do
   action :modify
-  members ["#{node.hops.hfds.user}"]
+  members ["#{node.hops.hdfs.user}"]
   append true
 end
 

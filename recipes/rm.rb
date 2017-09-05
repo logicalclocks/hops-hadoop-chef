@@ -14,7 +14,7 @@ user node.hops.rm.user do
   shell "/bin/bash"
   manage_home true
   action :create
-  not_if "getent passwd #{node.hops.hdfs.user}"
+  not_if "getent passwd #{node.hops.rm.user}"
 end
 
 group node.hops.secure_group do

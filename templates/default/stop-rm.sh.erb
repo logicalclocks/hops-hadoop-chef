@@ -11,6 +11,6 @@ command=resourcemanager
 pidDir=$YARN_PID_DIR
 service=yarn
 
-<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.yarn.user %> $command $pidDir
+<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.rm.user %> $command $pidDir
 
 exit $?
