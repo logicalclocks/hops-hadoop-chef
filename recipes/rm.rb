@@ -23,6 +23,13 @@ group node.hops.secure_group do
   append true
 end
 
+group node.hops.group do
+  action :modify
+  members ["#{node.hops.rm.user}"]
+  append true
+end
+
+
 ndb_connectstring()
 
 template "#{node.hops.home}/etc/hadoop/RM_EventAPIConfig.ini" do 
