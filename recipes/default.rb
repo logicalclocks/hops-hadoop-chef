@@ -164,14 +164,14 @@ template "#{node.hops.home}/etc/hadoop/jmxremote.password" do
   source "jmxremote.password.erb"
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "600"
+  mode "400"
 end
 
 template "#{node.hops.home}/etc/hadoop/yarn-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "600"
+  mode "400"
 end
 
 

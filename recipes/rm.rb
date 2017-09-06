@@ -42,6 +42,13 @@ template "#{node.hops.home}/etc/hadoop/RM_EventAPIConfig.ini" do
             })
 end
 
+template "#{node.hops.home}/etc/hadoop/rm-jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node.hops.rm.user
+  group node.hops.group
+  mode "400"
+end
+
 
 yarn_service="rm"
 service_name="resourcemanager"
