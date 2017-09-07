@@ -9,6 +9,14 @@ end
 
 require 'resolv'
 
+
+group node.hops.group do
+  action :modify
+  members ["#{node.conda.user}"]
+  append true
+end
+
+
 nnPort=node.hops.nn.port
 hops_group=node.hops.group
 my_ip = my_private_ip()
