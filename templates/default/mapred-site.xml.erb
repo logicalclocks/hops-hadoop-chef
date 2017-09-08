@@ -27,6 +27,15 @@ http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterS
      <value>yarn</value>
   </property>
 
+<property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+</property>
+<property>
+    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
   <property>
      <name>mapreduce.map.java.opts</name>
      <value>-Xmx512M</value>
