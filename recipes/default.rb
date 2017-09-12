@@ -9,6 +9,14 @@ end
 
 require 'resolv'
 
+
+group node.hops.group do
+  action :modify
+  members ["#{node.conda.user}"]
+  append true
+end
+
+
 nnPort=node.hops.nn.port
 hops_group=node.hops.group
 my_ip = my_private_ip()
@@ -164,14 +172,14 @@ template "#{node.hops.home}/etc/hadoop/jmxremote.password" do
   source "jmxremote.password.erb"
   owner node.hops.hdfs.user
   group node.hops.group
-  mode "600"
+  mode "400"
 end
 
 template "#{node.hops.home}/etc/hadoop/yarn-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node.hops.yarn.user
   group node.hops.group
-  mode "600"
+  mode "400"
 end
 
 

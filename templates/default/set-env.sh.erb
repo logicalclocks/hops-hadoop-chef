@@ -28,7 +28,7 @@ export HADOOP_DATANODE_OPTS='-Dcom.sun.management.jmxremote -Dcom.sun.management
 
 export YARN_OPTS='-Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/yarn-jmxremote.password'
 # Command specific options appended to HADOOP_OPTS when specified
-export YARN_RESOURCEMANAGER_OPTS='-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8082 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/yarn-jmxremote.password'
+export YARN_RESOURCEMANAGER_OPTS='-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8082 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/rm-jmxremote.password'
 export YARN_NODEMANAGER_OPTS='-Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=8083 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/yarn-jmxremote.password'
 
 export cygwin=false

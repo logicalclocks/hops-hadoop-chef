@@ -18,7 +18,7 @@
 START_PROG="<%= node.hops.base_dir %>/sbin/start-rm.sh"  
 STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-rm.sh"  
 
-EXEC_WITH_USER="su <%= node.hops.yarn.user %> -c"
+EXEC_WITH_USER="su <%= node.hops.rm.user %> -c"
 
 start() {
   rm -f <%= node.hops.logs_dir %>/hadoop.log
@@ -33,7 +33,7 @@ stop() {
 }
 
 status() {
-  PID_FILE=<%= "#{node.hops.logs_dir}" %>/yarn-<%= "#{node.hops.yarn.user}" %>-resourcemanager.pid
+  PID_FILE=<%= "#{node.hops.logs_dir}" %>/yarn-<%= "#{node.hops.rm.user}" %>-resourcemanager.pid
   res=1
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`

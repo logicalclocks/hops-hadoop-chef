@@ -6,16 +6,47 @@ rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
 
+
+user node.hops.rm.user do
+  home "/home/#{node.hops.rm.user}"
+  gid node.hops.secure_group
+  system true
+  shell "/bin/bash"
+  manage_home true
+  action :create
+  not_if "getent passwd #{node.hops.rm.user}"
+end
+
+group node.hops.secure_group do
+  action :modify
+  members ["#{node.hops.rm.user}"]
+  append true
+end
+
+group node.hops.group do
+  action :modify
+  members ["#{node.hops.rm.user}"]
+  append true
+end
+
+
 ndb_connectstring()
 
 template "#{node.hops.home}/etc/hadoop/RM_EventAPIConfig.ini" do 
   source "RM_EventAPIConfig.ini.erb"
-  owner node.hops.yarn.user
+  owner node.hops.rm.user
   group node.hops.group
   mode "755"
   variables({
               :ndb_connectstring => node.ndb.connectstring
             })
+end
+
+template "#{node.hops.home}/etc/hadoop/rm-jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node.hops.rm.user
+  group node.hops.group
+  mode "400"
 end
 
 
@@ -31,7 +62,7 @@ end
 
 template "#{node.hops.home}/etc/hadoop/yarn-site.xml" do
   source "yarn-site.xml.erb"
-  owner node.hops.yarn.user
+  owner node.hops.rm.user
   group node.hops.group
   mode "664"
   variables({
@@ -46,7 +77,7 @@ end
 
 template "#{node.hops.home}/etc/hadoop/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
-  owner node.hops.yarn.user
+  owner node.hops.rm.user
   group node.hops.group
   mode "664"
   action :create
@@ -55,17 +86,17 @@ end
 for script in node.hops.yarn.scripts
   template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
-    owner node.hops.yarn.user
+    owner node.hops.rm.user
      group node.hops.group
-    mode 0775
+    mode 0755
   end
 end 
 
 template "#{node.hops.home}/sbin/yarn.sh" do
   source "yarn.sh.erb"
-  owner node.hops.yarn.user
+  owner node.hops.rm.user
   group node.hops.group
-  mode 0775
+  mode 0755
 end
 
 
@@ -144,23 +175,23 @@ end
 if node.kagent.enabled == "true" 
   kagent_config service_name do
     service "YARN"
-    log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
+    log_file "#{node.hops.logs_dir}/yarn-#{node.hops.rm.user}-#{service_name}-#{node.hostname}.log"
     config_file "#{node.hops.conf_dir}/yarn-site.xml"
     web_port node.hops["#{yarn_service}"][:http_port]
   end
 end
 
-tmp_dirs   = [node.hops.hdfs.user_home + "/" + node.hops.yarn.user]
+tmp_dirs   = [ "#{node.hops.hdfs.user_home}/#{node.hops.rm.user}"]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
-    owner node.hops.yarn.user
+    owner node.hops.rm.user
     group node.hops.group
     mode "1775"
   end
 end
 
-tmp_dirs   = [node.hops.yarn.nodemanager.remote_app_log_dir]
+tmp_dirs   = [node.hops.yarn.nodemanager.remote_app_log_dir, "#{node.hops.hdfs.user_home}/#{node.hops.yarn.user}"]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser

@@ -5,10 +5,11 @@ default["hops"]["version"]                     = "2.8.2"
 default["hops"]["hdfs"]["user"]                = node["install"]["user"].empty? ? "hdfs" : node["install"]["user"]
 default["hops"]["hdfs"]["superuser_group"]     = "hdfsadmin"
 default["hops"]["group"]                       = node["install"]["user"].empty? ? "hadoop" : node["install"]["user"]
+default["hops"]["secure_group"]                = node["install"]["user"].empty? ? "metaserver" : node["install"]["user"]
 default["hops"]["yarn"]["user"]                = node["install"]["user"].empty? ? "yarn" : node["install"]["user"]
+default["hops"]["rm"]["user"]                  = node["install"]["user"].empty? ? "rmyarn" : node["install"]["user"]
 default["hops"]["mr"]["user"]                  = node["install"]["user"].empty? ? "mapred" : node["install"]["user"]
 
-default["hops"]['password']["group"]           = node["install"]["user"].empty? ? "hopssh" : node["install"]["user"]
 
 default["hops"]["jmx"]["username"]             = "monitorRole"
 default["hops"]["jmx"]["password"]             = "hadoop"
@@ -183,8 +184,6 @@ default["hadoop"]["mysql_url"]              = "jdbc:mysql://#{node['ndb']['mysql
 
 default["hops"]["log_level"]                = "DEBUG"
 
-default["hops"]["data_dir"]                 = "/var/data/hadoop"
-default["hops"]["dn"]["data_dir"]           = "file://#{node['hops']['data_dir']}/hdfs/dn"
 default["hops"]["hdfs"]["blocksize"]        = "134217728"
 
 default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -ne 6 ]; then
+  echo "Incorrect parameters. Usage:"
+  echo "$0 <pythonpath> <url> <logdir> <port> <containerBaseDir>"
+  echo "$0 /srv/hops/anaconda/anaconda/envs/jim/bin/python http://<ip>/ /Projects/myproj/Logs/tensorboard.1/ 22345 $PWD"  
+  exit 1
+fi
+
+function finish {
+  # Your cleanup code here
+
+}
+trap finish EXIT
+
+
+#pypath, "%s/tensorboard"%pydir, "--logdir=%s"%logdir, "--port=%d"%port, "--debug"
+
+nohup $1 $2/tensorboard --logdir=$3 --port=$4 --debug > /dev/null 2>&1 &
+PID=$!
+
+// now spin and wait
+file=${6}/.tensorboard
+touch $file
+
+inotifywait -m $file -e delete -e close_write --exclude '\*.sw??$' . |
+
+while read dir ev file; do
+  if [ "$ev" = "DELETE" ]; then
+  # if the guard file has been deleted, the app has been deleted, so remove the tensorboard
+    kill -9 $PID
+  fi
+done
