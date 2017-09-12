@@ -23,88 +23,87 @@ http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterS
 <configuration>
 
   <property>
-     <name>mapreduce.framework.name</name>
-     <value>yarn</value>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
   </property>
-
-<property>
+  <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-</property>
-<property>
+    <value>spark_shuffle,mapreduce_shuffle</value>
+  </property>
+  <property>
     <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
     <value>org.apache.hadoop.mapred.ShuffleHandler</value>
-</property>
-
-  <property>
-     <name>mapreduce.map.java.opts</name>
-     <value>-Xmx512M</value>
   </property>
 
   <property>
-     <name>mapreduce.map.memory.mb</name>
-     <value>512</value>
-  </property>
-  <property>
-     <name>mapreduce.reduce.memory.mb</name>
-     <value>512</value>
+    <name>mapreduce.map.java.opts</name>
+    <value>-Xmx512M</value>
   </property>
 
   <property>
-     <name>mapreduce.job.user.classpath.first</name>
-     <value>true</value>
+    <name>mapreduce.map.memory.mb</name>
+    <value>512</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.memory.mb</name>
+    <value>512</value>
   </property>
 
   <property>
-     <name>mapreduce.reduce.java.opts</name>
-     <value>-Xmx256M</value>
+    <name>mapreduce.job.user.classpath.first</name>
+    <value>true</value>
   </property>
 
   <property>
-     <name>mapreduce.task.io.sort.mb</name>
-     <value>128</value>
+    <name>mapreduce.reduce.java.opts</name>
+    <value>-Xmx256M</value>
   </property>
 
   <property>
-     <name>mapreduce.task.io.sort.factor</name>
-     <value>100</value>
+    <name>mapreduce.task.io.sort.mb</name>
+    <value>128</value>
   </property>
 
   <property>
-     <name>mapreduce.reduce.shuffle.parallelcopies</name>
-     <value>50</value>
+    <name>mapreduce.task.io.sort.factor</name>
+    <value>100</value>
   </property>
 
   <property>
-     <name>mapreduce.cluster.tmp.dir</name>
-     <value></value>
-  </property>
-
-
-  <property>
-     <name>mapreduce.jobhistory.address</name>
-     <value><%= @rm_private_ip %>:10020</value>
+    <name>mapreduce.reduce.shuffle.parallelcopies</name>
+    <value>50</value>
   </property>
 
   <property>
-     <name>mapreduce.jobhistory.webapp.address</name>
-     <value><%= @rm_private_ip %>:19888</value>
-  </property>
-
-  <property>
-     <name>mapreduce.jobhistory.intermediate-done-dir</name>
-     <value><%= node.hops.jhs.inter_dir %></value>
-  </property>
-
-  <property>
-     <name>mapreduce.jobhistory.done-dir</name>
-     <value><%= node.hops.jhs.done_dir %></value>
+    <name>mapreduce.cluster.tmp.dir</name>
+    <value></value>
   </property>
 
 
   <property>
-     <name>yarn.app.mapreduce.am.staging-dir</name>
-     <value><%= node.hops.mr.staging_dir %></value>
+    <name>mapreduce.jobhistory.address</name>
+    <value><%= @rm_private_ip %>:10020</value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.webapp.address</name>
+    <value><%= @rm_private_ip %>:19888</value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.intermediate-done-dir</name>
+    <value><%= node.hops.jhs.inter_dir %></value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.done-dir</name>
+    <value><%= node.hops.jhs.done_dir %></value>
+  </property>
+
+
+  <property>
+    <name>yarn.app.mapreduce.am.staging-dir</name>
+    <value><%= node.hops.mr.staging_dir %></value>
   </property>
 
 </configuration>
