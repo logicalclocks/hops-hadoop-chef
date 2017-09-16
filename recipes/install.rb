@@ -309,6 +309,7 @@ bash 'extract-hadoop' do
   code <<-EOH
         set -e
 	tar -zxf #{cached_package_filename} -C #{node.hops.dir}
+        rm -f #{node.hops.base_dir}
         ln -s #{node.hops.home} #{node.hops.base_dir}
         # chown -L : traverse symbolic links
         chown -RL #{node.hops.hdfs.user}:#{node.hops.group} #{node.hops.home}
