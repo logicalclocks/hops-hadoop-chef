@@ -6,6 +6,7 @@ default["hops"]["hdfs"]["user"]                = node["install"]["user"].empty? 
 default["hops"]["group"]                       = node["install"]["user"].empty? ? "hadoop" : node["install"]["user"]
 default["hops"]["secure_group"]                = node["install"]["user"].empty? ? "metaserver" : node["install"]["user"]
 default["hops"]["yarn"]["user"]                = node["install"]["user"].empty? ? "yarn" : node["install"]["user"]
+default["hops"]["yarnapp"]["user"]                = node["install"]["user"].empty? ? "yarnapp" : node["install"]["user"]
 default["hops"]["rm"]["user"]                  = node["install"]["user"].empty? ? "rmyarn" : node["install"]["user"]
 default["hops"]["mr"]["user"]                  = node["install"]["user"].empty? ? "mapred" : node["install"]["user"]
 
@@ -334,6 +335,6 @@ default["hops"]["yarn"]["min_gpus"]                    = 0
 default["hops"]["yarn"]["max_gpus"]                    = 10
 default["hops"]["gpu"]                                 = "false"
 default["hops"]["yarn"]["gpus"]                        = "*"
-default["hops"]["yarn"]["linux_container_local_user"]  = "#{default["hops"]["group"]}"
-default["hops"]["yarn"]["linux_container_limit_users"] = "false"
+default["hops"]["yarn"]["linux_container_local_user"]  = node["install"]["user"].empty? ? "yarnapp" : node["install"]["user"]
+default["hops"]["yarn"]["linux_container_limit_users"] = "true"
 

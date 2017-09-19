@@ -122,6 +122,9 @@ Vagrant.configure("2") do |c|
      	        "yarn" => {
 		      "user" => "glassfish"
 		 },
+                "yarnapp" => {
+		      "user" => "glassfish"
+		 },
 		 "mr" => {
 		      "user" => "glassfish"
                  },
