@@ -11,12 +11,10 @@ group node.hops.secure_group do
 end
 
 
-hopsworksNodes = ""
 hopsworksUser = "glassfish"
 if node.attribute?('hopsworks')
   if node.hopsworks.nil? == false && node.hopsworks.default.nil? == false && node.hopsworks.default.private_ips.nil? == false
     hopsworksNodes = node.hopsworks.default.private_ips.join(",")
-    hopsworksUser = node['hopsworks']['user']
   end
 end
 
@@ -218,8 +216,16 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
       mode "1775"
     end
   end
-
+  
   # Add 'glassfish' to 'hdfs' superusers group  
+    hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}" do
+      action :create_as_superuser
+      owner node.hopsworks.user
+      group node.hopsworks.group
+      mode "1750"
+    end
+
+
   exec = "#{node.ndb.scripts_dir}/mysql-client.sh"
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"
