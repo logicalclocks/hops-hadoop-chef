@@ -11,13 +11,13 @@ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
 . $HADOOP_LIBEXEC_DIR/hadoop-config.sh
 . ${bin}/set-env.sh
 
-log=<%= node.hops.logs_dir %>/yarn-<%= node.hops.rm.user %>-$command-$h.log
+log=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['rm']['user'] %>-$command-$h.log
 
 "$bin"/yarn-daemon.sh --config $YARN_CONF_DIR  start $command
 sleep 2; head "$log"
 
-#PID_FILE=<%= node.hops.logs_dir %>/yarn-<%= node.hops.rm.user %>-$command.pid
-PID_FILE=$YARN_PID_DIR/yarn-<%= node.hops.rm.user %>-$command.pid
+#PID_FILE=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['rm']['user'] %>-$command.pid
+PID_FILE=$YARN_PID_DIR/yarn-<%= node['hops']['rm']['user'] %>-$command.pid
 PID=`cat $PID_FILE` 
 kill -0 $PID 
 

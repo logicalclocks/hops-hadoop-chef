@@ -3,12 +3,12 @@ Description = NodeManager. The Processing Nodes for YARN.
 After = syslog.target network.target remote-fs.target
 
 [Service]
-User = <%= node.hops.yarn.user %>
+User = <%= node['hops']['yarn']['user'] %>
 
-PIDFile = <%= node.hops.logs_dir %>/yarn-<%= node.hops.yarn.user %>-nodemanager.pid
-ExecStart = <%= node.hops.base_dir %>/sbin/start-nm.sh
-ExecStop = <%= node.hops.base_dir %>/sbin/stop-nm.sh
-ExecReload = <%= node.hops.base_dir %>/sbin/restart-nm.sh
+PIDFile = <%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
+ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nm.sh
+ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-nm.sh
+ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-nm.sh
 LimitNOFILE = 65000
 LimitNPROC = 10000
 

@@ -25,20 +25,20 @@ end
 
 action :format_nn do
 
-  formatMarker="#{node.hops.tmp_dir}/.nn_formatted"
-  if "#{node.hops.reformat}" === "true"
+  formatMarker="#{node['hops']['tmp_dir']}/.nn_formatted"
+  if "#{node['hops']['reformat']}" === "true"
     ::File.delete(formatMarker)
   end
   
     bash 'format-nn' do
-      user node.hops.hdfs.user
-      group node.hops.group
+      user node['hops']['hdfs']['user']
+      group node['hops']['group']
       retries 1
       retry_delay 30
       code <<-EOH
         set -e
         sleep 10 # 10 seconds
-        #{node.hops.base_dir}/sbin/format-nn.sh
+        #{node['hops']['base_dir']}/sbin/format-nn.sh
         touch #{formatMarker}
  	EOH
       not_if {::File.exist?(formatMarker)}

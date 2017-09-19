@@ -10,6 +10,6 @@ command=nodemanager
 pidDir=$YARN_PID_DIR
 service=yarn
 
-<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.yarn.user %> $command $pidDir
+<%= node['hops']['base_dir'] %>/sbin/kill-process.sh $service <%= node['hops']['yarn']['user'] %> $command $pidDir
 
 exit $?

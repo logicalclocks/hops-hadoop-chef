@@ -15,12 +15,12 @@
 
 # Variables
 
-START_PROG="<%= node.hops.base_dir %>/sbin/start-ps.sh"
-STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-ps.sh"
+START_PROG="<%= node['hops']['base_dir'] %>/sbin/start-ps.sh"
+STOP_PROG="<%= node['hops']['base_dir'] %>/sbin/stop-ps.sh"
 
 RETVAL=0
 
-EXEC_WITH_USER="su <%= node.hops.yarn.user %> -c"
+EXEC_WITH_USER="su <%= node['hops']['yarn']['user'] %> -c"
 
 start() {
   $EXEC_WITH_USER "$START_PROG"
@@ -43,7 +43,7 @@ restart() {
 }
 
 status() {
-  PID_FILE=<%= "#{node.hops.logs_dir}" %>/yarn-<%= "#{node.hops.yarn.user}" %>-proxyserver.pid
+  PID_FILE=<%= "#{node['hops']['logs_dir']}" %>/yarn-<%= "#{node['hops']['yarn']['user']}" %>-proxyserver.pid
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`
      kill -0 $PID

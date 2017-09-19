@@ -15,13 +15,13 @@
 
 # Variables
 
-START_PROG="<%= node.hops.base_dir %>/sbin/start-jhs.sh"  
-STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-jhs.sh"  
+START_PROG="<%= node['hops']['base_dir'] %>/sbin/start-jhs.sh"  
+STOP_PROG="<%= node['hops']['base_dir'] %>/sbin/stop-jhs.sh"  
 
-EXEC_WITH_USER="su <%= node.hops.mr.user %> -c"
+EXEC_WITH_USER="su <%= node['hops']['mr']['user'] %> -c"
 
 start() {
-  rm -f <%= node.hops.logs_dir %>/hadoop.log
+  rm -f <%= node['hops']['logs_dir'] %>/hadoop.log
   $EXEC_WITH_USER "$START_PROG"
   return $?
 }
@@ -32,7 +32,7 @@ stop() {
 }
 
 status() {
-  PID_FILE=/tmp/mapred-<%= "#{node.hops.mr.user}" %>-historyserver.pid
+  PID_FILE=/tmp/mapred-<%= "#{node['hops']['mr']['user']}" %>-historyserver.pid
   res=1
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`

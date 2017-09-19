@@ -51,7 +51,7 @@
 
   <property>
     <name>yarn.nodemanager.delete.debug-delay-sec</name>
-    <value><%= node.hops.container_cleanup_delay_sec %></value>
+    <value><%= node['hops']['container_cleanup_delay_sec'] %></value>
   </property>
   <property>
     <description>NM Webapp address.</description>
@@ -68,11 +68,11 @@
   </property>
   <property>
     <name>yarn.application.classpath</name>
-    <value><%= node.hops.yarn.app_classpath %></value>
+    <value><%= node['hops']['yarn']['app_classpath'] %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.class</name>
-    <value><%= node.hops.rm.scheduler_class %></value>
+    <value><%= node['hops']['rm']['scheduler_class'] %></value>
     <description>In case you do not want to use the default scheduler</description>
   </property>
 
@@ -83,7 +83,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.group</name>
-    <value><%= node.hops.group %></value>
+    <value><%= node['hops']['group'] %></value>
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.resources-handler.class</name>
@@ -134,24 +134,24 @@
   </property>
   <property>
     <name>yarn.nodemanager.local-dirs</name>
-    <value><%= node.hops.tmp_dir %>/nm-local-dir</value>
+    <value><%= node['hops']['tmp_dir'] %>/nm-local-dir</value>
     <description>the local directories used by the nodemanager to store its localized files</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.log-dirs</name>
-    <value><%= node.hops.logs_dir %>/userlogs</value>
+    <value><%= node['hops']['logs_dir'] %>/userlogs</value>
     <description>the local directories used by the nodemanager to store its localized logs</description>
   </property>
   <property>
     <name>yarn.nodemanager.remote-app-log-dir</name>
-    <value><%= node.hops.yarn.nodemanager.remote_app_log_dir %></value>
+    <value><%= node['hops']['yarn']['nodemanager']['remote_app_log_dir'] %></value>
     <description>the directory where the logs are aggregated</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value><%= node.hops.yarn.aux_services %></value>
+    <value><%= node['hops']['yarn']['aux_services'] %></value>
     <description>shuffle service that needs to be set for Spark external shuffle service (dynamic allocators) and  MapReduce to run</description>
   </property>
   <property>
@@ -161,7 +161,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
-    <value><%= node.hops.mr.shuffle_class %></value>
+    <value><%= node['hops']['mr']['shuffle_class'] %></value>
     <description>The exact name of the class for shuffle service</description>
   </property>
   
@@ -173,17 +173,17 @@
   </property>
   <property>
     <name>yarn.nodemanager.vmem-check-enabled</name>
-    <value><%= node.hops.yarn.vmem_check %></value>
+    <value><%= node['hops']['yarn']['vmem_check'] %></value>
     <description></description>
   </property>
   <property>
     <name>yarn.nodemanager.pmem-check-enabled</name>
-    <value><%= node.hops.yarn.pmem_check %></value>
+    <value><%= node['hops']['yarn']['pmem_check'] %></value>
     <description></description>
   </property>
   <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
-    <value><%= node.hops.yarn.memory_mbs %></value>
+    <value><%= node['hops']['yarn']['memory_mbs'] %></value>
     <description>the amount of memory on the NodeManager in MB</description>
   </property>
   <property>
@@ -192,75 +192,75 @@
   </property>
   <property>
     <name>yarn.scheduler.maximum-allocation-mb</name>
-    <value><%= node.hops.yarn.memory_mbs %></value>
+    <value><%= node['hops']['yarn']['memory_mbs'] %></value>
     <description>The maximum allocation for every container request at the RM, in MBs. Memory requests higher than this won't take effect, and will get capped to this value.</description>
   </property>
   <property>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
-    <value><%= node.hops.yarn.vcores %></value>
+    <value><%= node['hops']['yarn']['vcores'] %></value>
     <description>Number of CPU cores that can be allocated for containers.</description>
   </property>
   <property>
     <name>yarn.scheduler.minimum-allocation-vcores</name>
-    <value><%= node.hops.yarn.min_vcores %></value>
+    <value><%= node['hops']['yarn']['min_vcores'] %></value>
     <description>The minimum allocation for every container request at the RM, in terms of virtual CPU cores. Requests lower than this won't take effect, and the specified value will get allocated the minimum.</description>
   </property>
   <property>
     <name>yarn.scheduler.maximum-allocation-vcores</name>
-    <value><%= node.hops.yarn.max_vcores %></value>
+    <value><%= node['hops']['yarn']['max_vcores'] %></value>
     <description>The maximum allocation for every container request at the RM, in terms of virtual CPU cores. Requests higher than this won't take effect, and will get capped to this value.</description>
   </property>
   <property>
     <name>yarn.nodemanager.log.retain-seconds</name>
-    <value><%= node.hops.yarn.log_retain_secs %></value>
+    <value><%= node['hops']['yarn']['log_retain_secs'] %></value>
     <description>Default time (in seconds) to retain log files on the NodeManager Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.resourcemanager.am.max-retries</name>
-    <value><%= node.hops.am.max_retries %></value>
+    <value><%= node['hops']['am']['max_retries'] %></value>
     <description>Number of times to try to restart the ApplicationMaster by the ResourceManager if its NodeManager fails.</description>
   </property>
   <property>
     <name>yarn.log-aggregation-enable</name>
-    <value><%= node.hops.yarn.log_aggregation %></value>
+    <value><%= node['hops']['yarn']['log_aggregation'] %></value>
     <description>Enable Default aggregatioin of log files HDFS, deleting them from the NodeManager.</description>
   </property>
   <property>
     <name>yarn.log-aggregation.retain-seconds</name>
-    <value><%= node.hops.yarn.log_retain_secs %></value>
+    <value><%= node['hops']['yarn']['log_retain_secs'] %></value>
     <description>Default time (in seconds) to retain log files in HDFS. Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.log-aggregation.retain-check-interval-seconds</name>
-    <value><%= node.hops.yarn.log_retain_check %></value>
+    <value><%= node['hops']['yarn']['log_retain_check'] %></value>
     <description>Default time (in seconds) between checks for retained log files in HDFS. Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
     <name>yarn.nodemanager.heartbeat.interval-ms</name>
-    <value><%= node.hops.yarn.nodemanager_hb_ms %></value>
+    <value><%= node['hops']['yarn']['nodemanager_hb_ms'] %></value>
     <description>Time in ms between heartbeats sent from the NodeManager to the ResourceManager.</description>
   </property>
 
   <!--HA-->
   <property>
     <name>yarn.resourcemanager.ha.enabled</name>
-    <value><%= node.hops.yarn.nodemanager_ha_enabled %></value>
+    <value><%= node['hops']['yarn']['nodemanager_ha_enabled'] %></value>
   </property>
  <property>
     <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
-    <value><%= node.hops.yarn.nodemanager_auto_failover_enabled %></value>
+    <value><%= node['hops']['yarn']['nodemanager_auto_failover_enabled'] %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.recovery.enabled</name>
-    <value><%= node.hops.yarn.nodemanager_recovery_enabled %></value>
+    <value><%= node['hops']['yarn']['nodemanager_recovery_enabled'] %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.ha.rm-ids</name>
-    <value><%= node.hops.rm.private_ips.join(",") %></value>
+    <value><%= node['hops']['rm']['private_ips'].join(",") %></value>
   </property>
 
 
-<% for id in node.hops.rm.private_ips -%>
+<% for id in node['hops']['rm']['private_ips'] -%>
   <property>
     <name>yarn.resourcemanager.hostname.<%= id %></name>
     <value><%= id %></value>
@@ -298,60 +298,60 @@
   </property>
   <property>
     <name>dfs.leader.check.interval</name>
-    <value><%= node.hops.yarn.rm_heartbeat %></value>
+    <value><%= node['hops']['yarn']['rm_heartbeat'] %></value>
   </property>
 
   <!--ndb-->
   <!--batching rpcs for commiting to db-->
   <property>
       <name>hops.yarn.resourcemanager.batch.max.size</name>
-      <value><%= node.hops.yarn.nodemanager_rpc_batch_max_size %></value>
+      <value><%= node['hops']['yarn']['nodemanager_rpc_batch_max_size'] %></value>
   </property>
   <property>
       <name>hops.yarn.resourcemanager.batch.max.duration</name>
-      <value><%= node.hops.yarn.nodemanager_rpc_batch_max_duration %></value>
+      <value><%= node['hops']['yarn']['nodemanager_rpc_batch_max_duration'] %></value>
   </property>
   <!--distributed mode-->
   <property>
     <name>yarn.client.failover-distributed</name>
-    <value><%= node.hops.yarn.rm_distributed %></value>
+    <value><%= node['hops']['yarn']['rm_distributed'] %></value>
   </property>
   
   <property>
       <name>hops.yarn.resourcemanager.ndb-event-streaming.enable</name>
-      <value><%= node.hops.yarn.nodemanager_rm_streaming_enabled %></value>
+      <value><%= node['hops']['yarn']['nodemanager_rm_streaming_enabled'] %></value>
   </property>
 
   <property>
     <name>yarn.client.failover-sleep-base-ms</name>
-    <value><%= node.hops.yarn.client_failover_sleep_base_ms %></value>
+    <value><%= node['hops']['yarn']['client_failover_sleep_base_ms'] %></value>
   </property>
 
   <property>
     <name>yarn.client.failover-sleep-max-ms</name>
-    <value><%= node.hops.yarn.client_failover_sleep_max_ms %></value>
+    <value><%= node['hops']['yarn']['client_failover_sleep_max_ms'] %></value>
   </property>
 
   <!-- quotas -->
   <property>
     <name>yarn.quotas.enabled</name>
-    <value><%= node.hops.yarn.quota_enabled %></value>
+    <value><%= node['hops']['yarn']['quota_enabled'] %></value>
   </property>
   <property>
     <name>yarn.quotas.containers-logs.monitor-interval</name>
-    <value><%= node.hops.yarn.quota_monitor_interval %></value>
+    <value><%= node['hops']['yarn']['quota_monitor_interval'] %></value>
   </property>
   <property>
     <name>yarn.quotas.ticks.per.credit</name>
-    <value><%= node.hops.yarn.quota_ticks_per_credit %></value>
+    <value><%= node['hops']['yarn']['quota_ticks_per_credit'] %></value>
   </property>
   <property>
     <name>yarn.quotas.ticks.per.credit</name>
-    <value><%= node.hops.yarn.quota_min_ticks_charge %></value>
+    <value><%= node['hops']['yarn']['quota_min_ticks_charge'] %></value>
   </property>
   <property>
     <name>yarn.quotas.containers-logs.checkpoints-minticks</name>
-    <value><%= node.hops.yarn.quota_checkpoint_nbticks %></value>
+    <value><%= node['hops']['yarn']['quota_checkpoint_nbticks'] %></value>
   </property>
   <property> 
     <name>yarn.resourcemanager.proxy-user-privileges.enabled</name>
@@ -373,19 +373,19 @@
 <!--
 <property>
     <name>yarn.http.policy</name>
-    <value><%= node.hops.yarn.http.policy %></value>
+    <value><%= node['hops']['yarn']['http']['policy'] %></value>
 </property>
 <property>
     <name>yarn.log.server.url</name>
-    <value><%= node.hops.yarn.log.server.url %></value>
+    <value><%= node['hops']['yarn']['log']['server']['url'] %></value>
 </property>
 <property>
     <name>yarn.resourcemanager.webapp.https.address</name>
-    <value><%= node.hops.yarn.resourcemanager.webapp.https.address %></value>
+    <value><%= node['hops']['yarn']['resourcemanager']['webapp']['https']['address'] %></value>
 </property>
 <property>
     <name>yarn.nodemanager.webapp.https.address</name>
-    <value><%= node.hops.yarn.nodemanager.webapp.https.address %></value>
+    <value><%= node['hops']['yarn']['nodemanager']['webapp']['https']['address'] %></value>
 </property>
 -->
 
@@ -405,27 +405,27 @@
 <!-- GPU settings -->
 <property> 
     <name>yarn.scheduler.minimum-allocation-gpus</name>
-    <value><%= node.hops.yarn.min_gpus %></value>
+    <value><%= node['hops']['yarn']['min_gpus'] %></value>
 </property>
 <property> 
     <name>yarn.scheduler.maximum-allocation-gpus</name>
-    <value><%= node.hops.yarn.max_gpus %></value>
+    <value><%= node['hops']['yarn']['max_gpus'] %></value>
 </property>
 <property> 
     <name>yarn.nodemanager.resource.gpus.enabled</name>
-    <value><%= node.hops.gpu %></value>
+    <value><%= node['hops']['gpu'] %></value>
 </property>
 <property> 
     <name>yarn.nodemanager.resource.gpus</name>
-    <value><%= node.hops.yarn.gpus %></value>
+    <value><%= node['hops']['yarn']['gpus'] %></value>
 </property>
 <property> 
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>
-    <value><%= node.hops.yarn.linux_container_local_user %></value>
+    <value><%= node['hops']['yarn']['linux_container_local_user'] %></value>
 </property>
 <!--<property> 
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit.users</name>
-    <value><%= node.hops.yarn.linux_container_limit_users %></value>
+    <value><%= node['hops']['yarn']['linux_container_limit_users'] %></value>
 </property>-->
   
 </configuration>

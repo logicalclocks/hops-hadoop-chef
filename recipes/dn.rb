@@ -1,20 +1,20 @@
 include_recipe "hops::default"
 
-for script in node.hops.dn.scripts
-  template "#{node.hops.home}/sbin/#{script}" do
+for script in node['hops']['dn']['scripts']
+  template "#{node['hops']['home']}/sbin/#{script}" do
     source "#{script}.erb"
-    owner node.hops.hdfs.user
-    owner node.hops.hdfs.user
-    group node.hops.group
+    owner node['hops']['hdfs']['user']
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
     mode 0775
   end
 end 
 
 service_name="datanode"
 
-if node.hops.systemd == "true"
+if node['hops']['systemd'] == "true"
 
-  case node.platform_family
+  case node['platform_family']
   when "rhel"
     systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
   else
@@ -38,7 +38,7 @@ if node.hops.systemd == "true"
     owner "root"
     group "root"
     mode 0664
-if node.services.enabled == "true"
+if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
 end
     notifies :restart, "service[#{service_name}]"
@@ -77,7 +77,7 @@ else #sysv
     owner "root"
     group "root"
     mode 0755        
-if node.services.enabled == "true"
+if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
     notifies :restart, resources(:service => "#{service_name}"), :immediately
@@ -85,11 +85,11 @@ end
 
 end
 
-if node.kagent.enabled == "true" 
+if node['kagent']['enabled'] == "true" 
   kagent_config service_name do
     service "HDFS"
-    log_file "#{node.hops.logs_dir}/hadoop-#{node.hops.hdfs.user}-#{service_name}-#{node.hostname}.log"
-    config_file "#{node.hops.conf_dir}/hdfs-site.xml"
-    web_port node.hops.dn.http_port
+    log_file "#{node['hops']['logs_dir']}/hadoop-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
+    config_file "#{node['hops']['conf_dir']}/hdfs-site.xml"
+    web_port node['hops']['dn']['http_port']
   end
 end

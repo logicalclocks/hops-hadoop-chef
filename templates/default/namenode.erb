@@ -14,14 +14,14 @@
 
 # Variables
 
-START_PROG="<%= node.hops.base_dir %>/sbin/start-nn.sh"  
-STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-nn.sh"  
+START_PROG="<%= node['hops']['base_dir'] %>/sbin/start-nn.sh"  
+STOP_PROG="<%= node['hops']['base_dir'] %>/sbin/stop-nn.sh"  
 
-EXEC_WITH_USER="su <%= node.hops.hdfs.user %> -c"
+EXEC_WITH_USER="su <%= node['hops']['hdfs']['user'] %> -c"
 
 start() {
   ulimit -n 65000 2>&1 > /dev/null
-  rm -f <%= node.hops.logs_dir %>/hadoop.log
+  rm -f <%= node['hops']['logs_dir'] %>/hadoop.log
   $EXEC_WITH_USER "$START_PROG"
   return $?
 }
@@ -32,7 +32,7 @@ stop() {
 }
 
 status() {
-  PID_FILE=<%= "#{node.hops.logs_dir}" %>/hadoop-<%= "#{node.hops.hdfs.user}" %>-namenode.pid
+  PID_FILE=<%= "#{node['hops']['logs_dir']}" %>/hadoop-<%= "#{node['hops']['hdfs']['user']}" %>-namenode.pid
   res=1
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`
