@@ -12,9 +12,11 @@ end
 
 
 hopsworksNodes = ""
+hopsworksUser = "glassfish"
 if node.attribute?('hopsworks')
   if node.hopsworks.nil? == false && node.hopsworks.default.nil? == false && node.hopsworks.default.private_ips.nil? == false
     hopsworksNodes = node.hopsworks.default.private_ips.join(",")
+    hopsworksUser = node['hopsworks']['user']
   end
 end
 
@@ -217,4 +219,13 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
     end
   end
 
+  # Add 'glassfish' to 'hdfs' superusers group  
+  exec = "#{node.ndb.scripts_dir}/mysql-client.sh"
+  bash 'insert_hopsworks_as_hdfs_superuser' do
+    user "root"
+    code <<-EOF
+      #{exec} hopsworks < "INSERT INTO hops.hdfs_users_groups VALUES((SELECT id FROM hops.hdfs_users WHERE name=\"#{node['hopsworks']['user']\"), (SELECT id FROM hops.hdfs_groups WHERE name=\"#{node['hops']['hdfs']['user']\")) ON DUPLICATE KEY UPDATE"
+    EOF
+  end
+  
 end

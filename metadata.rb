@@ -399,3 +399,7 @@ attribute "hops/cgroups",
 attribute "livy/user",
           :description => "Livy user that will be a proxy user",
           :type => "string"
+
+attribute "hopsworks/user",
+          :description => "Hopsworks username",
+          :type => "string"

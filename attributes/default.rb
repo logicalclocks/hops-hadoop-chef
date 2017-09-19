@@ -10,6 +10,7 @@ default["hops"]["yarn"]["user"]                = node["install"]["user"].empty? 
 default["hops"]["rm"]["user"]                  = node["install"]["user"].empty? ? "rmyarn" : node["install"]["user"]
 default["hops"]["mr"]["user"]                  = node["install"]["user"].empty? ? "mapred" : node["install"]["user"]
 
+default["hopsworks"]["user"]                   = node["install"]["user"].empty? ? "glassfish" : node["install"]["user"]
 
 default["hops"]["jmx"]["username"]             = "monitorRole"
 default["hops"]["jmx"]["password"]             = "hadoop"
