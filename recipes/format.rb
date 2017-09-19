@@ -24,7 +24,7 @@ begin
     bash "validate_formatting" do
      user "root"
      code <<-EOF
-       #{exec} hops -e 'select count(*) from hdfs_variables' | grep 25
+       #{exec} hops -e 'select count(*) from hdfs_variables' | grep 26
     EOF
   end
 rescue
