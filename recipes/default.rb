@@ -316,12 +316,12 @@ if node.hops.rpc.ssl.eql? "true"
     user 'root'
     if node.hops.hdfs.user.eql? node.hops.yarn.user
       code <<-EOH
-           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.keystore_dir}
+           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.certs_dir}
            EOH
     else
       code <<-EOH
-           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.keystore_dir}
-           setfacl -Rm u:#{node.hops.yarn.user}:rx #{node.kagent.keystore_dir}
+           setfacl -Rm u:#{node.hops.hdfs.user}:rx #{node.kagent.certs_dir}
+           setfacl -Rm u:#{node.hops.yarn.user}:rx #{node.kagent.certs_dir}
            EOH
     end
   end
