@@ -230,7 +230,8 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"
     code <<-EOF
-      #{exec} hopsworks < "INSERT INTO hops.hdfs_users_groups VALUES((SELECT id FROM hops.hdfs_users WHERE name=\"#{node['hopsworks']['user']}\"), (SELECT id FROM hops.hdfs_groups WHERE name=\"#{node['hops']['hdfs']['user']}\")) ON DUPLICATE KEY UPDATE"
+      #{exec} hops -e "INSERT INTO hdfs_users (name) VALUES (\"#{node['hopsworks']['user']}\")"
+      #{exec} hops -e "INSERT IGNORE INTO hdfs_users_groups VALUES((SELECT id FROM hdfs_users WHERE name=\"#{node['hopsworks']['user']}\"), (SELECT id FROM hdfs_groups WHERE name=\"#{node['hops']['hdfs']['user']}\"))"
     EOF
   end
   
