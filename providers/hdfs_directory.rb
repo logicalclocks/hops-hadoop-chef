@@ -54,11 +54,11 @@ action :put_as_superuser do
     user node.hops.hdfs.user
     group node.hops.group
     code <<-EOF
-     EXISTS = 1
+     EXISTS=1
      . #{node.hops.base_dir}/sbin/set-env.sh
      if [ -z $ISDIR ] ; then
         #{node.hops.base_dir}/bin/hdfs dfs -test -e #{new_resource.dest}
-        EXISTS = $?
+        EXISTS=$?
      fi
      if ([ $EXISTS -ne 0 ] || [ #{new_resource.isDir} ]) ; then
         #{node.hops.base_dir}/bin/hdfs dfs -copyFromLocal #{new_resource.name} #{new_resource.dest}
