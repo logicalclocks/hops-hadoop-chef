@@ -11,7 +11,6 @@ group node.hops.secure_group do
 end
 
 
-hopsworksUser = "glassfish"
 if node.attribute?('hopsworks')
   if node.hopsworks.nil? == false && node.hopsworks.default.nil? == false && node.hopsworks.default.private_ips.nil? == false
     hopsworksNodes = node.hopsworks.default.private_ips.join(",")
@@ -221,7 +220,7 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
     hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}" do
       action :create_as_superuser
       owner node.hopsworks.user
-      group node.hopsworks.group
+      group node.hops.group
       mode "1750"
     end
 
@@ -230,7 +229,7 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"
     code <<-EOF
-      #{exec} hopsworks -e 'REPLACE INTO hops.hdfs_users_groups VALUES((SELECT id FROM hops.hdfs_users WHERE name=\"#{node[:hopsworks][:user]}\"), (SELECT id FROM hops.hdfs_groups WHERE name=\"#{node[:hops][:hdfs][:user]}\"))'
+      #{exec} hops -e 'REPLACE INTO hdfs_users_groups VALUES((SELECT id FROM hdfs_users WHERE name=\"#{node['hopsworks']['user']}\"), (SELECT id FROM hdfs_groups WHERE name=\"#{node[:hops]['hdfs']['user']}\"))'
     EOF
   end
   
