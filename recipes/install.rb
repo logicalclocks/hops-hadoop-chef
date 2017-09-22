@@ -98,9 +98,19 @@ user node.hops.mr.user do
   not_if "getent passwd #{node.hops.mr.user}"
 end
 
+user node.hops.yarnapp.user do
+  home "/home/#{node.hops.yarnapp.user}"
+  gid node.hops.group  
+  system true
+  shell "/bin/bash"
+  manage_home true
+  action :create
+  not_if "getent passwd #{node.hops.yarnapp.user}"
+end
+
 group node.hops.group do
   action :modify
-  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}", "#{node.hops.mr.user}"]
+  members ["#{node.hops.hdfs.user}", "#{node.hops.yarn.user}", "#{node.hops.mr.user}", "#{node.hops.yarnapp.user}"]
   append true
 end
 

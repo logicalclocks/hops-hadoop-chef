@@ -217,11 +217,15 @@ attribute "hops/container_cleanup_delay_sec",
           :type => 'string'
 
 attribute "hops/group",
-          :description => "Group to run hdfs/yarn/mr as",
+          :description => "Group to run hdfs/yarn/yarnapp/mr as",
           :type => 'string'
 
 attribute "hops/yarn/user",
           :description => "Username to run yarn as",
+          :type => 'string'
+
+attribute "hops/yarnapp/user",
+          :description => "Username to run yarn applications as",
           :type => 'string'
 
 attribute "hops/mr/user",
@@ -369,7 +373,7 @@ attribute "hops/yarn/groups",
           :type => "string"
 
 attribute "hops/yarn/linux_container_local_user",
-          :description => "",
+          :description => "the user running the yarn containers",
           :type => "string"
 
 attribute "hops/yarn/linux_container_limit_users",
