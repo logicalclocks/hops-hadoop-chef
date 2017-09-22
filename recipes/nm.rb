@@ -44,10 +44,6 @@ end
     notifies :restart, resources(:service => service_name)
   end
 
-  kagent_config "#{service_name}" do
-    action :systemd_reload
-  end
-  
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
     group "root"
@@ -61,6 +57,10 @@ end
     mode 0774
     action :create
   end 
+
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
 
 else #sysv
 
