@@ -285,22 +285,24 @@ link "#{node.hops.base_dir}/lib/native/libhopsnvml-#{node.hops.libhopsnvml_versi
   to "#{node.hops.base_dir}/share/hadoop/yarn/lib/libhopsnvml-#{node.hops.libhopsnvml_version}.so"
 end
 
-bash 'update_owner_for_gpu' do
-  user "root"
-  code <<-EOH
+if node['hops']['gpu'].eql? "true"
+  bash 'update_owner_for_gpu' do
+    user "root"
+    code <<-EOH
     set -e
-    chown root #{node.hops.dir}
-    chown root #{node.hops.home}
+    chown root:#{node.hops.group} #{node.hops.dir}
+    chown root:#{node.hops.group} #{node.hops.home}
     chmod 750 #{node.hops.home}
     chown root #{node.hops.conf_dir_parent}
     chmod 750 #{node.hops.conf_dir_parent}
-    chown root #{node.hops.conf_dir}
+    chown root:#{node.hops.group} #{node.hops.conf_dir}
     chmod 750 #{node.hops.conf_dir}
     chown root #{node.hops.conf_dir}/container-executor.cfg
     chmod 750 #{node.hops.conf_dir}/container-executor.cfg
     chown root #{node.hops.bin_dir}/container-executor
     chmod 6050 #{node.hops.bin_dir}/container-executor
   EOH
+  end
 end
 
 template "#{node.hops.home}/etc/hadoop/yarn-env.sh" do
