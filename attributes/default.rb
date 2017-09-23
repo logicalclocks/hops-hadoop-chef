@@ -190,6 +190,8 @@ default["hops"]["hdfs"]["blocksize"]        = "134217728"
 default["dal"]["download_url"]              = "#{node['download_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default["dal"]["lib_url"]                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default["hops"]["libhopsnvml_version"]      = "1.0"
+default["nvidia"]["download_url"]           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
+
 
 default["dal"]["schema_url"]                = "#{node['download_url']}/hops.sql"
 

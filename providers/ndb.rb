@@ -68,6 +68,16 @@ action :install_ndb_hops do
     to "#{node.hops.dir}/ndb-hops/#{base_filename}"
   end
 
+  link "#{node.hops.home}/#{common}/nvidia-management.jar" do
+    action :delete
+    only_if "test -L #{node.hops.home}/#{common}/nvidia-management.jar"
+  end
+  link "#{node.hops.home}/#{common}/nvidia-management.jar" do
+    owner node.hops.hdfs.user
+    group node.hops.group
+    to "#{node.hops.dir}/ndb-hops/nvidia-management.jar"
+  end
+  
 
   link "#{node.hops.home}/lib/native/libndbclient.so" do
     action :delete
