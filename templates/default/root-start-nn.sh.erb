@@ -2,17 +2,17 @@
 
 command=namenode
 
-EXEC_WITH_USER="su <%= node.hops.hdfs.user %> -l -c"
+EXEC_WITH_USER="su <%= node['hops']['hdfs']['user'] %> -l -c"
 
 bin=`dirname "${BASH_SOURCE-$0}"`
 bin=`cd "$bin"; pwd`
 
-log=<%= node.hops.logs_dir %>/hadoop-<%= node.hops.hdfs.user %>-$command-<%= node.hostname %>.log
+log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$command-<%= node['hostname'] %>.log
 
 $EXEC_WITH_USER "cd ${bin}/.] ; . ${bin}/../libexec/hadoop-config.sh ; . ${bin}/set-env.sh ; ${bin}/hadoop-daemon.sh --config \$HADOOP_CONF_DIR --script hdfs start $command"
 sleep 2; head "$log"
 
-PID_FILE=<%= node.hops.logs_dir %>/hadoop-<%= node.hops.hdfs.user %>-$command.pid
+PID_FILE=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$command.pid
 PID=`cat $PID_FILE` 
 kill -0 $PID 
 

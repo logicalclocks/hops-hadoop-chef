@@ -36,18 +36,18 @@ EOF
 
 }
 
-directory "#{node.hops.dir}/hadoop-#{node.hops.version}" do
+directory "#{node['hops']['dir']}/hadoop-#{node['hops']['version']}" do
   recursive true
   action :delete
   ignore_failure true
 end
 
-link node.hops.home do
+link node['hops']['home'] do
   action :delete
   ignore_failure true
 end
 
-directory node.hops.data_dir do
+directory node['hops']['data_dir'] do
   recursive true
   action :delete
   ignore_failure true
@@ -60,7 +60,7 @@ directory Chef::Config.file_cache_path do
 end
 
 package "Bouncy Castle Remove" do
-  case node.platform
+  case node['platform']
   when 'redhat', 'centos'
     package_name 'bouncycastle'
   when 'ubuntu', 'debian'
@@ -71,7 +71,7 @@ package "Bouncy Castle Remove" do
 end
 
 
-primary_url = node["hops"]["url"]["secondary"]
+primary_url = node['hops']['url']['secondary']
 
 base_package_filename = File.basename(primary_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
@@ -82,12 +82,12 @@ file cached_package_filename do
 end
 
 
-link "#{node.hops.dir}/ndb-hops" do
+link "#{node['hops']['dir']}/ndb-hops" do
   action :delete
   ignore_failure true
 end
 
-directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
+directory "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}" do
   recursive true
   action :delete
   ignore_failure true

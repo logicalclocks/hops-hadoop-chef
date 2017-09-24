@@ -11,6 +11,6 @@ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
 pidDir=$HADOOP_PID_DIR
 service=hadoop
 
-<%= node.hops.base_dir %>/sbin/kill-process.sh $service <%= node.hops.hdfs.user %> $command $pidDir
+<%= node['hops']['base_dir'] %>/sbin/kill-process.sh $service <%= node['hops']['hdfs']['user'] %> $command $pidDir
 
 exit $?

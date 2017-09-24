@@ -15,13 +15,13 @@
 
 # Variables
 
-START_PROG="<%= node.hops.base_dir %>/sbin/start-rm.sh"  
-STOP_PROG="<%= node.hops.base_dir %>/sbin/stop-rm.sh"  
+START_PROG="<%= node['hops']['base_dir'] %>/sbin/start-rm.sh"  
+STOP_PROG="<%= node['hops']['base_dir'] %>/sbin/stop-rm.sh"  
 
-EXEC_WITH_USER="su <%= node.hops.rm.user %> -c"
+EXEC_WITH_USER="su <%= node['hops']['rm']['user'] %> -c"
 
 start() {
-  rm -f <%= node.hops.logs_dir %>/hadoop.log
+  rm -f <%= node['hops']['logs_dir'] %>/hadoop.log
   ulimit -n 65000 2>&1 > /dev/null
   $EXEC_WITH_USER "$START_PROG"
   return $?
@@ -33,7 +33,7 @@ stop() {
 }
 
 status() {
-  PID_FILE=<%= "#{node.hops.logs_dir}" %>/yarn-<%= "#{node.hops.rm.user}" %>-resourcemanager.pid
+  PID_FILE=<%= "#{node['hops']['logs_dir']}" %>/yarn-<%= "#{node['hops']['rm']['user']}" %>-resourcemanager.pid
   res=1
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`

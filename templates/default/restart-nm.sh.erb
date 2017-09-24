@@ -1,7 +1,7 @@
 #!/bin/sh 
 
-<%= node.hops.base_dir %>/sbin/stop-nm.sh
+<%= node['hops']['base_dir'] %>/sbin/stop-nm.sh
 
-<%= node.hops.base_dir %>/sbin/start-nm.sh
+<%= node['hops']['base_dir'] %>/sbin/start-nm.sh
 
 exit $?

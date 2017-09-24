@@ -24,18 +24,18 @@
 *.period=10
 
 nodemanager.sink.graphite.server_host=<%= @influxdb_ip %>
-nodemanager.sink.graphite.server_port=<%= node.influxdb.graphite.port %>
+nodemanager.sink.graphite.server_port=<%= node['influxdb']['graphite']['port'] %>
 nodemanager.sink.graphite.metrics_prefix=nodemanager
 
 resourcemanager.sink.graphite.server_host=<%= @influxdb_ip %>
-resourcemanager.sink.graphite.server_port=<%= node.influxdb.graphite.port %>
+resourcemanager.sink.graphite.server_port=<%= node['influxdb']['graphite']['port'] %>
 resourcemanager.sink.graphite.metrics_prefix=resourcemanager
 
 datanode.sink.graphite.server_host=<%= @influxdb_ip %>
-datanode.sink.graphite.server_port=<%= node.influxdb.graphite.port %>
+datanode.sink.graphite.server_port=<%= node['influxdb']['graphite']['port'] %>
 datanode.sink.graphite.metrics_prefix=datanode
 
 namenode.sink.graphite.server_host=<%= @influxdb_ip %>
-namenode.sink.graphite.server_port=<%= node.influxdb.graphite.port %>
+namenode.sink.graphite.server_port=<%= node['influxdb']['graphite']['port'] %>
 namenode.sink.graphite.metrics_prefix=namenode
 

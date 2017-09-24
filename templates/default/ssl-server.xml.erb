@@ -28,7 +28,7 @@ limitations under the License.
   
   <property>
     <name>ssl.server.truststore.password</name>
-    <value><%= node.hops.ssl.server.truststore.password %></value>
+    <value><%= node['hops']['ssl']['server']['truststore']['password'] %></value>
     <description>Optional. Default value is "".
     </description>
   </property>
@@ -55,13 +55,13 @@ limitations under the License.
 
   <property>
     <name>ssl.server.keystore.password</name>
-    <value><%= node.hops.ssl.server.keystore.password %></value>
+    <value><%= node['hops']['ssl']['server']['keystore']['password'] %></value>
     <description>Must be specified.</description>
   </property>
 
   <property>
     <name>ssl.server.keystore.keypassword</name>
-    <value><%= node.hops.ssl.server.keystore.keypassword %></value>
+    <value><%= node['hops']['ssl']['server']['keystore']['keypassword'] %></value>
     <description>Must be specified.</description>
   </property>
 
