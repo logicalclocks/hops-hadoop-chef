@@ -45,23 +45,23 @@ link "#{node['hops']['dir']}/ndb-hops/ndb-dal.jar" do
   to "#{node['hops']['dir']}/ndb-hops/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 end
 
-nvidia_url = node['nvidia']['download_url']
-nvidia_jar = File.basename(nvidia_url)
+# nvidia_url = node['nvidia']['download_url']
+# nvidia_jar = File.basename(nvidia_url)
 
-remote_file "#{node['hops']['dir']}/ndb-hops/#{nvidia_jar}" do
-  source nvidia_url
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
+# remote_file "#{node['hops']['dir']}/ndb-hops/#{nvidia_jar}" do
+#   source nvidia_url
+#   owner node['hops']['hdfs']['user']
+#   group node['hops']['group']
+#   mode "0755"
+#   # TODO - checksum
+#   action :create_if_missing
+# end
 
-link "#{node['hops']['dir']}/ndb-hops/nvidia-management.jar" do
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  to "#{node['hops']['dir']}/ndb-hops/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-end
+# link "#{node['hops']['dir']}/ndb-hops/nvidia-management.jar" do
+#   owner node['hops']['hdfs']['user']
+#   group node['hops']['group']
+#   to "#{node['hops']['dir']}/ndb-hops/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
+# end
 
 mysql_ip = my_ip
 if node['mysql']['localhost'] == "true"
