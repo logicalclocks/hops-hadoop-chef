@@ -6,30 +6,6 @@ rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
 
-
-user node['hops']['rm']['user'] do
-  home "/home/#{node['hops']['rm']['user']}"
-  gid node['hops']['secure_group']
-  system true
-  shell "/bin/bash"
-  manage_home true
-  action :create
-  not_if "getent passwd #{node['hops']['rm']['user']}"
-end
-
-group node['hops']['secure_group'] do
-  action :modify
-  members ["#{node['hops']['rm']['user']}"]
-  append true
-end
-
-group node['hops']['group'] do
-  action :modify
-  members ["#{node['hops']['rm']['user']}"]
-  append true
-end
-
-
 ndb_connectstring()
 
 template "#{node['hops']['home']}/etc/hadoop/RM_EventAPIConfig.ini" do 

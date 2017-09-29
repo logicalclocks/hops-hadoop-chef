@@ -68,6 +68,11 @@ group node['hops']['group'] do
   not_if "getent group #{node['hops']['group']}"
 end
 
+group node['hops']['secure_group'] do
+  action :create
+  not_if "getent group #{node['hops']['secure_group']}"
+end
+
 user node['hops']['hdfs']['user'] do
   home "/home/#{node['hops']['hdfs']['user']}"
   gid node['hops']['group']
@@ -108,9 +113,26 @@ user node['hops']['yarnapp']['user'] do
   not_if "getent passwd #{node['hops']['yarnapp']['user']}"
 end
 
+
+user node['hops']['rm']['user'] do
+  home "/home/#{node['hops']['rm']['user']}"
+  gid node['hops']['secure_group']
+  system true
+  shell "/bin/bash"
+  manage_home true
+  action :create
+  not_if "getent passwd #{node['hops']['rm']['user']}"
+end
+
+group node['hops']['secure_group'] do
+  action :modify
+  members ["#{node['hops']['rm']['user']}"]
+  append true
+end
+
 group node['hops']['group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['mr']['user']}", "#{node['hops']['yarnapp']['user']}"]
+  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['mr']['user']}", "#{node['hops']['yarnapp']['user']}", "#{node['hops']['rm']['user']}"]
   append true
 end
 
