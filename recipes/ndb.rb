@@ -3,11 +3,6 @@ require 'resolv'
 ndb_connectstring()
 my_ip = my_private_ip()
 
-group node['hops']['secure_group'] do
-  action :create
-  not_if "getent group #{node['hops']['secure_group']}"
-end
-
 directory "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
