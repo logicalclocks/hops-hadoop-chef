@@ -331,6 +331,7 @@ if node['hops']['rpc']['ssl'].eql? "true"
            setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
            setfacl -Rm u:#{node['hops']['yarn']['user']}:rx #{node['kagent']['certs_dir']}
            setfacl -Rm u:#{node['hops']['rm']['user']}:rx #{node['kagent']['certs_dir']}
+           setfacl -Rm u:#{node['hopsworks']['user']}:rx #{node['kagent']['certs_dir']}
            EOH
     end
   end
