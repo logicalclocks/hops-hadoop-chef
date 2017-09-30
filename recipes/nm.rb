@@ -3,17 +3,30 @@ include_recipe "hops::default"
 yarn_service="nm"
 service_name="nodemanager"
 
-for script in node.hops.yarn.scripts
-  template "#{node.hops.home}/sbin/#{script}-#{yarn_service}.sh" do
+for script in node['hops']['yarn']['scripts']
+  template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
-    owner node.hops.yarn.user
-    group node.hops.group
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
     mode 0775
   end
 end 
 
 
-if node.hops.systemd == "true"
+nvidia_url = node['nvidia']['download_url']
+nvidia_jar = File.basename(nvidia_url)
+
+remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
+  source nvidia_url
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  # TODO - checksum
+  action :create_if_missing
+end
+
+
+if node['hops']['systemd'] == "true"
 
   service service_name do
     provider Chef::Provider::Service::Systemd
@@ -21,7 +34,7 @@ if node.hops.systemd == "true"
     action :nothing
   end
 
-  case node.platform_family
+  case node['platform_family']
   when "rhel"
     systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
   else
@@ -38,16 +51,12 @@ if node.hops.systemd == "true"
     owner "root"
     group "root"
     mode 0664
-if node.services.enabled == "true"
+if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
     notifies :restart, resources(:service => service_name)
   end
 
-  kagent_config "#{service_name}" do
-    action :systemd_reload
-  end
-  
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
     group "root"
@@ -62,6 +71,10 @@ end
     action :create
   end 
 
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
+
 else #sysv
 
   service service_name do
@@ -75,7 +88,7 @@ else #sysv
     owner "root"
     group "root"
     mode 0755
-if node.services.enabled == "true"
+if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
     notifies :restart, resources(:service => service_name)
@@ -83,11 +96,11 @@ end
 
 end
 
-if node.kagent.enabled == "true" 
+if node['kagent']['enabled'] == "true" 
   kagent_config service_name do
     service "YARN"
-    log_file "#{node.hops.logs_dir}/yarn-#{node.hops.yarn.user}-#{service_name}-#{node.hostname}.log"
-    web_port node.hops["#{yarn_service}"][:http_port]
+    log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['yarn']['user']}-#{service_name}-#{node['hostname']}.log"
+    web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
 

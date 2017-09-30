@@ -3,62 +3,55 @@ require 'resolv'
 ndb_connectstring()
 my_ip = my_private_ip()
 
-group node['hops']['secure_group'] do
-  action :create
-  not_if "getent group #{node['hops']['secure_group']}"
-end
-
-directory "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}" do
-  owner node.hops.hdfs.user
-  group node.hops.group
+directory "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
   mode "750"
   action :create
 end
 
-link "#{node.hops.dir}/ndb-hops" do
-  owner node.hops.hdfs.user
-  group node.hops.group
-  to "#{node.hops.dir}/ndb-hops-#{node.hops.version}-#{node.ndb.version}"
+link "#{node['hops']['dir']}/ndb-hops" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  to "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}"
 end
 
 
-package_url = node.dal.download_url
+package_url = node['dal']['download_url']
 base_filename = File.basename(package_url)
 
-remote_file "#{node.hops.dir}/ndb-hops/#{base_filename}" do
+remote_file "#{node['hops']['dir']}/ndb-hops/#{base_filename}" do
   source package_url
-  owner node.hops.hdfs.user
-  group node.hops.group
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
   mode "0755"
   # TODO - checksum
   action :create_if_missing
 end
-
 
 hops_ndb "extract_ndb_hops" do
   base_filename base_filename
   action :install_ndb_hops
 end
 
-link "#{node.hops.dir}/ndb-hops/ndb-dal.jar" do
-  owner node.hops.hdfs.user
-  group node.hops.group
-  to "#{node.hops.dir}/ndb-hops/ndb-dal-#{node.hops.version}-#{node.ndb.version}.jar"
+link "#{node['hops']['dir']}/ndb-hops/ndb-dal.jar" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  to "#{node['hops']['dir']}/ndb-hops/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 end
 
-
 mysql_ip = my_ip
-if node.mysql.localhost == "true"
+if node['mysql']['localhost'] == "true"
   mysql_ip = "localhost"
 end
 
-template "#{node.hops.home}/etc/hadoop/ndb.props" do
+template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['secure_group']
   mode "750"
   variables({
-              :ndb_connectstring => node.ndb.connectstring,
+              :ndb_connectstring => node['ndb']['connectstring'],
               :mysql_host => mysql_ip
             })
 end
@@ -67,7 +60,7 @@ end
   
 hops_ndb "install" do
   action :install_hops
-  only_if { ::File.exist? "#{node.ndb.scripts_dir}/mysql-client.sh" }
+  only_if { ::File.exist? "#{node['ndb']['scripts_dir']}/mysql-client.sh" }
 end
 
 #
@@ -75,25 +68,25 @@ end
 #
 if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:private_ips) == true
 
-  for script in node.hops.nn.scripts
-    template "#{node.hops.home}/sbin/#{script}" do
+  for script in node['hops']['nn']['scripts']
+    template "#{node['hops']['home']}/sbin/#{script}" do
       source "#{script}.erb"
-      owner node.hops.hdfs.user
-      group node.hops.group
+      owner node['hops']['hdfs']['user']
+      group node['hops']['group']
       mode 0770
     end
   end 
 
 
-  Chef::Log.info "NameNode format option: #{node.hops.nn.format_options}"
+  Chef::Log.info "NameNode format option: #{node['hops']['nn']['format_options']}"
 
-  template "#{node.hops.home}/sbin/format-nn.sh" do
+  template "#{node['hops']['home']}/sbin/format-nn.sh" do
     source "format-nn.sh.erb"
-    owner node.hops.hdfs.user
-    group node.hops.group
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
     mode 0770
     variables({
-                :format_opts => node.hops.nn.format_options
+                :format_opts => node['hops']['nn']['format_options']
               })
   end
 
