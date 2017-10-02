@@ -322,16 +322,17 @@ end
 if node['hops']['rpc']['ssl'].eql? "true"
   bash 'add-acl-to-keystore' do
     user 'root'
-    if node['hops']['hdfs']['user'].eql? node['hops']['yarn']['user']
-      code <<-EOH
-           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-           EOH
-    else
+    if node['install']['user'].empty? 
       code <<-EOH
            setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
            setfacl -Rm u:#{node['hops']['yarn']['user']}:rx #{node['kagent']['certs_dir']}
            setfacl -Rm u:#{node['hops']['rm']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hopsworks']['user']}:rx #{node['kagent']['certs_dir']}
+           setfacl -Rm u:#{node['hops']['yarnapp']['user']}:rx #{node['kagent']['certs_dir']}
+           setfacl -Rm u:#{node['hops']['mr']['user']}:rx #{node['kagent']['certs_dir']}
+           EOH
+    else
+      code <<-EOH
+           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
            EOH
     end
   end
