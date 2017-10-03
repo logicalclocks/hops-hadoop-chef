@@ -138,7 +138,7 @@ end
 
 group node['kagent']['certs_group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}"]
+  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['rm']['user']}"]
   append true
 end
 

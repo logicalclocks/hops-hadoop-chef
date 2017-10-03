@@ -108,6 +108,14 @@ if node.attribute?("hopsworks")
 end
 node.override['hopsworks']['user'] = hopsworksUser
 
+jupyterUser = "jupyter"
+if node.attribute?('jupyter')
+  if node['jupyter'].attribute?('user')
+    jupyterUser = node['jupyter']['user']
+  end
+end
+node.override['jupyter']['user'] = jupyterUser
+
 livyUser = "livy"
 if node.attribute?("livy")
   if node['livy'].attribute?("user")
@@ -153,6 +161,7 @@ template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
               :hopsworksUser => hopsworksUser,
               :livyUser => livyUser,
               :hiveUser => hiveUser,
+              :jupyterUser => jupyterUser,
               :allNNs => allNNIps,
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
@@ -319,21 +328,12 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-env.sh" do
   action :create
 end
 
+# The ACL to keystore directory is needed during deployment
 if node['hops']['rpc']['ssl'].eql? "true"
-  bash 'add-acl-to-keystore' do
-    user 'root'
-    if node['install']['user'].empty? 
-      code <<-EOH
-           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['yarn']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['rm']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['yarnapp']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['mr']['user']}:rx #{node['kagent']['certs_dir']}
-           EOH
-    else
-      code <<-EOH
-           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-           EOH
-    end
+  bash "update-acl-of-keystore" do
+    user "root"
+    code <<-EOH
+         setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
+         EOH
   end
 end
