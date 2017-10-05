@@ -38,6 +38,7 @@ template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
               :hopsworksUser => node['hopsworks']['user'],
               :livyUser => node['livy']['user'],
               :hiveUser => node['hive2']['user'],
+              :jupyterUser => node['jupyter']['user'],
               :allNNs => myNN,
               :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
               :hopsworks_endpoint => hopsworks_endpoint

@@ -89,6 +89,14 @@
     <name>hadoop.proxyuser.<%= @hiveUser %>.groups</name>
     <value>*</value>
   </property>
+    <property>
+    <name>hadoop.proxyuser.<%= @jupyterUser %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @jupyterUser %>.groups</name>
+    <value>*</value>
+  </property>
 
   <property>
     <name>dfs.leader.check.interval</name>
