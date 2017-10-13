@@ -274,7 +274,7 @@ end
 template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
   owner node['hops']['yarn']['user']
-  group node['hops']['group']
+  group node['kagent']['certs_group']
   mode "750"
   variables({
               :kstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__kstore.jks",
