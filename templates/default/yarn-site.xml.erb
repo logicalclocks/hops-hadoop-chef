@@ -423,6 +423,11 @@
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>
     <value><%= node['hops']['yarn']['linux_container_local_user'] %></value>
 </property>
+<property>
+  <name>yarn.nodemanager.disk-health-checker.enable</name>
+  <value>true</value>
+</property>
+
 <!--<property> 
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit.users</name>
     <value><%= node['hops']['yarn']['linux_container_limit_users'] %></value>
