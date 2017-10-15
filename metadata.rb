@@ -175,7 +175,15 @@ attribute "hops/nn/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hops/nn/public_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
 attribute "hops/rm/private_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
+attribute "hops/rm/public_ips",
           :description => "Set ip addresses",
           :type => "array"
 
