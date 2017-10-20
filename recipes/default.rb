@@ -268,7 +268,7 @@ end
 
 template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
-  owner node['hops']['yarn']['user']
+  owner node['hops']['hdfs']['user']
   group node['kagent']['certs_group']
   mode "750"
   variables({
