@@ -77,15 +77,10 @@ if node['hops']['gpu'].eql?("false")
 end
 
 if node['hops']['yarn']['gpus'].eql?("*")
-  num_gpus = "0"
-  ruby_block "read_num_gpus" do
-    only_if { ::File.exists?("/tmp/num_gpus") }
-    block do
-      num_gpus = File.read("/tmp/num_gpus").delete!("\n")
-    end
-  end
-  node.override['hops']['yarn']['gpus'] = num_gpus
+    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
 end
+
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 if node['hops']['gpu'].eql? "true"
@@ -273,7 +268,7 @@ end
 
 template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
-  owner node['hops']['yarn']['user']
+  owner node['hops']['hdfs']['user']
   group node['kagent']['certs_group']
   mode "750"
   variables({

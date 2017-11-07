@@ -22,7 +22,7 @@
 
   <property>
     <name>dfs.namenodes.rpc.addresses</name>
-    <value><%= @allNNs %></value>  
+    <value><%= @allNNs %></value>
     <description>HopsFS-specific list of comma-separated host:port pairs for NameNodes.</description>
   </property>
 
@@ -105,6 +105,15 @@
     <name>hadoop.proxyuser.<%= @jupyterUser %>.groups</name>
     <value>*</value>
   </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['mr']['user'] %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['mr']['user'] %>.groups</name>
+    <value>*</value>
+  </property>
+
 
   <property>
     <name>dfs.leader.check.interval</name>
@@ -124,7 +133,7 @@
     <description></description>
   </property>
 
-  
+
   <!-- SSL -->
   <property>
     <name>hadoop.ssl.require.client.cert</name>
@@ -176,7 +185,7 @@
     <name>ipc.server.read.threadpool.size</name>
     <value><%= node['hops']['server']['threadpool'] %></value>
   </property>
-  
+
   <!-- RPC TLS support -->
   <property>
     <name>ipc.server.ssl.enabled</name>
@@ -218,16 +227,16 @@
     <name>client.materialize.directory</name>
     <value><%= node['certs']['dir'] %>/transient</value>
   </property>
-  
+
  <!-- TLS client configuration -->
  <property>
    <name>client.hopsworks.rest.endpoint</name>
    <value><%= @hopsworks_endpoint %></value>
  </property>
- 
+
  <property>
    <name>client.rpc.ssl.enabled.protocol</name>
    <value>TLSv1.2</value>
  </property>
- 
+
 </configuration>
