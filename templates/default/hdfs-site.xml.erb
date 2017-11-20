@@ -306,4 +306,36 @@
 -->
 
 
+<!-- Store Small Files in NDB-->
+
+<property>
+   <name>dfs.store.small.files.in.db</name>
+   <value><%= node['hops']['small_files']['store_in_db'] %></value>
+</property>
+
+<property>
+   <name>dfs.db.file.max.size</name>
+   <value><%= node['hops']['small_files']['max_size'] %></value>
+</property>
+
+<property>
+   <name>dfs.db.ondisk.small.file.max.size</name>
+   <value><%= node['hops']['small_files']['on_disk']['max_size']['small']  %></value>
+</property>
+
+<property>
+   <name>dfs.db.ondisk.medium.file.max.size</name>
+   <value><%= node['hops']['small_files']['on_disk']['max_size']['medium']  %></value>
+</property>
+
+<property>
+   <name>dfs.db.ondisk.large.file.max.size</name>
+   <value><%= node['hops']['small_files']['on_disk']['max_size']['large'] %></value>
+</property>
+
+<property>
+   <name>dfs.db.inmemory.file.max.size</name>
+   <value><%= node['hops']['small_files']['in_memory']['max_size'] %></value>
+</property>
+
 </configuration>
