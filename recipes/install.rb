@@ -510,3 +510,11 @@ template "/etc/ld.so.conf.d/hops.conf" do
   group "root"
   mode "644"
 end
+
+
+bash "ldconfig" do
+  user "root"
+  code <<-EOF
+     ldconfig
+  EOF
+end

@@ -25,6 +25,7 @@ rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
 influxdb_ip = private_recipe_ip("hopsmonitor","default")
+zk_ip = private_recipe_ip('kzookeeper', 'default')
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -249,6 +250,7 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
               :rm_public_ip => rm_public_ip,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
+              :zk_ip => zk_ip,
               :container_executor => container_executor
             })
   action :create_if_missing

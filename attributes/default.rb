@@ -1,4 +1,5 @@
 include_attribute "ndb"
+include_attribute "kzookeeper"
 
 default['hops']['version']                     = "2.8.2.2"
 

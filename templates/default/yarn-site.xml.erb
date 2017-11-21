@@ -75,7 +75,11 @@
     <value><%= node['hops']['rm']['scheduler_class'] %></value>
     <description>In case you do not want to use the default scheduler</description>
   </property>
-
+  <property>
+    <name>hadoop.registry.zk.quorum</name>
+    <value><%= @zk_ip %>:2181</value>
+  </property>
+  
   <property>
     <name>yarn.nodemanager.container-executor.class</name>
     <value><%= @container_executor %></value>
