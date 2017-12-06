@@ -420,3 +420,7 @@ attribute "hopsworks/user",
 attribute "hopsmonitor/default/private_ips",
           :description => "Hopsworks username",
           :type => "string"
+
+attribute "hopsworks/default/private_ips",
+          :description => "Hopsworks private ip",
+          :type => "string"
