@@ -416,3 +416,7 @@ attribute "livy/user",
 attribute "hopsworks/user",
           :description => "Hopsworks username",
           :type => "string"
+
+attribute "hopsmonitor/default/private_ips",
+          :description => "Hopsworks username",
+          :type => "string"
