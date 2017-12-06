@@ -35,6 +35,13 @@ remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
   action :create_if_missing
 end
 
+link "#{node['hops']['base_dir']}/lib/native/libhopsnvml.so" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  to "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}"
+end
+
+
 
 if node['hops']['systemd'] == "true"
 
