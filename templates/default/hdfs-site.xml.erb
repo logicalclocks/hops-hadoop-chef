@@ -116,6 +116,10 @@
     <value><%= node['hops']['dn']['data_dir'] %></value>
   </property>
 
+  <property>
+    <name>dfs.datanode.data.dir.perm</name>
+    <value><%= node['hops']['dn']['data_dir_permissions'] %></value>
+  </property>  
 
   <property>
     <name>dfs.namenode.safemode.extension</name>

@@ -27,6 +27,7 @@ default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sb
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
 default['hops']['data_dir']                    = node['hops']['dir'] + "/hopsdata"
 default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
+default['hops']['dn']['data_dir_permissions']  = '700'
 default['hops']['nn']['name_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['nm']['log_dir']               = node['hops']['logs_dir'] + "/userlogs"

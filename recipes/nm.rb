@@ -26,7 +26,7 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
 end
 
 libhopsnvml = File.basename(node['hops']['libnvml_url']) 
-remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{libhopsnvml}" do
+remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
   source node['hops']['libnvml_url']
   owner node['hops']['yarn']['user']
   group node['hops']['group']
