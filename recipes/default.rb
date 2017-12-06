@@ -291,11 +291,11 @@ template "#{node['hops']['home']}/etc/hadoop/hadoop-metrics2.properties" do
   action :create_if_missing
 end
 
-link "#{node['hops']['base_dir']}/lib/native/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so" do
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so"
-end
+#link "#{node['hops']['base_dir']}/lib/native/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so" do
+#  owner node['hops']['hdfs']['user']
+#  group node['hops']['group']
+#  to "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so"
+#end
 
 if node['hops']['gpu'].eql? "true"
   bash 'update_owner_for_gpu' do
