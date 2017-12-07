@@ -193,7 +193,7 @@ default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
-default['dal']['schema_url']                = "#{node['download_url']}/hops.sql"
+default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
 
