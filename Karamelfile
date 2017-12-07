@@ -5,7 +5,6 @@ dependencies:
   - recipe: hops::ndb
     global:  
       - ndb::mysqld
-      - kagent::default      
   - recipe: hops::nn
     global:  
       - kagent::default
@@ -19,7 +18,6 @@ dependencies:
       - kagent::default      
   - recipe: hops::nm
     global:  
-      - hops::rm
       - hadoop_spark::yarn
   - recipe: hops::jhs
     global:  
