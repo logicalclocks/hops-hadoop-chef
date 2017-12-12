@@ -178,6 +178,12 @@ template "#{node['hops']['home']}/etc/hadoop/hadoop-env.sh" do
   mode "755"
 end
 
+template "#{node['hops']['home']}/etc/hadoop/jmxremote.access" do
+  source "jmxremote.access.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "440"
+end
 
 template "#{node['hops']['home']}/etc/hadoop/jmxremote.password" do
   source "jmxremote.password.erb"

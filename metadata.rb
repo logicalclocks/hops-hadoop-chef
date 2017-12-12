@@ -421,6 +421,10 @@ attribute "hopsworks/user",
           :description => "Hopsworks username",
           :type => "string"
 
+attribute "hops/jmx/adminPassword",
+          :description => "Password for JMX admin role",
+          :type => "string"
+
 attribute "hopsmonitor/default/private_ips",
           :description => "Hopsworks username",
           :type => "string"

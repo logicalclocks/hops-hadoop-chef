@@ -16,6 +16,9 @@ default['hopsworks']['user']                   = node['install']['user'].empty? 
 default['hops']['jmx']['username']             = "monitorRole"
 default['hops']['jmx']['password']             = "hadoop"
 
+default['hops']['jmx']['adminUsername']        = "adminRole"
+default['hops']['jmx']['adminPassword']        = "hadoopAdmin"
+
 default['hops']['dir']                         = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['hops']['base_dir']                    = node['hops']['dir'] + "/hadoop"
 default['hops']['home']                        = node['hops']['dir'] + "/hadoop-" + node['hops']['version']
