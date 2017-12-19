@@ -224,6 +224,14 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
       mode "1750"
     end
 
+    # Create weblogs dir for Glassfish
+    hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}/webserver_logs" do
+      action :create_as_superuser
+      owner node['hopsworks']['user']
+      group node['hops']['group']
+      mode "1750"
+    end
+    
   exec = "#{node['ndb']['scripts_dir']}/mysql-client.sh"
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"
