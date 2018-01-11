@@ -55,6 +55,7 @@ if node['hops']['nn']['partition_key'].eql? "false"
    partition_key = "false"
 end
 
+nnHTTPAddress = "#{my_ip}:#{node['hops']['nn']['http_port']}"
 
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
@@ -65,7 +66,8 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   variables({
               :firstNN => myNN,
               :cache => cache,
-              :partition_key => partition_key
+              :partition_key => partition_key,
+              :nnHTTPAddress => nnHTTPAddress
             })
 end
 

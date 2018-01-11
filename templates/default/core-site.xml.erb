@@ -202,6 +202,8 @@
     <value><%= @rpcSocketFactory %></value>
   </property>
 
+  <% if node['hops']['rpc']['ssl'].eql? "true" -%>
+
   <property>
     <name>hadoop.ssl.enabled.protocols</name>
     <value><%= node['hops']['hadoop']['ssl']['enabled']['protocols'] %></value>
@@ -228,15 +230,26 @@
     <value><%= node['certs']['dir'] %>/transient</value>
   </property>
 
- <!-- TLS client configuration -->
- <property>
-   <name>client.hopsworks.rest.endpoint</name>
-   <value><%= @hopsworks_endpoint %></value>
- </property>
+  <!-- TLS client configuration -->
+  <property>
+    <name>client.hopsworks.rest.endpoint</name>
+    <value><%= @hopsworks_endpoint %></value>
+  </property>
 
- <property>
-   <name>client.rpc.ssl.enabled.protocol</name>
-   <value>TLSv1.2</value>
- </property>
+  <property>
+    <name>client.rpc.ssl.enabled.protocol</name>
+    <value>TLSv1.2</value>
+  </property>
 
+  <property>
+    <name>hadoop.http.static.user</name>
+    <value><%= @hopsworksUser %></value>
+  </property>
+
+  <property>
+    <name>hadoop.ssl.require.client.cert</name>
+    <value>true</value>
+  </property>
+  <% end -%>
+ 
 </configuration>

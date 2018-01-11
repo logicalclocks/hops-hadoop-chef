@@ -301,21 +301,39 @@
 -->
 
 <!-- SSL -->
-<!--
+<!-- Secure webhdfs by requiring TLS two-way authentication, port
+     50070 should be firewalled -->
+<% if node['hops']['rpc']['ssl'].eql? "true" -%>
 <property>
-    <name>dfs.https.enable</name>
-    <value><%= node['hops']['dfs']['https']['enable'] %></value>
+  <name>dfs.https.enable</name>
+  <value><%= node['hops']['dfs']['https']['enable'] %></value>
 </property>
-<property>
-    <name>dfs.http.policy</name>
-    <value><%= node['hops']['dfs']['http']['policy'] %></value>
-</property>
-<property>
-    <name>dfs.datanode.https.address</name>
-    <value><%= node['hops']['dfs']['datanode']['https']['address'] %></value>
-</property>
--->
 
+<property>
+  <name>dfs.http.policy</name>
+  <value><%= node['hops']['dfs']['http']['policy'] %></value>
+</property>
+
+<property>
+  <name>dfs.https.port</name>
+  <value><%= node['hops']['dfs']['https']['port'] %></value>
+</property>
+
+<property>
+  <name>dfs.datanode.https.address</name>
+  <value><%= node['hops']['dfs']['datanode']['https']['address'] %></value>
+</property>
+
+<property>
+  <name>dfs.namenode.http-address</name>
+  <value><%= @nnHTTPAddress %></value>
+</property>
+
+<property>
+  <name>dfs.client.https.need-auth</name>
+  <value>true</value>
+</property>
+<% end %>
 
 <!-- Store Small Files in NDB-->
 
