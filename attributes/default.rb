@@ -332,7 +332,7 @@ default['hops']['capacity']['queue_mapping_override']['enable']         = "false
 default['hops']['hopsutil_version']                    = "0.3.0-SNAPSHOT"
 default['hops']['hopsexamples_version']                = "0.3.0"
 default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
-default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-exaples-spark-#{node['hops']['hopsexamples_version']}.jar"
+default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
 
 #GPU
 default['hops']['yarn']['min_gpus']                    = 0
