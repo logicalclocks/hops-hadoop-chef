@@ -38,6 +38,7 @@ template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
               :hopsworksUser => node['hopsworks']['user'],
               :livyUser => node['livy']['user'],
               :hiveUser => node['hive2']['user'],
+              :jupyterUser => node['jupyter']['user'],
               :allNNs => myNN,
               :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
               :hopsworks_endpoint => hopsworks_endpoint
@@ -54,6 +55,7 @@ if node['hops']['nn']['partition_key'].eql? "false"
    partition_key = "false"
 end
 
+nnHTTPAddress = "#{my_ip}:#{node['hops']['nn']['http_port']}"
 
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
@@ -64,7 +66,8 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   variables({
               :firstNN => myNN,
               :cache => cache,
-              :partition_key => partition_key
+              :partition_key => partition_key,
+              :nnHTTPAddress => nnHTTPAddress
             })
 end
 
@@ -223,6 +226,14 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
       mode "1750"
     end
 
+    # Create weblogs dir for Glassfish
+    hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}/webserver_logs" do
+      action :create_as_superuser
+      owner node['hopsworks']['user']
+      group node['hops']['group']
+      mode "1750"
+    end
+    
   exec = "#{node['ndb']['scripts_dir']}/mysql-client.sh"
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"

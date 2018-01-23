@@ -22,7 +22,7 @@
 
   <property>
     <name>dfs.namenodes.rpc.addresses</name>
-    <value><%= @allNNs %></value>  
+    <value><%= @allNNs %></value>
     <description>HopsFS-specific list of comma-separated host:port pairs for NameNodes.</description>
   </property>
 
@@ -66,6 +66,14 @@
     <value>*</value>
   </property>
   <property>
+    <name>hadoop.proxyuser.<%= node['hops']['yarnapp']['user'] %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['yarnapp']['user'] %>.groups</name>
+    <value>*</value>
+  </property>
+  <property>
     <name>hadoop.proxyuser.<%= node['hops']['rm']['user'] %>.hosts</name>
     <value>*</value>
   </property>
@@ -89,6 +97,23 @@
     <name>hadoop.proxyuser.<%= @hiveUser %>.groups</name>
     <value>*</value>
   </property>
+    <property>
+    <name>hadoop.proxyuser.<%= @jupyterUser %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @jupyterUser %>.groups</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['mr']['user'] %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['hops']['mr']['user'] %>.groups</name>
+    <value>*</value>
+  </property>
+
 
   <property>
     <name>dfs.leader.check.interval</name>
@@ -108,7 +133,7 @@
     <description></description>
   </property>
 
-  
+
   <!-- SSL -->
   <property>
     <name>hadoop.ssl.require.client.cert</name>
@@ -160,7 +185,7 @@
     <name>ipc.server.read.threadpool.size</name>
     <value><%= node['hops']['server']['threadpool'] %></value>
   </property>
-  
+
   <!-- RPC TLS support -->
   <property>
     <name>ipc.server.ssl.enabled</name>
@@ -176,6 +201,8 @@
     <name>hadoop.rpc.socket.factory.class.default</name>
     <value><%= @rpcSocketFactory %></value>
   </property>
+
+  <% if node['hops']['rpc']['ssl'].eql? "true" -%>
 
   <property>
     <name>hadoop.ssl.enabled.protocols</name>
@@ -202,16 +229,27 @@
     <name>client.materialize.directory</name>
     <value><%= node['certs']['dir'] %>/transient</value>
   </property>
-  
- <!-- TLS client configuration -->
- <property>
-   <name>client.hopsworks.rest.endpoint</name>
-   <value><%= @hopsworks_endpoint %></value>
- </property>
- 
- <property>
-   <name>client.rpc.ssl.enabled.protocol</name>
-   <value>TLSv1.2</value>
- </property>
+
+  <!-- TLS client configuration -->
+  <property>
+    <name>client.hopsworks.rest.endpoint</name>
+    <value><%= @hopsworks_endpoint %></value>
+  </property>
+
+  <property>
+    <name>client.rpc.ssl.enabled.protocol</name>
+    <value>TLSv1.2</value>
+  </property>
+
+  <property>
+    <name>hadoop.http.static.user</name>
+    <value><%= @hopsworksUser %></value>
+  </property>
+
+  <property>
+    <name>hadoop.ssl.require.client.cert</name>
+    <value>true</value>
+  </property>
+  <% end -%>
  
 </configuration>

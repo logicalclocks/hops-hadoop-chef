@@ -34,7 +34,7 @@ action :install_ndb_hops do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
     mode "0775"
-    action :create_if_missing
+    action :create
   end
 
   common="share/hadoop/common/lib"

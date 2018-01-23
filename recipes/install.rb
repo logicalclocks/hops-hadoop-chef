@@ -138,7 +138,7 @@ end
 
 group node['kagent']['certs_group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}"]
+  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['rm']['user']}", "#{node['hops']['mr']['user']}"]
   append true
 end
 
@@ -509,4 +509,12 @@ template "/etc/ld.so.conf.d/hops.conf" do
   owner "root"
   group "root"
   mode "644"
+end
+
+
+bash "ldconfig" do
+  user "root"
+  code <<-EOF
+     ldconfig
+  EOF
 end

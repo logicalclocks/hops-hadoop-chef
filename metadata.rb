@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.2.0"
+version          "0.3.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -28,6 +28,7 @@ depends 'ndb'
 depends 'magic_shell'
 depends 'sysctl'
 depends 'cmake'
+depends 'kzookeeper'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -175,7 +176,15 @@ attribute "hops/nn/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hops/nn/public_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
 attribute "hops/rm/private_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
+attribute "hops/rm/public_ips",
           :description => "Set ip addresses",
           :type => "array"
 
@@ -244,6 +253,10 @@ attribute "hops/hdfs/blocksize",
           :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
 
+attribute "hops/hdfs/umask",
+          :description => "Set the default HDFS umask (default: 0022).",
+          :type => 'string'
+
 attribute "hops/format",
           :description => "Format HDFS, Run 'hdfs namenode -format",
           :type => 'string'
@@ -258,6 +271,10 @@ attribute "hops/nn/name_dir",
 
 attribute "hops/dn/data_dir",
           :description => "The directory in which Hadoop's DataNodes store their data",
+          :type => 'string'
+
+attribute "hops/dn/data_dir_permissions",
+          :description => "The permissions for the directory in which Hadoop's DataNodes store their data (default: 700)",
           :type => 'string'
 
 attribute "hops/yarn/nodemanager_hb_ms",
@@ -406,4 +423,16 @@ attribute "livy/user",
 
 attribute "hopsworks/user",
           :description => "Hopsworks username",
+          :type => "string"
+
+attribute "hops/jmx/adminPassword",
+          :description => "Password for JMX admin role",
+          :type => "string"
+
+attribute "hopsmonitor/default/private_ips",
+          :description => "Hopsworks username",
+          :type => "string"
+
+attribute "hopsworks/default/private_ips",
+          :description => "Hopsworks private ip",
           :type => "string"

@@ -1,6 +1,7 @@
 include_attribute "ndb"
+include_attribute "kzookeeper"
 
-default['hops']['version']                     = "2.8.2.1"
+default['hops']['version']                     = "2.8.2.2"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -15,6 +16,9 @@ default['hopsworks']['user']                   = node['install']['user'].empty? 
 default['hops']['jmx']['username']             = "monitorRole"
 default['hops']['jmx']['password']             = "hadoop"
 
+default['hops']['jmx']['adminUsername']        = "adminRole"
+default['hops']['jmx']['adminPassword']        = "hadoopAdmin"
+
 default['hops']['dir']                         = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['hops']['base_dir']                    = node['hops']['dir'] + "/hadoop"
 default['hops']['home']                        = node['hops']['dir'] + "/hadoop-" + node['hops']['version']
@@ -26,12 +30,14 @@ default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sb
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
 default['hops']['data_dir']                    = node['hops']['dir'] + "/hopsdata"
 default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
+default['hops']['dn']['data_dir_permissions']  = '700'
 default['hops']['nn']['name_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['nm']['log_dir']               = node['hops']['logs_dir'] + "/userlogs"
 
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['blocksize']           = "134217728"
+default['hops']['hdfs']['umask']               = "0022"
 
 default['hops']['url']['primary']              = node['download_url'] + "/hops-" + node['hops']['version'] + ".tgz"
 default['hops']['url']['secondary']            = "https://hops.site/hops-" + node['hops']['version'] + ".tgz"
@@ -189,10 +195,9 @@ default['hops']['hdfs']['blocksize']        = "134217728"
 
 default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
-default['hops']['libhopsnvml_version']      = "1.0"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-
-default['dal']['schema_url']                = "#{node['download_url']}/hops.sql"
+default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
+default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
 
@@ -265,6 +270,7 @@ default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 default['hops']['dfs']['https']['enable']                    = "true"
 default['hops']['dfs']['http']['policy']   		     = "HTTPS_ONLY"
 default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
+default['hops']['dfs']['https']['port']                      = "50470"
 default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
 
 #mapred-site.xml
@@ -337,3 +343,14 @@ default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
 default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarn']['linux_container_limit_users'] = "true"
+
+#Store Small files in NDB
+default['hops']['small_files']['store_in_db']                                       = "true"
+default['hops']['small_files']['max_size']                                          = 65536
+default['hops']['small_files']['on_disk']['max_size']['small']                      = 2000
+default['hops']['small_files']['on_disk']['max_size']['medium']                     = 4000
+default['hops']['small_files']['on_disk']['max_size']['large']                      = 65536
+default['hops']['small_files']['in_memory']['max_size']                             = 1024
+
+default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
+default['hopsworks']['default']['private_ips']                                      = ['10.0.2.15']

@@ -25,6 +25,23 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
   action :create_if_missing
 end
 
+libhopsnvml = File.basename(node['hops']['libnvml_url']) 
+remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
+  source node['hops']['libnvml_url']
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  # TODO - checksum
+  action :create_if_missing
+end
+
+link "#{node['hops']['base_dir']}/lib/native/libhopsnvml.so" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  to "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}"
+end
+
+
 
 if node['hops']['systemd'] == "true"
 

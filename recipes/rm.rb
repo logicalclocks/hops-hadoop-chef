@@ -5,6 +5,7 @@ my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
+zk_ip = private_recipe_ip('kzookeeper', 'default')
 
 ndb_connectstring()
 
@@ -46,6 +47,7 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
               :rm_public_ip => my_public_ip,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
+              :zk_ip => zk_ip,              
               :container_executor => container_executor
             })
   action :create

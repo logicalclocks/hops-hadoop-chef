@@ -25,6 +25,7 @@ rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
 influxdb_ip = private_recipe_ip("hopsmonitor","default")
+zk_ip = private_recipe_ip('kzookeeper', 'default')
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -77,15 +78,10 @@ if node['hops']['gpu'].eql?("false")
 end
 
 if node['hops']['yarn']['gpus'].eql?("*")
-  num_gpus = "0"
-  ruby_block "read_num_gpus" do
-    only_if { ::File.exists?("/tmp/num_gpus") }
-    block do
-      num_gpus = File.read("/tmp/num_gpus").delete!("\n")
-    end
-  end
-  node.override['hops']['yarn']['gpus'] = num_gpus
+    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
+    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
 end
+
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 
 if node['hops']['gpu'].eql? "true"
@@ -107,6 +103,14 @@ if node.attribute?("hopsworks")
   end
 end
 node.override['hopsworks']['user'] = hopsworksUser
+
+jupyterUser = "jupyter"
+if node.attribute?('jupyter')
+  if node['jupyter'].attribute?('user')
+    jupyterUser = node['jupyter']['user']
+  end
+end
+node.override['jupyter']['user'] = jupyterUser
 
 livyUser = "livy"
 if node.attribute?("livy")
@@ -153,6 +157,7 @@ template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
               :hopsworksUser => hopsworksUser,
               :livyUser => livyUser,
               :hiveUser => hiveUser,
+              :jupyterUser => jupyterUser,
               :allNNs => allNNIps,
               :rpcSocketFactory => rpcSocketFactory,
               :hopsworks_endpoint => hopsworks_endpoint
@@ -173,6 +178,12 @@ template "#{node['hops']['home']}/etc/hadoop/hadoop-env.sh" do
   mode "755"
 end
 
+template "#{node['hops']['home']}/etc/hadoop/jmxremote.access" do
+  source "jmxremote.access.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "440"
+end
 
 template "#{node['hops']['home']}/etc/hadoop/jmxremote.password" do
   source "jmxremote.password.erb"
@@ -245,6 +256,7 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
               :rm_public_ip => rm_public_ip,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
+              :zk_ip => zk_ip,
               :container_executor => container_executor
             })
   action :create_if_missing
@@ -264,8 +276,8 @@ end
 
 template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
   source "ssl-server.xml.erb"
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
+  owner node['hops']['hdfs']['user']
+  group node['kagent']['certs_group']
   mode "750"
   variables({
               :kstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__kstore.jks",
@@ -285,11 +297,6 @@ template "#{node['hops']['home']}/etc/hadoop/hadoop-metrics2.properties" do
   action :create_if_missing
 end
 
-link "#{node['hops']['base_dir']}/lib/native/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so" do
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/libhopsnvml-#{node['hops']['libhopsnvml_version']}.so"
-end
 
 if node['hops']['gpu'].eql? "true"
   bash 'update_owner_for_gpu' do
@@ -319,20 +326,12 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-env.sh" do
   action :create
 end
 
+# The ACL to keystore directory is needed during deployment
 if node['hops']['rpc']['ssl'].eql? "true"
-  bash 'add-acl-to-keystore' do
-    user 'root'
-    if node['hops']['hdfs']['user'].eql? node['hops']['yarn']['user']
-      code <<-EOH
-           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-           EOH
-    else
-      code <<-EOH
-           setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['yarn']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hops']['rm']['user']}:rx #{node['kagent']['certs_dir']}
-           setfacl -Rm u:#{node['hopsworks']['user']}:rx #{node['kagent']['certs_dir']}
-           EOH
-    end
+  bash "update-acl-of-keystore" do
+    user "root"
+    code <<-EOH
+         setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
+         EOH
   end
 end

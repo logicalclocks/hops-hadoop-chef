@@ -11,12 +11,14 @@ dependencies:
   - recipe: hops::rm
     global:
       - hops::dn
+      - kzookeeper::default      
   - recipe: hops::dn
     global:  
       - hops::nn
+      - kagent::default      
   - recipe: hops::nm
     global:  
-      - hops::rm
+      - hadoop_spark::yarn
   - recipe: hops::jhs
     global:  
       - hops::dn
