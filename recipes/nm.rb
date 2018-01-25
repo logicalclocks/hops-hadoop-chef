@@ -10,7 +10,7 @@ for script in node['hops']['yarn']['scripts']
     group node['hops']['group']
     mode 0775
   end
-end 
+end
 
 
 nvidia_url = node['nvidia']['download_url']
@@ -26,7 +26,7 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
   action :create
 end
 
-libhopsnvml = File.basename(node['hops']['libnvml_url']) 
+libhopsnvml = File.basename(node['hops']['libnvml_url'])
 remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
   source node['hops']['libnvml_url']
   owner node['hops']['yarn']['user']
@@ -54,7 +54,7 @@ if node['hops']['systemd'] == "true"
 
   case node['platform_family']
   when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+    systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
   else
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
@@ -63,7 +63,7 @@ if node['hops']['systemd'] == "true"
     action :delete
     ignore_failure true
   end
-  
+
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
@@ -87,11 +87,11 @@ end
     owner "root"
     mode 0774
     action :create
-  end 
+  end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
-    not_if "systemctl status nodemanager"    
+    not_if "systemctl status nodemanager"
   end
 
 else #sysv
@@ -115,25 +115,10 @@ end
 
 end
 
-if node['kagent']['enabled'] == "true" 
+if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service "YARN"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['yarn']['user']}-#{service_name}-#{node['hostname']}.log"
     web_port node['hops']["#{yarn_service}"]['http_port']
   end
-end
-
-
-directory "/sys/fs/cgroup/cpu/hops-yarn" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  action :create
-end
-
-directory "/sys/fs/cgroup/devices/hops-yarn" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  action :create
 end

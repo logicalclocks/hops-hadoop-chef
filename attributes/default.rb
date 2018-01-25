@@ -1,9 +1,10 @@
 include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
+include_attribute "hopsmonitor"
 
-default['hops']['versions']                    = "2.8.2.2"
-default['hops']['version']                     = "2.8.2.3"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3"
+default['hops']['version']                     = "2.8.2.4-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -156,7 +157,6 @@ default['hops']['nn']['addrs']                 = []
 
 # build the native libraries. Is much slower, but removes warning when using services.
 default['hops']['native_libraries']            = "false"
-default['hops']['cgroups']                     = "false"
 
 default['maven']['version']                    = "3.2.5"
 default['maven']['checksum']                   = ""
@@ -287,6 +287,10 @@ default['hops']['yarn']['http']['policy']                    = "HTTPS_ONLY"
 default['hops']['yarn']['log']['server']['url']              = "https://#{node['hops']['jhs']['private_ips']}:#{node['hops']['jhs']['https']['port']}/jobhistory/logs"
 default['hops']['yarn']['resourcemanager']['webapp']['https']['address']  = "#{node['hops']['rm']['private_ips']}:#{node['hops']['rm']['https']['port']}"
 default['hops']['yarn']['nodemanager']['webapp']['https']['address'] 		= "0.0.0.0:#{node['hops']['nm']['https']['port']}"
+default['hops']['yarn']['container_executor']                = "org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
+
+# Use Cgroup isolation
+default['hops']['yarn']['cgroups']                        = "true"
 
 #ssl-server.xml
 default['hops']['ssl']['server']['keystore']['password']   		= node['hopsworks']['master']['password']
@@ -321,7 +325,6 @@ default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000
 default['hops']['capacity']['max_am_percent']                           = 0.3
-#default['hops']['capacity']['resource_calculator_class']                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
 default['hops']['capacity']['resource_calculator_class']                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 default['hops']['capacity']['root_queues']                              = "default"
 default['hops']['capacity']['default_capacity']                         = 100
@@ -335,7 +338,7 @@ default['hops']['capacity']['queue_mapping_override']['enable']         = "false
 
 #
 # Flyway - Database upgrades
-# 
+#
 default['hops']['flyway']['version']                                    = "5.0.3"
 default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
@@ -352,6 +355,9 @@ default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
 default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarn']['linux_container_limit_users'] = "true"
+
+# Does a machine in the cluster contain gpus?
+default['hops']['yarn']['cluster']['gpu']              = "false"
 
 #Store Small files in NDB
 default['hops']['small_files']['store_in_db']                                       = "true"

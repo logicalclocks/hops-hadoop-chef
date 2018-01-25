@@ -172,35 +172,11 @@ if node['hops']['native_libraries'].eql? "true"
   protobuf_lib_prefix = "/usr"
   case node['platform_family']
   when "debian"
-    package "g++" do
-      options "--force-yes"
-    end
-    package "autoconf" do
-      options "--force-yes"
-    end
-    package "automake" do
-      options "--force-yes"
-    end
-    package "libtool" do
-      options "--force-yes"
-    end
-    package "zlib1g-dev" do
-      options "--force-yes"
-    end
-    package "libssl-dev" do
-      options "--force-yes"
-    end
-    package "pkg-config" do
-      options "--force-yes"
-    end
-    package "maven" do
-      options "--force-yes"
-    end
-
+    package ['g++', 'autoconf', 'automake', 'libtool', 'zlib1g-dev', 'libssl-dev', 'pkg-config', 'maven']
   when "rhel"
-  protobuf_lib_prefix = "/"
+    protobuf_lib_prefix = "/"
 
-# https://github.com/burtlo/ark
+    # https://github.com/burtlo/ark
     ark "maven" do
       url "http://apache.mirrors.spacedump.net/maven/maven-3/#{node['maven']['version']}/binaries/apache-maven-#{node['maven']['version']}-bin.tar.gz"
       version "#{node['maven']['version']}"
@@ -210,17 +186,6 @@ if node['hops']['native_libraries'].eql? "true"
       append_env_path true
       owner "#{node['hops']['hdfs']['user']}"
     end
-#    bash 'install-maven' do
-#       user "root"
-#       code <<-EOH
-#         set -e
-#        sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-#        sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
-#         sudo yum install -y apache-maven
-# 	EOH
-#      not_if { ::File.exist?("/etc/yum.repos.d/epel-apache-maven.repo") }
-#     end
-
 
   end
    protobuf_name_no_extension = File.basename(base_protobuf_filename, ".tar.gz")
@@ -243,12 +208,13 @@ if node['hops']['native_libraries'].eql? "true"
 
 end
 
+# For LinuxContainerExecutor the the whole hadoop subtree should be own by root and not group writable.
+# If another cookbook has created the directory before, it will be updaste to have the correct ownership/permissions
 directory node['hops']['dir'] do
-  owner node['hops']['hdfs']['user']
+  owner "root"
   group node['hops']['group']
-  mode "0775"
+  mode "0755"
   action :create
-  not_if { File.directory?("#{node['hops']['dir']}") }
 end
 
 directory node['hops']['data_dir'] do
@@ -331,30 +297,58 @@ bash 'extract-hadoop' do
   user "root"
   code <<-EOH
         set -e
-	tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
+	      tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
         # remove the config files that we would otherwise overwrite
-        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
-        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
+        rm -rf #{node['hops']['home']}/etc/*
 
         # Force copy the old etc/hadoop files to our new installation, if there are any
+        # at this stage base_dir is still pointing to the old installation
         if [ -d #{node['hops']['base_dir']} ] ; then
-           cp -rpf #{node['hops']['base_dir']}/etc/hadoop/* #{node['hops']['home']}/etc/hadoop/
+           cp -rpf #{node['hops']['base_dir']}/etc/* #{node['hops']['home']}/etc/*
         fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
+
         # chown -L : traverse symbolic links
-        chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
-        chmod 770 #{node['hops']['home']}
+        chmod 750 #{node['hops']['home']}
+
+        # Write flag
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
 end
 
+directory node['hops']['logs_dir'] do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "0770"
+  action :create
+end
+
+directory node['hops']['tmp_dir'] do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "1770"
+  action :create
+end
+
+# For the LinuxContainerExecutor to work the path the following dirs need to be root:hadoop and not group writable
+lce_dirs = [node['hops']['home'], node['hops']['conf_dir_parent'], node['hops']['conf_dir']]
+for dir in lce_dirs do
+  directory dir do
+    owner "root"
+    group node['hops']['group']
+    mode "0750"
+  end
+end
+
+# For the LinuxContainerExecutor to work the container-executor bin needs to be owned by root:hadoop and have permission ---sr-s--- (6150)
+file "#{node['hops']['bin_dir']}/container-executor" do
+  owner "root"
+  group node['hops']['group']
+  mode "6150"
+end
 
 if node['hops']['native_libraries'] == "true"
 
@@ -378,7 +372,7 @@ if node['hops']['native_libraries'] == "true"
     code <<-EOH
         set -e
         cd #{Chef::Config['file_cache_path']}
-	tar -xf #{cached_hadoop_src_filename}
+	      tar -xf #{cached_hadoop_src_filename}
         cd #{hadoop_src_name}
         mvn package -Pdist,native -DskipTests -Dtar
         cp -r hadoop-dist/target/hadoop-#{node['hops']['version']}/lib/native/* #{node['hops']['home']}/lib/native/
@@ -387,46 +381,6 @@ if node['hops']['native_libraries'] == "true"
 	EOH
     not_if { ::File.exist?("#{natives}") }
   end
-
-end
-
- directory node['hops']['logs_dir'] do
-   owner node['hops']['hdfs']['user']
-   group node['hops']['group']
-   mode "0770"
-   action :create
- end
-
- directory node['hops']['tmp_dir'] do
-   owner node['hops']['hdfs']['user']
-   group node['hops']['group']
-   mode "1770"
-   action :create
- end
-
-
-bash 'update_permissions_etc_dir' do
-  user "root"
-  code <<-EOH
-    set -e
-    chmod 775 #{node['hops']['conf_dir']}
-  EOH
-end
-
-if node['hops']['cgroups'].eql? "true"
-
-  case node['platform_family']
-  when "debian"
-    package "libcgroup-dev" do
-    end
-
-  when "redhat"
-
-    # This doesnt work for rhel-7
-    package "libcgroup" do
-    end
-  end
-
 end
 
 magic_shell_environment 'PATH' do
@@ -470,21 +424,6 @@ if "#{node['hops']['yarn']['gpus']}".eql?("*")
   end
 end
 
-
-directory "/sys/fs/cgroup/cpu/hops-yarn" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  action :create
-end
-
-directory "/sys/fs/cgroup/devices/hops-yarn" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  action :create
-end
-
 rm_private_ip = private_recipe_ip("hops","rm")
 
 begin
@@ -497,15 +436,15 @@ end
 # This is here because Pydoop consults mapred-site.xml
 # Pydoop is a dependancy of hdfscontents which is installed
 # in hopsworks-chef::default
-template "#{node['hops']['base_dir']}/etc/hadoop/mapred-site.xml" do
+template "#{node['hops']['conf_dir']}/mapred-site.xml" do
   source "mapred-site.xml.erb"
   owner node['hops']['mr']['user']
   group node['hops']['group']
   mode "750"
   variables({
-              :rm_private_ip => rm_private_ip,
-              :jhs_private_ip => jhs_private_ip              
-            })
+      :rm_private_ip => rm_private_ip,
+      :jhs_private_ip => jhs_private_ip
+  })
   action :create
 end
 
@@ -514,7 +453,7 @@ template "/etc/ld.so.conf.d/hops.conf" do
   owner "root"
   group "root"
   mode "644"
-  action :create  
+  action :create
 end
 
 

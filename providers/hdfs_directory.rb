@@ -54,7 +54,7 @@ action :put_as_superuser do
     user node['hops']['hdfs']['user']
     group node['hops']['group']
     code <<-EOF
-     EXISTS = 1
+     EXISTS=1
      . #{node['hops']['base_dir']}/sbin/set-env.sh
      if [ -z $ISDIR ] ; then
         #{node['hops']['base_dir']}/bin/hdfs dfs -test -e #{new_resource.dest}
@@ -132,7 +132,7 @@ action :rm_as_superuser do
   end
 
 
-end  
+end
 
 
 action :replace_as_superuser do
@@ -149,4 +149,4 @@ action :replace_as_superuser do
     action :put_as_superuser
   end
 
-end  
+end
