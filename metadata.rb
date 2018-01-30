@@ -209,8 +209,24 @@ attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'
 
+attribute "hops/yarn/min_vcores",
+          :description => "Hadoop NodeManager Minimum Virtual Cores per container",
+          :type => 'string'
+
 attribute "hops/yarn/max_vcores",
           :description => "Hadoop NodeManager Maximum Virtual Cores per container",
+          :type => 'string'
+
+attribute "hops/yarn/log_retain_secs",
+          :description => "Default time (in seconds) to retain log files on the NodeManager",
+          :type => 'string'
+
+attribute "hops/yarn/log_retain_check",
+          :description =>"Default time (in seconds) between checks for retained log files in HDFS.",
+          :type => 'string'
+
+attribute "hops/yarn/log_roll_interval",
+          :description =>"Defines how often NMs wake up to upload log files. The minimum rolling-interval-seconds can be set is 3600.",
           :type => 'string'
 
 attribute "hops/version",
