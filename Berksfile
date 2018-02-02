@@ -4,10 +4,10 @@ source 'https://supermarket.chef.io'
 metadata
 
 cookbook 'java'
-cookbook 'kagent', github: "hopshadoop/kagent-chef", branch: "master"
-cookbook 'ndb', github: "hopshadoop/ndb-chef", branch: "master"
-cookbook 'conda', github: "hopshadoop/conda-chef", branch: "master"
-cookbook 'kzookeeper', github: "hopshadoop/kzookeeper", branch: "master"
+cookbook 'kagent', github: "hopshadoop/kagent-chef", branch: "0.3"
+cookbook 'ndb', github: "hopshadoop/ndb-chef", branch: "0.3"
+cookbook 'conda', github: "hopshadoop/conda-chef", branch: "0.3"
+cookbook 'kzookeeper', github: "hopshadoop/kzookeeper", branch: "0.3"
 
 cookbook 'magic_shell'
 cookbook 'sysctl', '~> 0.10.0'
