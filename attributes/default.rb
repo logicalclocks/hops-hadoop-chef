@@ -1,7 +1,7 @@
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['version']                     = "2.8.2.2"
+default['hops']['version']                     = "2.8.2.4-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
