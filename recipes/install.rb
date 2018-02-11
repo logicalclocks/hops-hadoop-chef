@@ -491,6 +491,14 @@ directory "/sys/fs/cgroup/devices/hops-yarn" do
 end
 
 rm_private_ip = private_recipe_ip("hops","rm")
+
+begin
+  jhs_private_ip = private_recipe_ip("hops","jhs")
+rescue
+  jhs_private_ip = ""
+  Chef::Log.warn "could not find the joh history server IP - maybe it is not installed."
+end
+
 # This is here because Pydoop consults mapred-site.xml
 # Pydoop is a dependancy of hdfscontents which is installed
 # in hopsworks-chef::default
@@ -500,7 +508,8 @@ template "#{node['hops']['home']}/etc/hadoop/mapred-site.xml" do
   group node['hops']['group']
   mode "750"
   variables({
-              :rm_private_ip => rm_private_ip
+              :rm_private_ip => rm_private_ip,
+              :jhs_private_ip => jhs_private_ip              
             })
 end
 
