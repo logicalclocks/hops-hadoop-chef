@@ -142,20 +142,11 @@ group node['kagent']['certs_group'] do
   append true
 end
 
-
-case node['platform_family']
-when "debian"
-  package "openssh-server" do
-    action :install
-    options "--force-yes"
-  end
-
-  package "openssh-client" do
-    action :install
-    options "--force-yes"
-  end
-when "rhel"
-
+case node['platform']
+when 'ubuntu'
+  package 'libsnappy1v5'
+when 'centos'
+  package 'snappy'
 end
 
 if node['hops']['native_libraries'].eql? "true"
