@@ -1,9 +1,9 @@
 action :install_hops do
 
-new_resource.updated_by_last_action(false)
+  new_resource.updated_by_last_action(false)
 
   ndb_waiter "wait_mysql_started" do
-     action :wait_until_cluster_ready
+    action :wait_until_cluster_ready
   end
 
   ndb_mysql_basic "mysqld_start_hop_install" do
@@ -16,12 +16,30 @@ new_resource.updated_by_last_action(false)
     code <<-EOF
     set -e
     #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node['hops']['db']} CHARACTER SET latin1\"
-    #{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} < "#{node['hops']['conf_dir']}/hops.sql"
     EOF
-    new_resource.updated_by_last_action(true)
-    not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} -e \"show create table hdfs_block_infos;\""
   end
 
+  flyway_dir="#{node['hops']['dir']}/ndb-hops/flyway"
+
+  bash "flyway_baseline" do
+    user "root"
+    code <<-EOF
+    set -e
+    cd #{flyway_dir}
+    #{flyway_dir}/flyway baseline
+  EOF
+    not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} -e 'show tables' | grep flyway_schema_history"  
+  end
+
+  bash "flyway_migrate" do
+    user "root"
+    code <<-EOF
+    set -e
+    cd #{flyway_dir}
+    #{flyway_dir}/flyway migrate
+  EOF
+  end
+  
 end
 
 
@@ -29,13 +47,13 @@ action :install_ndb_hops do
 
   Chef::Log.info "Installing hops.sql on the mysql server"
 
-  remote_file "#{node['hops']['conf_dir']}/hops.sql" do
-    source node['dal']['schema_url']
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode "0775"
-    action :create
-  end
+  # remote_file "#{node['hops']['conf_dir']}/hops.sql" do
+  #   source node['dal']['schema_url']
+  #   owner node['hops']['hdfs']['user']
+  #   group node['hops']['group']
+  #   mode "0775"
+  #   action :create
+  # end
 
   common="share/hadoop/common/lib"
   base_filename = "#{new_resource.base_filename}"

@@ -1,6 +1,8 @@
+include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
+default['hops']['versions']                    = "2.8.2.2"
 default['hops']['version']                     = "2.8.2.3"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
@@ -197,6 +199,7 @@ default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
+
 default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
@@ -327,6 +330,12 @@ default['hops']['capacity']['default_acl_submit_applications']          = "*"
 default['hops']['capacity']['default_acl_administer_queue']             = "*"
 default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
+
+#
+# Flyway - Database upgrades
+# 
+default['hops']['flyway']['version']                                    = "5.0.3"
+default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
 
 default['hops']['hopsutil_jar']                        = "hops-util.jar"
