@@ -24,9 +24,10 @@ remote_file "#{Chef::Config['file_cache_path']}/#{flyway_tgz}" do
   group node['hops']['group']
   source node['hops']['flyway_url']
   mode 0755
-  action :create
+  action :create_if_missing
 end
 
+mysql_host = private_recipe_ip("ndb","mysqld")
 flyway_basedir="#{node['hops']['dir']}/ndb-hops"
 
 bash "unpack_flyway" do
@@ -131,7 +132,7 @@ template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
   mode "750"
   variables({
               :ndb_connectstring => node['ndb']['connectstring'],
-              :mysql_host => mysql_ip
+              :mysql_host => my_ip
             })
 end
 
