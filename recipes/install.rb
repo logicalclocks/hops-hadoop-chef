@@ -332,6 +332,14 @@ bash 'extract-hadoop' do
   code <<-EOH
         set -e
 	tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
+        # remove the config files that we would otherwise overwrite
+        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
+        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
+
         # Force copy the old etc/hadoop files to our new installation, if there are any
         if [ -d #{node['hops']['base_dir']} ] ; then
            cp -rpf #{node['hops']['base_dir']}/* #{node['hops']['home']}/etc/hadoop
