@@ -61,7 +61,7 @@ directory "#{flyway_basedir}/flyway/undo" do
   action :create
 end
 
-template "#{flyway_basedir}/flyway/sql/V0.0.2__initial_tables.sql" do
+remote_file "#{flyway_basedir}/flyway/sql/V0.0.2__initial_tables.sql" do
   source "https://raw.githubusercontent.com/hopshadoop/hops-metadata-dal-impl-ndb/master/schema/schema.sql"
   owner node['hops']['hdfs']['user']
   mode 0750
@@ -81,7 +81,7 @@ versions.push(flyway_version)
 prev="2.8.2.1"
 for version in versions do
 
-  template "#{flyway_basedir}/flyway/sql/V#{version}__hops.sql" do
+  remote_file "#{flyway_basedir}/flyway/sql/V#{version}__hops.sql" do
     source "https://raw.githubusercontent.com/hopshadoop/hops-metadata-dal-impl-ndb/master/schema/update-schema_#{prev}_to_#{version}.sql"
     owner node['hops']['hdfs']['user']
     mode 0750

@@ -339,14 +339,19 @@ bash 'extract-hadoop' do
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
         chmod 770 #{node['hops']['home']}
         # remove the config files that we would otherwise overwrite
-        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
-	rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
-        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
-        touch #{hin}
+        # rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
+	# rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
+        # rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
+        # rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
+        # rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
+        # rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
+        
+        if [ ! -d #{node['hops']['dir']}/etc ] ; then
+           mv #{node['hops']['home']}/etc #{node['hops']['dir']}
+        fi
+
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
+        touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
 end
