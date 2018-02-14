@@ -129,7 +129,7 @@ end
 node.override['hive2']['user'] = hiveUser
 
 
-template "#{node['hops']['home']}/etc/hadoop/log4j.properties" do
+template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -146,7 +146,7 @@ end
 # may have already been created. The NN will overwrite this core-site.xml file if it runs
 # after the recipe that called this default['rb'] file.
 #
-template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
+template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -165,38 +165,42 @@ template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
   action :create_if_missing
 end
 
-# file "#{node['hops']['home']}/etc/hadoop/hdfs-site.xml" do
+# file "#{node['hops']['conf_dir']}/hdfs-site.xml" do
 #   owner node['hops']['hdfs']['user']
 #   action :delete
 # end
 
 
-template "#{node['hops']['home']}/etc/hadoop/hadoop-env.sh" do
+template "#{node['hops']['conf_dir']}/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "755"
+  action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/jmxremote.access" do
+template "#{node['hops']['conf_dir']}/jmxremote.access" do
   source "jmxremote.access.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "440"
+  action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/jmxremote.password" do
+template "#{node['hops']['conf_dir']}/jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "400"
+  action :create  
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-jmxremote.password" do
+template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   mode "400"
+  action :create  
 end
 
 
@@ -205,6 +209,7 @@ template "#{node['hops']['home']}/sbin/kill-process.sh" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "754"
+  action :create
 end
 
 template "#{node['hops']['home']}/sbin/set-env.sh" do
@@ -212,6 +217,7 @@ template "#{node['hops']['home']}/sbin/set-env.sh" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "774"
+  action :create
 end
 
 
@@ -227,7 +233,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   action :create_if_missing
 end
 
-# file "#{node['hops']['home']}/etc/hadoop/erasure-coding-site.xml" do
+# file "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
 #   owner node['hops']['hdfs']['user']
 #   action :delete
 # end
@@ -245,7 +251,7 @@ if node['hops']['cgroups'].eql? "true"
   container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
+template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
@@ -262,7 +268,7 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
   action :create_if_missing
 end
 
-template "#{node['hops']['home']}/etc/hadoop/container-executor.cfg" do
+template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
@@ -274,7 +280,7 @@ template "#{node['hops']['home']}/etc/hadoop/container-executor.cfg" do
   action :create_if_missing
 end
 
-template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
+template "#{node['hops']['conf_dir']}/ssl-server.xml" do
   source "ssl-server.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['kagent']['certs_group']
@@ -286,7 +292,7 @@ template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
   action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/hadoop-metrics2.properties" do
+template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -318,7 +324,7 @@ if node['hops']['gpu'].eql? "true"
   end
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-env.sh" do
+template "#{node['hops']['conf_dir']}/yarn-env.sh" do
   source "yarn-env.sh.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']

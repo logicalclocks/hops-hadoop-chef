@@ -27,7 +27,7 @@ hopsworks_endpoint = "http://#{hopsworks_ip}:#{node['hopsworks']['port']}"
 
 
 myNN = "#{my_ip}:#{nnPort}"
-template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
+template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
