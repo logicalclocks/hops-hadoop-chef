@@ -332,29 +332,16 @@ bash 'extract-hadoop' do
   code <<-EOH
         set -e
 	tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
+        # Force copy the old etc/hadoop files to our new installation, if there are any
+        if [ -d #{node['hops']['base_dir']} ] ; then
+           cp -rpf #{node['hops']['base_dir']}/* #{node['hops']['home']}/etc/hadoop
+        fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
         # chown -L : traverse symbolic links
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
         chmod 770 #{node['hops']['home']}
-        # remove the config files that we would otherwise overwrite
-        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
-	rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
-        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
-        
-        if [ ! -d #{node['hops']['conf_dir']} ] ; then
-           mkdir -p #{node['hops']['conf_dir']}
-           mv #{node['hops']['home']}/etc/hadoop/* #{node['hops']['conf_dir']}
-           chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['conf_dir_parent']}
-        fi
-        rm -rf #{node['hops']['home']}/etc
-        ln -s #{node['hops']['conf_dir_parent']} #{node['hops']['home']}
-
-        chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
