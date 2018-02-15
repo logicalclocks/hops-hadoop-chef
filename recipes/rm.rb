@@ -111,6 +111,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status resourcemanager"    
   end
   
   directory "/etc/systemd/system/#{service_name}.service.d" do

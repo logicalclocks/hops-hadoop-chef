@@ -61,6 +61,7 @@ default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh rest
 default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh root-start-dn.sh hdfs.sh yarn.sh hadoop.sh }
 default['hops']['max_retries']                 = 0
 default['hops']['reformat']                    = "false"
+default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 

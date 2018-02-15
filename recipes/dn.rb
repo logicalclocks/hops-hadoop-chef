@@ -61,6 +61,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status datanode"    
   end
   
   

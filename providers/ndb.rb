@@ -45,7 +45,7 @@ end
 
 action :install_ndb_hops do
 
-  Chef::Log.info "Installing hops.sql on the mysql server"
+  Chef::Log.info "Installing hops sql on the mysql server"
 
   # remote_file "#{node['hops']['conf_dir']}/hops.sql" do
   #   source node['dal']['schema_url']

@@ -22,7 +22,8 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
   group node['hops']['group']
   mode "0755"
   # TODO - checksum
-  action :create_if_missing
+  #  action :create_if_missing
+  action :create
 end
 
 libhopsnvml = File.basename(node['hops']['libnvml_url']) 
@@ -90,6 +91,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status nodemanager"    
   end
 
 else #sysv

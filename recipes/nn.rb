@@ -96,24 +96,6 @@ end
 include_recipe "hops::default"
 
 
-# TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
-
-# service_name="namenode"
-# if node['hops']['systemd'] == "true"
-#   service "#{service_name}" do
-#     provider Chef::Provider::Service::Systemd
-#     supports :restart => true, :stop => true, :start => true, :status => true
-#     action :restart
-#   end
-# else  #sysv
-#   service "#{service_name}" do
-#     provider Chef::Provider::Service::Init::Debian
-#     supports :restart => true, :stop => true, :start => true, :status => true
-#     action :restart
-#   end
-# end
-
-
 service_name="namenode"
 
 if node['hops']['systemd'] == "true"
@@ -142,6 +124,7 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    action :create_if_missing
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
 end
@@ -150,6 +133,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status namenode"
   end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do
