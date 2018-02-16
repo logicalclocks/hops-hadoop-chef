@@ -240,6 +240,12 @@
     <description>Default time (in seconds) between checks for retained log files in HDFS. Only applicable if log-aggregation is disabled.</description>
   </property>
   <property>
+    <name>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds</name>
+    <value><%= node['hops']['yarn']['log_roll_interval'] %></value>
+    <description>Defines how often NMs wake up to upload log files. The default value is -1. By default, the logs will be uploaded when the application is finished. By setting this configure, logs can be uploaded periodically when the application is running. The minimum rolling-interval-seconds can be set is 3600.
+    </description>
+  </property>
+  <property>
     <name>yarn.nodemanager.heartbeat.interval-ms</name>
     <value><%= node['hops']['yarn']['nodemanager_hb_ms'] %></value>
     <description>Time in ms between heartbeats sent from the NodeManager to the ResourceManager.</description>

@@ -83,6 +83,7 @@ default['hops']['yarn']['log_aggregation']     = "true"
 default['hops']['yarn']['nodemanager']['remote_app_log_dir'] = node['hops']['hdfs']['user_home'] + "/" + node['hops']['yarn']['user'] + "/logs"
 default['hops']['yarn']['log_retain_secs']     = 86400
 default['hops']['yarn']['log_retain_check']    = 100
+default['hops']['yarn']['log_roll_interval']    = 3600
 
 default['hops']['yarn']['container_cleanup_delay_sec']  = 0
 
