@@ -1,5 +1,6 @@
 require 'resolv'
 
+
 ndb_connectstring()
 my_ip = my_private_ip()
 
@@ -50,7 +51,7 @@ template "#{flyway_basedir}/flyway/conf/flyway.conf" do
   owner node['hops']['hdfs']['user']
   mode 0750
   variables({
-              :mysql_host => mysql_host
+              :mysql_host => my_ip
             })
   action :create  
 end
