@@ -165,12 +165,6 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
   action :create_if_missing
 end
 
-# file "#{node['hops']['conf_dir']}/hdfs-site.xml" do
-#   owner node['hops']['hdfs']['user']
-#   action :delete
-# end
-
-
 template "#{node['hops']['conf_dir']}/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
   owner node['hops']['hdfs']['user']
