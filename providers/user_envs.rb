@@ -26,8 +26,8 @@ echo export HADOOP_HDFS_HOME=#{node['hops']['base_dir']} >> /home/#{username}/.b
 echo export YARN_HOME=#{node['hops']['base_dir']} >> /home/#{username}/.bash_profile
 echo export HADOOP_HOME=#{node['hops']['base_dir']} >> /home/#{username}/.bash_profile
 
-echo export HADOOP_CONF_DIR=#{node['hops']['base_dir']}/etc/hadoop >> /home/#{username}/.bash_profile
-echo export YARN_CONF_DIR=#{node['hops']['base_dir']}/etc/hadoop >> /home/#{username}/.bash_profile
+echo export HADOOP_CONF_DIR=#{node['hops']['conf_dir']} >> /home/#{username}/.bash_profile
+echo export YARN_CONF_DIR=#{node['hops']['conf_dir']} >> /home/#{username}/.bash_profile
 
 echo export HADOOP_PID_DIR=#{node['hops']['base_dir']}/logs >> /home/#{username}/.bash_profile
 echo export YARN_PID_DIR=#{node['hops']['base_dir']}/logs >> /home/#{username}/.bash_profile

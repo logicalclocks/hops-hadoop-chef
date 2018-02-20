@@ -82,12 +82,12 @@ http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterS
 
   <property>
     <name>mapreduce.jobhistory.address</name>
-    <value><%= @rm_private_ip %>:10020</value>
+    <value><%= @jhs_private_ip %>:10020</value>
   </property>
 
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
-    <value><%= @rm_private_ip %>:19888</value>
+    <value><%= @jhs_private_ip %>:19888</value>
   </property>
 
   <property>

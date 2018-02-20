@@ -324,7 +324,7 @@ remote_file cached_package_filename do
   not_if { ::File.exist?(cached_package_filename) }
 end
 
-hin = "#{node['hops']['home']}/.#{base_package_filename}_downloaded"
+hin = "#{node['hops']['home']}/.#{base_package_filename}_installed"
 base_name = File.basename(base_package_filename, ".tgz")
 # Extract and install hadoop
 bash 'extract-hadoop' do
@@ -332,21 +332,25 @@ bash 'extract-hadoop' do
   code <<-EOH
         set -e
 	tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
+        # remove the config files that we would otherwise overwrite
+        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
+        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
+        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
+
+        # Force copy the old etc/hadoop files to our new installation, if there are any
+        if [ -d #{node['hops']['base_dir']} ] ; then
+           cp -rpf #{node['hops']['base_dir']}/etc/hadoop/* #{node['hops']['home']}/etc/hadoop/
+        fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
         # chown -L : traverse symbolic links
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
         chmod 770 #{node['hops']['home']}
-        # remove the config files that we would otherwise overwrite
-        rm -f #{node['hops']['home']}/etc/hadoop/yarn-site.xml
-	rm -f #{node['hops']['home']}/etc/hadoop/container-executor.cfg
-        rm -f #{node['hops']['home']}/etc/hadoop/core-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/hdfs-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/mapred-site.xml
-        rm -f #{node['hops']['home']}/etc/hadoop/log4j.properties
         touch #{hin}
-        chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['home']}
 	EOH
   not_if { ::File.exist?("#{hin}") }
 end
@@ -482,17 +486,27 @@ directory "/sys/fs/cgroup/devices/hops-yarn" do
 end
 
 rm_private_ip = private_recipe_ip("hops","rm")
+
+begin
+  jhs_private_ip = private_recipe_ip("hops","jhs")
+rescue
+  jhs_private_ip = ""
+  Chef::Log.warn "could not find the joh history server IP - maybe it is not installed."
+end
+
 # This is here because Pydoop consults mapred-site.xml
 # Pydoop is a dependancy of hdfscontents which is installed
 # in hopsworks-chef::default
-template "#{node['hops']['home']}/etc/hadoop/mapred-site.xml" do
+template "#{node['hops']['base_dir']}/etc/hadoop/mapred-site.xml" do
   source "mapred-site.xml.erb"
   owner node['hops']['mr']['user']
   group node['hops']['group']
   mode "750"
   variables({
-              :rm_private_ip => rm_private_ip
+              :rm_private_ip => rm_private_ip,
+              :jhs_private_ip => jhs_private_ip              
             })
+  action :create
 end
 
 template "/etc/ld.so.conf.d/hops.conf" do
@@ -500,6 +514,7 @@ template "/etc/ld.so.conf.d/hops.conf" do
   owner "root"
   group "root"
   mode "644"
+  action :create  
 end
 
 

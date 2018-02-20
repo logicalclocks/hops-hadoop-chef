@@ -78,7 +78,7 @@ end
 
 
 action :create_as_superuser do
-  Chef::Log.info "Creating hdfs directory: #{@new_resource.name}"
+  Chef::Log.info "Putting hdfs file: #{@new_resource.name}"
 
   recursive="-p"
   if new_resource.recursive == false
@@ -106,3 +106,47 @@ action :create_as_superuser do
   end
 
 end
+
+action :rm_as_superuser do
+
+  Chef::Log.info "Removing hdfs file: #{@new_resource.name}"
+
+  recursive="-r"
+  if new_resource.recursive == false
+      recursive=""
+  end
+
+  bash "rm-#{new_resource.name}" do
+    user node['hops']['hdfs']['user']
+    group node['hops']['group']
+    ignore_failure true
+    code <<-EOF
+     . #{node['hops']['base_dir']}/sbin/set-env.sh
+     #{node['hops']['base_dir']}/bin/hdfs dfs -rm #{recursive} #{new_resource.name}
+     if [ $? -ne 0 ] ; then
+        sleep 5
+        #{node['hops']['base_dir']}/bin/hdfs dfs -rm -f #{recursive} #{new_resource.name}
+     fi
+    EOF
+  only_if "su #{node['hops']['hdfs']['user']} -c \". #{node['hops']['base_dir']}/sbin/set-env.sh && #{node['hops']['base_dir']}/bin/hdfs dfs -test -e #{new_resource.name}\""
+  end
+
+
+end  
+
+
+action :replace_as_superuser do
+
+  hops_hdfs_directory "#{new_resource.name}" do
+    action :rm_as_superuser
+  end
+
+  hops_hdfs_directory "#{new_resource.name}" do
+    owner "#{new_resource.owner}"
+    group "#{new_resource.group}"
+    mode "#{new_resource.mode}"
+    dest "#{new_resource.dest}"
+    action :put_as_superuser
+  end
+
+end  

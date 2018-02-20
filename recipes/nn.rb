@@ -25,9 +25,10 @@ end
 hopsworks_ip = private_recipe_ip("hopsworks", "default")
 hopsworks_endpoint = "http://#{hopsworks_ip}:#{node['hopsworks']['port']}"
 
+include_recipe "hops::default"
 
 myNN = "#{my_ip}:#{nnPort}"
-template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
+template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -69,20 +70,22 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
               :partition_key => partition_key,
               :nnHTTPAddress => nnHTTPAddress
             })
+  action :create
 end
 
 template "#{node['hops']['home']}/sbin/root-drop-and-recreate-hops-db.sh" do
   source "root-drop-and-recreate-hops-db.sh.erb"
   owner "root"
   mode "700"
+  action :create  
 end
-
 
 template "#{node['hops']['home']}/sbin/drop-and-recreate-hops-db.sh" do
   source "drop-and-recreate-hops-db.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "771"
+  action :create  
 end
 
 
@@ -91,28 +94,6 @@ template "#{node['hops']['home']}/sbin/root-test-drop-full-recreate.sh" do
   owner "root"
   mode "700"
 end
-
-
-include_recipe "hops::default"
-
-
-# TODO: This is a hack - sometimes the nn fails during install. If so, just restart it.
-
-# service_name="namenode"
-# if node['hops']['systemd'] == "true"
-#   service "#{service_name}" do
-#     provider Chef::Provider::Service::Systemd
-#     supports :restart => true, :stop => true, :start => true, :status => true
-#     action :restart
-#   end
-# else  #sysv
-#   service "#{service_name}" do
-#     provider Chef::Provider::Service::Init::Debian
-#     supports :restart => true, :stop => true, :start => true, :status => true
-#     action :restart
-#   end
-# end
-
 
 service_name="namenode"
 
@@ -142,6 +123,7 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    action :create_if_missing
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
 end
@@ -150,6 +132,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status namenode"
   end
 
   directory "/etc/systemd/system/#{service_name}.service.d" do

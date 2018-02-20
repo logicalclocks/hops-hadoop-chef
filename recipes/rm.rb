@@ -9,7 +9,7 @@ zk_ip = private_recipe_ip('kzookeeper', 'default')
 
 ndb_connectstring()
 
-template "#{node['hops']['home']}/etc/hadoop/RM_EventAPIConfig.ini" do 
+template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do 
   source "RM_EventAPIConfig.ini.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
@@ -19,7 +19,7 @@ template "#{node['hops']['home']}/etc/hadoop/RM_EventAPIConfig.ini" do
             })
 end
 
-template "#{node['hops']['home']}/etc/hadoop/rm-jmxremote.password" do
+template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
@@ -37,7 +37,7 @@ if node['hops']['cgroups'].eql? "true"
 end
 
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
+template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
@@ -53,7 +53,7 @@ template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
   action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/capacity-scheduler.xml" do
+template "#{node['hops']['conf_dir']}/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
@@ -111,6 +111,7 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status resourcemanager"    
   end
   
   directory "/etc/systemd/system/#{service_name}.service.d" do

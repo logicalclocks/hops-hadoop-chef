@@ -1,7 +1,9 @@
+include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['version']                     = "2.8.2.2"
+default['hops']['versions']                    = "2.8.2.2"
+default['hops']['version']                     = "2.8.2.3"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -25,7 +27,7 @@ default['hops']['home']                        = node['hops']['dir'] + "/hadoop-
 default['hops']['logs_dir']                    = node['hops']['base_dir'] + "/logs"
 default['hops']['tmp_dir']                     = node['hops']['base_dir'] + "/tmp"
 default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/etc"
-default['hops']['conf_dir']                    = node['hops']['base_dir'] + "/etc/hadoop"
+default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
 default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sbin"
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
 default['hops']['data_dir']                    = node['hops']['dir'] + "/hopsdata"
@@ -40,7 +42,7 @@ default['hops']['hdfs']['blocksize']           = "134217728"
 default['hops']['hdfs']['umask']               = "0022"
 
 default['hops']['url']['primary']              = node['download_url'] + "/hops-" + node['hops']['version'] + ".tgz"
-default['hops']['url']['secondary']            = "https://hops.site/hops-" + node['hops']['version'] + ".tgz"
+default['hops']['url']['secondary']            = "https://www.hops.site/hops-" + node['hops']['version'] + ".tgz"
 
 default['hops']['install_protobuf']            = "false"
 default['hops']['protobuf_url']                = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
@@ -59,6 +61,7 @@ default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh rest
 default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh root-start-dn.sh hdfs.sh yarn.sh hadoop.sh }
 default['hops']['max_retries']                 = 0
 default['hops']['reformat']                    = "false"
+default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
@@ -198,6 +201,7 @@ default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
+
 default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
@@ -328,6 +332,12 @@ default['hops']['capacity']['default_acl_submit_applications']          = "*"
 default['hops']['capacity']['default_acl_administer_queue']             = "*"
 default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
+
+#
+# Flyway - Database upgrades
+# 
+default['hops']['flyway']['version']                                    = "5.0.3"
+default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
 
 default['hops']['hopsutil_version']                    = "0.4.0"
