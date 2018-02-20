@@ -330,12 +330,10 @@ default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
 
 
-default['hops']['hopsutil_jar']                        = "hops-util.jar"
-default['hops']['examples_jar']                        = "hops-spark.jar"
-default['hops']['hopsutil_version']                    = "0.1.0"
-default['hops']['examples_version']                    = "0.1.0"
+default['hops']['hopsutil_version']                    = "0.4.0"
+default['hops']['hopsexamples_version']                = "0.4.0"
 default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
-default['hops']['hops_spark_kafka_example']['url']     = "#{node['download_url']}/hops-spark-#{node['hops']['examples_version']}.jar"
+default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
 
 #GPU
 default['hops']['yarn']['min_gpus']                    = 0
