@@ -137,17 +137,15 @@ end
 
 action :replace_as_superuser do
 
-  hops_hdfs_directory "#{@new_resource.name}" do
-    owner "#{@new_resource.owner}"
-    group "#{@new_resource.group}"
+  hops_hdfs_directory "#{new_resource.name}" do
     action :rm_as_superuser
   end
 
-  hops_hdfs_directory "#{@new_resource.name}" do
-    owner "#{@new_resource.owner}"
-    group "#{@new_resource.group}"
-    mode "#{@new_resource.mode}"
-    dest "#{@new_resource.dest}"
+  hops_hdfs_directory "#{new_resource.name}" do
+    owner "#{new_resource.owner}"
+    group "#{new_resource.group}"
+    mode "#{new_resource.mode}"
+    dest "#{new_resource.dest}"
     action :put_as_superuser
   end
 
