@@ -18,6 +18,15 @@ action :install_hops do
     #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS #{node['hops']['db']} CHARACTER SET latin1\"
     EOF
   end
+  flyway_basedir="#{node['hops']['dir']}/ndb-hops"
+  
+  template "#{flyway_basedir}/flyway.sql" do
+    source "flyway.sql.erb"
+    owner node['hops']['hdfs']['user']
+    mode 0750
+    action :create  
+  end
+  
 
   flyway_dir="#{node['hops']['dir']}/ndb-hops/flyway"
 
@@ -26,7 +35,8 @@ action :install_hops do
     code <<-EOF
     set -e
     cd #{flyway_dir}
-    #{flyway_dir}/flyway baseline
+#    #{flyway_dir}/flyway baseline
+   #{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} < #{node['hops']['dir']}/ndb-hops/flyway.sql
   EOF
     not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} -e 'show tables' | grep flyway_schema_history"  
   end
