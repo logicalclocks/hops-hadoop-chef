@@ -2,7 +2,7 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.1, 2.8.2.2"
+default['hops']['versions']                    = "2.8.2.2"
 default['hops']['version']                     = "2.8.2.3"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
