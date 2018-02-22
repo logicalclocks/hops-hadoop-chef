@@ -35,8 +35,8 @@ action :install_hops do
     code <<-EOF
     set -e
     cd #{flyway_dir}
-#    #{flyway_dir}/flyway baseline
-   #{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} < #{node['hops']['dir']}/ndb-hops/flyway.sql
+    #{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} < #{node['hops']['dir']}/ndb-hops/flyway.sql
+    #{flyway_dir}/flyway baseline
   EOF
     not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} -e 'show tables' | grep flyway_schema_history"  
   end
