@@ -130,10 +130,12 @@ template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
 end
 
 #
-# A MySQL server should have been installed locally -  install the tables and rows
+# A MySQL server should have been installed locally -  install the tables and rows. But only from 1 host.
 #
-hops_ndb "install" do
-  action :install_hops
+if my_ip.eql? node['hops']['ndb']['private_ips'][0]
+  hops_ndb "install" do
+    action :install_hops
+  end
 end
 
 #
@@ -164,8 +166,6 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
   end
 
   
-  my_ip = my_private_ip()
-
   #  for nn_ip in node['hops']['nn']['private_ips']
   if my_ip.eql? node['hops']['nn']['private_ips'][0]
     # Wait for db to start accepting requests (can be slow sometimes)
