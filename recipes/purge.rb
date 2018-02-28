@@ -1,5 +1,5 @@
 daemons = %w{namenode datanode resourcemanager nodemanager historyserver proxyserver}
-daemons.each { |d| 
+daemons.each { |d|
   bash 'uninstall_service_#{d}' do
     user "root"
     ignore_failure true
@@ -91,17 +91,4 @@ directory "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['nd
   recursive true
   action :delete
   ignore_failure true
-end
-
-
-directory "/sys/fs/cgroup/cpu/hops-yarn" do
-  recursive true
-  ignore_failure true
-  action :delete  
-end
-
-directory "/sys/fs/cgroup/devices/hops-yarn" do
-  recursive true
-  ignore_failure true
-  action :delete  
 end

@@ -8,7 +8,7 @@ version          "0.5.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
-#link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
+#link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a>
 recipe            "hops::nn", "Installs a HopsFs NameNode"
 recipe            "hops::ndb", "Installs MySQL Cluster (ndb) dal driver for Hops"
 recipe            "hops::dn", "Installs a HopsFs DataNode"
@@ -29,6 +29,7 @@ depends 'magic_shell'
 depends 'sysctl'
 depends 'cmake'
 depends 'kzookeeper'
+depends 'hopsmonitor'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -166,6 +167,10 @@ attribute "hops/yarn/nm_heapsize_mbs",
 
 attribute "hops/yarn/rm_heapsize_mbs",
           :description => "Resource manager heapsize. (default: 1000)",
+          :type => 'string'
+
+attribute "hops/yarn/container_executor",
+          :description => "Container executor class",
           :type => 'string'
 
 attribute "hops/trash/interval",
@@ -361,7 +366,7 @@ attribute "hops/capacity/queue_mapping",
 attribute "hops/capacity/queue_mapping_override.enable",
           :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
           :type => "string"
-          
+
 attribute "kagent/enabled",
           :description => "Set to 'true' to enable, 'false' to disable kagent",
           :type => "string"
@@ -392,19 +397,18 @@ attribute "hops/yarn/max_gpus",
           :type => "string"
 
 attribute "hops/gpu",
-          :description => "Are GPUs enabled for YARN? Default: false",
+          :description => "Are GPUs enabled for YARN? (on this node) Default: false",
           :type => "string"
 
 attribute "hops/yarn/gpus",
           :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
           :type => "string"
 
-
-#CGroups settings
-attribute "hops/yarn/groups_enabled",
-          :description => "",
+attribute "hops/yarn/cluster/gpu",
+          :description => "Is there a machine in the cluster with gpus?",
           :type => "string"
 
+#CGroups settings
 attribute "hops/yarn/groups",
           :description => "",
           :type => "string"
@@ -425,8 +429,8 @@ attribute "hops/hops_examples_version",
           :description => "Version of the hops-spark jar file.",
           :type => "string"
 
-attribute "hops/cgroups",
-          :description => "'true' to enable cgroups, else (default) 'false'",
+attribute "hops/yarn/cgroups",
+          :description => "'true' to enable cgroups (default), else 'false'",
           :type => "string"
 
 attribute "livy/user",
