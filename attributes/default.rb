@@ -320,7 +320,7 @@ default['hops']['rpc']['ssl'] = "false"
 default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW_ALL"
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
-default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
+default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
 
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000
