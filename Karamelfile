@@ -9,6 +9,7 @@ dependencies:
     global:
       - hopsmonitor::default
       - kagent::default
+      - hops::ndb
   - recipe: hops::rm
     global:
       - hops::dn
