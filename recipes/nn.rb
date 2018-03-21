@@ -23,7 +23,23 @@ else
 end
 
 hopsworks_ip = private_recipe_ip("hopsworks", "default")
-hopsworks_endpoint = "http://#{hopsworks_ip}:#{node['hopsworks']['port']}"
+
+if node['hops']['crl']['input_uri'].empty?
+  hopsworks_crl_uri = "RPC TLS NOT ENABLED"
+  if node['hops']['rpc']['ssl'].eql? "true"
+    hopsworks_crl_uri = "Could not access hopsworks-chef"
+    if node.attribute?("hopsworks")
+      hopsworks_ip = private_recipe_ip("hopsworks", "default")
+      hopsworks_port = "8181"
+      if node['hopsworks'].attribute?(:secure_port)
+        hopsworks_port = node['hopsworks']['secure_port']
+      end
+      hopsworks_crl_uri = "https://#{hopsworks_ip}:#{hopsworks_port}/intermediate.crl.pem"
+    end
+  end
+else
+  hopsworks_crl_uri = node['hops']['crl']['input_uri']
+end
 
 include_recipe "hops::default"
 
@@ -42,7 +58,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
               :jupyterUser => node['jupyter']['user'],
               :allNNs => myNN,
               :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
-              :hopsworks_endpoint => hopsworks_endpoint
+              :hopsworks_crl_uri => hopsworks_crl_uri
             })
 end
 
