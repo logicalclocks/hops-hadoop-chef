@@ -322,6 +322,13 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
 
+# CRL validation when RPC TLS is enabled
+default['hops']['crl']['validation_enabled']                            = "false"
+default['hops']['crl']['fetcher_class']                                 = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
+default['hops']['crl']['input_uri']                                     = ""
+default['hops']['crl']['output_file']                                   = "#{node['hops']['tmp_dir']}/hops_crl.pem"
+default['hops']['crl']['fetcher_interval']                              = "1d"
+
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000
 default['hops']['capacity']['max_am_percent']                           = 0.3

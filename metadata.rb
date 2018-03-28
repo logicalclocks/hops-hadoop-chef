@@ -214,6 +214,26 @@ attribute "hops/rpc/ssl",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
+attribute "hops/crl/validation_enabled",
+          :description => "Enable CRL validation when RPC TLS is enabled",
+          :type => 'string'
+
+attribute "hops/crl/fetcher_class",
+          :description => "Canonical name of the CRL fetcher class",
+          :type => 'string'
+
+attribute "hops/crl/input_uri",
+          :description => "Location where the CRL will be fetched from",
+          :type => 'string'
+
+attribute "hops/crl/output_file",
+          :description => "Location where the CRL will be stored",
+          :type => 'string'
+
+attribute "hops/crl/fetcher_interval",
+          :description => "Interval for the CRL fetcher service, suffix can be m/h/d",
+          :type => 'string'
+
 attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'
