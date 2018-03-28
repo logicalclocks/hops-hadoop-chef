@@ -38,9 +38,9 @@ jdbc_url()
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
-if node['hops']['rpc']['ssl'].eql? "true"
+if node['hops']['tls']['enabled'].eql? "true"
   rpcSocketFactory = node['hops']['hadoop']['rpc']['socket']['factory']
-  if node['hops']['crl']['input_uri'].empty?
+  if node['hops']['tls']['crl_input_uri'].empty?
     hopsworks_crl_uri = "Could not access hopsworks-chef"
     if node.attribute?("hopsworks")
       hopsworks_ip = private_recipe_ip("hopsworks", "default")
@@ -51,7 +51,7 @@ if node['hops']['rpc']['ssl'].eql? "true"
       hopsworks_crl_uri = "https://#{hopsworks_ip}:#{hopsworks_port}/intermediate.crl.pem"
     end
   else
-    hopsworks_crl_uri = node['hops']['crl']['input_uri']
+    hopsworks_crl_uri = node['hops']['tls']['crl_input_uri']
   end
 end
 
@@ -304,7 +304,7 @@ template "#{node['hops']['conf_dir']}/yarn-env.sh" do
 end
 
 # The ACL to keystore directory is needed during deployment
-if node['hops']['rpc']['ssl'].eql? "true"
+if node['hops']['tls']['enabled'].eql? "true"
   bash "update-acl-of-keystore" do
     user "root"
     code <<-EOH

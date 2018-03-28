@@ -314,7 +314,7 @@ default['hops']['ssl']['client']['truststore']['location']		= "#{node['kagent'][
 default['hops']['server']['threadpool'] = 3
 
 # RPC TLS
-default['hops']['rpc']['ssl'] = "false"
+default['hops']['tls']['enabled'] = "false"
 
 # Do not verify the hostname
 default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW_ALL"
@@ -323,11 +323,11 @@ default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.a
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
 
 # CRL validation when RPC TLS is enabled
-default['hops']['crl']['validation_enabled']                            = "false"
-default['hops']['crl']['fetcher_class']                                 = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
-default['hops']['crl']['input_uri']                                     = ""
-default['hops']['crl']['output_file']                                   = "#{node['hops']['tmp_dir']}/hops_crl.pem"
-default['hops']['crl']['fetcher_interval']                              = "1d"
+default['hops']['tls']['crl_enabled']                                   = "false"
+default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
+default['hops']['tls']['crl_input_uri']                                 = ""
+default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
+default['hops']['tls']['crl_fetcher_interval']                          = "1d"
 
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000

@@ -210,27 +210,27 @@ attribute "hops/url/secondary",
           :description => "Secondary download url of hops distribution",
           :type => 'string'
 
-attribute "hops/rpc/ssl",
+attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
-attribute "hops/crl/validation_enabled",
+attribute "hops/tls/crl_enabled",
           :description => "Enable CRL validation when RPC TLS is enabled",
           :type => 'string'
 
-attribute "hops/crl/fetcher_class",
+attribute "hops/tls/crl_fetcher_class",
           :description => "Canonical name of the CRL fetcher class",
           :type => 'string'
 
-attribute "hops/crl/input_uri",
+attribute "hops/tls/crl_input_uri",
           :description => "Location where the CRL will be fetched from",
           :type => 'string'
 
-attribute "hops/crl/output_file",
+attribute "hops/tls/crl_output_file",
           :description => "Location where the CRL will be stored",
           :type => 'string'
 
-attribute "hops/crl/fetcher_interval",
+attribute "hops/tls/crl_fetcher_interval",
           :description => "Interval for the CRL fetcher service, suffix can be m/h/d",
           :type => 'string'
 

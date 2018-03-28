@@ -303,7 +303,7 @@
 <!-- SSL -->
 <!-- Secure webhdfs by requiring TLS two-way authentication, port
      50070 should be firewalled -->
-<% if node['hops']['rpc']['ssl'].eql? "true" -%>
+<% if node['hops']['tls']['enabled'].eql? "true" -%>
 <property>
   <name>dfs.https.enable</name>
   <value><%= node['hops']['dfs']['https']['enable'] %></value>
