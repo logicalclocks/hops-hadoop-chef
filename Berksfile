@@ -11,6 +11,5 @@ cookbook 'conda', github: "hopshadoop/conda-chef", branch: "master"
 cookbook 'kzookeeper', github: "hopshadoop/kzookeeper", branch: "master"
 
 cookbook 'magic_shell'
-cookbook 'sysctl', '~> 0.10.0'
+cookbook 'sysctl', '~> 1.0.3'
 cookbook 'cmake', '~> 0.3.0'
-

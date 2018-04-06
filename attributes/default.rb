@@ -169,7 +169,6 @@ default['hops']['yarn']['memory_percent']      = "75"
 default['hops']['limits']['nofile']            = '32768'
 default['hops']['limits']['nproc']             = '65536'
 default['hops']['limits']['memory_limit']      = '100000'
-default['hops']['os_defaults']                 = "true"
 
 default['hops']['user_envs']                   = "true"
 
@@ -376,3 +375,10 @@ default['hops']['small_files']['in_memory']['max_size']                         
 
 default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
 default['hopsworks']['default']['private_ips']                                      = ['10.0.2.15']
+
+# Kernel tuning
+default['hops']['kernel']['somaxconn']                  = 4096
+default['hops']['kernel']['swappiness']                 = 1
+default['hops']['kernel']['overcommit_memory']          = 1
+default['hops']['kernel']['overcommit_ratio']           = 100
+
