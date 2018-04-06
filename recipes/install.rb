@@ -17,51 +17,38 @@ when "ubuntu"
 end
 
 
-if node['hops']['os_defaults'] == "true" then
-
-  # http://blog.cloudera.com/blog/2015/01/how-to-deploy-apache-hadoop-clusters-like-a-boss/
-
-  # case node['platform']
-  # when "ubuntu"
-  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.d/99-chef-hops.conf"
-  # when "rhel"
-  #   node.default['sysctl']['conf_file'] = "/etc/sysctl.d/99-chef-hops.conf"
-  # end
-
-
-  # node.default['sysctl']['allow_sysctl_conf'] = true
-  # node.default['sysctl']['params']['vm']['swappiness'] = 1
-  # node.default['sysctl']['params']['vm']['overcommit_memory'] = 1
-  # node.default['sysctl']['params']['vm']['overcommit_ratio'] = 100
-  # node.default['sysctl']['params']['net']['core']['somaxconn'] = 1024
-  # include_recipe 'sysctl::apply'
-
-  #
-  # http://www.slideshare.net/vgogate/hadoop-configuration-performance-tuning
-  #
-  case node['platform_family']
-  when "debian"
-    bash "configure_os" do
-      user "root"
-      code <<-EOF
-   EOF
-    end
-  when "redhat"
-    bash "configure_os" do
-      user "root"
-      code <<-EOF
-      echo "never" > /sys/kernel/mm/redhat_transparent_hugepages/defrag
-     EOF
-    end
-
-  end
-
+# http://blog.cloudera.com/blog/2015/01/how-to-deploy-apache-hadoop-clusters-like-a-boss/
+# Set Kernel parameters
+sysctl_param 'vm.swappiness' do
+  value node['hops']['kernel']['swappiness']
 end
 
+sysctl_param 'vm.overcommit_memory' do
+  value node['hops']['kernel']['overcommit_memory']
+  value
+end
 
+sysctl_param 'vm.overcommit_ratio' do
+  value node['hops']['kernel']['overcommit_ratio']
+end
+
+sysctl_param 'net.core.somaxconn' do
+  value node['hops']['kernel']['somaxconn']
+end
+
+#
+# http://www.slideshare.net/vgogate/hadoop-configuration-performance-tuning
+#
+if node['platform_family'].eql?("redhat")
+  bash "configure_os" do
+     user "root"
+     code <<-EOF
+      echo "never" > /sys/kernel/mm/redhat_transparent_hugepages/defrag
+     EOF
+  end
+end
 
 include_recipe "java"
-
 
 group node['hops']['group'] do
   action :create

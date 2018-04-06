@@ -472,3 +472,20 @@ attribute "hopsmonitor/default/private_ips",
 attribute "hopsworks/default/private_ips",
           :description => "Hopsworks private ip",
           :type => "string"
+
+# Kernel tuning parameters
+attribute "hops/kernel/somaxconn",
+          :description => "net.core.somaxconn value",
+          :type => "string"
+
+attribute "hops/kernel/swappiness",
+          :description => "vm.swappiness value",
+          :type => "string"
+
+attribute "hops/kernel/overcommit_memory",
+          :description => "vm.overcommit_memory value",
+          :type => "string"
+
+attribute "hops/kernel/overcommit_ratio",
+          :description => "vm.overcommit_ratio value",
+          :type => "string"
