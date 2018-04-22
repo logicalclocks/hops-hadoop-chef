@@ -12,7 +12,8 @@ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
 . ${bin}/set-env.sh
 
 export PATH=$PATH:/usr/local/cuda/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/lib64
+# nccl2 needed by horovod
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/lib64:/usr/local/nccl2/lib
 
 log=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-$command-$h.log
 
