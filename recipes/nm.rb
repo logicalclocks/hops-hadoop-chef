@@ -132,7 +132,7 @@ if node.attribute?('tensorflow') == true
   if node['tensorflow'].attribute?('mpi') == "true"
     homedir = node['hops']['yarnapp']['user'].eql?("root") ? "/root" : "/home/#{node['hops']['yarnapp']['user']}"
     kagent_keys "#{homedir}" do
-      cb_user "#{node['yarnapp']['user']}"
+      cb_user "#{node['hops']['yarnapp']['user']}"
       cb_group "#{node['hops']['group']}"
       cb_name "hopsworks"
       cb_recipe "default"  
