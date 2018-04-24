@@ -129,7 +129,7 @@ end
 # Add the glassfish users' public key, so that it can start/stop horovod on host using mpi-run
 #
 if node.attribute?('tensorflow') == true
-  if node['tensorflow'].attribute?('mpi') == "true"
+  if node['tensorflow'].attribute?('mpi') == true
     homedir = node['hops']['yarnapp']['user'].eql?("root") ? "/root" : "/home/#{node['hops']['yarnapp']['user']}"
     kagent_keys "#{homedir}" do
       cb_user "#{node['hops']['yarnapp']['user']}"
