@@ -189,7 +189,7 @@
   <!-- RPC TLS support -->
   <property>
     <name>ipc.server.ssl.enabled</name>
-    <value><%= node['hops']['rpc']['ssl'] %></value>
+    <value><%= node['hops']['tls']['enabled'] %></value>
   </property>
 
   <property>
@@ -202,7 +202,7 @@
     <value><%= @rpcSocketFactory %></value>
   </property>
 
-  <% if node['hops']['rpc']['ssl'].eql? "true" -%>
+  <% if node['hops']['tls']['enabled'].eql? "true" -%>
 
   <property>
     <name>hadoop.ssl.enabled.protocols</name>
@@ -231,10 +231,6 @@
   </property>
 
   <!-- TLS client configuration -->
-  <property>
-    <name>client.hopsworks.rest.endpoint</name>
-    <value><%= @hopsworks_endpoint %></value>
-  </property>
 
   <property>
     <name>client.rpc.ssl.enabled.protocol</name>
@@ -250,6 +246,33 @@
     <name>hadoop.ssl.require.client.cert</name>
     <value>true</value>
   </property>
+
+  <!-- CRL validation configuration -->
+  <property>
+    <name>hops.crl.validation.enabled</name>
+    <value><%= node['hops']['tls']['crl_enabled'] %></value>
+  </property>
+  
+  <property>
+    <name>hops.crl.fetcher.class</name>
+    <value><%= node['hops']['tls']['crl_fetcher_class'] %></value>
+  </property>
+
+  <property>
+    <name>hops.crl.input.uri</name>
+    <value><%= @hopsworks_crl_uri %></value>
+  </property>
+
+  <property>
+    <name>hops.crl.output.file</name>
+    <value><%= node['hops']['tls']['crl_output_file'] %></value>
+  </property>
+
+  <property>
+    <name>hops.crl.fetcher.interval</name>
+    <value><%= node['hops']['tls']['crl_fetcher_interval'] %></value>
+  </property>
+
   <% end -%>
  
 </configuration>

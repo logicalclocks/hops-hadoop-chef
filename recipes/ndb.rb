@@ -1,5 +1,6 @@
 require 'resolv'
 
+
 ndb_connectstring()
 my_ip = my_private_ip()
 
@@ -16,6 +17,78 @@ link "#{node['hops']['dir']}/ndb-hops" do
   to "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}"
 end
 
+flyway_tgz = File.basename(node['hops']['flyway_url'])
+flyway =  "flyway-" + node['hops']['flyway']['version']
+
+remote_file "#{Chef::Config['file_cache_path']}/#{flyway_tgz}" do
+  user node['hops']['hdfs']['user']
+  group node['hops']['group']
+  source node['hops']['flyway_url']
+  mode 0755
+  action :create_if_missing
+end
+
+mysql_host = private_recipe_ip("ndb","mysqld")
+flyway_basedir="#{node['hops']['dir']}/ndb-hops"
+
+bash "unpack_flyway" do
+  user "root"
+  code <<-EOF
+    set -e
+    cd #{Chef::Config['file_cache_path']}
+    tar -xzf #{flyway_tgz}
+    mv #{flyway} #{flyway_basedir}
+    cd #{flyway_basedir}
+    chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} flyway*
+    rm -rf flyway
+    ln -s #{flyway} flyway
+  EOF
+  not_if { ::File.exists?("#{flyway_basedir}/flyway/flyway") }
+end
+
+template "#{flyway_basedir}/flyway/conf/flyway.conf" do
+  source "flyway.conf.erb"
+  owner node['hops']['hdfs']['user']
+  mode 0750
+  variables({
+              :mysql_host => my_ip
+            })
+  action :create  
+end
+
+directory "#{flyway_basedir}/flyway/undo" do
+  owner node['hops']['hdfs']['user']
+  mode "770"
+  action :create
+end
+
+remote_file "#{flyway_basedir}/flyway/sql/V0.0.2__initial_tables.sql" do
+  source "#{node['download_url']}/schema.sql"
+  owner node['hops']['hdfs']['user']
+  mode 0750
+  action :create
+end
+
+versions = node['hops']['versions'].split(/\s*,\s*/)
+previous_version=""
+if versions.any?
+   previous_version=versions.last
+end
+
+myVersion = node['hops']['version']
+flyway_version = myVersion.sub("-SNAPSHOT", "")
+versions.push(flyway_version)
+
+prev="2.8.2.1"
+for version in versions do
+  remote_file "#{flyway_basedir}/flyway/sql/V#{version}__hops.sql" do
+    source "#{node['download_url']}/update-schema_#{prev}_to_#{version}.sql"
+    owner node['hops']['hdfs']['user']
+    mode 0750
+    action :create
+  end
+  prev=version
+end
 
 package_url = node['dal']['download_url']
 base_filename = File.basename(package_url)
@@ -52,15 +125,17 @@ template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
   mode "750"
   variables({
               :ndb_connectstring => node['ndb']['connectstring'],
-              :mysql_host => mysql_ip
+              :mysql_host => my_ip
             })
 end
 
-# If a MySQL server has been installed locally, then install the tables
-  
-hops_ndb "install" do
-  action :install_hops
-  only_if { ::File.exist? "#{node['ndb']['scripts_dir']}/mysql-client.sh" }
+#
+# A MySQL server should have been installed locally -  install the tables and rows. But only from 1 host.
+#
+if my_ip.eql? node['hops']['ndb']['private_ips'][0]
+  hops_ndb "install" do
+    action :install_hops
+  end
 end
 
 #
@@ -91,8 +166,6 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
   end
 
   
-  my_ip = my_private_ip()
-
   #  for nn_ip in node['hops']['nn']['private_ips']
   if my_ip.eql? node['hops']['nn']['private_ips'][0]
     # Wait for db to start accepting requests (can be slow sometimes)
@@ -101,4 +174,3 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
 else
   raise "Error. There is no NameNode recipe defined in the cluster definition. Add hops::nn to the cluster.yml file."
 end
-

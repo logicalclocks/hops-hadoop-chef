@@ -1,7 +1,10 @@
+include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
+include_attribute "hopsmonitor"
 
-default['hops']['version']                     = "2.8.2.2"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3"
+default['hops']['version']                     = "2.8.2.4-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -25,7 +28,7 @@ default['hops']['home']                        = node['hops']['dir'] + "/hadoop-
 default['hops']['logs_dir']                    = node['hops']['base_dir'] + "/logs"
 default['hops']['tmp_dir']                     = node['hops']['base_dir'] + "/tmp"
 default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/etc"
-default['hops']['conf_dir']                    = node['hops']['base_dir'] + "/etc/hadoop"
+default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
 default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sbin"
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
 default['hops']['data_dir']                    = node['hops']['dir'] + "/hopsdata"
@@ -40,7 +43,7 @@ default['hops']['hdfs']['blocksize']           = "134217728"
 default['hops']['hdfs']['umask']               = "0022"
 
 default['hops']['url']['primary']              = node['download_url'] + "/hops-" + node['hops']['version'] + ".tgz"
-default['hops']['url']['secondary']            = "https://hops.site/hops-" + node['hops']['version'] + ".tgz"
+default['hops']['url']['secondary']            = "https://www.hops.site/hops-" + node['hops']['version'] + ".tgz"
 
 default['hops']['install_protobuf']            = "false"
 default['hops']['protobuf_url']                = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
@@ -59,6 +62,7 @@ default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh rest
 default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh root-start-dn.sh hdfs.sh yarn.sh hadoop.sh }
 default['hops']['max_retries']                 = 0
 default['hops']['reformat']                    = "false"
+default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
@@ -83,6 +87,7 @@ default['hops']['yarn']['log_aggregation']     = "true"
 default['hops']['yarn']['nodemanager']['remote_app_log_dir'] = node['hops']['hdfs']['user_home'] + "/" + node['hops']['yarn']['user'] + "/logs"
 default['hops']['yarn']['log_retain_secs']     = 86400
 default['hops']['yarn']['log_retain_check']    = 100
+default['hops']['yarn']['log_roll_interval']    = 3600
 
 default['hops']['yarn']['container_cleanup_delay_sec']  = 0
 
@@ -152,7 +157,6 @@ default['hops']['nn']['addrs']                 = []
 
 # build the native libraries. Is much slower, but removes warning when using services.
 default['hops']['native_libraries']            = "false"
-default['hops']['cgroups']                     = "false"
 
 default['maven']['version']                    = "3.2.5"
 default['maven']['checksum']                   = ""
@@ -165,7 +169,6 @@ default['hops']['yarn']['memory_percent']      = "75"
 default['hops']['limits']['nofile']            = '32768'
 default['hops']['limits']['nproc']             = '65536'
 default['hops']['limits']['memory_limit']      = '100000'
-default['hops']['os_defaults']                 = "true"
 
 default['hops']['user_envs']                   = "true"
 
@@ -197,6 +200,7 @@ default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
+
 default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
@@ -282,6 +286,10 @@ default['hops']['yarn']['http']['policy']                    = "HTTPS_ONLY"
 default['hops']['yarn']['log']['server']['url']              = "https://#{node['hops']['jhs']['private_ips']}:#{node['hops']['jhs']['https']['port']}/jobhistory/logs"
 default['hops']['yarn']['resourcemanager']['webapp']['https']['address']  = "#{node['hops']['rm']['private_ips']}:#{node['hops']['rm']['https']['port']}"
 default['hops']['yarn']['nodemanager']['webapp']['https']['address'] 		= "0.0.0.0:#{node['hops']['nm']['https']['port']}"
+default['hops']['yarn']['container_executor']                = "org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
+
+# Use Cgroup isolation
+default['hops']['yarn']['cgroups']                        = "true"
 
 #ssl-server.xml
 default['hops']['ssl']['server']['keystore']['password']   		= node['hopsworks']['master']['password']
@@ -305,18 +313,24 @@ default['hops']['ssl']['client']['truststore']['location']		= "#{node['kagent'][
 default['hops']['server']['threadpool'] = 3
 
 # RPC TLS
-default['hops']['rpc']['ssl'] = "false"
+default['hops']['tls']['enabled'] = "false"
 
 # Do not verify the hostname
 default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW_ALL"
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
-default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1,TLSv1,SSLv3"
+default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
+
+# CRL validation when RPC TLS is enabled
+default['hops']['tls']['crl_enabled']                                   = "false"
+default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
+default['hops']['tls']['crl_input_uri']                                 = ""
+default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
+default['hops']['tls']['crl_fetcher_interval']                          = "1d"
 
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000
 default['hops']['capacity']['max_am_percent']                           = 0.3
-#default['hops']['capacity']['resource_calculator_class']                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
 default['hops']['capacity']['resource_calculator_class']                = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 default['hops']['capacity']['root_queues']                              = "default"
 default['hops']['capacity']['default_capacity']                         = 100
@@ -328,13 +342,17 @@ default['hops']['capacity']['default_acl_administer_queue']             = "*"
 default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
 
+#
+# Flyway - Database upgrades
+#
+default['hops']['flyway']['version']                                    = "5.0.3"
+default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
-default['hops']['hopsutil_jar']                        = "hops-util.jar"
-default['hops']['examples_jar']                        = "hops-spark.jar"
-default['hops']['hopsutil_version']                    = "0.1.0"
-default['hops']['examples_version']                    = "0.1.0"
+
+default['hops']['hopsutil_version']                    = "0.4.0"
+default['hops']['hopsexamples_version']                = "0.4.0"
 default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
-default['hops']['hops_spark_kafka_example']['url']     = "#{node['download_url']}/hops-spark-#{node['hops']['examples_version']}.jar"
+default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
 
 #GPU
 default['hops']['yarn']['min_gpus']                    = 0
@@ -343,6 +361,9 @@ default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
 default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarn']['linux_container_limit_users'] = "true"
+
+# Does a machine in the cluster contain gpus?
+default['hops']['yarn']['cluster']['gpu']              = "false"
 
 #Store Small files in NDB
 default['hops']['small_files']['store_in_db']                                       = "true"
@@ -354,3 +375,10 @@ default['hops']['small_files']['in_memory']['max_size']                         
 
 default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
 default['hopsworks']['default']['private_ips']                                      = ['10.0.2.15']
+
+# Kernel tuning
+default['hops']['kernel']['somaxconn']                  = 4096
+default['hops']['kernel']['swappiness']                 = 1
+default['hops']['kernel']['overcommit_memory']          = 1
+default['hops']['kernel']['overcommit_ratio']           = 100
+

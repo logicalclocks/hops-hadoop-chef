@@ -24,8 +24,8 @@ my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
 rm_public_ip = public_recipe_ip("hops","rm")
 rm_dest_ip = rm_private_ip
-influxdb_ip = private_recipe_ip("hopsmonitor","default")
 zk_ip = private_recipe_ip('kzookeeper', 'default')
+influxdb_ip = private_recipe_ip("hopsmonitor","default")
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -37,17 +37,21 @@ jdbc_url()
 
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
-hopsworks_endpoint = "RPC TLS NOT ENABLED"
-if node['hops']['rpc']['ssl'].eql? "true"
+hopsworks_crl_uri = "RPC TLS NOT ENABLED"
+if node['hops']['tls']['enabled'].eql? "true"
   rpcSocketFactory = node['hops']['hadoop']['rpc']['socket']['factory']
-  hopsworks_endpoint = "Could not access hopsworks-chef"
-  if node.attribute?("hopsworks")
-    hopsworks_ip = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = "8080"
-    if node['hopsworks'].attribute?(:port)
-      hopsworks_port = node['hopsworks']['port']
+  if node['hops']['tls']['crl_input_uri'].empty?
+    hopsworks_crl_uri = "Could not access hopsworks-chef"
+    if node.attribute?("hopsworks")
+      hopsworks_ip = private_recipe_ip("hopsworks", "default")
+      hopsworks_port = "8181"
+      if node['hopsworks'].attribute?(:secure_port)
+        hopsworks_port = node['hopsworks']['secure_port']
+      end
+      hopsworks_crl_uri = "https://#{hopsworks_ip}:#{hopsworks_port}/intermediate.crl.pem"
     end
-    hopsworks_endpoint = "http://#{hopsworks_ip}:#{hopsworks_port}"
+  else
+    hopsworks_crl_uri = node['hops']['tls']['crl_input_uri']
   end
 end
 
@@ -83,11 +87,6 @@ if node['hops']['yarn']['gpus'].eql?("*")
 end
 
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
-
-if node['hops']['gpu'].eql? "true"
-   node.override['hops']['cgroups'] = "true"
-   node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
-end
 
 #
 # End Constraints
@@ -129,11 +128,11 @@ end
 node.override['hive2']['user'] = hiveUser
 
 
-template "#{node['hops']['home']}/etc/hadoop/log4j.properties" do
+template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "664"
+  mode "640"
   action :create_if_missing
 end
 
@@ -146,57 +145,55 @@ end
 # may have already been created. The NN will overwrite this core-site.xml file if it runs
 # after the recipe that called this default['rb'] file.
 #
-template "#{node['hops']['home']}/etc/hadoop/core-site.xml" do
+template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "755"
+  mode "740"
   variables({
-              :firstNN => firstNN,
-              :hopsworks => hopsworksNodes,
-              :hopsworksUser => hopsworksUser,
-              :livyUser => livyUser,
-              :hiveUser => hiveUser,
-              :jupyterUser => jupyterUser,
-              :allNNs => allNNIps,
-              :rpcSocketFactory => rpcSocketFactory,
-              :hopsworks_endpoint => hopsworks_endpoint
-            })
+     :firstNN => firstNN,
+     :hopsworks => hopsworksNodes,
+     :hopsworksUser => hopsworksUser,
+     :livyUser => livyUser,
+     :hiveUser => hiveUser,
+     :jupyterUser => jupyterUser,
+     :allNNs => allNNIps,
+     :rpcSocketFactory => rpcSocketFactory,
+     :hopsworks_crl_uri => hopsworks_crl_uri
+  })
   action :create_if_missing
 end
 
-# file "#{node['hops']['home']}/etc/hadoop/hdfs-site.xml" do
-#   owner node['hops']['hdfs']['user']
-#   action :delete
-# end
-
-
-template "#{node['hops']['home']}/etc/hadoop/hadoop-env.sh" do
+template "#{node['hops']['conf_dir']}/hadoop-env.sh" do
   source "hadoop-env.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "755"
+  action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/jmxremote.access" do
+template "#{node['hops']['conf_dir']}/jmxremote.access" do
   source "jmxremote.access.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "440"
+  action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/jmxremote.password" do
+template "#{node['hops']['conf_dir']}/jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "400"
+  action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-jmxremote.password" do
+template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   mode "400"
+  action :create
 end
 
 
@@ -205,6 +202,7 @@ template "#{node['hops']['home']}/sbin/kill-process.sh" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "754"
+  action :create
 end
 
 template "#{node['hops']['home']}/sbin/set-env.sh" do
@@ -212,6 +210,7 @@ template "#{node['hops']['home']}/sbin/set-env.sh" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "774"
+  action :create
 end
 
 
@@ -219,7 +218,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "755"
+  mode "750"
   cookbook "hops"
   variables({
               :firstNN => firstNN
@@ -227,54 +226,53 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   action :create_if_missing
 end
 
-# file "#{node['hops']['home']}/etc/hadoop/erasure-coding-site.xml" do
-#   owner node['hops']['hdfs']['user']
-#   action :delete
-# end
-
 template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
   source "erasure-coding-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "755"
+  mode "740"
   action :create_if_missing
 end
 
-container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
-if node['hops']['cgroups'].eql? "true"
-  container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
+# If CGroups are enabled, set the correct LCEResourceHandler
+if node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("true")
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandlerGPU"
+elsif node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("false")
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler"
+else
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
+template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   cookbook "hops"
-  mode "664"
+  mode "740"
   variables({
               :rm_private_ip => rm_dest_ip,
               :rm_public_ip => rm_public_ip,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :zk_ip => zk_ip,
-              :container_executor => container_executor
+              :resource_handler => resource_handler
             })
   action :create_if_missing
 end
 
-template "#{node['hops']['home']}/etc/hadoop/container-executor.cfg" do
+template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
-  owner node['hops']['yarn']['user']
+  owner "root"
   group node['hops']['group']
   cookbook "hops"
-  mode "664"
+  mode "740"
   variables({
               :hops_group => hops_group
             })
   action :create_if_missing
 end
 
-template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
+template "#{node['hops']['conf_dir']}/ssl-server.xml" do
   source "ssl-server.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['kagent']['certs_group']
@@ -283,51 +281,30 @@ template "#{node['hops']['home']}/etc/hadoop/ssl-server.xml" do
               :kstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__kstore.jks",
               :tstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__tstore.jks"
             })
-  action :create
-end
-
-template "#{node['hops']['home']}/etc/hadoop/hadoop-metrics2.properties" do
-  source "hadoop-metrics2.properties.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "755"
-  variables({
-              :influxdb_ip => influxdb_ip,
-            })
   action :create_if_missing
 end
 
-
-if node['hops']['gpu'].eql? "true"
-  bash 'update_owner_for_gpu' do
-    user "root"
-    code <<-EOH
-    set -e
-    chown root:#{node['hops']['group']} #{node['hops']['dir']}
-    chown root:#{node['hops']['group']} #{node['hops']['home']}
-    chmod 750 #{node['hops']['home']}
-    chown root #{node['hops']['conf_dir_parent']}
-    chmod 750 #{node['hops']['conf_dir_parent']}
-    chown root:#{node['hops']['group']} #{node['hops']['conf_dir']}
-    chmod 750 #{node['hops']['conf_dir']}
-    chown root #{node['hops']['conf_dir']}/container-executor.cfg
-    chmod 750 #{node['hops']['conf_dir']}/container-executor.cfg
-    chown root #{node['hops']['bin_dir']}/container-executor
-    chmod 6050 #{node['hops']['bin_dir']}/container-executor
-  EOH
-  end
+template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
+  source "hadoop-metrics2.properties.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "750"
+  variables({
+    :influxdb_ip => influxdb_ip
+  })
+  action :create_if_missing
 end
 
-template "#{node['hops']['home']}/etc/hadoop/yarn-env.sh" do
+template "#{node['hops']['conf_dir']}/yarn-env.sh" do
   source "yarn-env.sh.erb"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
-  mode "664"
-  action :create
+  mode "750"
+  action :create_if_missing
 end
 
 # The ACL to keystore directory is needed during deployment
-if node['hops']['rpc']['ssl'].eql? "true"
+if node['hops']['tls']['enabled'].eql? "true"
   bash "update-acl-of-keystore" do
     user "root"
     code <<-EOH

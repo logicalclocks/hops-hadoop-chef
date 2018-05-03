@@ -9,17 +9,17 @@ zk_ip = private_recipe_ip('kzookeeper', 'default')
 
 ndb_connectstring()
 
-template "#{node['hops']['home']}/etc/hadoop/RM_EventAPIConfig.ini" do 
+template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do
   source "RM_EventAPIConfig.ini.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
-  mode "755"
+  mode "750"
   variables({
               :ndb_connectstring => node['ndb']['connectstring']
             })
 end
 
-template "#{node['hops']['home']}/etc/hadoop/rm-jmxremote.password" do
+template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
@@ -30,34 +30,44 @@ end
 yarn_service="rm"
 service_name="resourcemanager"
 my_ip = my_private_ip()
+
 my_public_ip = my_public_ip()
-container_executor="org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor"
-if node['hops']['cgroups'].eql? "true" 
-  container_executor="org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
+
+# If CGroups are enabled, set the correct LCEResourceHandler
+if node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("true")
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandlerGPU"
+elsif node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("false")
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler"
+else
+  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
-
-template "#{node['hops']['home']}/etc/hadoop/yarn-site.xml" do
+template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
-  mode "664"
+  mode "750"
   variables({
               :rm_private_ip => my_ip,
               :rm_public_ip => my_public_ip,
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
-              :zk_ip => zk_ip,              
-              :container_executor => container_executor
+              :zk_ip => zk_ip,
+              :resource_handler => resource_handler
             })
   action :create
 end
 
-template "#{node['hops']['home']}/etc/hadoop/capacity-scheduler.xml" do
+
+if node['hops']['yarn']['cluster']['gpu'].eql? "true"
+  node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
+end
+
+template "#{node['hops']['conf_dir']}/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
   owner node['hops']['rm']['user']
   group node['hops']['group']
-  mode "664"
+  mode "644"
   action :create
 end
 
@@ -68,7 +78,7 @@ for script in node['hops']['yarn']['scripts']
      group node['hops']['group']
     mode 0755
   end
-end 
+end
 
 template "#{node['hops']['home']}/sbin/yarn.sh" do
   source "yarn.sh.erb"
@@ -82,7 +92,7 @@ if node['hops']['systemd'] == "true"
 
   case node['platform_family']
   when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+    systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
   else
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
@@ -111,8 +121,9 @@ end
 
   kagent_config "#{service_name}" do
     action :systemd_reload
+    not_if "systemctl status resourcemanager"
   end
-  
+
   directory "/etc/systemd/system/#{service_name}.service.d" do
     owner "root"
     group "root"
@@ -125,7 +136,7 @@ end
     owner "root"
     mode 0664
     action :create
-  end 
+  end
 
 else #sysv
 
@@ -139,7 +150,7 @@ else #sysv
     source "#{service_name}.erb"
     owner "root"
     group "root"
-    mode 0755    
+    mode 0755
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
@@ -150,7 +161,7 @@ end
 
 end
 
-if node['kagent']['enabled'] == "true" 
+if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service "YARN"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['rm']['user']}-#{service_name}-#{node['hostname']}.log"

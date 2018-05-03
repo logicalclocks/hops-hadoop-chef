@@ -1,31 +1,33 @@
-dependencies: 
+dependencies:
   - recipe: hops::install
-    global:  
+    global:
       - kagent::install
   - recipe: hops::ndb
-    global:  
+    global:
       - ndb::mysqld
   - recipe: hops::nn
-    global:  
+    global:
+      - hopsmonitor::default
       - kagent::default
+      - hops::ndb
   - recipe: hops::rm
     global:
       - hops::dn
-      - kzookeeper::default      
+      - kzookeeper::default
   - recipe: hops::dn
-    global:  
+    global:
       - hops::nn
-      - kagent::default      
+      - kagent::default
   - recipe: hops::nm
-    global:  
+    global:
       - hadoop_spark::yarn
   - recipe: hops::jhs
-    global:  
+    global:
       - hops::dn
   - recipe: hops::client
-    global:  
+    global:
       - hops::nn
   - recipe: hops::test
-    global:  
+    global:
       - hops::dn
 

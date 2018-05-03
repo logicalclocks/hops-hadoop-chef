@@ -4,11 +4,11 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.3.0"
+version          "0.5.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
-#link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a> 
+#link:<a target='_blank' href='http://%host%:50070/'>Launch the WebUI for the NameNode</a>
 recipe            "hops::nn", "Installs a HopsFs NameNode"
 recipe            "hops::ndb", "Installs MySQL Cluster (ndb) dal driver for Hops"
 recipe            "hops::dn", "Installs a HopsFs DataNode"
@@ -29,6 +29,7 @@ depends 'magic_shell'
 depends 'sysctl'
 depends 'cmake'
 depends 'kzookeeper'
+depends 'hopsmonitor'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -85,7 +86,11 @@ attribute "hops/use_systemd",
           :type => "string"
 
 attribute "hops/format",
-          :description => "Format HDFS",
+          :description => "'true' to format HDFS, 'false' to skip formatting",
+          :type => 'string'
+
+attribute "hops/reformat",
+          :description => "'true' to re-format HDFS, 'false' to skip re-formatting",
           :type => 'string'
 
 attribute "hops/nm/log_dir",
@@ -164,6 +169,10 @@ attribute "hops/yarn/rm_heapsize_mbs",
           :description => "Resource manager heapsize. (default: 1000)",
           :type => 'string'
 
+attribute "hops/yarn/container_executor",
+          :description => "Container executor class",
+          :type => 'string'
+
 attribute "hops/trash/interval",
           :description => "How long in minutes trash survives in /user/<glassfish>/.Trash/<interval-bucket>/...",
           :type => "string"
@@ -201,16 +210,52 @@ attribute "hops/url/secondary",
           :description => "Secondary download url of hops distribution",
           :type => 'string'
 
-attribute "hops/rpc/ssl",
+attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
+          :type => 'string'
+
+attribute "hops/tls/crl_enabled",
+          :description => "Enable CRL validation when RPC TLS is enabled",
+          :type => 'string'
+
+attribute "hops/tls/crl_fetcher_class",
+          :description => "Canonical name of the CRL fetcher class",
+          :type => 'string'
+
+attribute "hops/tls/crl_input_uri",
+          :description => "Location where the CRL will be fetched from",
+          :type => 'string'
+
+attribute "hops/tls/crl_output_file",
+          :description => "Location where the CRL will be stored",
+          :type => 'string'
+
+attribute "hops/tls/crl_fetcher_interval",
+          :description => "Interval for the CRL fetcher service, suffix can be m/h/d",
           :type => 'string'
 
 attribute "hops/yarn/vcores",
           :description => "Hops NodeManager Number of Virtual Cores",
           :type => 'string'
 
+attribute "hops/yarn/min_vcores",
+          :description => "Hadoop NodeManager Minimum Virtual Cores per container",
+          :type => 'string'
+
 attribute "hops/yarn/max_vcores",
           :description => "Hadoop NodeManager Maximum Virtual Cores per container",
+          :type => 'string'
+
+attribute "hops/yarn/log_retain_secs",
+          :description => "Default time (in seconds) to retain log files on the NodeManager",
+          :type => 'string'
+
+attribute "hops/yarn/log_retain_check",
+          :description =>"Default time (in seconds) between checks for retained log files in HDFS.",
+          :type => 'string'
+
+attribute "hops/yarn/log_roll_interval",
+          :description =>"Defines how often NMs wake up to upload log files. The minimum rolling-interval-seconds can be set is 3600.",
           :type => 'string'
 
 attribute "hops/version",
@@ -341,7 +386,7 @@ attribute "hops/capacity/queue_mapping",
 attribute "hops/capacity/queue_mapping_override.enable",
           :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
           :type => "string"
-          
+
 attribute "kagent/enabled",
           :description => "Set to 'true' to enable, 'false' to disable kagent",
           :type => "string"
@@ -372,19 +417,18 @@ attribute "hops/yarn/max_gpus",
           :type => "string"
 
 attribute "hops/gpu",
-          :description => "Are GPUs enabled for YARN? Default: false",
+          :description => "Are GPUs enabled for YARN? (on this node) Default: false",
           :type => "string"
 
 attribute "hops/yarn/gpus",
           :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
           :type => "string"
 
-
-#CGroups settings
-attribute "hops/yarn/groups_enabled",
-          :description => "",
+attribute "hops/yarn/cluster/gpu",
+          :description => "Is there a machine in the cluster with gpus?",
           :type => "string"
 
+#CGroups settings
 attribute "hops/yarn/groups",
           :description => "",
           :type => "string"
@@ -397,24 +441,16 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
-attribute "hops/hopsutil_jar",
-          :description => "Name of the HopsUtil jar file.",
-          :type => "string"
-
-attribute "hops/examples_jar",
-          :description => "Name of the examples file.",
-          :type => "string"
-
 attribute "hops/hopsutil_version",
           :description => "Version of the hops-util jar file.",
           :type => "string"
 
-attribute "hops/examples_version",
+attribute "hops/hops_examples_version",
           :description => "Version of the hops-spark jar file.",
           :type => "string"
 
-attribute "hops/cgroups",
-          :description => "'true' to enable cgroups, else (default) 'false'",
+attribute "hops/yarn/cgroups",
+          :description => "'true' to enable cgroups (default), else 'false'",
           :type => "string"
 
 attribute "livy/user",
@@ -435,4 +471,21 @@ attribute "hopsmonitor/default/private_ips",
 
 attribute "hopsworks/default/private_ips",
           :description => "Hopsworks private ip",
+          :type => "string"
+
+# Kernel tuning parameters
+attribute "hops/kernel/somaxconn",
+          :description => "net.core.somaxconn value",
+          :type => "string"
+
+attribute "hops/kernel/swappiness",
+          :description => "vm.swappiness value",
+          :type => "string"
+
+attribute "hops/kernel/overcommit_memory",
+          :description => "vm.overcommit_memory value",
+          :type => "string"
+
+attribute "hops/kernel/overcommit_ratio",
+          :description => "vm.overcommit_ratio value",
           :type => "string"
