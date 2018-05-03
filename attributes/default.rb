@@ -349,8 +349,8 @@ default['hops']['flyway']['version']                                    = "5.0.3
 default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
 
-default['hops']['hopsutil_version']                    = "0.4.0"
-default['hops']['hopsexamples_version']                = "0.4.0"
+default['hops']['hopsutil_version']                    = "0.5.0"
+default['hops']['hopsexamples_version']                = "0.5.0"
 default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
 default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
 
