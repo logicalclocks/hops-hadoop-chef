@@ -214,6 +214,10 @@ attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
+attribute "hops/tls/certs_actor_class",
+          :description => "Actor class to perform X509 requests to Hopsworks",
+          :type => 'string'
+
 attribute "hops/tls/crl_enabled",
           :description => "Enable CRL validation when RPC TLS is enabled",
           :type => 'string'

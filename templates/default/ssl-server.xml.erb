@@ -71,4 +71,14 @@ limitations under the License.
     <description>Optional. The keystore file format, default value is "jks".</description>
   </property>
 
-</configuration>
+  <property>
+    <name>hops.hopsworks.user</name>
+    <value><%= node['kagent']['dashboard']['user'] %></value>
+  </property>
+
+  <property>
+    <name>hops.hopsworks.password</name>
+    <value><%= node['kagent']['dashboard']['password'] %></value>
+  </property>
+  
+ </configuration>
