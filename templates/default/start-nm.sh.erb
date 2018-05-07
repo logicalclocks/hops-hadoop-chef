@@ -11,13 +11,15 @@ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
 . $HADOOP_LIBEXEC_DIR/hadoop-config.sh
 . ${bin}/set-env.sh
 
+export PATH=$PATH:/usr/local/cuda/bin
+# nccl2 needed by horovod
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/lib64:/usr/local/nccl2/lib
 
 log=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-$command-$h.log
 
 "$bin"/yarn-daemon.sh --config $YARN_CONF_DIR  start $command
 sleep 2; head "$log"
 
-#PID_FILE=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-$command.pid
 PID_FILE=$YARN_PID_DIR/yarn-<%= node['hops']['yarn']['user'] %>-$command.pid
 PID=`cat $PID_FILE` 
 kill -0 $PID 

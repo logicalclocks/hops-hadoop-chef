@@ -122,3 +122,23 @@ if node['kagent']['enabled'] == "true"
     web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
+
+
+#
+# If horovod is installed, mpi is enabled.
+# Add the glassfish users' public key, so that it can start/stop horovod on host using mpi-run
+#
+if node.attribute?('tensorflow') == true
+  if node['tensorflow'].attribute?('mpi') == true
+    homedir = node['hops']['yarnapp']['user'].eql?("root") ? "/root" : "/home/#{node['hops']['yarnapp']['user']}"
+    kagent_keys "#{homedir}" do
+      cb_user "#{node['hops']['yarnapp']['user']}"
+      cb_group "#{node['hops']['group']}"
+      cb_name "hopsworks"
+      cb_recipe "default"  
+      action :get_publickey
+    end  
+    
+  end
+end
+

@@ -91,7 +91,7 @@ user node['hops']['mr']['user'] do
 end
 
 user node['hops']['yarnapp']['user'] do
-  home "/home/#{node['hops']['yarnapp']['user'] }"
+  home "/home/#{node['hops']['yarnapp']['user']}"
   gid node['hops']['group']
   system true
   shell "/bin/bash"
