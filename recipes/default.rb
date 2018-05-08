@@ -133,7 +133,7 @@ template "#{node['hops']['conf_dir']}/log4j.properties" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "640"
-  action :create_if_missing
+  action :create
 end
 
 if node['ndb']['TransactionInactiveTimeout'].to_i < node['hops']['leader_check_interval_ms'].to_i
@@ -161,7 +161,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => hopsworks_crl_uri
   })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/hadoop-env.sh" do
@@ -223,7 +223,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   variables({
               :firstNN => firstNN
             })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
@@ -231,7 +231,7 @@ template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "740"
-  action :create_if_missing
+  action :create
 end
 
 # If CGroups are enabled, set the correct LCEResourceHandler
@@ -257,7 +257,7 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
               :zk_ip => zk_ip,
               :resource_handler => resource_handler
             })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
@@ -269,7 +269,7 @@ template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   variables({
               :hops_group => hops_group
             })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/ssl-server.xml" do
@@ -281,7 +281,7 @@ template "#{node['hops']['conf_dir']}/ssl-server.xml" do
               :kstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__kstore.jks",
               :tstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__tstore.jks"
             })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
@@ -292,7 +292,7 @@ template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
   variables({
     :influxdb_ip => influxdb_ip
   })
-  action :create_if_missing
+  action :create
 end
 
 template "#{node['hops']['conf_dir']}/yarn-env.sh" do
@@ -300,7 +300,7 @@ template "#{node['hops']['conf_dir']}/yarn-env.sh" do
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   mode "750"
-  action :create_if_missing
+  action :create
 end
 
 # The ACL to keystore directory is needed during deployment

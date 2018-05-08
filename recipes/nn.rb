@@ -139,7 +139,7 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
-    action :create_if_missing
+    action :create
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
 end
