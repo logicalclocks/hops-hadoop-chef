@@ -438,6 +438,31 @@
   <value>true</value>
 </property>
 
+<property>
+  <name>hops.rm.certificate.actor.class</name>
+  <value><%= node['hops']['tls']['certs_actor_class'] %></value>
+</property>
+
+<property>
+  <name>hops.hopsworks.host</name>
+  <value><%= @hopsworks_host %></value>
+</property>
+
+<property>
+  <name>hops.hopsworks.login.endpoint</name>
+  <value>hopsworks-api/api/auth/login</value>
+</property>
+
+<property>
+  <name>hops.hopsworks.sign.endpoint</name>
+  <value>hopsworks-ca/ca/agentservice/sign/app</value>
+</property>
+
+<property>
+  <name>hops.hopsworks.revoke.endpoint</name>
+  <value>hopsworks-ca/ca/agentservice/revoke</value>
+</property>
+
 <!--<property>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit.users</name>
     <value><%= node['hops']['yarn']['linux_container_limit_users'] %></value>

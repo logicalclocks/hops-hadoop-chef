@@ -320,6 +320,7 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
+default['hops']['tls']['certs_actor_class']                             = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppCertificateActions"
 
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
