@@ -25,18 +25,21 @@ default['hops']['jmx']['adminPassword']        = "hadoopAdmin"
 default['hops']['dir']                         = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['hops']['base_dir']                    = node['hops']['dir'] + "/hadoop"
 default['hops']['home']                        = node['hops']['dir'] + "/hadoop-" + node['hops']['version']
-default['hops']['logs_dir']                    = node['hops']['base_dir'] + "/logs"
-default['hops']['tmp_dir']                     = node['hops']['base_dir'] + "/tmp"
-default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/etc"
-default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
+
 default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sbin"
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
 default['hops']['data_dir']                    = node['hops']['dir'] + "/hopsdata"
+default['hops']['logs_dir']                    = node['hops']['data_dir'] + "/logs"
+default['hops']['tmp_dir']                     = node['hops']['data_dir'] + "/tmp"
+default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/etc"
+default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
+
 default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
 default['hops']['dn']['data_dir_permissions']  = '700'
 default['hops']['nn']['name_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['nm']['log_dir']               = node['hops']['logs_dir'] + "/userlogs"
+default['hops']['nm']['recovery_dir']          = node['hops']['data_dir'] + "yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['blocksize']           = "134217728"
