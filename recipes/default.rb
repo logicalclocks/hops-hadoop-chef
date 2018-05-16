@@ -60,6 +60,7 @@ node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
 
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
+baseNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 rpcNN = private_recipe_ip("hops", "nn") + ":#{nnPort}"
 
 if node['hops']['nn']['private_ips'].length > 1
@@ -221,7 +222,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   mode "750"
   cookbook "hops"
   variables({
-              :firstNN => firstNN
+              :firstNN => baseNN
             })
   action :create
 end
