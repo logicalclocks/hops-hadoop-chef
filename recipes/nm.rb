@@ -4,7 +4,7 @@ yarn_service="nm"
 service_name="nodemanager"
 
 
-directory node['hops']['nm']['recover_dir'] do
+directory node['hops']['yarn']['nodemanager_recovery_dir'] do
   owner node['hops']['nm']['user']
   group node['hops']['group']
   mode "0770"

@@ -93,16 +93,16 @@ attribute "hops/reformat",
           :description => "'true' to re-format HDFS, 'false' to skip re-formatting",
           :type => 'string'
 
-attribute "hops/nm/log_dir",
+attribute "hops/yarn/memory_mbs",
+          :description => "Apache_Hadoop NodeManager Memory in MB",
+          :type => 'string'
+
+attribute "hops/yarn/nodemanager_log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
 
-attribute "hops/nm/recovery_dir",
+attribute "hops/yarn/nodemanager_recovery_dir",
           :description => "The directory in which yarn node manager stores recovery state",
-          :type => 'string'
-
-attribute "hops/yarn/memory_mbs",
-          :description => "Apache_Hadoop NodeManager Memory in MB",
           :type => 'string'
 
 attribute "hops/yarn/nodemanager_ha_enabled",
@@ -114,10 +114,6 @@ attribute "hops/yarn/nodemanager_auto_failover_enabled",
           :type => "string"
 
 attribute "hops/yarn/nodemanager_recovery_enabled",
-          :description => "",
-          :type => "string"
-
-attribute "hops/yarn/rm_heartbeat",
           :description => "",
           :type => "string"
 
@@ -134,6 +130,10 @@ attribute "hops/yarn/rm_distributed",
           :type => "string"
 
 attribute "hops/yarn/nodemanager_rm_streaming_enabled",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/rm_heartbeat",
           :description => "",
           :type => "string"
 

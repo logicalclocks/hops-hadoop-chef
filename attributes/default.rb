@@ -38,8 +38,8 @@ default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_
 default['hops']['dn']['data_dir_permissions']  = '700'
 default['hops']['nn']['name_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
-default['hops']['nm']['log_dir']               = node['hops']['logs_dir'] + "/userlogs"
-default['hops']['nm']['recovery_dir']          = node['hops']['data_dir'] + "yarn-nm-recovery"
+default['hops']['yarn']['nodemanager_log_dir']               = node['hops']['logs_dir'] + "/userlogs"
+default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['blocksize']           = "134217728"
