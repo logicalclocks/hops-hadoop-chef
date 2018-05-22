@@ -265,6 +265,11 @@
     <value><%= node['hops']['yarn']['nodemanager_recovery_enabled'] %></value>
   </property>
   <property>
+    <name>yarn.nodemanager.recovery.dir</name>
+    <value><%= node['hops']['yarn']['nodemanager_recovery_dir'] %></value>
+  </property>
+  
+  <property>
     <name>yarn.resourcemanager.ha.rm-ids</name>
     <value><%= node['hops']['rm']['private_ips'].join(",") %></value>
   </property>

@@ -66,7 +66,7 @@ remote_file "#{flyway_basedir}/flyway/sql/V0.0.2__initial_tables.sql" do
   source "#{node['download_url']}/schema.sql"
   owner node['hops']['hdfs']['user']
   mode 0750
-  action :create
+  action :create_if_missing
 end
 
 versions = node['hops']['versions'].split(/\s*,\s*/)
@@ -85,7 +85,7 @@ for version in versions do
     source "#{node['download_url']}/update-schema_#{prev}_to_#{version}.sql"
     owner node['hops']['hdfs']['user']
     mode 0750
-    action :create
+    action :create_if_missing
   end
   prev=version
 end

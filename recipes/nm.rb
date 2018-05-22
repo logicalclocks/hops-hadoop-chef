@@ -3,6 +3,15 @@ include_recipe "hops::default"
 yarn_service="nm"
 service_name="nodemanager"
 
+
+directory node['hops']['yarn']['nodemanager_recovery_dir'] do
+  owner node['hops']['nm']['user']
+  group node['hops']['group']
+  mode "0770"
+  action :create
+end
+
+
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
