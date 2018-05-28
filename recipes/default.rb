@@ -313,3 +313,12 @@ if node['hops']['tls']['enabled'].eql? "true"
          EOH
   end
 end
+
+
+template "#{node['hops']['bin_dir']}/killYARNjobs.sh" do
+  source "killYARNjobs.sh.erb"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "740"
+  action :create
+end
