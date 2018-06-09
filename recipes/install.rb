@@ -204,7 +204,10 @@ directory node['hops']['dir'] do
   action :create
 end
 
-directory node['hops']['data_dir'] do
+dataDir=node['hops']['data_dir']
+dataDir.gsub!("file://","")
+
+directory dataDir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0770"
@@ -215,6 +218,7 @@ end
 if "#{node['hops']['dn']['data_dir']}".include? ","
   dirs = node['hops']['dn']['data_dir'].split(",")
   for d in dirs do
+    d.gsub!("file://","")    
     bash 'chown_datadirs_if_exist' do
       user "root"
       code <<-EOH
@@ -228,7 +232,9 @@ if "#{node['hops']['dn']['data_dir']}".include? ","
     end
    end
 else
-  directory node['hops']['dn']['data_dir'] do
+  ddir=node['hops']['dn']['data_dir'] 
+  ddir.gsub!("file://","")  
+  directory ddir do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
     mode "0770"
@@ -237,7 +243,9 @@ else
   end
 end
 
-directory node['hops']['nn']['name_dir'] do
+nndir=node['hops']['nn']['name_dir']
+nndir.gsub!("file://","")  
+directory nndir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0770"
