@@ -300,7 +300,7 @@ bash 'extract-hadoop' do
         # Force copy the old etc/hadoop files to our new installation, if there are any
         # at this stage base_dir is still pointing to the old installation
         if [ -d #{node['hops']['base_dir']} ] ; then
-           cp -rpf #{node['hops']['base_dir']}/etc/* #{node['hops']['home']}/etc/*
+           cp -rpf #{node['hops']['base_dir']}/etc/ #{node['hops']['home']}/etc/
         fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
