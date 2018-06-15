@@ -1,4 +1,4 @@
-nclude_attribute "kagent"
+include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 include_attribute "hopsmonitor"
