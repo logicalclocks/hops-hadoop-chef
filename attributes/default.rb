@@ -352,11 +352,19 @@ default['hops']['capacity']['queue_mapping_override']['enable']         = "false
 default['hops']['flyway']['version']                                    = "5.0.3"
 default['hops']['flyway_url']                                           = node['download_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
+#
+# Hops API jar
+#
+default['hops']['hopsutil_version']                    = node['install']['version']
+default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-util.jar"
+#
+# Hops Examples files
+#
+default['hops']['hopsexamples_version']                = node['install']['version']
+default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-spark.jar"
+default['hops']['hops_examples_hive']['url']           = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-hive.jar"
+default['hops']['hops_examples_flink']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-flink.jar"
 
-default['hops']['hopsutil_version']                    = "0.5.0"
-default['hops']['hopsexamples_version']                = "0.5.0"
-default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
-default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
 
 #GPU
 default['hops']['yarn']['min_gpus']                    = 0

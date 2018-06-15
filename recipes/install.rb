@@ -204,8 +204,8 @@ directory node['hops']['dir'] do
   action :create
 end
 
-dataDir=node['hops']['data_dir']
-dataDir.gsub!("file://","")
+dd=node['hops']['data_dir']
+dataDir=dd.gsub("file://","")
 
 directory dataDir do
   owner node['hops']['hdfs']['user']
@@ -218,23 +218,23 @@ end
 if "#{node['hops']['dn']['data_dir']}".include? ","
   dirs = node['hops']['dn']['data_dir'].split(",")
   for d in dirs do
-    d.gsub!("file://","")    
+    dir = d.gsub("file://","")    
     bash 'chown_datadirs_if_exist' do
       user "root"
       code <<-EOH
         set -e
         # -e tests for dir, file, symbolic link. It should be a dir.
-        if [ ! -e #{d} ] ; then
-           mkdir -p #{d}
-           chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{d}
+        if [ ! -e #{dir} ] ; then
+           mkdir -p #{dir}
+           chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
         fi
-        # chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{d}
+        # chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
       EOH
     end
    end
 else
-  ddir=node['hops']['dn']['data_dir'] 
-  ddir.gsub!("file://","")  
+  ad=node['hops']['dn']['data_dir'] 
+  ddir=ad.gsub("file://","")  
   directory ddir do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
@@ -244,8 +244,8 @@ else
   end
 end
 
-nndir=node['hops']['nn']['name_dir']
-nndir.gsub!("file://","")  
+ann=node['hops']['nn']['name_dir']
+nndir=ann.gsub("file://","")  
 directory nndir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
