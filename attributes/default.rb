@@ -360,7 +360,7 @@ default['hops']['hopsutil']['url']                     = "#{node['download_url']
 #
 # Hops Examples files
 #
-default['hops']['hopsexamples_version']                = node['install']['version']
+default['hops']['hops_examples_version']                = node['install']['version']
 default['hops']['hops_examples_spark']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-spark.jar"
 default['hops']['hops_examples_hive']['url']           = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-hive.jar"
 default['hops']['hops_examples_flink']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-examples-flink.jar"
