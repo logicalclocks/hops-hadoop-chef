@@ -325,6 +325,9 @@ default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.a
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
 default['hops']['tls']['certs_actor_class']                             = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppCertificateActions"
 
+default['hops']['tls']['certs_expiration_safety_period']                = "2d"
+default['hops']['tls']['certs_revocation_monitor_interval']             = "12h"
+
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
 default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"

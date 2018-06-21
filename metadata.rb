@@ -222,6 +222,14 @@ attribute "hops/tls/certs_actor_class",
           :description => "Actor class to perform X509 requests to Hopsworks",
           :type => 'string'
 
+attribute "hops/tls/certs_expiration_safety_period",
+          :description => "Time to substract fro X509 expiration time for renewal",
+          :type => 'string'
+
+attribute "hops/tls/certs_revocation_monitor_interval",
+          :description => "Period to check for stale X509 certificates that should be revoked",
+          :type => 'string'
+
 attribute "hops/tls/crl_enabled",
           :description => "Enable CRL validation when RPC TLS is enabled",
           :type => 'string'
