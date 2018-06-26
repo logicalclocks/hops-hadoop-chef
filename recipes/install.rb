@@ -204,7 +204,10 @@ directory node['hops']['dir'] do
   action :create
 end
 
-directory node['hops']['data_dir'] do
+dd=node['hops']['data_dir']
+dataDir=dd.gsub("file://","")
+
+directory dataDir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0770"
@@ -215,20 +218,24 @@ end
 if "#{node['hops']['dn']['data_dir']}".include? ","
   dirs = node['hops']['dn']['data_dir'].split(",")
   for d in dirs do
+    dir = d.gsub("file://","")    
     bash 'chown_datadirs_if_exist' do
       user "root"
       code <<-EOH
         set -e
         # -e tests for dir, file, symbolic link. It should be a dir.
-        if [ ! -e #{d} ] ; then
-           mkdir -p #{d}
+        if [ ! -e #{dir} ] ; then
+           mkdir -p #{dir}
+           chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
         fi
-        chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{d}
+        # chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
       EOH
     end
    end
 else
-  directory node['hops']['dn']['data_dir'] do
+  ad=node['hops']['dn']['data_dir'] 
+  ddir=ad.gsub("file://","")  
+  directory ddir do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
     mode "0770"
@@ -237,7 +244,9 @@ else
   end
 end
 
-directory node['hops']['nn']['name_dir'] do
+ann=node['hops']['nn']['name_dir']
+nndir=ann.gsub("file://","")  
+directory nndir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0770"
@@ -291,7 +300,7 @@ bash 'extract-hadoop' do
         # Force copy the old etc/hadoop files to our new installation, if there are any
         # at this stage base_dir is still pointing to the old installation
         if [ -d #{node['hops']['base_dir']} ] ; then
-           cp -rpf #{node['hops']['base_dir']}/etc/* #{node['hops']['home']}/etc/*
+           cp -rpf #{node['hops']['base_dir']}/etc/ #{node['hops']['home']}/etc/
         fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
