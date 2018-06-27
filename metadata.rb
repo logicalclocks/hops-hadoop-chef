@@ -453,7 +453,7 @@ attribute "hops/hopsutil_version",
           :description => "Version of the hops-util jar file.",
           :type => "string"
 
-attribute "hops/hops_examples_version",
+attribute "hops/hopsexamples_version",
           :description => "Version of the hops-spark jar file.",
           :type => "string"
 
