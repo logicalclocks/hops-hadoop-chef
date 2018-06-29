@@ -468,6 +468,16 @@
   <value>hopsworks-ca/ca/agentservice/revoke</value>
 </property>
 
+<property>
+  <name>yarn.resourcemanager.certificate.expiration-safety-period</name>
+  <value><%= node['hops']['tls']['certs_expiration_safety_period'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.certificate.revocation-monitor-interval</name>
+  <value><%= node['hops']['tls']['certs_revocation_monitor_interval'] %></value>
+</property>
+
 <!--<property>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit.users</name>
     <value><%= node['hops']['yarn']['linux_container_limit_users'] %></value>
