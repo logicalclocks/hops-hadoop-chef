@@ -356,14 +356,15 @@ default['hops']['flyway_url']                                           = node['
 # Hops API jar
 #
 default['hops']['hopsutil_version']                    = node['install']['version']
-default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hops/#{node['hops']['hopsutil_version']}/hops-util.jar"
+default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hopsutil/#{node['hops']['hopsutil_version']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
+
 #
 # Hops Examples files
 #
 default['hops']['hopsexamples_version']                = node['install']['version']
-default['hops']['hopsexamples_spark']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsexamples_version']}/hops-examples-spark.jar"
-default['hops']['hopsexamples_hive']['url']           = "#{node['download_url']}/hops/#{node['hops']['hopsexamples_version']}/hops-examples-hive.jar"
-default['hops']['hopsexamples_flink']['url']          = "#{node['download_url']}/hops/#{node['hops']['hopsexamples_version']}/hops-examples-flink.jar"
+default['hops']['hopsexamples_spark']['url']          = "#{node['download_url']}/hopsexamples/#{node['hops']['hopsexamples_version']}/hops-examples-spark-#{node['hops']['hopsexamples_version']}.jar"
+default['hops']['hopsexamples_hive']['url']           = "#{node['download_url']}/hopsexamples/#{node['hops']['hopsexamples_version']}/hops-examples-hive-#{node['hops']['hopsexamples_version']}.jar"
+default['hops']['hopsexamples_flink']['url']          = "#{node['download_url']}/hopsexamples/#{node['hops']['hopsexamples_version']}/hops-examples-flink-#{node['hops']['hopsexamples_version']}.jar"
 
 
 #GPU
