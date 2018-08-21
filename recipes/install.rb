@@ -71,42 +71,34 @@ user node['hops']['hdfs']['user'] do
 end
 
 user node['hops']['yarn']['user'] do
-#  home "/home/#{node['hops']['yarn']['user']}"
   gid node['hops']['group']
   system true
   shell "/bin/bash"
-#  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['yarn']['user']}"
 end
 
 user node['hops']['mr']['user'] do
-#  home "/home/#{node['hops']['mr']['user']}"
   gid node['hops']['group']
   system true
   shell "/bin/bash"
-#  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['mr']['user']}"
 end
 
 user node['hops']['yarnapp']['user'] do
-#  home "/home/#{node['hops']['yarnapp']['user']}"
   gid node['hops']['group']
   system true
   shell "/bin/bash"
-#  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['yarnapp']['user']}"
 end
 
 
 user node['hops']['rm']['user'] do
-#  home "/home/#{node['hops']['rm']['user']}"
   gid node['hops']['secure_group']
   system true
   shell "/bin/bash"
-#  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['rm']['user']}"
 end
