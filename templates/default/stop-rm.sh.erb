@@ -1,16 +1,17 @@
-#!/bin/bash
-bin=`dirname "${BASH_SOURCE-$0}"`
-bin=`cd "$bin"; pwd`
+#!/usr/bin/env bash
+
+bin=$(dirname "${BASH_SOURCE-$0}")
+bin=$(cd "$bin"; pwd)
 DEFAULT_LIBEXEC_DIR="$bin"/../libexec
 HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. $HADOOP_LIBEXEC_DIR/hadoop-config.sh
-. ${bin}/set-env.sh
+. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
+. "${bin}"/set-env.sh
 
 command=resourcemanager
 #pidDir=<%= node['hops']['logs_dir'] %>
 pidDir=$YARN_PID_DIR
 service=yarn
 
-<%= node['hops']['base_dir'] %>/sbin/kill-process.sh $service <%= node['hops']['rm']['user'] %> $command $pidDir
+<%= node['hops']['base_dir'] %>/sbin/kill-process.sh $service <%= node['hops']['rm']['user'] %> $command "$pidDir"
 
 exit $?

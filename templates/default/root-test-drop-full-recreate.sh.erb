@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-bin=`dirname "${BASH_SOURCE-$0}"`
-bin=`cd "$bin"; pwd`
+bin=$(dirname "${BASH_SOURCE-$0}")
+bin=$(cd "$bin"; pwd)
 
 service namenode stop
 service datanode stop
