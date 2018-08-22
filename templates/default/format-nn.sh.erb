@@ -1,29 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # set -e
 
 command=namenode
 
-bin=`dirname "${BASH_SOURCE-$0}"`
-bin=`cd "$bin"; pwd`
+bin=$(dirname "${BASH_SOURCE-$0}")
+bin=$(cd "$bin"; pwd)
 
 DEFAULT_LIBEXEC_DIR="$bin"/../libexec
-HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. $HADOOP_LIBEXEC_DIR/hadoop-config.sh
-. ${bin}/set-env.sh
+HADOOP_LIBEXEC_DIR="${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}"
+. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
+. "${bin}"/set-env.sh
 
 rootDir=<%= node['hops']['base_dir'] %>
 
-HDFS=$rootDir/bin/hdfs
-log=$rootDir/logs/hadoop-<%= node['hops']['hdfs']['user'] %>-$command.log
+HDFS="$rootDir"/bin/hdfs
+log="$rootDir"/logs/hadoop-<%= node['hops']['hdfs']['user'] %>-"$command".log
 
 echo "Stopping namenode if running ..."
-$rootDir/sbin/stop-nn.sh
+"$rootDir"/sbin/stop-nn.sh
 # -force ensures command doesn't user to confirm for re-formatting.
 echo "$HDFS $command <%= @format_opts %> > $log"
 
 # -force causes us to fail
-$HDFS $command <%= @format_opts %>  > "$log"
+"$HDFS" "$command" <%= @format_opts %>  > "$log"
 res=$?
 sleep 5
 cat "$log"
@@ -31,4 +31,4 @@ cat "$log"
 #if [ $error != "" ] ; then
 #  exit 1
 #fi
-exit $res
+exit "$res"

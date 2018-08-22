@@ -1,23 +1,23 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 command=historyserver
 EXEC_WITH_USER="su <%= node['hops']['mr']['user'] %> -l -c"
 
-bin=`dirname "${BASH_SOURCE-$0}"`
-bin=`cd "$bin"; pwd`
+bin=$(dirname "${BASH_SOURCE-$0}")
+bin=$(cd "$bin"; pwd)
 
 rootDir=<%= node['hops']['base_dir'] %>
 
-MRJH=$rootDir/sbin/mr-jobhistory-daemon.sh
+MRJH="$rootDir"/sbin/mr-jobhistory-daemon.sh
 
 echo "Starting $command on ..."
 
-$EXEC_WITH_USER "cd ${bin}/.] ; . ${bin}/../libexec/hadoop-config.sh ; . ${bin}/set-env.sh ; $MRJH --config \$HADOOP_CONF_DIR start $command"
+"$EXEC_WITH_USER" "cd ${bin}/.] ; . ${bin}/../libexec/hadoop-config.sh ; . ${bin}/set-env.sh ; $MRJH --config \$HADOOP_CONF_DIR start $command"
 
 sleep 2
 head <%= node['hops']['logs_dir'] %>/mapred-<%= node['hops']['yarn']['user'] %>-historyserver-<%= node['hostname'] %>.log
 PID_FILE=/tmp/mapred-<%= node['hops']['yarn']['user'] %>-$command.pid
-PID=`cat $PID_FILE` 
-kill -0 $PID 
+PID=$(cat "$PID_FILE")
+kill -0 "$PID"
 
 exit $?

@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 command=datanode
-h=`hostname`
-bin=`dirname "${BASH_SOURCE-$0}"`
-bin=`cd "$bin"; pwd`
+h=$(hostname)
+bin=$(dirname "${BASH_SOURCE-$0}")
+bin=$(cd "$bin"; pwd)
 DEFAULT_LIBEXEC_DIR="$bin"/../libexec
 HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. $HADOOP_LIBEXEC_DIR/hadoop-config.sh
-. ${bin}/set-env.sh
+. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
+. "${bin}"/set-env.sh
 
 log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$command-$h.log
 
@@ -15,7 +15,7 @@ log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$
 sleep 2; head "$log"
 
 PID_FILE=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$command.pid
-PID=`cat $PID_FILE`
-kill -0 $PID
+PID=$(cat $PID_FILE)
+kill -0 "$PID"
 
 exit $?
