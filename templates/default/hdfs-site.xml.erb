@@ -367,4 +367,20 @@
    <value><%= node['hops']['small_files']['in_memory']['max_size'] %></value>
 </property>
 
+<property>
+   <name>dfs.encrypt.data.transfer</name>
+   <value><%= node['hops']['encrypt_data_transfer'] %></value>
+</property>
+
+<property>
+   <name>dfs.encrypt.data.transfer.algorithm</name>
+   <value><%= node['hops']['encrypt_data_transfer']['algorithm'] %></value>
+</property>
+
+<!-- Block tokens should be enabled when data transfer is encrypted -->
+<property>
+   <name>dfs.block.access.token.enable</name>
+   <value><%= node['hops']['encrypt_data_transfer'] %></value>
+</property>
+
 </configuration>

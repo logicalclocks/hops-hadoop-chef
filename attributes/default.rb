@@ -335,6 +335,10 @@ default['hops']['tls']['crl_input_uri']                                 = ""
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
 default['hops']['tls']['crl_fetcher_interval']                          = "1d"
 
+# DataNode Data Transfer Protocol encryption
+default['hops']['encrypt_data_transfer']                                = "false"
+default['hops']['encrypt_data_transfer']['algorithm']                   = "3des"
+
 #capacity scheduler queue configuration
 default['hops']['capacity']['max_app']                                  = 10000
 default['hops']['capacity']['max_am_percent']                           = 0.3
