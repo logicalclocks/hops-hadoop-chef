@@ -254,7 +254,7 @@ attribute "hops/encrypt_data_transfer",
           :description => "Enable encryption for Data Tranfer Protocol of DataNodes",
           :type => 'string'
 
-attribute "hops/encrypt_data_transfer/algorithm"
+attribute "hops/encrypt_data_transfer/algorithm",
           :description => "Encryption algorithm, 3des or rc4",
           :type => 'string'
 

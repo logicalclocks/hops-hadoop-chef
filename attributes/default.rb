@@ -336,7 +336,7 @@ default['hops']['tls']['crl_output_file']                               = "#{nod
 default['hops']['tls']['crl_fetcher_interval']                          = "1d"
 
 # DataNode Data Transfer Protocol encryption
-default['hops']['encrypt_data_transfer']                                = "false"
+default['hops']['encrypt_data_transfer']['enabled']                     = "false"
 default['hops']['encrypt_data_transfer']['algorithm']                   = "3des"
 
 #capacity scheduler queue configuration
