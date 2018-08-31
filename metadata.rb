@@ -250,7 +250,7 @@ attribute "hops/tls/crl_fetcher_interval",
           :description => "Interval for the CRL fetcher service, suffix can be m/h/d",
           :type => 'string'
 
-attribute "hops/encrypt_data_transfer",
+attribute "hops/encrypt_data_transfer/enabled",
           :description => "Enable encryption for Data Tranfer Protocol of DataNodes",
           :type => 'string'
 
