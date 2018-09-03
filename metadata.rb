@@ -342,6 +342,10 @@ attribute "hops/dn/data_dir",
           :description => "The directory in which Hadoop's DataNodes store their data",
           :type => 'string'
 
+attribute "hops/data_dir",
+          :description => "The directory in which Hadoop's main data files are stored (including hops/dn/data_dir)",
+          :type => 'string'
+
 attribute "hops/dn/data_dir_permissions",
           :description => "The permissions for the directory in which Hadoop's DataNodes store their data (default: 700)",
           :type => 'string'
