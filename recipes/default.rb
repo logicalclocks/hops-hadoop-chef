@@ -1,5 +1,7 @@
 include_recipe "java"
 
+Chef::Recipe.send(:include, Hops::Helpers)
+
 case node['platform']
 when "ubuntu"
  if node['platform_version'].to_f <= 14.04
@@ -244,6 +246,7 @@ else
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
+var_hopsworks_host = hopsworks_host()
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
@@ -256,7 +259,8 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
               :my_public_ip => my_public_ip,
               :my_private_ip => my_ip,
               :zk_ip => zk_ip,
-              :resource_handler => resource_handler
+              :resource_handler => resource_handler,
+              :hopsworks_host => var_hopsworks_host
             })
   action :create
 end

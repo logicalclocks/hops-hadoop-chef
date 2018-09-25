@@ -42,16 +42,7 @@ else
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
-hopsworks_host = ""
-if node.attribute?("hopsworks")
-  hopsworks_ip = private_recipe_ip("hopsworks", "default")
-  hopsworks_port = "8181"
-  if node['hopsworks'].attribute?(:secure_port)
-    hopsworks_port = node['hopsworks']['secure_port']
-  end
-  hopsworks_host = "https://#{hopsworks_ip}:#{hopsworks_port}"
-end
-
+var_hopsworks_host = hopsworks_host()
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['rm']['user']
@@ -64,7 +55,7 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
               :my_private_ip => my_ip,
               :zk_ip => zk_ip,
               :resource_handler => resource_handler,
-              :hopsworks_host => hopsworks_host
+              :hopsworks_host => var_hopsworks_host
             })
   action :create
 end
