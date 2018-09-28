@@ -210,7 +210,7 @@ end
 if "#{node['hops']['dn']['data_dir']}".include? ","
   dirs = node['hops']['dn']['data_dir'].split(",")
   for d in dirs do
-    dir = d.gsub("file://","")    
+    dir = d.gsub("file://","")
     bash 'chown_datadirs_if_exist' do
       user "root"
       code <<-EOH
@@ -225,8 +225,8 @@ if "#{node['hops']['dn']['data_dir']}".include? ","
     end
    end
 else
-  ad=node['hops']['dn']['data_dir'] 
-  ddir=ad.gsub("file://","")  
+  ad=node['hops']['dn']['data_dir']
+  ddir=ad.gsub("file://","")
   directory ddir do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
@@ -237,7 +237,7 @@ else
 end
 
 ann=node['hops']['nn']['name_dir']
-nndir=ann.gsub("file://","")  
+nndir=ann.gsub("file://","")
 directory nndir do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -289,11 +289,6 @@ bash 'extract-hadoop' do
         # remove the config files that we would otherwise overwrite
         rm -rf #{node['hops']['home']}/etc/*
 
-        # Force copy the old etc/hadoop files to our new installation, if there are any
-        # at this stage base_dir is still pointing to the old installation
-        if [ -d #{node['hops']['base_dir']} ] ; then
-           cp -rpf #{node['hops']['base_dir']}/etc/ #{node['hops']['home']}/etc/
-        fi
         rm -f #{node['hops']['base_dir']}
         ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
 
