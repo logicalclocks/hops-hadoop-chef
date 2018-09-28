@@ -393,20 +393,6 @@ end
 
 Chef::Log.info "Number of gpus set was: #{node['hops']['yarn']['gpus']}"
 
-if "#{node['hops']['yarn']['gpus']}".eql?("*")
-
-  bash 'count_num_gpus' do
-  user "root"
-  code <<-EOH
-    nvidia-smi -L | wc -l > /tmp/num_gpus
-    if [ ! -f /tmp/num_gpus ] ; then
-      echo "0" > /tmp/num_gpus
-    fi
-    chmod +r /tmp/num_gpus
-  EOH
-  end
-end
-
 rm_private_ip = private_recipe_ip("hops","rm")
 
 begin

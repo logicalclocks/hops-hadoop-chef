@@ -268,7 +268,7 @@
     <name>yarn.nodemanager.recovery.dir</name>
     <value><%= node['hops']['yarn']['nodemanager_recovery_dir'] %></value>
   </property>
-  
+
   <property>
     <name>yarn.resourcemanager.ha.rm-ids</name>
     <value><%= node['hops']['rm']['private_ips'].join(",") %></value>
@@ -432,7 +432,7 @@
 </property>
 <property>
     <name>yarn.nodemanager.resource.gpus</name>
-    <value><%= node['hops']['yarn']['gpus'] %></value>
+    <value><%= @num_gpus %></value>
 </property>
 <property>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>

@@ -85,8 +85,16 @@ if node['hops']['gpu'].eql?("false")
 end
 
 if node['hops']['yarn']['gpus'].eql?("*")
-    num_gpus = ::File.open('/tmp/num_gpus', 'rb') { |f| f.read }
-    node.override['hops']['yarn']['gpus'] = num_gpus.delete!("\n")
+  num_gpus = 0
+  ruby_block 'discover_gpus' do
+    block do
+      Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
+      command = "nvidia-smi -L | wc -l"
+      num_gpus = shell_out(command).stdout.gsub(/\n/, '')
+    end
+  end
+else
+  num_gpus = node['hops']['yarn']['gpus']
 end
 
 Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
@@ -253,15 +261,18 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   group node['hops']['group']
   cookbook "hops"
   mode "740"
-  variables({
-              :rm_private_ip => rm_dest_ip,
-              :rm_public_ip => rm_public_ip,
-              :my_public_ip => my_public_ip,
-              :my_private_ip => my_ip,
-              :zk_ip => zk_ip,
-              :resource_handler => resource_handler,
-              :hopsworks_host => var_hopsworks_host
-            })
+  variables( lazy {
+    h = {}
+    h[:rm_private_ip] = rm_dest_ip
+    h[:rm_public_ip] = rm_public_ip
+    h[:my_public_ip] = my_public_ip
+    h[:my_private_ip] = my_ip
+    h[:zk_ip] = zk_ip
+    h[:resource_handler] = resource_handler
+    h[:hopsworks_host] = var_hopsworks_host
+    h[:num_gpus] = num_gpus
+    h
+  })
   action :create
 end
 
