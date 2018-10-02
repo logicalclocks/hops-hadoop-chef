@@ -16,7 +16,7 @@
 
   <property>
     <name>dfs.namenode.rpc-address</name>
-    <value><%= @firstNN %></value>
+    <value><%= @nn_rpc_address %></value>
     <description>
       RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
       the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
@@ -49,7 +49,7 @@
   <property>
     <name>dfs.namenode.accesstime.precision</name>
     <value>3600000</value>
-    <description>The access time for HDFS file is precise upto this value. 
+    <description>The access time for HDFS file is precise upto this value.
     The default value is 1 hour. Setting a value of 0 disables
     access times for HDFS.
     </description>
@@ -119,7 +119,7 @@
   <property>
     <name>dfs.datanode.data.dir.perm</name>
     <value><%= node['hops']['dn']['data_dir_permissions'] %></value>
-  </property>  
+  </property>
 
   <property>
     <name>dfs.namenode.safemode.extension</name>
@@ -142,7 +142,7 @@
     <name>dfs.namenode.misreplicated.batchsize</name>
     <value>500</value>
     <description>
-      
+
     </description>
   </property>
 
@@ -224,7 +224,7 @@
     <value><%= node['hops']['hdfs']['umask'] %></value>
     <description></description>
   </property>
-  
+
 
   <property>
     <name>dfs.ndc.enable</name>
@@ -266,7 +266,7 @@
 
   <property>
     <name>dfs.erasure_coding.enabled</name>
-    <value><%= node['hops']['erasure_coding'] %></value>    
+    <value><%= node['hops']['erasure_coding'] %></value>
     <description>Enable erasure coding</description>
   </property>
 
@@ -278,7 +278,7 @@
 
   <property>
     <name>dfs.permissions.superusergroup</name>
-    <value><%= node['hops']['hdfs']['user'] %></value>    
+    <value><%= node['hops']['hdfs']['user'] %></value>
     <description>The group for hdfs superusers</description>
   </property>
 
