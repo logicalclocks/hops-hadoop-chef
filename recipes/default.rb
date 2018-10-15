@@ -299,8 +299,8 @@ template "#{node['hops']['conf_dir']}/ssl-server.xml" do
   group node['kagent']['certs_group']
   mode "750"
   variables({
-              :kstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__kstore.jks",
-              :tstore => "#{node['kagent']['keystore_dir']}/#{node['hostname']}__tstore.jks"
+              :kstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__kstore.jks",
+              :tstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__tstore.jks"
             })
   action :create
 end
