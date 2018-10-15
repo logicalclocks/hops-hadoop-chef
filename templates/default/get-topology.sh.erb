@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ $# -gt 0 ]; then
+
+TOPOLOGY_FILE=${TOPOLOGY_FILE:-"topology"}
+
+HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"<%= node['hops']['conf_dir'] %>"}
+
+if [ ! -f ${HADOOP_CONF_DIR}/${TOPOLOGY_FILE} ]; then
+ echo "/default/default-rack "
+ exit 0
+fi
+
+while [ $# -gt 0 ] ; do
+ nodeArg=$1
+ exec< ${HADOOP_CONF_DIR}/${TOPOLOGY_FILE}
+ result=""
+ while read line ; do
+ ar=( $line )
+ if [ "${ar[0]}" = "$nodeArg" ] ; then
+ result="${ar[1]}"
+ fi
+ done
+ shift
+ echo "$result"
+done
+
+else
+ echo "/default/default-rack "
+fi

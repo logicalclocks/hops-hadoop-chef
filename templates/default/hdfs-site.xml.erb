@@ -58,7 +58,7 @@
 
   <property>
     <name>dfs.namenode.handler.count</name>
-    <value>120</value>
+    <value><%= node['hops']['nn']['handler_count'] %></value>
     <description>The RPC server that listens to requests from clients</description>
   </property>
 
@@ -209,7 +209,7 @@
 
   <property>
     <name>dfs.namenode.quota.enabled</name>
-    <value>true</value>
+    <value><%= node['hops']['hdfs']['quota_enabled'] %></value>
     <description></description>
   </property>
 
@@ -381,6 +381,16 @@
 <property>
    <name>dfs.block.access.token.enable</name>
    <value><%= node['hops']['encrypt_data_transfer']['enabled'] %></value>
+</property>
+
+<property>
+   <name>dfs.namenode.enable.retrycache</name>
+   <value><%= node['hops']['nn']['enable_retrycache'] %></value>
+</property>
+
+<property>
+   <name>dfs.locationDomainId</name>
+   <value><%= @locationDomainId %></value>
 </property>
 
 </configuration>

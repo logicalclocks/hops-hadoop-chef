@@ -18,6 +18,7 @@
 # syntax: [prefix].[source|sink].[instance].[options]
 # See javadoc of package-info.java for org.apache.hadoop.metrics2 for details
 
+<% if node['hops']['metrics']['use_graphite'] == "true" %>
 # Send the metrics to graphite endpoint
 *.sink.graphite.class=org.apache.hadoop.metrics2.sink.GraphiteSink
 # default sampling period, in seconds
@@ -38,3 +39,5 @@ datanode.sink.graphite.metrics_prefix=datanode
 namenode.sink.graphite.server_host=<%= @influxdb_ip %>
 namenode.sink.graphite.server_port=<%= node['influxdb']['graphite']['port'] %>
 namenode.sink.graphite.metrics_prefix=namenode
+
+<% end %>

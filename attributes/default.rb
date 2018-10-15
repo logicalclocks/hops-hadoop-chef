@@ -398,3 +398,16 @@ default['hops']['kernel']['somaxconn']                  = 4096
 default['hops']['kernel']['swappiness']                 = 1
 default['hops']['kernel']['overcommit_memory']          = 1
 default['hops']['kernel']['overcommit_ratio']           = 100
+
+
+#LocationDomainId
+default['hops']['nn']['private_ips_domainIds']        = {}
+default['hops']['dn']['private_ips_domainIds']        = {}
+default['hops']['topology']                           = "false"
+
+# graphite metrics
+default['hops']['metrics']['use_graphite']            = "true"
+default['hops']['nn']['enable_retrycache']            = "true"
+
+default['hops']['hdfs']['quota_enabled']              = "true"
+default['hops']['nn']['handler_count']                = 120
