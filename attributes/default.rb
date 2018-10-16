@@ -184,6 +184,15 @@ default['hops']['systemd']                     = "true"
 default['hops']['log']['maxfilesize']          = "256MB"
 default['hops']['log']['maxbackupindex']       = 10
 
+# Retention period for Hadoop log copied over to HDFS
+# Value suffix can be
+# ms - milliseconds
+# s - seconds
+# m - minutes
+# h - hours
+# d - days
+default['hops']['log']['remote_retention']     = "150d"
+
 
 ###################################################################
 ###################################################################
@@ -401,4 +410,3 @@ default['hops']['kernel']['somaxconn']                  = 4096
 default['hops']['kernel']['swappiness']                 = 1
 default['hops']['kernel']['overcommit_memory']          = 1
 default['hops']['kernel']['overcommit_ratio']           = 100
-
