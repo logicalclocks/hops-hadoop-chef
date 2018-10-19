@@ -333,3 +333,27 @@ if node['hops']['tls']['enabled'].eql? "true"
          EOH
   end
 end
+
+# hops-system anaconda environment is created at conda::default
+cron "copy_hadoop_logs" do
+  command "HADOOP_HOME=#{node['hops']['home']} CLASSPATH=$(#{node['hops']['home']}/bin/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini backup"
+  user node['hops']['hdfs']['user']
+  minute '0'
+  hour '2'
+  day '*'
+  month '*'
+  only_if do File.exist?("#{node['hops']['bin_dir']}/hadoop_logs_mgm.py") end
+end
+
+# Schedule deletion of old logs to run only on a single machine
+if my_ip.eql? node['hops']['nn']['private_ips'][0]
+  cron "delete_hadoop_logs" do
+    command "HADOOP_HOME=#{node['hops']['home']} CLASSPATH=$(#{node['hops']['home']}/bin/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini delete"
+    user node['hops']['hdfs']['user']
+    minute '0'
+    hour '4'
+    day '*'
+    month '*'
+    only_if do File.exist?("#{node['hops']['bin_dir']}/hadoop_logs_mgm.py") end
+  end
+end
