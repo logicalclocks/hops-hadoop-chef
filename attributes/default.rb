@@ -204,6 +204,8 @@ default['ndb']['libndb']                    = "#{node['mysql']['version_dir']}/l
 default['mysql']['port']                    = default['ndb']['mysql_port']
 default['hadoop']['mysql_url']              = "jdbc:mysql://#{node['ndb']['mysql_ip']}:#{default['ndb']['mysql_port']}/"
 
+default['hops']['schema_dir']               = "#{node['download_url']}/hops-schemas"
+
 default['hops']['log_level']                = "DEBUG"
 
 default['hops']['hdfs']['blocksize']        = "134217728"
