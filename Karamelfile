@@ -1,6 +1,7 @@
 dependencies:
   - recipe: hops::install
     global:
+      - conda::install
       - kagent::install
   - recipe: hops::ndb
     global:
