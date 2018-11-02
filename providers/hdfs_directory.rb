@@ -128,16 +128,15 @@ action :rm_as_superuser do
         #{node['hops']['base_dir']}/bin/hdfs dfs -rm -f #{recursive} #{new_resource.name}
      fi
     EOF
-  only_if "su #{node['hops']['hdfs']['user']} -c \". #{node['hops']['base_dir']}/sbin/set-env.sh && #{node['hops']['base_dir']}/bin/hdfs dfs -test -e #{new_resource.name}\""
+  only_if "su #{node['hops']['hdfs']['user']} -c \"#{node['hops']['base_dir']}/bin/hdfs dfs -test -e #{new_resource.name}\""
   end
-
 
 end
 
 
 action :replace_as_superuser do
 
-  hops_hdfs_directory "#{new_resource.name}" do
+  hops_hdfs_directory "#{new_resource.dest}" do
     action :rm_as_superuser
   end
 
