@@ -277,6 +277,9 @@ default['hops']['yarn']['quota_monitor_interval']            = 1000
 default['hops']['yarn']['quota_ticks_per_credit']            = 60
 default['hops']['yarn']['quota_min_ticks_charge']            = 600
 default['hops']['yarn']['quota_checkpoint_nbticks']          = 600
+default['hops']['yarn']['quota_threshold_gpu']               = 0.2
+default['hops']['yarn']['quota_minimum_charged_mb']          = 1024
+default['hops']['yarn']['quota_variable_price_enabled']      = "true"
 default['hops']['yarn']['nm_heapsize_mbs']                   = 1000
 default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 
