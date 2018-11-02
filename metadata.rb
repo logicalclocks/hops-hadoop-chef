@@ -165,6 +165,18 @@ attribute "hops/yarn/quota_checkpoint_nbticks",
           :description => "",
           :type => "string"
 
+attribute "hops/yarn/quota_threshold_gpu",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/quota_minimum_charged_mb",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/quota_variable_price_enabled",
+          :description => "",
+          :type => "string"
+
 attribute "hops/yarn/nm_heapsize_mbs",
           :description => "Increase this value if using the YARN external shuffle service. (default: 1000)",
           :type => 'string'

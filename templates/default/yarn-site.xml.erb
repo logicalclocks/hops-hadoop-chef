@@ -369,6 +369,20 @@
     <value><%= node['hops']['yarn']['quota_checkpoint_nbticks'] %></value>
   </property>
   <property>
+    <name>yarn.resourcemanager.quota.multiplicator.threshold.gpu</name>
+    <value><%= node['hops']['yarn']['quota_threshold_gpu'] %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.quota.minimum.charged.mb</name>
+    <value><%= node['hops']['yarn']['quota_minimum_charged_mb'] %></value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.quota.variable.price.enabled</name>
+    <value><%= node['hops']['yarn']['quota_variable_price_enabled'] %></value>
+  </property>
+
+
+  <property>
     <name>yarn.resourcemanager.proxy-user-privileges.enabled</name>
     <value>true</value>
   </property>
