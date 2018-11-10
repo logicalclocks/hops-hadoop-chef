@@ -204,6 +204,8 @@ default['ndb']['libndb']                    = "#{node['mysql']['version_dir']}/l
 default['mysql']['port']                    = default['ndb']['mysql_port']
 default['hadoop']['mysql_url']              = "jdbc:mysql://#{node['ndb']['mysql_ip']}:#{default['ndb']['mysql_port']}/"
 
+default['hops']['schema_dir']               = "#{node['download_url']}/hops-schemas"
+
 default['hops']['log_level']                = "DEBUG"
 
 default['hops']['hdfs']['blocksize']        = "134217728"
@@ -212,8 +214,6 @@ default['dal']['download_url']              = "#{node['download_url']}/ndb-dal-#
 default['dal']['lib_url']                   = "#{node['download_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['download_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['download_url']}/libhopsnvml-#{node['hops']['version']}.so"
-
-default['dal']['schema_url']                = "#{node['download_url']}/hops-#{node['hops']['version']}-#{node['ndb']['version']}.sql"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
 
