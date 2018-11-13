@@ -28,7 +28,7 @@ http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterS
   </property>
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value>spark_shuffle,mapreduce_shuffle</value>
+    <value><%= node['hops']['yarn']['aux_services'] %></value>
   </property>
   <property>
     <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
