@@ -378,6 +378,12 @@ default['hops']['hopsutil_version']                    = node['install']['versio
 default['hops']['hopsutil']['url']                     = "#{node['download_url']}/hopsutil/#{node['hops']['hopsutil_version']}/hops-util-#{node['hops']['hopsutil_version']}.jar"
 
 #
+# Tensorflow-Spark Connector (Featurestore dependency)
+#
+default['hops']['tf_spark_connector_version']                            = "2.11-1.12.0"
+default['hops']['tf_spark_connector']['url']                     = "#{node['download_url']}/spark-tensorflow-connector_#{node['hops']['tf_spark_connector_version']}.jar"
+
+#
 # Hops Examples files
 #
 default['hops']['hopsexamples_version']                = node['install']['version']
