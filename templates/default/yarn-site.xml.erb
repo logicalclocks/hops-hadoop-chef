@@ -462,39 +462,80 @@
   <value>true</value>
 </property>
 
+<!-- RMAppSecurity x.509 and JWT -->
 <property>
-  <name>hops.rm.certificate.actor.class</name>
-  <value><%= node['hops']['tls']['certs_actor_class'] %></value>
+  <name>yarn.resourcemanager.rmappsecurity.actor-class</name>
+  <value><%= node['hops']['rmappsecurity']['actor_class'] %></value>
 </property>
 
 <property>
-  <name>hops.hopsworks.host</name>
+  <name>yarn.resourcemanager.rmappsecurity.actions-host</name>
   <value><%= @hopsworks_host %></value>
 </property>
 
 <property>
-  <name>hops.hopsworks.login.endpoint</name>
-  <value>/hopsworks-api/api/auth/login</value>
-</property>
-
-<property>
-  <name>hops.hopsworks.sign.endpoint</name>
+  <name>yarn.resourcemanager.rmappsecurity.x509.sign-path</name>
   <value>/hopsworks-ca/v2/certificate/app</value>
 </property>
 
 <property>
-  <name>hops.hopsworks.revoke.endpoint</name>
+  <name>yarn.resourcemanager.rmappsecurity.x509.revoke-path</name>
   <value>/hopsworks-ca/v2/certificate/app?</value>
 </property>
 
 <property>
-  <name>yarn.resourcemanager.certificate.expiration-safety-period</name>
-  <value><%= node['hops']['tls']['certs_expiration_safety_period'] %></value>
+  <name>yarn.resourcemanager.rmappsecurity.x509.expiration-safety-period</name>
+  <value><%= node['hops']['rmappsecurity']['x509']['expiration_safety_period'] %></value>
 </property>
 
 <property>
-  <name>yarn.resourcemanager.certificate.revocation-monitor-interval</name>
-  <value><%= node['hops']['tls']['certs_revocation_monitor_interval'] %></value>
+  <name>yarn.resourcemanager.rmappsecurity.x509.revocation-monitor-interval</name>
+  <value><%= node['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.enabled</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['enabled'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.validity</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['validity'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.expiration-leeway</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['expiration-leeway'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.audience</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['audience'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.alive-interval</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['alive-interval'] %></value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.generate-path</name>
+  <value>/hopsworks-api/api/jwt/create</value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.invalidate-path</name>
+  <value>/hopsworks-api/api/jwt/remove/</value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.renew-path</name>
+  <value>/hopsworks-api/api/jwt/renew/</value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.alive-path</name>
+  <value>/hopsworks-ca/v2/token</value>
 </property>
 
 <!--<property>
