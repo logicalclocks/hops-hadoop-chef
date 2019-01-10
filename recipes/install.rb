@@ -121,10 +121,10 @@ group node['kagent']['certs_group'] do
   append true
 end
 
-case node['platform']
-when 'ubuntu'
+case node['platform_family']
+when 'debian'
   package 'libsnappy1v5'
-when 'centos'
+when 'rhel'
   package 'snappy'
 end
 
