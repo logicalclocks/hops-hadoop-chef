@@ -35,18 +35,6 @@ depends 'hopsmonitor'
   supports os
 end
 
-attribute "java/jdk_version",
-          :description =>  "Jdk version",
-          :type => 'string'
-
-attribute "java/install_flavor",
-          :description =>  "Oracle (default) or openjdk",
-          :type => 'string'
-
-attribute "java/java_home",
-          :description =>  "JAVA_HOME",
-          :type => 'string'
-
 attribute "hops/dir",
           :description => "Base installation directory for HopsFS",
           :type => 'string'
