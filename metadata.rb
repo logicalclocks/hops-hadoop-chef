@@ -306,6 +306,10 @@ attribute "hops/yarn/user",
           :description => "Username to run yarn as",
           :type => 'string'
 
+attribute "hops/rm/user",
+          :description => "Username to run the resourcemanager as",
+          :type => 'string'
+
 attribute "hops/yarnapp/user",
           :description => "Username to run yarn applications as",
           :type => 'string'
