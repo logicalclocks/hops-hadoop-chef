@@ -4,6 +4,7 @@ After = syslog.target network.target remote-fs.target
 
 [Service]
 User = <%= node['hops']['yarn']['user'] %>
+Group = <%= node['hops']['group'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nm.sh
