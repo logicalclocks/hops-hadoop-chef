@@ -11,7 +11,6 @@ end
 
 require 'resolv'
 
-
 nnPort=node['hops']['nn']['port']
 hops_group=node['hops']['group']
 my_ip = my_private_ip()
@@ -36,23 +35,15 @@ hopsworks_crl_uri = "RPC TLS NOT ENABLED"
 if node['hops']['tls']['enabled'].eql? "true"
   rpcSocketFactory = node['hops']['hadoop']['rpc']['socket']['factory']
   if node['hops']['tls']['crl_input_uri'].empty?
-    hopsworks_crl_uri = "Could not access hopsworks-chef"
-    if node.attribute?("hopsworks")
-      hopsworks_ip = private_recipe_ip("hopsworks", "default")
-      hopsworks_port = "8181"
-      if node['hopsworks'].attribute?(:secure_port)
-        hopsworks_port = node['hopsworks']['secure_port']
-      end
-      hopsworks_crl_uri = "https://#{hopsworks_ip}:#{hopsworks_port}/intermediate.crl.pem"
+    if node['hops']['tls']['enabled'].eql? "true"
+      hopsworks_crl_uri = "#{hopsworks_host()}/intermediate.crl.pem"
     end
   else
     hopsworks_crl_uri = node['hops']['tls']['crl_input_uri']
   end
 end
 
-node.override['hopsworks']['port'] = hopsworks_port
 node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
-
 
 firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
 if node['hops']['nn']['private_ips'].include?(my_ip)
