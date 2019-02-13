@@ -477,6 +477,14 @@ attribute "hops/yarn/cgroups",
           :description => "'true' to enable cgroups (default), else 'false'",
           :type => "string"
 
+attribute "hops/yarn/cgroups_deletion_timeout",
+          :description => "timeout in ms for deleting Cgroups",
+          :type => "string"
+
+attribute "hops/yarn/cgroups_max_cpu_usage",
+          :description => "max accumulated CPU usage of containers",
+          :type => "string"
+
 attribute "livy/user",
           :description => "Livy user that will be a proxy user",
           :type => "string"

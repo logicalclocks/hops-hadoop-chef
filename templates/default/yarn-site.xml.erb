@@ -94,6 +94,11 @@
     <value><%= @resource_handler %></value>
   </property>
   <property>
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.cgroups.delete-timeout-ms</name>
+    <value><%= node['hops']['yarn']['cgroups_deletion_timeout'] %></value>
+    <description>Timeout for deleting Cgroups after container is finished.</description>
+  </property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.hierarchy</name>
     <value>hops-yarn</value>
     <description>LinuxContainerExecutor CGroups hierarchy.</description>
@@ -110,7 +115,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
-    <value>100</value>
+    <value><%= node['hops']['yarn']['cgroups_max_cpu_usage'] %></value>
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
