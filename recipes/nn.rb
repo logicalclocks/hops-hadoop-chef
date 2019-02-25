@@ -65,7 +65,7 @@ if node['hops']['nn']['partition_key'].eql? "false"
 end
 
 nnHTTPAddress = "#{my_ip}:#{node['hops']['nn']['http_port']}"
-
+locDomainId = node['hops']['nn']['private_ips_domainIds'].has_key?(my_ip) ? node['hops']['nn']['private_ips_domainIds'][my_ip] : 0
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node['hops']['hdfs']['user']
@@ -76,7 +76,8 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
               :firstNN => myNN,
               :cache => cache,
               :partition_key => partition_key,
-              :nnHTTPAddress => nnHTTPAddress
+              :nnHTTPAddress => nnHTTPAddress,
+              :locationDomainId => locDomainId
             })
   action :create
 end
@@ -224,7 +225,7 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
       group node['hops']['group']
       mode "1750"
     end
-    
+
   exec = "#{node['ndb']['scripts_dir']}/mysql-client.sh"
   bash 'insert_hopsworks_as_hdfs_superuser' do
     user "root"

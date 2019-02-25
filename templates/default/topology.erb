@@ -1,0 +1,5 @@
+<% if (node.attribute?(:hops) && node['hops'].attribute?(:dn) && node['hops']['dn'].attribute?(:private_ips_domainIds) && !node['hops']['dn']['private_ips_domainIds'].empty?) -%>
+<% for dn, locdomainId in node['hops']['dn']['private_ips_domainIds'] -%>
+<%= dn%> /d<%=locdomainId%>/r1
+<% end -%>
+<% end -%>
