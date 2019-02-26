@@ -210,10 +210,6 @@ attribute "hops/url/primary",
           :description => "Primary download url of hops distribution",
           :type => 'string'
 
-attribute "hops/url/secondary",
-          :description => "Secondary download url of hops distribution",
-          :type => 'string'
-
 attribute "hops/server/threadpool",
           :description => "Number of threads in RPC server reading from socket",
           :type => 'string'
