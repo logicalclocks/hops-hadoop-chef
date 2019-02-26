@@ -129,8 +129,9 @@ default['hops']['rm']['scheduler_capacity']['calculator_class']  = "org.apache.h
 default['hops']['mr']['tmp_dir']               = "/mapreduce"
 default['hops']['mr']['staging_dir']           = "#{default['hops']['mr']['tmp_dir']}/#{default['hops']['mr']['user']}/staging"
 
-default['hops']['jhs']['inter_dir']            = "/mr-history/done_intermediate"
-default['hops']['jhs']['done_dir']             = "/mr-history/done"
+default['hops']['jhs']['root_dir']             = "/mr-history"
+default['hops']['jhs']['inter_dir']            = "#{node['hops']['jhs']['root_dir']}/done_intermediate"
+default['hops']['jhs']['done_dir']             = "#{node['hops']['jhs']['root_dir']}/done"
 
 # YARN CONFIG VARIABLES
 # http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-common/yarn-default.xml
