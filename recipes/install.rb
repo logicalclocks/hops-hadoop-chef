@@ -246,14 +246,14 @@ directory nndir do
   action :create
 end
 
-primary_url = node['hops']['url']['primary']
-Chef::Log.info "Attempting to download hadoop binaries from #{primary_url}"
+dist_url = node['hops']['dist_url']
+Chef::Log.info "Attempting to download hadoop binaries from #{dist_url}"
 
-base_package_filename = File.basename(primary_url)
+base_package_filename = File.basename(dist_url)
 cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
 
 remote_file cached_package_filename do
-  source primary_url
+  source dist_url
   retries 2
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
