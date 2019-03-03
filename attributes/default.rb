@@ -127,7 +127,7 @@ default['hops']['rm']['scheduler_class']       = "org.apache.hadoop.yarn.server.
 default['hops']['rm']['scheduler_capacity']['calculator_class']  = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 
 default['hops']['mr']['tmp_dir']               = "/mapreduce"
-default['hops']['mr']['staging_dir']           = "#{default['hops']['mr']['tmp_dir']}/#{default['hops']['mr']['user']}/staging"
+default['hops']['mr']['staging_dir']           = "#{node['hops']['mr']['tmp_dir']}/#{default['hops']['mr']['user']}/staging"
 
 default['hops']['jhs']['inter_dir']            = "/mr-history/done_intermediate"
 default['hops']['jhs']['done_dir']             = "/mr-history/done"
@@ -142,18 +142,18 @@ default['hops']['nn']['jmxport']               = "8077"
 default['hops']['rm']['jmxport']               = "8082"
 default['hops']['nm']['jmxport']               = "8083"
 
-default['hops']['nn']['public_ips']            = ['10.0.2.15']
-default['hops']['nn']['private_ips']           = ['10.0.2.15']
-default['hops']['dn']['public_ips']            = ['10.0.2.15']
-default['hops']['dn']['private_ips']           = ['10.0.2.15']
-default['hops']['rm']['public_ips']            = ['10.0.2.15']
-default['hops']['rm']['private_ips']           = ['10.0.2.15']
-default['hops']['nm']['public_ips']            = ['10.0.2.15']
-default['hops']['nm']['private_ips']           = ['10.0.2.15']
-default['hops']['jhs']['public_ips']           = ['10.0.2.15']
-default['hops']['jhs']['private_ips']          = ['10.0.2.15']
-default['hops']['ps']['public_ips']            = ['10.0.2.15']
-default['hops']['ps']['private_ips']           = ['10.0.2.15']
+default['hops']['nn']['public_ips']            = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['nn']['private_ips']           = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hops']['dn']['public_ips']            = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['dn']['private_ips']           = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hops']['rm']['public_ips']            = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['rm']['private_ips']           = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hops']['nm']['public_ips']            = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['nm']['private_ips']           = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hops']['jhs']['public_ips']           = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['jhs']['private_ips']          = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hops']['ps']['public_ips']            = node["install"]["public_ips"].empty? ? ['10.0.2.15'] : node["install"]["public_ips"] 
+default['hops']['ps']['private_ips']           = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
 
 # comma-separated list of namenode addrs
 default['hops']['nn']['addrs']                 = []
@@ -229,18 +229,6 @@ default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 50
 default['hops']['nn']['heap_size']          = 500
 
-default['hops']['nn']['public_ips']         = ['10.0.2.15']
-default['hops']['nn']['private_ips']        = ['10.0.2.15']
-default['hops']['dn']['public_ips']         = ['10.0.2.15']
-default['hops']['dn']['private_ips']        = ['10.0.2.15']
-default['hops']['rm']['public_ips']         = ['10.0.2.15']
-default['hops']['rm']['private_ips']        = ['10.0.2.15']
-default['hops']['nm']['public_ips']         = ['10.0.2.15']
-default['hops']['nm']['private_ips']        = ['10.0.2.15']
-default['hops']['jhs']['public_ips']        = ['10.0.2.15']
-default['hops']['jhs']['private_ips']       = ['10.0.2.15']
-default['hops']['ps']['public_ips']         = ['10.0.2.15']
-default['hops']['ps']['private_ips']        = ['10.0.2.15']
 default['hops']['yarn']['resource_tracker'] = "false"
 
 default['hops']['erasure_coding']           = "false"
@@ -392,8 +380,8 @@ default['hops']['small_files']['on_disk']['max_size']['medium']                 
 default['hops']['small_files']['on_disk']['max_size']['large']                      = 65536
 default['hops']['small_files']['in_memory']['max_size']                             = 1024
 
-default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
-default['hopsworks']['default']['private_ips']                                      = ['10.0.2.15']
+default['hopsmonitor']['default']['private_ips']                                    = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
+default['hopsworks']['default']['private_ips']                                      = node["install"]["private_ips"].empty? ? ['10.0.2.15'] : node["install"]["private_ips"]
 
 # Kernel tuning
 default['hops']['kernel']['somaxconn']                  = 4096
