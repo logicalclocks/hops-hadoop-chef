@@ -206,12 +206,8 @@ attribute "hadoop_spark/version",
           :description => "Spark version",
           :type => 'string'
 
-attribute "hops/url/primary",
-          :description => "Primary download url of hops distribution",
-          :type => 'string'
-
-attribute "hops/url/secondary",
-          :description => "Secondary download url of hops distribution",
+attribute "hops/root_url",
+          :description => "Download url of hops distribution artifacts",
           :type => 'string'
 
 attribute "hops/server/threadpool",
