@@ -201,6 +201,10 @@ attribute "hops/rm/public_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hops/jhs/root_dir",
+          :description => "Root directory in HDFS for MapReduce History Server",
+          :type => "string"
+
 # Needed to find the jar file for yan-spark-shuffle
 attribute "hadoop_spark/version",
           :description => "Spark version",
