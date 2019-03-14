@@ -79,7 +79,6 @@
     <name>hadoop.registry.zk.quorum</name>
     <value><%= @zk_ip %>:2181</value>
   </property>
-
   <property>
     <name>yarn.nodemanager.container-executor.class</name>
     <value><%= node['hops']['yarn']['container_executor'] %></value>
@@ -436,6 +435,11 @@
   <description>How often to monitor containers.</description>
 </property>
 
+<property>
+  <name>yarn.nodemanager.user-home-dir</name>
+  <value><%= node['hops']['yarn']['home_dir'] %></value>
+</property>
+
 <!-- GPU settings -->
 <property>
     <name>yarn.scheduler.minimum-allocation-gpus</name>
@@ -452,6 +456,10 @@
 <property>
     <name>yarn.nodemanager.resource.gpus</name>
     <value><%= @num_gpus %></value>
+</property>
+<property>
+    <name>yarn.nodemanager.gpu.management-impl</name>
+    <value><%= node['hops']['yarn']['gpu_impl_class'] %></value>
 </property>
 <property>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>

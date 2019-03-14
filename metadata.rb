@@ -480,6 +480,10 @@ attribute "hops/yarn/cluster/gpu",
           :description => "Is there a machine in the cluster with gpus?",
           :type => "string"
 
+attribute "hops/yarn/gpu_impl_class",
+          :description => "hops-gpu-management-impl class to use, set to 'io.hops.management.nvidia.NvidiaManagementLibrary' for Nvidia GPUs, 'io.hops.management.amd.AMDManagementLibrary' for AMD GPUs",
+          :type => "string"
+
 #CGroups settings
 attribute "hops/yarn/groups",
           :description => "",
@@ -503,6 +507,10 @@ attribute "hops/yarn/cgroups_deletion_timeout",
 
 attribute "hops/yarn/cgroups_max_cpu_usage",
           :description => "max accumulated CPU usage of containers",
+          :type => "string"
+
+attribute "hops/yarnapp/home_dir",
+          :description => "home directory for yarnapp user",
           :type => "string"
 
 attribute "livy/user",

@@ -75,13 +75,24 @@ end
 
 if node['hops']['yarn']['gpus'].eql?("*")
   num_gpus = 0
-  ruby_block 'discover_gpus' do
-    block do
-      Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-      command = "nvidia-smi -L | wc -l"
-      num_gpus = shell_out(command).stdout.gsub(/\n/, '')
+  if node['hops']['yarn']['gpus'].eql?("*") && node['hops']['yarn']['gpu_impl_class'].eql?("io.hops.management.nvidia.NvidiaManagementLibrary")
+    ruby_block 'discover_gpus' do
+      block do
+        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
+        command = "nvidia-smi -L | wc -l"
+        num_gpus = shell_out(command).stdout.gsub(/\n/, '')
+      end
     end
   end
+  if node['hops']['yarn']['gpus'].eql?("*") && node['hops']['yarn']['gpu_impl_class'].eql?("io.hops.management.amd.AMDManagementLibrary")
+    ruby_block 'discover_gpus' do
+      block do
+        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
+        num_gpus = Dir["/sys/module/amdgpu/drivers/pci:amdgpu/*/drm/card*"].length
+      end
+    end
+  end
+
 else
   num_gpus = node['hops']['yarn']['gpus']
 end
