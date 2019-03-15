@@ -3,8 +3,8 @@ include_attribute "ndb"
 include_attribute "kzookeeper"
 include_attribute "hopsmonitor"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6"
-default['hops']['version']                     = "2.8.2.7"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7"
+default['hops']['version']                     = "2.8.2.8-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -338,10 +338,17 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
-default['hops']['tls']['certs_actor_class']                             = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppCertificateActions"
+default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppSecurityActions"
 
-default['hops']['tls']['certs_expiration_safety_period']                = "2d"
-default['hops']['tls']['certs_revocation_monitor_interval']             = "12h"
+default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
+default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
+
+default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
+default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
+default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
+# Comma separated list of JWT audience
+default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
+default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
 
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
@@ -401,7 +408,6 @@ default['hops']['kernel']['somaxconn']                  = 4096
 default['hops']['kernel']['swappiness']                 = 1
 default['hops']['kernel']['overcommit_memory']          = 1
 default['hops']['kernel']['overcommit_ratio']           = 100
-
 
 #LocationDomainId
 default['hops']['nn']['private_ips_domainIds']        = {}

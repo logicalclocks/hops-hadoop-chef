@@ -222,16 +222,36 @@ attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
-attribute "hops/tls/certs_actor_class",
-          :description => "Actor class to perform X509 requests to Hopsworks",
+attribute "hops/rmappsecurity/actor_class",
+          :description => "Actor class for RMAppSecurityManager to perform X.509/JWT requests to Hopsworks",
           :type => 'string'
 
-attribute "hops/tls/certs_expiration_safety_period",
-          :description => "Time to substract fro X509 expiration time for renewal",
+attribute "hops/rmappsecurity/x509/expiration_safety_period",
+          :description => "Time to substract from X509 expiration time for renewal",
           :type => 'string'
 
-attribute "hops/tls/certs_revocation_monitor_interval",
+attribute "hops/rmappsecurity/x509/revocation_monitor_interval",
           :description => "Period to check for stale X509 certificates that should be revoked",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/enabled",
+          :description => "Enable JWT on Yarn",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/validity",
+          :description => "Validity period for JWT. Valid suffices are ms, s, m, h, d",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/expiration-leeway",
+          :description => "Expiration leeway period, Valid suffices are s, m, h, d",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/audience",
+          :description => "Comma separated list of JWT audiences",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/alive-interval",
+          :description => "Interval for ResourceManager to ping Hopsworks to renew its JWT. Valid suffices are s, m, h, d",
           :type => 'string'
 
 attribute "hops/tls/crl_enabled",

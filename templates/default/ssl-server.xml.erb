@@ -71,14 +71,14 @@ limitations under the License.
     <description>Optional. The keystore file format, default value is "jks".</description>
   </property>
 
+  <% if (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") || node['hops']['tls']['enabled'].eql?("true")) -%>
+  
   <property>
-    <name>hops.hopsworks.user</name>
-    <value><%= node['kagent']['dashboard']['user'] %></value>
+    <name>yarn.resourcemanager.rmappsecurity.jwt.token</name>
+    <value><%= @jwt %></value>
+    <description>JWT for the ResourceManager to make REST calls to Hopsworks</description>
   </property>
 
-  <property>
-    <name>hops.hopsworks.password</name>
-    <value><%= node['kagent']['dashboard']['password'] %></value>
-  </property>
+  <% end -%>
   
  </configuration>

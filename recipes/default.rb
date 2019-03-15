@@ -286,18 +286,6 @@ template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   action :create
 end
 
-template "#{node['hops']['conf_dir']}/ssl-server.xml" do
-  source "ssl-server.xml.erb"
-  owner node['hops']['hdfs']['user']
-  group node['kagent']['certs_group']
-  mode "750"
-  variables({
-              :kstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__kstore.jks",
-              :tstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__tstore.jks"
-            })
-  action :create
-end
-
 template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
   owner node['hops']['hdfs']['user']

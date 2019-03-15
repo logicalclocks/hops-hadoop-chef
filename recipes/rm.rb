@@ -1,5 +1,7 @@
 include_recipe "hops::default"
 
+template_ssl_server()
+
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
