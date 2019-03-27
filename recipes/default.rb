@@ -136,6 +136,14 @@ if node.attribute?("hive2")
 end
 node.override['hive2']['user'] = hiveUser
 
+sqoopUser = "sqoop"
+if node.attribute?('sqoop')
+  if node['sqoop'].attribute?('user')
+    sqoopUser = node['sqoop']['user']
+  end
+end
+node.override['sqoop']['user'] = sqoopUser
+
 
 template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
@@ -166,6 +174,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :livyUser => livyUser,
      :hiveUser => hiveUser,
      :jupyterUser => jupyterUser,
+     :sqoopUser => sqoopUser,     
      :allNNs => allNNIps,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => hopsworks_crl_uri

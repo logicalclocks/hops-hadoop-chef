@@ -56,6 +56,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
               :livyUser => node['livy']['user'],
               :hiveUser => node['hive2']['user'],
               :jupyterUser => node['jupyter']['user'],
+              :sqoopUser => node['sqoop']['user'],              
               :allNNs => myNN,
               :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
               :hopsworks_crl_uri => hopsworks_crl_uri
