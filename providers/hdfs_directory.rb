@@ -137,6 +137,7 @@ end
 action :replace_as_superuser do
 
   hops_hdfs_directory "#{new_resource.dest}" do
+    recursive true
     action :rm_as_superuser
   end
 
