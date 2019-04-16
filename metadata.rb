@@ -255,8 +255,8 @@ attribute "hops/rmappsecurity/jwt/audience",
           :description => "Comma separated list of JWT audiences",
           :type => 'string'
 
-attribute "hops/rmappsecurity/jwt/alive-interval",
-          :description => "Interval for ResourceManager to ping Hopsworks to renew its JWT. Valid suffices are s, m, h, d",
+attribute "hops/rmappsecurity/jwt/master-token-validity",
+          :description => "Validity period for ResourceManager's master service JWT. Valid suffices are s, m, h, d",
           :type => 'string'
 
 attribute "hops/tls/crl_enabled",
