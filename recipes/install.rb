@@ -89,11 +89,11 @@ end
 user node['hops']['yarnapp']['user'] do
   gid node['hops']['group']
   system true
+  manage_home true
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['yarnapp']['user']}"
 end
-
 
 user node['hops']['rm']['user'] do
   gid node['hops']['secure_group']
@@ -101,6 +101,12 @@ user node['hops']['rm']['user'] do
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['rm']['user']}"
+end
+
+group "video" do
+  action :modify
+  members ["#{node['hops']['yarnapp']['user']}"]
+  append true
 end
 
 group node['hops']['secure_group'] do

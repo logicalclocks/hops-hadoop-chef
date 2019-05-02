@@ -53,7 +53,34 @@ link "#{node['hops']['base_dir']}/lib/native/libhopsnvml.so" do
   to "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}"
 end
 
+amd_url = node['amd']['download_url']
+amd_jar = File.basename(amd_url)
 
+remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{amd_jar}" do
+  source amd_url
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  # TODO - checksum
+  #  action :create_if_missing
+  action :create
+end
+
+libhopsrocm = File.basename(node['hops']['librocm_url'])
+remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}" do
+  source node['hops']['librocm_url']
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "0755"
+  # TODO - checksum
+  action :create_if_missing
+end
+
+link "#{node['hops']['base_dir']}/lib/native/libhopsrocm.so" do
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  to "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}"
+end
 
 if node['hops']['systemd'] == "true"
 

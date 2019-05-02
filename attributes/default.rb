@@ -215,6 +215,8 @@ default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-d
 default['dal']['lib_url']                   = "#{node['hops']['root_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['hops']['root_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['hops']['libnvml_url']              = "#{node['hops']['root_url']}/libhopsnvml-#{node['hops']['version']}.so"
+default['amd']['download_url']              = "#{node['hops']['root_url']}/amd-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
+default['hops']['librocm_url']              = "#{node['hops']['root_url']}/libhopsrocm-#{node['hops']['version']}.so"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
 
@@ -386,7 +388,9 @@ default['hops']['yarn']['min_gpus']                    = 0
 default['hops']['yarn']['max_gpus']                    = 10
 default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
+default['hops']['yarn']['gpu_impl_class']              = "io.hops.management.nvidia.NvidiaManagementLibrary"
 default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
+default['hops']['yarnapp']['home_dir']                 = "/home"
 default['hops']['yarn']['linux_container_limit_users'] = "true"
 
 # Does a machine in the cluster contain gpus?
