@@ -2,6 +2,12 @@ include_recipe "java"
 
 Chef::Recipe.send(:include, Hops::Helpers)
 
+if not node["hopsworks"]["default"].attribute?("public_ips")
+  Chef::Log.warn("Hopsworks cookbook was not loaded, disabling Hops TLS and JWT support!")
+  node.override['hops']['tls']['enabled'] = "false"
+  node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
+end
+
 case node['platform']
 when "ubuntu"
  if node['platform_version'].to_f <= 14.04
