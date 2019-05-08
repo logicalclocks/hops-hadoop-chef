@@ -223,8 +223,8 @@ attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
-attribute "hops/tls/dev",
-          :description => "default is 'true' (accepts untrusted certificates). Set to 'false' for production environments.",
+attribute "hops/tls/prod",
+          :description => "default is 'false' (accepts untrusted certificates by default). Set to 'true' for production environments.",
           :type => 'string'
 
 attribute "hops/rmappsecurity/actor_class",

@@ -340,7 +340,7 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
-default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppSecurityActions"
+default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.DevHopsworksRMAppSecurityActions"
 
 default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
 default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
@@ -353,14 +353,14 @@ default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
 default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
 
 # Set to 'false' if you want production TLS certificates.
-default['hops']['tls']['dev']                                           = "true"
+default['hops']['tls']['prod']                                          = "false"
 
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
-default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
+default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.DevRemoteCRLFetcher"
 default['hops']['tls']['crl_input_uri']                                 = ""
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
-default['hops']['tls']['crl_fetcher_interval']                          = "1d"
+default['hops']['tls']['crl_fetcher_interval']                          = "5m"
 
 # DataNode Data Transfer Protocol encryption
 default['hops']['encrypt_data_transfer']['enabled']                     = "false"
