@@ -352,7 +352,7 @@ default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
 default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
 
-# Set to 'false' if you want production TLS certificates.
+# Set to 'true' if you want production TLS certificates.
 default['hops']['tls']['prod']                                          = "false"
 
 # CRL validation when RPC TLS is enabled
