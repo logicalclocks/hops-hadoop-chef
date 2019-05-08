@@ -29,10 +29,6 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
 end
 
 
-deps = ""
-if exists_local("ndb", "mysqld") 
-  deps = "mysqld.service"
-end  
 yarn_service="rm"
 service_name="resourcemanager"
 my_ip = my_private_ip()
@@ -121,9 +117,6 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
-    variables({
-              :deps => deps
-              })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end

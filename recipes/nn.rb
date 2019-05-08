@@ -107,10 +107,6 @@ template "#{node['hops']['home']}/sbin/root-test-drop-full-recreate.sh" do
   mode "700"
 end
 
-deps = ""
-if exists_local("ndb", "mysqld") 
-  deps = "mysqld.service"
-end  
 service_name="namenode"
 
 if node['hops']['systemd'] == "true"
@@ -139,9 +135,6 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
-    variables({
-              :deps => deps
-              })
     action :create
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
