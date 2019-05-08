@@ -2,6 +2,10 @@ include_recipe "hops::default"
 
 template_ssl_server()
 
+deps = ""
+if exists_local("hops", "rm") 
+  deps = "resourcemanager.service"
+end  
 yarn_service="nm"
 service_name="nodemanager"
 
@@ -107,6 +111,9 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    variables({
+              :deps => deps
+              })    
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end

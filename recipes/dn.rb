@@ -12,6 +12,12 @@ for script in node['hops']['dn']['scripts']
   end
 end 
 
+
+
+deps = ""
+if exists_local("hops", "nn") 
+  deps = "namenode.service"
+end  
 service_name="datanode"
 
 if node['hops']['systemd'] == "true"
@@ -40,6 +46,9 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    variables({
+              :deps => deps
+              })
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
 end
