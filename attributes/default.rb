@@ -352,6 +352,9 @@ default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
 default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
 
+# Set to 'false' if you want production TLS certificates.
+default['hops']['tls']['dev']                                           = "true"
+
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
 default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
