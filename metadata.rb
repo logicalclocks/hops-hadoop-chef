@@ -561,6 +561,14 @@ attribute "hops/nn/handler_count",
           :description => "Number of RPC handlers",
           :type => "string" 
 
+attribute "hops/retry_policy_spec",
+          :description => "Retry policy specification. For example '10000,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :type => "string" 
+
+attribute "hops/retry_policy_enable",
+          :description => "Enable retry upon connection failure",
+          :type => "string" 
+
 # Kernel tuning parameters
 attribute "hops/kernel/somaxconn",
           :description => "net.core.somaxconn value",
