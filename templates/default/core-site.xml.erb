@@ -32,6 +32,17 @@
     <description>If a HDFS client has a communication problem with a NameNode, retry the connection the number of times specified here.</description>
   </property>
 
+  <property>
+    <name>dfs.client.retry.policy.spec</name>
+    <value><%= node['hops']['retry_policy_spec'] %></value>
+    <description>Retry policy specification. For example "10000,6,60000,10" means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay. </description>
+  </property>
+
+  <property>
+    <name>dfs.client.retry.policy.enabled</name>
+    <value><%= node['hops']['retry_policy_enabled'] %></value>
+    <description>Enable retry upon connection failure</description>
+  </property>
 
   <property>
     <name>dfs.storage.driver.configfile</name>
