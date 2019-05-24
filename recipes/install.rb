@@ -1,3 +1,6 @@
+include_recipe "hops::_config"
+include_recipe "java"
+
 group node['kagent']['certs_group'] do
   action :create
   not_if "getent group #{node['kagent']['certs_group']}"
@@ -48,7 +51,6 @@ if node['platform_family'].eql?("redhat")
   end
 end
 
-include_recipe "java"
 
 group node['hops']['group'] do
   action :create

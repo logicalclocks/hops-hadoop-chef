@@ -21,6 +21,7 @@ recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
 recipe            "hops::client", "Installs libaries and configuration files for writing HDFS and YARN progams"
 recipe            "hops::purge", "Removes all hops-hadoop files and dirs and ndb-dal, but doesnt drop hops db from NDB"
 recipe            "hops::purge-ndb", "Drops  hops db from NDB"
+recipe            "hops::_config", "Internal recipe for setting config values"
 
 depends 'java'
 depends 'kagent'
@@ -220,6 +221,10 @@ attribute "hops/server/threadpool",
 
 attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
+          :type => 'string'
+
+attribute "hops/tls/prod",
+          :description => "default is 'false' (accepts untrusted certificates by default). Set to 'true' for production environments.",
           :type => 'string'
 
 attribute "hops/rmappsecurity/actor_class",
