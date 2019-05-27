@@ -441,3 +441,19 @@ template "#{node['hops']['conf_dir']}/hadoop_logs_mgm.ini" do
   mode "0740"
   action :create
 end
+
+cookbook_file "#{node['hops']['sbin_dir']}/renew_service_jwt.py" do
+  source "renew_service_jwt.py"
+  owner node['hops']['hdfs']['user']
+  group node['kagent']['certs_group']
+  mode "0700"
+  action :create
+end
+
+template "#{node['hops']['sbin_dir']}/conda_renew_service_jwt.sh" do
+  source "conda_renew_service_jwt.sh.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['certs_group']
+  mode "0700"
+  action :create
+end

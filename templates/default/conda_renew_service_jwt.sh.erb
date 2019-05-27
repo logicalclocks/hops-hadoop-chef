@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+<%= node['conda']['base_dir'] %>/envs/hops-system/bin/python <%= node['hops']['sbin_dir'] %>/renew_service_jwt.py $@
