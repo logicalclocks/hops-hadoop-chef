@@ -67,7 +67,10 @@ if node['hops']['nn']['partition_key'].eql? "false"
    partition_key = "false"
 end
 
-nnHTTPAddress = "#{my_ip}:#{node['hops']['nn']['http_port']}"
+if node['hops']['nn']['private_ips'].include?(my_ip)
+    nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
+end
+
 locDomainId = node['hops']['nn']['private_ips_domainIds'].has_key?(my_ip) ? node['hops']['nn']['private_ips_domainIds'][my_ip] : 0
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
@@ -79,8 +82,8 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
               :firstNN => myNN,
               :cache => cache,
               :partition_key => partition_key,
-              :nnHTTPAddress => nnHTTPAddress,
-              :locationDomainId => locDomainId
+              :locationDomainId => locDomainId,
+              :nn_http_address => nn_http_address
             })
   action :create
 end
