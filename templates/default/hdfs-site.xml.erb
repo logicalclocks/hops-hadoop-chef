@@ -25,6 +25,11 @@
     </description>
   </property>
 
+  <property>
+    <name>dfs.namenode.http-address</name>
+    <value><%= @nnHTTPAddress %></value>
+    <description>The address and the base port where the dfs namenode web ui will listen on. </description>
+  </property>
 
   <property>
     <name>dfs.client.max.retries.on.failure</name>
@@ -322,11 +327,6 @@
 <property>
   <name>dfs.datanode.https.address</name>
   <value><%= node['hops']['dfs']['datanode']['https']['address'] %></value>
-</property>
-
-<property>
-  <name>dfs.namenode.http-address</name>
-  <value><%= @nnHTTPAddress %></value>
 </property>
 
 <property>

@@ -16,16 +16,11 @@ module Hops
     def template_ssl_server
       if (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") or node['hops']['tls']['enabled'].eql?("true"))
         
-        ## Get JWT from kagent
-        bearer_jwt = get_service_jwt()
-        
-        tokenized = bearer_jwt.split(' ').map(&:strip)
-        if not tokenized.length.eql? 2
-          fail "Could not extract JWT from Hopsworks response"
-        end
-        hopsworks_jwt = tokenized[1]
+        ## Get service JWT, from kagent-chef/libraries
+        master_token, renew_tokens = get_service_jwt()
       else
-        hopsworks_jwt = ""
+        master_token = ""
+        renew_tokens = []
       end
 
       fqdn = node['fqdn']
@@ -41,7 +36,8 @@ module Hops
         variables({
                     :kstore => "#{node['kagent']['keystore_dir']}/#{fqdn}__kstore.jks",
                     :tstore => "#{node['kagent']['keystore_dir']}/#{fqdn}__tstore.jks",
-                    :jwt => hopsworks_jwt
+                    :master_token => master_token,
+                    :renew_tokens => renew_tokens
                   })
         action :create
       end

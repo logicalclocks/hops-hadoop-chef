@@ -352,7 +352,7 @@ default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
 default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 # Comma separated list of JWT audience
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
-default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
+default['hops']['rmappsecurity']['jwt']['master-token-validity']        = "7d"
 
 # Set to 'true' if you want production TLS certificates.
 default['hops']['tls']['prod']                                          = "false"
