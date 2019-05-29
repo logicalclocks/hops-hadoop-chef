@@ -23,8 +23,6 @@ hops_group=node['hops']['group']
 my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
-rm_public_ip = public_recipe_ip("hops","rm")
-rm_dest_ip = rm_private_ip
 zk_ip = private_recipe_ip('kzookeeper', 'default')
 influxdb_ip = private_recipe_ip("hopsmonitor","default")
 
@@ -52,27 +50,27 @@ end
 
 node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
 
-firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
-if node['hops']['nn']['private_ips'].include?(my_ip)
-  # This is a namenode machine, the rpc-address in hdfs-site.xml is used as "bind to" address
-  nn_rpc_address = "#{my_ip}:#{nnPort}"
-  nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
-else
-  # This is a non namenode machine, a random namenode works
-  nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
-end
-
 if node['hops']['nn']['private_ips'].length > 1
   allNNIps = node['hops']['nn']['private_ips'].join(":#{nnPort},") + ":#{nnPort}"
 else
   allNNIps = "#{node['hops']['nn']['private_ips'][0]}" + ":#{nnPort}"
 end
 
+firstNN = "hdfs://" + private_recipe_ip("hops", "nn") + ":#{nnPort}"
+if node['hops']['nn']['private_ips'].include?(my_ip)
+  # This is a namenode machine, the rpc-address in hdfs-site.xml is used as "bind to" address
+  nn_rpc_address = "#{my_ip}:#{nnPort}"
+  nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
+  firstNN = "hdfs://#{nn_rpc_address}"
+  allNNIps = nn_rpc_address 
+else
+  # This is a non namenode machine, a random namenode works
+  nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
+end
+
 #
 # Constraints for Attributes - enforce them!
 #
-
-
 # If the user specified "gpu" to be true in a cluster definition, then accept that.
 # Else, if cuda/accept_nvidia_download_terms is set to true, then make 'gpu' true.
 if node['hops']['gpu'].eql?("false")
@@ -167,11 +165,6 @@ if node['ndb']['TransactionInactiveTimeout'].to_i < node['hops']['leader_check_i
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
-#
-# If there is a NN on this host, this will not override the NN's core-site.xml file which
-# may have already been created. The NN will overwrite this core-site.xml file if it runs
-# after the recipe that called this default['rb'] file.
-#
 template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
@@ -242,6 +235,7 @@ template "#{node['hops']['home']}/sbin/set-env.sh" do
 end
 
 
+locDomainId = node['hops']['nn']['private_ips_domainIds'].has_key?(my_ip) ? node['hops']['nn']['private_ips_domainIds'][my_ip] : 0
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node['hops']['hdfs']['user']
@@ -250,6 +244,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   cookbook "hops"
   variables({
     :nn_rpc_address => nn_rpc_address,
+    :locationDomainId => locDomainId,
     :nn_http_address => nn_http_address
   })
   action :create
@@ -273,6 +268,11 @@ else
 end
 
 var_hopsworks_host = hopsworks_host()
+if node['hops']['rm']['private_ips'].include?(my_ip)
+  # This is a resource manager machine
+  rm_private_ip = my_ip;
+end
+
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
@@ -281,9 +281,7 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   mode "740"
   variables( lazy {
     h = {}
-    h[:rm_private_ip] = rm_dest_ip
-    h[:rm_public_ip] = rm_public_ip
-    h[:my_public_ip] = my_public_ip
+    h[:rm_private_ip] = rm_private_ip
     h[:my_private_ip] = my_ip
     h[:zk_ip] = zk_ip
     h[:resource_handler] = resource_handler
