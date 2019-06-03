@@ -25,6 +25,17 @@
     </description>
   </property>
 
+  <property>
+    <name>dfs.namenode.http-address</name>
+    <value><%= @nn_http_address %></value>
+    <description>The address and the base port where the dfs namenode web ui will listen on. </description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.https-address</name>
+    <value><%= @nn_http_address %></value>
+    <description>The address and the base port where the dfs namenode web ui will listen on. </description>
+  </property>
 
   <property>
     <name>dfs.client.max.retries.on.failure</name>
@@ -325,11 +336,6 @@
 </property>
 
 <property>
-  <name>dfs.namenode.http-address</name>
-  <value><%= @nnHTTPAddress %></value>
-</property>
-
-<property>
   <name>dfs.client.https.need-auth</name>
   <value>true</value>
 </property>
@@ -390,7 +396,7 @@
 
 <property>
    <name>dfs.locationDomainId</name>
-   <value><%= @locationDomainId %></value>
+   <value><%= @location_domain_id %></value>
 </property>
 
 </configuration>

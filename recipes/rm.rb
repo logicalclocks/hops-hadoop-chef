@@ -1,14 +1,6 @@
 include_recipe "hops::default"
 
 template_ssl_server()
-
-my_ip = my_private_ip()
-my_public_ip = my_public_ip()
-rm_private_ip = private_recipe_ip("hops","rm")
-rm_public_ip = public_recipe_ip("hops","rm")
-rm_dest_ip = rm_private_ip
-zk_ip = private_recipe_ip('kzookeeper', 'default')
-
 ndb_connectstring()
 
 template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do
@@ -17,8 +9,8 @@ template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do
   group node['hops']['group']
   mode "750"
   variables({
-              :ndb_connectstring => node['ndb']['connectstring']
-            })
+    :ndb_connectstring => node['ndb']['connectstring']
+  })
 end
 
 template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
@@ -28,44 +20,12 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   mode "400"
 end
 
-
 deps = ""
 if exists_local("ndb", "mysqld") 
   deps = "mysqld.service"
 end  
 yarn_service="rm"
 service_name="resourcemanager"
-my_ip = my_private_ip()
-
-my_public_ip = my_public_ip()
-
-# If CGroups are enabled, set the correct LCEResourceHandler
-if node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("true")
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandlerGPU"
-elsif node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("false")
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler"
-else
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
-end
-
-var_hopsworks_host = hopsworks_host()
-template "#{node['hops']['conf_dir']}/yarn-site.xml" do
-  source "yarn-site.xml.erb"
-  owner node['hops']['rm']['user']
-  group node['hops']['group']
-  mode "750"
-  variables({
-              :rm_private_ip => my_ip,
-              :rm_public_ip => my_public_ip,
-              :my_public_ip => my_public_ip,
-              :my_private_ip => my_ip,
-              :zk_ip => zk_ip,
-              :resource_handler => resource_handler,
-              :hopsworks_host => var_hopsworks_host
-            })
-  action :create
-end
-
 
 if node['hops']['yarn']['cluster']['gpu'].eql? "true"
   node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"

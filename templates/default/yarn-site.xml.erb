@@ -522,28 +522,33 @@
 </property>
 
 <property>
-  <name>yarn.resourcemanager.rmappsecurity.jwt.alive-interval</name>
-  <value><%= node['hops']['rmappsecurity']['jwt']['alive-interval'] %></value>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.master-token-validity</name>
+  <value><%= node['hops']['rmappsecurity']['jwt']['master-token-validity'] %></value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.generate-path</name>
-  <value>/hopsworks-api/api/jwt/create</value>
+  <value>/hopsworks-api/api/jwt</value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.invalidate-path</name>
-  <value>/hopsworks-api/api/jwt/remove/</value>
+  <value>/hopsworks-api/api/jwt/key</value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.renew-path</name>
-  <value>/hopsworks-api/api/jwt/renew/</value>
+  <value>/hopsworks-api/api/jwt</value>
 </property>
 
 <property>
-  <name>yarn.resourcemanager.rmappsecurity.jwt.alive-path</name>
-  <value>/hopsworks-ca/v2/token</value>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.service-invalidate-path</name>
+  <value>/hopsworks-api/api/jwt/service</value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.rmappsecurity.jwt.service-renew-path</name>
+  <value>/hopsworks-api/api/jwt/service</value>
 </property>
 
 <!--<property>

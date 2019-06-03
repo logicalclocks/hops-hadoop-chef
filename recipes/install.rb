@@ -1,3 +1,6 @@
+include_recipe "hops::_config"
+include_recipe "java"
+
 group node['kagent']['certs_group'] do
   action :create
   not_if "getent group #{node['kagent']['certs_group']}"
@@ -48,7 +51,6 @@ if node['platform_family'].eql?("redhat")
   end
 end
 
-include_recipe "java"
 
 group node['hops']['group'] do
   action :create
@@ -437,5 +439,21 @@ template "#{node['hops']['conf_dir']}/hadoop_logs_mgm.ini" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0740"
+  action :create
+end
+
+cookbook_file "#{node['hops']['sbin_dir']}/renew_service_jwt.py" do
+  source "renew_service_jwt.py"
+  owner node['hops']['hdfs']['user']
+  group node['kagent']['certs_group']
+  mode "0700"
+  action :create
+end
+
+template "#{node['hops']['sbin_dir']}/conda_renew_service_jwt.sh" do
+  source "conda_renew_service_jwt.sh.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['certs_group']
+  mode "0700"
   action :create
 end

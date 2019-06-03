@@ -21,6 +21,7 @@ recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
 recipe            "hops::client", "Installs libaries and configuration files for writing HDFS and YARN progams"
 recipe            "hops::purge", "Removes all hops-hadoop files and dirs and ndb-dal, but doesnt drop hops db from NDB"
 recipe            "hops::purge-ndb", "Drops  hops db from NDB"
+recipe            "hops::_config", "Internal recipe for setting config values"
 
 depends 'java'
 depends 'kagent'
@@ -222,6 +223,10 @@ attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
 
+attribute "hops/tls/prod",
+          :description => "default is 'false' (accepts untrusted certificates by default). Set to 'true' for production environments.",
+          :type => 'string'
+
 attribute "hops/rmappsecurity/actor_class",
           :description => "Actor class for RMAppSecurityManager to perform X.509/JWT requests to Hopsworks",
           :type => 'string'
@@ -250,8 +255,8 @@ attribute "hops/rmappsecurity/jwt/audience",
           :description => "Comma separated list of JWT audiences",
           :type => 'string'
 
-attribute "hops/rmappsecurity/jwt/alive-interval",
-          :description => "Interval for ResourceManager to ping Hopsworks to renew its JWT. Valid suffices are s, m, h, d",
+attribute "hops/rmappsecurity/jwt/master-token-validity",
+          :description => "Validity period for ResourceManager's master service JWT. Valid suffices are s, m, h, d",
           :type => 'string'
 
 attribute "hops/tls/crl_enabled",
@@ -565,7 +570,7 @@ attribute "hops/retry_policy_spec",
           :description => "Retry policy specification. For example '10000,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string" 
 
-attribute "hops/retry_policy_enable",
+attribute "hops/retry_policy_enabled",
           :description => "Enable retry upon connection failure",
           :type => "string" 
 

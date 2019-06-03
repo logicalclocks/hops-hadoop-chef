@@ -65,7 +65,7 @@ default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh rest
 default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh root-start-dn.sh hdfs.sh yarn.sh hadoop.sh }
 default['hops']['max_retries']                 = 0
 default['hops']['retry_policy_spec']           = "1000,3"
-default['hops']['retry_policy_enable']         = "true"
+default['hops']['retry_policy_enabled']         = "true"
 default['hops']['reformat']                    = "false"
 default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
@@ -342,7 +342,7 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
-default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.HopsworksRMAppSecurityActions"
+default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.DevHopsworksRMAppSecurityActions"
 
 default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
 default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
@@ -352,14 +352,17 @@ default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
 default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 # Comma separated list of JWT audience
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
-default['hops']['rmappsecurity']['jwt']['alive-interval']               = "5m"
+default['hops']['rmappsecurity']['jwt']['master-token-validity']        = "7d"
+
+# Set to 'true' if you want production TLS certificates.
+default['hops']['tls']['prod']                                          = "false"
 
 # CRL validation when RPC TLS is enabled
 default['hops']['tls']['crl_enabled']                                   = "false"
-default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.RemoteCRLFetcher"
+default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.DevRemoteCRLFetcher"
 default['hops']['tls']['crl_input_uri']                                 = ""
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
-default['hops']['tls']['crl_fetcher_interval']                          = "1d"
+default['hops']['tls']['crl_fetcher_interval']                          = "5m"
 
 # DataNode Data Transfer Protocol encryption
 default['hops']['encrypt_data_transfer']['enabled']                     = "false"
