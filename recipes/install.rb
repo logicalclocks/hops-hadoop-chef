@@ -421,6 +421,7 @@ end
 # At this stage we don't add the JWT token (False parameter) as Hopsworks is not running yet
 # The RM recipe will re-template this file and, at that stage, with the Hopsworks server running, 
 # the JWT will be added.
+Chef::Recipe.send(:include, Hops::Helpers)
 template_ssl_server(false)
 
 template "/etc/ld.so.conf.d/hops.conf" do
