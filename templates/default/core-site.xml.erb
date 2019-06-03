@@ -132,6 +132,14 @@
     <name>hadoop.proxyuser.<%= @sqoopUser %>.groups</name>
     <value>*</value>
   </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @servingUser %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @servingUser %>.groups</name>
+    <value>*</value>
+  </property>
 
 
   <property>
@@ -182,7 +190,7 @@
 
   <property>
     <name>fs.defaultFS</name>
-    <value><%= @firstNN %></value>
+    <value><%= @defaultFS %></value>
   </property>
 
   <property>

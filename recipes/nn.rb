@@ -4,85 +4,10 @@ template_ssl_server()
 
 my_ip = my_private_ip()
 
-nnPort = node['hops']['nn']['port']
-
 group node['hops']['secure_group'] do
   action :modify
   members ["#{node['hops']['hdfs']['user']}"]
   append true
-end
-
-if node.attribute?('hopsworks')
-  if node['hopsworks'].nil? == false && node['hopsworks']['default'].nil? == false && node['hopsworks']['default']['private_ips'].nil? == false
-    hopsworksNodes = node['hopsworks']['default']['private_ips'].join(",")
-  end
-end
-
-if node['hops']['nn']['private_ips'].length > 1
-  allNNs = node['hops']['nn']['private_ips'].join(":#{nnPort},") + ":#{nnPort}"
-else
-  allNNs = "#{node['hops']['nn']['private_ips'][0]}" + ":#{nnPort}"
-end
-
-hopsworks_ip = private_recipe_ip("hopsworks", "default")
-
-if node['hops']['tls']['crl_input_uri'].empty?
-  hopsworks_crl_uri = "RPC TLS NOT ENABLED"
-  if node['hops']['tls']['enabled'].eql? "true"
-      hopsworks_crl_uri = "#{hopsworks_host()}/intermediate.crl.pem"
-  end
-else
-  hopsworks_crl_uri = node['hops']['tls']['crl_input_uri']
-end
-
-include_recipe "hops::default"
-
-myNN = "#{my_ip}:#{nnPort}"
-template "#{node['hops']['conf_dir']}/core-site.xml" do
-  source "core-site.xml.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "755"
-  variables({
-              :firstNN => "hdfs://" + myNN,
-              :hopsworks => hopsworksNodes,
-              :hopsworksUser => node['hopsworks']['user'],
-              :livyUser => node['livy']['user'],
-              :hiveUser => node['hive2']['user'],
-              :jupyterUser => node['jupyter']['user'],
-              :sqoopUser => node['sqoop']['user'],              
-              :allNNs => myNN,
-              :rpcSocketFactory => node['hops']['hadoop']['rpc']['socket']['factory'],
-              :hopsworks_crl_uri => hopsworks_crl_uri
-            })
-end
-
-cache = "true"
-if node['hops']['nn']['cache'].eql? "false"
-   cache = "false"
-end
-
-partition_key = "true"
-if node['hops']['nn']['partition_key'].eql? "false"
-   partition_key = "false"
-end
-
-nnHTTPAddress = "#{my_ip}:#{node['hops']['nn']['http_port']}"
-locDomainId = node['hops']['nn']['private_ips_domainIds'].has_key?(my_ip) ? node['hops']['nn']['private_ips_domainIds'][my_ip] : 0
-template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
-  source "hdfs-site.xml.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "755"
-  cookbook "hops"
-  variables({
-              :firstNN => myNN,
-              :cache => cache,
-              :partition_key => partition_key,
-              :nnHTTPAddress => nnHTTPAddress,
-              :locationDomainId => locDomainId
-            })
-  action :create
 end
 
 template "#{node['hops']['home']}/sbin/root-drop-and-recreate-hops-db.sh" do
@@ -99,7 +24,6 @@ template "#{node['hops']['home']}/sbin/drop-and-recreate-hops-db.sh" do
   mode "771"
   action :create  
 end
-
 
 template "#{node['hops']['home']}/sbin/root-test-drop-full-recreate.sh" do
   source "root-test-drop-full-recreate.sh.erb"
