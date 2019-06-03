@@ -13,8 +13,8 @@ module Hops
       end
     end
 
-    def template_ssl_server
-      if (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") or node['hops']['tls']['enabled'].eql?("true"))
+    def template_ssl_server(generate_jwt)
+      if (generate_jwt and (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") or node['hops']['tls']['enabled'].eql?("true")))
         
         ## Get service JWT, from kagent-chef/libraries
         master_token, renew_tokens = get_service_jwt()

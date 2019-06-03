@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server()
+template_ssl_server(true)
 ndb_connectstring()
 
 template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do

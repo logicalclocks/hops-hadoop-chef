@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server()
+template_ssl_server(true)
 
 yarn_service="nm"
 service_name="nodemanager"
