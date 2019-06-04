@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server(true)
+template_ssl_server()
 
 for script in node['hops']['dn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}" do
