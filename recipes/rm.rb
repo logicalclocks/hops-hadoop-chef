@@ -21,15 +21,12 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
 end
 
 deps = ""
-if exists_local("ndb", "mysqld") 
-  deps = "mysqld.service"
-end  
-if exists_local("hopsmonitor", "default") 
-  if exists_local("ndb", "mysqld") 
-    deps += ","
-  end
-    deps += "influxdb.service"
-end  
+if exists_local("ndb", "mysqld")
+  deps = "mysqld.service "
+end
+if exists_local("hopsmonitor", "default")
+  deps += "influxdb.service"
+end
 
 yarn_service="rm"
 service_name="resourcemanager"

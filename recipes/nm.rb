@@ -3,9 +3,10 @@ include_recipe "hops::default"
 template_ssl_server()
 
 deps = ""
-if exists_local("hops", "rm") 
+if exists_local("hops", "rm")
   deps = "resourcemanager.service"
-end  
+end
+
 yarn_service="nm"
 service_name="nodemanager"
 
@@ -113,7 +114,7 @@ if node['hops']['systemd'] == "true"
     mode 0664
     variables({
               :deps => deps
-              })    
+              })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
@@ -180,10 +181,10 @@ if node.attribute?('tensorflow') == true
       cb_user "#{node['hops']['yarnapp']['user']}"
       cb_group "#{node['hops']['group']}"
       cb_name "hopsworks"
-      cb_recipe "default"  
+      cb_recipe "default"
       action :get_publickey
-    end  
-    
+    end
+
   end
 end
 
