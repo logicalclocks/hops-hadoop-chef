@@ -150,6 +150,13 @@ if node.attribute?('sqoop')
 end
 node.override['sqoop']['user'] = sqoopUser
 
+servingUser = "serving"
+if node.attribute?('serving')
+  if node['serving'].attribute?('user')
+    servingUser = node['serving']['user']
+  end
+end
+node.override['serving']['user'] = servingUser
 
 template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
@@ -175,7 +182,8 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :livyUser => livyUser,
      :hiveUser => hiveUser,
      :jupyterUser => jupyterUser,
-     :sqoopUser => sqoopUser,     
+     :sqoopUser => sqoopUser,
+     :servingUser => servingUser,
      :allNNs => allNNIps,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => hopsworks_crl_uri

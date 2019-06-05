@@ -410,6 +410,20 @@ template "#{node['hops']['conf_dir']}/mapred-site.xml" do
   action :create
 end
 
+# This is here for client machines. These are machines that run Hopsworks or 
+# other services, but they don't run Hadoop services. 
+# These services read the ssl-server.xml for configuring TLS. 
+# We template it here, so that it can be used with single node vms, where when
+# Hopsworks starts, it needs to read the ssl-server.xml
+# During a fresh installation, certificates won't be available at this stage, however,
+# the configuration will be still correct. Clients will fail until the certificates are
+# actually generated. This is fine.
+# At this stage we don't add the JWT token (False parameter) as Hopsworks is not running yet
+# The RM recipe will re-template this file and, at that stage, with the Hopsworks server running, 
+# the JWT will be added.
+Chef::Recipe.send(:include, Hops::Helpers)
+template_ssl_server(false)
+
 template "/etc/ld.so.conf.d/hops.conf" do
   source "hops.conf.erb"
   owner "root"
