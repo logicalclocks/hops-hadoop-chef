@@ -4,7 +4,7 @@ include_attribute "kzookeeper"
 include_attribute "hopsmonitor"
 
 default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7"
-default['hops']['version']                     = "2.8.2.8-SNAPSHOT"
+default['hops']['version']                     = "2.8.2.8"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -357,8 +357,8 @@ default['hops']['rmappsecurity']['jwt']['master-token-validity']        = "7d"
 # Set to 'true' if you want production TLS certificates.
 default['hops']['tls']['prod']                                          = "false"
 
-# CRL validation when RPC TLS is enabled
-default['hops']['tls']['crl_enabled']                                   = "false"
+# CRL validation when RPC TLS is enabled - by default enabled it if TLS is enabled.
+default['hops']['tls']['crl_enabled']                                   = "#{node['hops']['tls']['enabled']}"
 default['hops']['tls']['crl_fetcher_class']                             = "org.apache.hadoop.security.ssl.DevRemoteCRLFetcher"
 default['hops']['tls']['crl_input_uri']                                 = ""
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
