@@ -14,7 +14,7 @@ template "#{node['hops']['home']}/sbin/root-drop-and-recreate-hops-db.sh" do
   source "root-drop-and-recreate-hops-db.sh.erb"
   owner "root"
   mode "700"
-  action :create  
+  action :create
 end
 
 template "#{node['hops']['home']}/sbin/drop-and-recreate-hops-db.sh" do
@@ -22,13 +22,21 @@ template "#{node['hops']['home']}/sbin/drop-and-recreate-hops-db.sh" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "771"
-  action :create  
+  action :create
 end
 
 template "#{node['hops']['home']}/sbin/root-test-drop-full-recreate.sh" do
   source "root-test-drop-full-recreate.sh.erb"
   owner "root"
   mode "700"
+end
+
+deps = ""
+if exists_local("ndb", "mysqld")
+  deps = "mysqld.service "
+end
+if exists_local("hopsmonitor", "default")
+  deps += "influxdb.service"
 end
 
 service_name="namenode"
@@ -59,6 +67,9 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    variables({
+              :deps => deps
+              })
     action :create
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"

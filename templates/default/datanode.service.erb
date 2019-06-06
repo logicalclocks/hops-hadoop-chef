@@ -1,6 +1,6 @@
 [Unit]
 Description = DataNode, blocks server for HDFS.
-After = syslog.target network.target remote-fs.target
+After = syslog.target network.target remote-fs.target <%= @deps %>
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
