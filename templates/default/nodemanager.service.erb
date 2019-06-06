@@ -1,6 +1,6 @@
 [Unit]
 Description = NodeManager. The Processing Nodes for YARN.
-After = syslog.target network.target remote-fs.target
+After = syslog.target network.target remote-fs.target <%= @deps %>
 
 [Service]
 User = <%= node['hops']['yarn']['user'] %>

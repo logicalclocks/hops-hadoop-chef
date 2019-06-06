@@ -20,6 +20,14 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   mode "400"
 end
 
+deps = ""
+if exists_local("ndb", "mysqld")
+  deps = "mysqld.service "
+end
+if exists_local("hopsmonitor", "default")
+  deps += "influxdb.service"
+end
+
 yarn_service="rm"
 service_name="resourcemanager"
 
@@ -77,6 +85,9 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    variables({
+              :deps => deps
+              })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
 end
