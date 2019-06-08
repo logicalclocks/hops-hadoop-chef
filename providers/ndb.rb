@@ -59,8 +59,8 @@ action :install_hops do
       EOF
       new_resource.updated_by_last_action(true)
       not_if "test -f #{node['ndb']['nvme']['mount_base_dir']}/#{node['ndb']['nvme']['mount_disk_prefix']}0/#{node['ndb']['ndb_disk_columns_dir_name']}/data_extra.dat"
-  end
-  
+    end
+  end 
   
 end
 
