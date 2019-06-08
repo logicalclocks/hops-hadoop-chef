@@ -55,7 +55,7 @@ action :install_hops do
     bash 'add_disk_data_files' do
       user node['ndb']['user']
       code <<-EOF
-        #{node['ndb']['scripts_dir']}/mysql-client.sh < "ALTER TABLESPACE ts_1 ADD DATAFILE 'data_extra.dat' INITIAL_SIZE #{node['ndb']['nvme']['logfile_size']}"
+        #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER TABLESPACE ts_1 ADD DATAFILE 'data_extra.dat' INITIAL_SIZE #{node['ndb']['nvme']['logfile_size']};"
       EOF
       new_resource.updated_by_last_action(true)
       not_if "test -f #{node['ndb']['nvme']['mount_base_dir']}/#{node['ndb']['nvme']['mount_disk_prefix']}0/#{node['ndb']['ndb_disk_columns_dir_name']}/data_extra.dat"
