@@ -86,12 +86,6 @@ attribute "hops/yarn/memory_mbs",
           :description => "Apache_Hadoop NodeManager Memory in MB",
           :type => 'string'
 
-
-attribute "hops//memory_mbs",
-          :description => "Apache_Hadoop NodeManager Memory in MB",
-          :type => 'string'
-
-
 attribute "hops/yarn/nodemanager_log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'

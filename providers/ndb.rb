@@ -57,6 +57,7 @@ action :install_hops do
       user node['ndb']['user']
       code <<-EOF
         set -e
+        #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_extra.log' INITIAL_SIZE 5000M ENGINE NDBCLUSTER;"
         #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER TABLESPACE ts_1 ADD DATAFILE 'data_extra.dat' INITIAL_SIZE #{node['ndb']['nvme']['logfile_size']};"
         touch /#{node['ndb']['nvme']['mount_disk_prefix']}0/#{node['ndb']['ndb_disk_columns_dir_name']}/.data_extra.written
       EOF
