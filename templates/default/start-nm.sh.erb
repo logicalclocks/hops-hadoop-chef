@@ -12,7 +12,10 @@ if [ <%= node['install']['localhost'] %> == "true" ] ; then
 	num_yarn_site=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
 
 	if [ $num_gpus -ne $num_yarn_site ] ; then
-	    perl -pi -e '
+	    # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
+	    rmdir /sys/fs/cgroup/devices/hops-yarn
+	    # Replace the num_gpus in yarn-site.xml with the number discovered by 'nvidia-smi -L'
+            perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${num_yarn_site}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${num_gpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml 
 	fi
     fi
 fi    
