@@ -71,6 +71,13 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{amd_jar}" do
   action :create
 end
 
+
+# xmlstartlet will be used in start-nm.sh to edit the yarn-site.xml file if the number of GPUs on the server is different
+if node['install']['localhost'].casecmp("true")
+ package "xmlstarlet"  
+end  
+
+
 libhopsrocm = File.basename(node['hops']['librocm_url'])
 remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}" do
   source node['hops']['librocm_url']

@@ -5,6 +5,17 @@ h=$(hostname)
 bin=$(dirname "${BASH_SOURCE-$0}")
 bin=$(cd "$bin"; pwd)
 
+if [ <%= node['install']['localhost'] %> == "true" ] ; then
+    systemctl status nodemanager
+    if [ $? -ne 0 ] ; then
+	num_gpus=$(nvidia-smi -L | wc -l)
+	num_yarn_site=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+
+	if [ $num_gpus -ne $num_yarn_site ] ; then
+	    perl -pi -e '
+	fi
+    fi
+fi    
 
 DEFAULT_LIBEXEC_DIR="$bin"/../libexec
 HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
