@@ -29,6 +29,22 @@ for script in node['hops']['yarn']['scripts']
 end
 
 
+if node['install']['localhost'].casecmp("true")
+
+  gcs_url = node['hops']['gcs_url']
+  gcs_jar = File.basename(gcs_url)
+
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{gcs_jar}" do
+    source nvidia_url
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "0755"
+  # TODO - checksum
+    action :create_if_missing
+  end
+end
+
+
 nvidia_url = node['nvidia']['download_url']
 nvidia_jar = File.basename(nvidia_url)
 
