@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-su <%= node['hops']['yarn']['user'] %>
+sudo <%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh
 
 command=nodemanager
 h=$(hostname)

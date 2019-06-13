@@ -220,3 +220,18 @@ if node.attribute?('tensorflow') == true
   end
 end
 
+
+template "/etc/sudoers.d/yarn" do
+  source "yarn_sudoers.erb"
+  owner "root"
+  group "root"
+  mode "0440"
+  variables({
+              :user => node["hops"]["yarn"]["user"],
+              :gpu =>  "#{<%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh}"
+            })
+  action :create
+end
+
+
+
