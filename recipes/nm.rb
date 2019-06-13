@@ -28,6 +28,14 @@ for script in node['hops']['yarn']['scripts']
   end
 end
 
+template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
+  source "nm-gpu-fix.sh.erb"
+  owner "root"
+  group node['hops']['group']
+  mode 0744
+end
+
+
 
 if node['install']['localhost'].casecmp("true")
 
