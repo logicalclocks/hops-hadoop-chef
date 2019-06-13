@@ -10,14 +10,16 @@ shopt -s nocasematch
 if [ "${LOCALHOST}" == "true" ] ; then
     systemctl status nodemanager
     if [ $? -ne 0 ] ; then
-	num_gpus=$(nvidia-smi -L | wc -l)
-	num_yarn_site=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
-
-	if [ $num_gpus -ne $num_yarn_site ] ; then
+	which nvidia-smi
+	if [ $? -eq 0 ] ; then
+          num_gpus=$(nvidia-smi -L | wc -l)
+          num_yarn_site=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+          if [ "$num_gpus" != "$num_yarn_site" ] ; then
 	    # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
 	    rmdir /sys/fs/cgroup/devices/hops-yarn
 	    # Replace the num_gpus in yarn-site.xml with the number discovered by 'nvidia-smi -L'
             perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${num_yarn_site}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${num_gpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml 
+	  fi
 	fi
     fi
 fi    
