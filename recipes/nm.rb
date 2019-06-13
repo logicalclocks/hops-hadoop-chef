@@ -50,7 +50,7 @@ if node['install']['localhost'].casecmp("true")
   gcs_jar = File.basename(gcs_url)
   
   remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{gcs_jar}" do
-    source nvidia_url
+    source gcs_url
     owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode "0755"
