@@ -4,8 +4,10 @@ command=nodemanager
 h=$(hostname)
 bin=$(dirname "${BASH_SOURCE-$0}")
 bin=$(cd "$bin"; pwd)
+LOCALHOST=<%= node['install']['localhost'] %>
+shopt -s nocasematch
 
-if [ <%= node['install']['localhost'] %> == "true" ] ; then
+if [ "${LOCALHOST}" == "true" ] ; then
     systemctl status nodemanager
     if [ $? -ne 0 ] ; then
 	num_gpus=$(nvidia-smi -L | wc -l)
