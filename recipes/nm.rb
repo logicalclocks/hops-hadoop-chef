@@ -38,9 +38,6 @@ end
 
 
 if node['install']['localhost'].casecmp("true")
-  package "systemd" do
-    action :upgrade
-  end
   
   directory node['hops']['conf_dir'] do
     owner node['hops']['yarn']['user']

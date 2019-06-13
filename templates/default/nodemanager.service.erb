@@ -3,12 +3,12 @@ Description = NodeManager. The Processing Nodes for YARN.
 After = syslog.target network.target remote-fs.target <%= @deps %>
 
 [Service]
-User = <%= node['hops']['yarn']['user'] %>
+User = root
 Group = <%= node['hops']['group'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
 <% pre=  if node['install']['localhost'].casecmp?("true")
-            "ExecStartPre=+" + node['hops']['base_dir'] + "/sbin/nm-gpu-fix.sh"
+            "ExecStartPre=" + node['hops']['base_dir'] + "/sbin/nm-gpu-fix.sh"
 	 else
 	    ""
 	 end
