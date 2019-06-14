@@ -39,13 +39,6 @@ end
 
 if node['install']['localhost'].casecmp("true")
   
-  directory node['hops']['conf_dir'] do
-    owner node['hops']['yarn']['user']
-    group node['hops']['group']
-    mode "0750"
-  end
-
-  
   gcs_url = node['hops']['gcs_url']
   gcs_jar = File.basename(gcs_url)
   
