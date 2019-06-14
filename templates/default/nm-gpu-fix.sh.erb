@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-# fix root owner, just in case
-chown root <%= node['hops']['home'] %>/etc/hadoop
-
 # if nodemanager is running, exit
-#systemctl status nodemanager
-#if [ $? -ne 0 ] ; then
+systemctl status nodemanager
+if [ $? -ne 0 ] ; then
 
   # make sure GPUs are available
   which nvidia-smi
@@ -20,7 +17,6 @@ chown root <%= node['hops']['home'] %>/etc/hadoop
       rmdir /sys/fs/cgroup/devices/hops-yarn
       perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${num_yarn_site}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${num_gpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
       chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
-      chown root <%= node['hops']['home'] %>/etc/hadoop      
       echo "GPU configuration updated to the number of GPUs found by nvidia-smi"
     else
       echo "GPU configuration looks good."
@@ -29,8 +25,8 @@ chown root <%= node['hops']['home'] %>/etc/hadoop
       echo "Could not find nvidia-smi program in the PATH"
       exit 0
   fi
-#else
-#    echo "Nodemanager is running. Cannot check gpu configuration if the nodemanager is running"
-#    exit 0
-#fi
+else
+    echo "Nodemanager is running. Cannot check gpu configuration if the nodemanager is running"
+    exit 0
+fi
 exit 0
