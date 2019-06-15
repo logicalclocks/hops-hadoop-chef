@@ -8,16 +8,18 @@ if [ $? -ne 0 ] ; then
   which nvidia-smi
   if [ $? -eq 0 ] ; then
  
-    num_gpus=$(nvidia-smi -L | wc -l)
+      num_gpus=$(nvidia-smi -L | wc -l)
+    echo "nvidia-smi found $num_gpus GPUs"
     # how many gpus are configured in yarn-site.xml
     num_yarn_site=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+    echo "yarn-site.xml had $num_gpus GPUs"    
     # if nvidia-smi and yarn-site.xml disagree on the number of GPUs, take number from nvidia-smi
     if [ "$num_gpus" != "$num_yarn_site" ] ; then
       # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
       rmdir /sys/fs/cgroup/devices/hops-yarn
       perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${num_yarn_site}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${num_gpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
       chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
-      echo "GPU configuration updated to the number of GPUs found by nvidia-smi"
+      echo "GPU configuration updated to the number of GPUs found by nvidia-smi: $num_gpus"
     else
       echo "GPU configuration looks good."
     fi
