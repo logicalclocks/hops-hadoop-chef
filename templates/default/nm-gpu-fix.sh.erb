@@ -20,7 +20,7 @@ if [ $? -ne 0 ] ; then
     echo "nvidia-smi found $num_gpus GPUs"
     # how many gpus are configured in yarn-site.xml
     gpus_yarn=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
-    echo "yarn-site.xml had $num_gpus GPUs"    
+    echo "yarn-site.xml had $gpus_yarn GPUs"    
     # if nvidia-smi and yarn-site.xml disagree on the number of GPUs, take number from nvidia-smi
     if [ "$num_gpus" != "$gpus_yarn" ] ; then
       # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
@@ -35,13 +35,13 @@ if [ $? -ne 0 ] ; then
     # CPUs
     #
     if [ "$num_cpus" != "$cpus_yarn" ] ; then
-      perl -i -p0e "s/yarn\.nodemanager\.resource\.cpu-vcores<\/name>.*<value>${cpus_yarn}/yarn\.nodemanager\.resource\.cpu-vcores<\/name>\n    <value>${num_cpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml-/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+      perl -i -p0e "s/cpu-vcores.*<value>${cpus_yarn}/cpu-vcores<\/name>\n    <value>${num_cpus}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     fi
     #
     # Memory
     #
     if [ "$mem_found" != "$mem_yarn" ] ; then
-      perl -i -p0e "s/yarn\.nodemanager\.resource\.memory-mb<\/name>.*<value>${mem_yarn}/yarn\.nodemanager\.resource\.memory-mb<\/name>\n    <value>${mem_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml-/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+      perl -i -p0e "s/resource\.memory-mb.*<value>${mem_yarn}/resource\.memory-mb<\/name>\n    <value>${mem_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     fi
 
     
