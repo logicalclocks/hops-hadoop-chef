@@ -43,8 +43,6 @@ if [ $? -ne 0 ] ; then
       perl -i -p0e "s/yarn\.nodemanager\.resource\.memory-mb<\/name>.*<value>${mem_yarn}/yarn\.nodemanager\.resource\.memory-mb<\/name>\n    <value>${mem_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml-/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     fi
 
-    fi
-    
     chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
 
     
