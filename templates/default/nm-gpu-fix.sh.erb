@@ -9,13 +9,14 @@ if [ $? -ne 0 ] ; then
   cpus_yarn=$(grep -C 2 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
   cpus_found=$(cat /proc/cpuinfo | grep -c "cpu cores")
   # make sure GPUs are available
-  which nvidia-smi
-  if [ $? -eq 0 ] ; then
+#  which nvidia-smi
+#  if [ $? -eq 0 ] ; then
 
     #
     # GPUs
     #
-    num_gpus=$(nvidia-smi -L | wc -l)
+  #    num_gpus=$(nvidia-smi -L | wc -l)
+    num_gpus=$(lspci | grep -i 'nvidia' | wc -l)
     echo "nvidia-smi found $num_gpus GPUs"
     # how many gpus are configured in yarn-site.xml
     gpus_yarn=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
@@ -43,13 +44,11 @@ if [ $? -ne 0 ] ; then
       perl -i -p0e "s/yarn\.nodemanager\.resource\.memory-mb<\/name>.*<value>${mem_yarn}/yarn\.nodemanager\.resource\.memory-mb<\/name>\n    <value>${mem_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml-/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     fi
 
-    chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
-
     
-  else
-      echo "Could not find nvidia-smi program in the PATH"
-      exit 0
-  fi
+#  else
+#      echo "Could not find nvidia-smi program in the PATH"
+#      exit 0
+#  fi
 
 
   chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
