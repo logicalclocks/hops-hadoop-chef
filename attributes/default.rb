@@ -211,8 +211,6 @@ default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-
 
 default['hops']['log_level']                = "DEBUG"
 
-default['hops']['hdfs']['blocksize']        = "134217728"
-
 default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['dal']['lib_url']                   = "#{node['hops']['root_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['hops']['root_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
@@ -292,10 +290,17 @@ default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 
 #hdfs-site.xml
 default['hops']['dfs']['https']['enable']                    = "true"
-default['hops']['dfs']['http']['policy']   		     = "HTTPS_ONLY"
+default['hops']['dfs']['http']['policy']   		             = "HTTPS_ONLY"
 default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
 default['hops']['dfs']['https']['port']                      = "50470"
 default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
+
+default['hops']['dfs']['inodeid']['batchsize']              = "100000"
+default['hops']['dfs']['blockid']['batchsize']              = "100000"
+
+default['hops']['dfs']['processReport']['batchsize']        = "100"
+default['hops']['dfs']['misreplicated']['batchsize']        = "500"
+default['hops']['dfs']['misreplicated']['noofbatches']      = "20"
 
 #mapred-site.xml
 default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"
@@ -319,7 +324,7 @@ default['hops']['ssl']['server']['keystore']['keypassword']   		= node['hopswork
 
 ## Keystore and truststore locations are substitued in recipes/default.rb
 ## They should be removed from here. They are not used anywhere
-default['hops']['ssl']['server']['keystore']['location'] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
+efault['hops']['ssl']['server']['keystore']['location'] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
 default['hops']['ssl']['server']['truststore']['location']   		= "#{node['kagent']['keystore_dir']}/node_server_truststore.jks"
 ##
 
