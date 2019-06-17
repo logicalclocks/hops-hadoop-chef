@@ -4,9 +4,9 @@
 systemctl status nodemanager
 if [ $? -ne 0 ] ; then
 
-  mem_yarn=$(grep -C 2 '>yarn.nodemanager.resource.memory-mb<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+  mem_yarn=$(grep -C 1 '>yarn.nodemanager.resource.memory-mb<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
   mem_found=$(free -m | grep Mem | awk '{ print $2 }')
-  cpus_yarn=$(grep -C 2 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+  cpus_yarn=$(grep -C 1 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
   cpus_found=$(cat /proc/cpuinfo | grep -c "cpu cores")
   # make sure GPUs are available
 #  which nvidia-smi
