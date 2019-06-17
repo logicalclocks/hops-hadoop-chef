@@ -324,7 +324,7 @@ default['hops']['ssl']['server']['keystore']['keypassword']   		= node['hopswork
 
 ## Keystore and truststore locations are substitued in recipes/default.rb
 ## They should be removed from here. They are not used anywhere
-efault['hops']['ssl']['server']['keystore']['location'] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
+default['hops']['ssl']['server']['keystore']['location'] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
 default['hops']['ssl']['server']['truststore']['location']   		= "#{node['kagent']['keystore_dir']}/node_server_truststore.jks"
 ##
 
