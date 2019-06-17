@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+
+0;136;0c#!/usr/bin/env bash
 
 # if nodemanager is running, exit
 systemctl status nodemanager
@@ -40,7 +41,7 @@ if [ $? -ne 0 ] ; then
     # Memory
     #
     if [ "$mem_found" != "$mem_yarn" ] ; then
-      perl -i -p0e "s/resource\.memory-mb.*<value>${mem_yarn}/resource\.memory-mb<\/name>\n    <value>${mem_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+      perl -i -p0e "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     fi
 
     
