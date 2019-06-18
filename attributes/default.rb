@@ -298,7 +298,7 @@ default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
 default['hops']['dfs']['inodeid']['batchsize']              = "100000"
 default['hops']['dfs']['blockid']['batchsize']              = "100000"
 
-default['hops']['dfs']['processReport']['batchsize']        = "100"
+default['hops']['dfs']['processReport']['batchsize']        = "10"
 default['hops']['dfs']['misreplicated']['batchsize']        = "500"
 default['hops']['dfs']['misreplicated']['noofbatches']      = "20"
 
