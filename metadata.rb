@@ -355,6 +355,26 @@ attribute "hops/hdfs/umask",
           :description => "Set the default HDFS umask (default: 0022).",
           :type => 'string'
 
+attribute "hops/dfs/inodeid/batchsize",
+          :description => "Inodeid batchsize",
+          :type => 'string'
+
+attribute "hops/dfs/blockid/batchsize",
+          :description => "blockid batchsize",
+          :type => 'string'
+
+attribute "hops/dfs/processReport/batchsize",
+          :description => "Number of blocks processed in one processReport transaction",
+          :type => 'string'
+
+attribute "hops/dfs/misreplicated/batchsize",
+          :description => "Number of blocks processed in one misreplicated transaction",
+          :type => 'string'
+
+attribute "hops/dfs/misreplicated/noofbatches",
+          :description => "Misreplicated number of batches",
+          :type => 'string'
+
 attribute "hops/format",
           :description => "Format HDFS, Run 'hdfs namenode -format",
           :type => 'string'
