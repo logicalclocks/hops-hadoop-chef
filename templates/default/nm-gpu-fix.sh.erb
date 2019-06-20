@@ -28,7 +28,7 @@ if [ $? -ne 0 ] ; then
       perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${gpus_yarn}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${gpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
       echo "GPU configuration updated to the number of GPUs found by nvidia-smi: $gpus_found"
     else
-      echo "GPU configuration looks good."
+      echo "GPU configuration in yarn-site.xml looks good."
     fi
 
     #
@@ -36,12 +36,16 @@ if [ $? -ne 0 ] ; then
     #
     if [ "$cpus_found" != "$cpus_yarn" ] ; then
       perl -i -p0e "s/cpu-vcores.*<value>${cpus_yarn}/cpu-vcores<\/name>\n    <value>${cpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+    else
+      echo "CPU configuration in yarn-site.xml looks good."
     fi
     #
     # Memory
     #
     if [ "$mem_found" != "$mem_yarn" ] ; then
-      perl -i -p0e "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+      perl -i -pe "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+    else
+      echo "Memory configuration in yarn-site.xml looks good."
     fi
 
     
