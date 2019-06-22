@@ -1,17 +1,13 @@
-
-0;136;0c#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # if nodemanager is running, exit
 systemctl status nodemanager
 if [ $? -ne 0 ] ; then
 
-  mem_yarn=$(grep -C 1 '>yarn.nodemanager.resource.memory-mb<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
-  mem_found=$(free -m | grep Mem | awk '{ print $2 }')
-  cpus_yarn=$(grep -C 1 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
-  cpus_found=$(cat /proc/cpuinfo | grep -c "cpu cores")
-  # make sure GPUs are available
-#  which nvidia-smi
-#  if [ $? -eq 0 ] ; then
+    mem_yarn=$(grep -C 1 '>yarn.nodemanager.resource.memory-mb<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+    mem_found=$(free -m | grep Mem | awk '{ print $2 }')
+    cpus_yarn=$(grep -C 1 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
+    cpus_found=$(cat /proc/cpuinfo | grep -c "cpu cores")
 
     #
     # GPUs
@@ -23,43 +19,40 @@ if [ $? -ne 0 ] ; then
     echo "yarn-site.xml had $gpus_yarn GPUs"    
     # if nvidia-smi and yarn-site.xml disagree on the number of GPUs, take number from nvidia-smi
     if [ "$gpus_found" != "$gpus_yarn" ] ; then
-      # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
-      rmdir /sys/fs/cgroup/devices/hops-yarn
-      perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${gpus_yarn}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${gpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
-      echo "GPU configuration updated to the number of GPUs found by nvidia-smi: $gpus_found"
+	# the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
+	rmdir /sys/fs/cgroup/devices/hops-yarn
+	perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${gpus_yarn}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${gpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+	echo "GPU configuration updated to the number of GPUs found by nvidia-smi: $gpus_found"
     else
-      echo "GPU configuration in yarn-site.xml looks good."
+	echo "GPU configuration in yarn-site.xml looks good."
     fi
 
     #
     # CPUs
     #
+    echo "cpus found: cpus_found -  cpus found in yarn-site.xml cpus_yarn"    
     if [ "$cpus_found" != "$cpus_yarn" ] ; then
-      perl -i -p0e "s/cpu-vcores.*<value>${cpus_yarn}/cpu-vcores<\/name>\n    <value>${cpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+	perl -i -p0e "s/cpu-vcores.*<value>${cpus_yarn}/cpu-vcores<\/name>\n    <value>${cpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     else
-      echo "CPU configuration in yarn-site.xml looks good."
+	echo "CPU configuration in yarn-site.xml looks good."
     fi
     #
     # Memory
     #
+    echo "mem found: $mem_found -  mem found in yarn-site.xml $mem_yarn"
     if [ "$mem_found" != "$mem_yarn" ] ; then
-      perl -i -pe "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</" <%= node['hops']['conf_dir'] %>/yarn-site.xml
+	perl -i -pe "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</" <%= node['hops']['conf_dir'] %>/yarn-site.xml
     else
-      echo "Memory configuration in yarn-site.xml looks good."
+	echo "Memory configuration in yarn-site.xml looks good."
     fi
 
     
-#  else
-#      echo "Could not find nvidia-smi program in the PATH"
-#      exit 0
-#  fi
+    chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
 
-
-  chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
-
-  
+    
 else
     echo "Nodemanager is running. Cannot check gpu configuration if the nodemanager is running"
     exit 0
 fi
+
 exit 0
