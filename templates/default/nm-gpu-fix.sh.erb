@@ -4,48 +4,15 @@
 systemctl status nodemanager
 if [ $? -ne 0 ] ; then
 
-    mem_yarn=$(grep -C 1 '>yarn.nodemanager.resource.memory-mb<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
     mem_found=$(free -m | grep Mem | awk '{ print $2 }')
-    cpus_yarn=$(grep -C 1 '>yarn.nodemanager.resource.cpu-vcores<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
     cpus_found=$(cat /proc/cpuinfo | grep -c "cpu cores")
-
-    #
-    # GPUs
-    #
     gpus_found=$(lspci | grep -i 'nvidia' | wc -l)
-    echo "nvidia-smi found $gpus_found GPUs"
-    # how many gpus are configured in yarn-site.xml
-    gpus_yarn=$(grep -C 2 '>yarn.nodemanager.resource.gpus<' <%= node['hops']['conf_dir'] %>/yarn-site.xml | grep value | sed 's/<value>//' | sed 's/<\/value>//' | tr -d '[:space:]')
-    echo "yarn-site.xml had $gpus_yarn GPUs"    
-    # if nvidia-smi and yarn-site.xml disagree on the number of GPUs, take number from nvidia-smi
-    if [ "$gpus_found" != "$gpus_yarn" ] ; then
-	# the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
-	rmdir /sys/fs/cgroup/devices/hops-yarn
-	perl -i -p0e "s/yarn\.nodemanager\.resource\.gpus<\/name>.*<value>${gpus_yarn}/yarn\.nodemanager\.resource\.gpus<\/name>\n    <value>${gpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
-	echo "GPU configuration updated to the number of GPUs found by nvidia-smi: $gpus_found"
-    else
-	echo "GPU configuration in yarn-site.xml looks good."
-    fi
-
-    #
-    # CPUs
-    #
-    echo "cpus found: cpus_found -  cpus found in yarn-site.xml cpus_yarn"    
-    if [ "$cpus_found" != "$cpus_yarn" ] ; then
-	perl -i -p0e "s/cpu-vcores.*<value>${cpus_yarn}/cpu-vcores<\/name>\n    <value>${cpus_found}/s" <%= node['hops']['conf_dir'] %>/yarn-site.xml
-    else
-	echo "CPU configuration in yarn-site.xml looks good."
-    fi
-    #
-    # Memory
-    #
-    echo "mem found: $mem_found -  mem found in yarn-site.xml $mem_yarn"
-    if [ "$mem_found" != "$mem_yarn" ] ; then
-	perl -i -pe "s/resource.memory-mb.*$\s+<value>${mem_yarn}</resource.memory-mb<\/name>\n    <value>${mem_found}</" <%= node['hops']['conf_dir'] %>/yarn-site.xml
-    else
-	echo "Memory configuration in yarn-site.xml looks good."
-    fi
-
+    echo "Found $gpus_found GPUs"
+    echo "cpus found: $cpus_found"
+    echo "mem found: $mem_found"
+    # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
+    rmdir /sys/fs/cgroup/devices/hops-yarn
+    <%= node['conda']['base_dir'] %>/envs/hops-system/bin/python -f <%= node['hops']['conf_dir'] %>/yarn-site.xml -mem $mem_found -maxmem $mem_found -cpus $cpus_found -maxcpus $cpus_found -gpus $gpus_found -hadoopconfdir <%= node['hops']['conf_dir'] %>
     
     chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
 
