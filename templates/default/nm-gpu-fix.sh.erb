@@ -12,7 +12,7 @@ if [ $? -ne 0 ] ; then
     echo "mem found: $mem_found"
     # the nodemanager will recreate the correct number of cgroups. No cgroups should be running when this is executed
     rmdir /sys/fs/cgroup/devices/hops-yarn
-    <%= node['conda']['base_dir'] %>/envs/hops-system/bin/python -f <%= node['hops']['conf_dir'] %>/yarn-site.xml -mem $mem_found -maxmem $mem_found -cpus $cpus_found -maxcpus $cpus_found -gpus $gpus_found -hadoopconfdir <%= node['hops']['conf_dir'] %>
+    <%= node['conda']['base_dir'] %>/envs/hops-system/bin/python <%= node['hops']['home'] %>/sbin/edit-xml-inplace.py  -f <%= node['hops']['conf_dir'] %>/yarn-site.xml -mem $mem_found -maxmem $mem_found -cpus $cpus_found -maxcpus $cpus_found -gpus $gpus_found -hadoopconfdir <%= node['hops']['conf_dir'] %>
     
     chown <%= node['hops']['yarn']['user'] %> <%= node['hops']['home'] %>/etc/hadoop/yarn-site.xml
 

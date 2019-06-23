@@ -35,6 +35,13 @@ template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
   mode 0744
 end
 
+template "#{node['hops']['home']}/sbin/edit-xml-inplace.py" do
+  source "edit-xml-inplace.py.erb"
+  owner "root"
+  group node['hops']['group']
+  mode 0744
+end
+
 
 
 if node['install']['localhost'].casecmp("true")
