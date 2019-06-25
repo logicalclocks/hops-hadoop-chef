@@ -32,12 +32,6 @@
   </property>
 
   <property>
-    <name>dfs.namenode.https-address</name>
-    <value><%= @nn_http_address %></value>
-    <description>The address and the base port where the dfs namenode web ui will listen on. </description>
-  </property>
-
-  <property>
     <name>dfs.client.max.retries.on.failure</name>
     <value>1</value>
   </property>
@@ -328,6 +322,12 @@
 <property>
   <name>dfs.https.port</name>
   <value><%= node['hops']['dfs']['https']['port'] %></value>
+</property>
+
+<property>
+  <name>dfs.namenode.https-address</name>
+  <value><%= @nn_https_address %></value>
+  <description>The address and the base port where the dfs namenode web ui will listen on. </description>
 </property>
 
 <property>
