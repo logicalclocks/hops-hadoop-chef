@@ -59,6 +59,7 @@ end
 if node['hops']['nn']['private_ips'].include?(my_ip)
   nn_rpc_address = "#{my_ip}:#{nnPort}"
   nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
+  nn_https_address = "#{my_ip}:#{node['hops']['dfs']['https']['port']}"
 else
   # This is a non namenode machine, a random namenode works
     nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
@@ -250,7 +251,8 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   variables({
     :nn_rpc_address => nn_rpc_address,
     :location_domain_id => location_domain_id,
-    :nn_http_address => nn_http_address
+    :nn_http_address => nn_http_address,
+    :nn_https_address => nn_https_address
   })
   action :create
 end
