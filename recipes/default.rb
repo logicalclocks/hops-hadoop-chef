@@ -360,7 +360,7 @@ end
 
 # hops-system anaconda environment is created at conda::default
 cron "copy_hadoop_logs" do
-  command "HADOOP_HOME=#{node['hops']['base_dir']} CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini backup"
+  command "HADOOP_HOME=#{node['hops']['base_dir']} PATH=#{node['hops']['bin_dir']}:$PATH CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini backup"
   user node['hops']['hdfs']['user']
   minute '0'
   hour '2'
@@ -372,7 +372,7 @@ end
 # Schedule deletion of old logs to run only on a single machine
 if my_ip.eql? node['hops']['nn']['private_ips'][0]
   cron "delete_hadoop_logs" do
-    command "HADOOP_HOME=#{node['hops']['base_dir']} CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini delete"
+    command "HADOOP_HOME=#{node['hops']['base_dir']} PATH=#{node['hops']['bin_dir']}:$PATH CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini delete"
     user node['hops']['hdfs']['user']
     minute '0'
     hour '4'
