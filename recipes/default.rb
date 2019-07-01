@@ -297,6 +297,20 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   action :create
 end
 
+if node['hops']['tls']['enabled'].casecmp?("true")
+  template "#{node['hops']['conf_dir']}/ssl-client.xml" do
+    source "ssl-client.xml.erb"
+    owner node['hops']['hdfs']['user']
+    group node['kagent']['certs_group']
+    mode "770"
+    variables({
+                :kstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__kstore.jks",
+                :tstore => "#{node['kagent']['keystore_dir']}/#{node['fqdn']}__tstore.jks"
+              })
+    action :create
+  end 
+end
+
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner "root"

@@ -322,19 +322,13 @@ default['hops']['yarn']['cgroups_max_cpu_usage']          = "100"
 #ssl-server.xml
 default['hops']['ssl']['server']['keystore']['password']   		= node['hopsworks']['master']['password']
 default['hops']['ssl']['server']['keystore']['keypassword']   		= node['hopsworks']['master']['password']
-
-## Keystore and truststore locations are substitued in recipes/default.rb
-## They should be removed from here. They are not used anywhere
-default['hops']['ssl']['server']['keystore']['location'] 		= "#{node['kagent']['keystore_dir']}/node_server_keystore.jks"
-default['hops']['ssl']['server']['truststore']['location']   		= "#{node['kagent']['keystore_dir']}/node_server_truststore.jks"
-##
-
 default['hops']['ssl']['server']['truststore']['password']     	 	= node['hopsworks']['master']['password']
 
 #ssl-client.xml
+default['hops']['ssl']['client']['keystore']['password']   		= node['hopsworks']['master']['password']
+default['hops']['ssl']['client']['keystore']['keypassword']   		= node['hopsworks']['master']['password']
+default['hops']['ssl']['client']['truststore']['password']     	 	= node['hopsworks']['master']['password']
 
-default['hops']['ssl']['client']['truststore']['password']		= node['hopsworks']['master']['password']
-default['hops']['ssl']['client']['truststore']['location']		= "#{node['kagent']['keystore_dir']}/node_client_truststore.jks"
 
 # Number of reader threads of the IPC/RPC server
 # Default is 1, when TLS is enabled it is advisable to increase it
