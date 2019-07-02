@@ -399,7 +399,6 @@ default['hops']['yarn']['max_gpus']                    = 10
 default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
 default['hops']['yarn']['gpu_impl_class']              = "io.hops.management.nvidia.NvidiaManagementLibrary"
-default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarnapp']['home_dir']                 = "/home"
 default['hops']['yarn']['linux_container_limit_users'] = "true"
 
