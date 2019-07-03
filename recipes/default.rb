@@ -163,7 +163,7 @@ template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "640"
+  mode "644"
   action :create
 end
 
@@ -175,7 +175,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "740"
+  mode "744"
   variables({
      :defaultFS => defaultFS,
      :hopsworks => hopsworksNodes,
@@ -246,7 +246,7 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "750"
+  mode "754"
   cookbook "hops"
   variables({
     :nn_rpc_address => nn_rpc_address,
@@ -261,7 +261,7 @@ template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
   source "erasure-coding-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "740"
+  mode "744"
   action :create
 end
 
@@ -285,7 +285,7 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   cookbook "hops"
-  mode "740"
+  mode "744"
   variables( lazy {
     h = {}
     h[:rm_private_ip] = rm_private_ip
@@ -315,7 +315,7 @@ template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "750"
+  mode "754"
   variables({
     :influxdb_ip => influxdb_ip
   })
