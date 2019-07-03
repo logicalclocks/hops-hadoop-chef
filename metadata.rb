@@ -514,10 +514,6 @@ attribute "hops/yarn/groups",
           :description => "",
           :type => "string"
 
-attribute "hops/yarn/linux_container_local_user",
-          :description => "the user running the yarn containers",
-          :type => "string"
-
 attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
