@@ -44,7 +44,7 @@ end
 
 
 
-if node['install']['localhost'].casecmp("true")
+if node['install']['gce'].casecmp("true")
   
   gcs_url = node['hops']['gcs_url']
   gcs_jar = File.basename(gcs_url)
