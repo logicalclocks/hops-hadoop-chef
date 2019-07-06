@@ -185,8 +185,11 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
         desired_size="#{node['ndb']['nvme']['undofile_size']}"
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
-        if [ $remaining -gt 0 ] ; then
-           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_#{ts}.log' INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER"        
+        # add a new undo file if remaining is > 1MB
+        if [ $remaining -gt 1000000 ] ; then
+           echo "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_#{ts}.log' INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER" > /tmp/undo.sql
+           #{node['ndb']['scripts_dir']}/mysql-client.sh < /tmp/undo.sql
+           rm /tmp/undo.sql
         fi
       EOF
     end
@@ -204,8 +207,11 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
         desired_size="#{node['ndb']['nvme']['logfile_size']}"
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
-        if [ $remaining -gt 0 ] ; then
-           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER TABLESPACE ts_1 ADD DATAFILE 'ts_1_data_file_#{ts}.dat' INITIAL_SIZE ${remaining}"
+        # add a new data file if remaining is > 1MB
+        if [ $remaining -gt 1000000 ] ; then
+           echo "ALTER TABLESPACE ts_1 ADD DATAFILE 'ts_1_data_file_#{ts}.dat' INITIAL_SIZE ${remaining}" > /tmp/datafile.sql
+           #{node['ndb']['scripts_dir']}/mysql-client.sh < /tmp/datafile.sql
+           rm /tmp/datafile.sql
         fi
       EOF
     end
