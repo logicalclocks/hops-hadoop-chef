@@ -186,7 +186,7 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
         if [ $remaining -gt 0 ] ; then
-           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE \"undo_#{ts}.log\" INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER"        
+           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_#{ts}.log' INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER"        
         fi
       EOF
     end
@@ -205,7 +205,7 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
         if [ $remaining -gt 0 ] ; then
-           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER TABLESPACE ts_1 ADD DATAFILE \"ts_1_data_file_#{ts}.dat\" INITIAL_SIZE ${remaining}"
+           #{node['ndb']['scripts_dir']}/mysql-client.sh -e "ALTER TABLESPACE ts_1 ADD DATAFILE 'ts_1_data_file_#{ts}.dat' INITIAL_SIZE ${remaining}"
         fi
       EOF
     end
