@@ -32,12 +32,6 @@
   </property>
 
   <property>
-    <name>dfs.namenode.https-address</name>
-    <value><%= @nn_http_address %></value>
-    <description>The address and the base port where the dfs namenode web ui will listen on. </description>
-  </property>
-
-  <property>
     <name>dfs.client.max.retries.on.failure</name>
     <value>1</value>
   </property>
@@ -89,13 +83,13 @@
 
   <property>
     <name>dfs.namenode.inodeid.batchsize</name>
-    <value>100000</value>
+    <value><%= node['hops']['dfs']['inodeid']['batchsize'] %></value>
     <description></description>
   </property>
 
   <property>
     <name>dfs.namenode.blockid.batchsize</name>
-    <value>100000</value>
+    <value><%= node['hops']['dfs']['blockid']['batchsize'] %></value>
     <description></description>
   </property>
 
@@ -143,7 +137,7 @@
 
   <property>
     <name>dfs.namenode.processReport.batchsize</name>
-    <value>10000</value>
+    <value><%= node['hops']['dfs']['processReport']['batchsize'] %></value>
     <description>This is the number of blocks to be processed in one transaction.
     Higher values can result in higher throughput, but too high values can cause transactions to fail.
     </description>
@@ -151,7 +145,7 @@
 
   <property>
     <name>dfs.namenode.misreplicated.batchsize</name>
-    <value>500</value>
+    <value><%= node['hops']['dfs']['misreplicated']['batchsize'] %></value>
     <description>
 
     </description>
@@ -159,7 +153,7 @@
 
   <property>
     <name>dfs.namenode.misreplicated.noofbatches</name>
-    <value>10</value>
+    <value><%= node['hops']['dfs']['misreplicated']['noofbatches'] %></value>
     <description>
     </description>
   </property>
@@ -328,6 +322,12 @@
 <property>
   <name>dfs.https.port</name>
   <value><%= node['hops']['dfs']['https']['port'] %></value>
+</property>
+
+<property>
+  <name>dfs.namenode.https-address</name>
+  <value><%= @nn_https_address %></value>
+  <description>The address and the base port where the dfs namenode web ui will listen on. </description>
 </property>
 
 <property>

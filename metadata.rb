@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.10.0"
+version          "1.0.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -355,6 +355,26 @@ attribute "hops/hdfs/umask",
           :description => "Set the default HDFS umask (default: 0022).",
           :type => 'string'
 
+attribute "hops/dfs/inodeid/batchsize",
+          :description => "Inodeid batchsize",
+          :type => 'string'
+
+attribute "hops/dfs/blockid/batchsize",
+          :description => "blockid batchsize",
+          :type => 'string'
+
+attribute "hops/dfs/processReport/batchsize",
+          :description => "Number of blocks processed in one processReport transaction",
+          :type => 'string'
+
+attribute "hops/dfs/misreplicated/batchsize",
+          :description => "Number of blocks processed in one misreplicated transaction",
+          :type => 'string'
+
+attribute "hops/dfs/misreplicated/noofbatches",
+          :description => "Misreplicated number of batches",
+          :type => 'string'
+
 attribute "hops/format",
           :description => "Format HDFS, Run 'hdfs namenode -format",
           :type => 'string'
@@ -492,10 +512,6 @@ attribute "hops/yarn/gpu_impl_class",
 #CGroups settings
 attribute "hops/yarn/groups",
           :description => "",
-          :type => "string"
-
-attribute "hops/yarn/linux_container_local_user",
-          :description => "the user running the yarn containers",
           :type => "string"
 
 attribute "hops/yarn/linux_container_limit_users",

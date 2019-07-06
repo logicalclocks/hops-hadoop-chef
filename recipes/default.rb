@@ -59,6 +59,7 @@ end
 if node['hops']['nn']['private_ips'].include?(my_ip)
   nn_rpc_address = "#{my_ip}:#{nnPort}"
   nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
+  nn_https_address = "#{my_ip}:#{node['hops']['dfs']['https']['port']}"
 else
   # This is a non namenode machine, a random namenode works
     nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
@@ -162,7 +163,7 @@ template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "640"
+  mode "644"
   action :create
 end
 
@@ -174,7 +175,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "740"
+  mode "744"
   variables({
      :defaultFS => defaultFS,
      :hopsworks => hopsworksNodes,
@@ -245,12 +246,13 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "750"
+  mode "754"
   cookbook "hops"
   variables({
     :nn_rpc_address => nn_rpc_address,
     :location_domain_id => location_domain_id,
-    :nn_http_address => nn_http_address
+    :nn_http_address => nn_http_address,
+    :nn_https_address => nn_https_address
   })
   action :create
 end
@@ -259,7 +261,7 @@ template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
   source "erasure-coding-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "740"
+  mode "744"
   action :create
 end
 
@@ -283,7 +285,7 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   owner node['hops']['yarn']['user']
   group node['hops']['group']
   cookbook "hops"
-  mode "740"
+  mode "744"
   variables( lazy {
     h = {}
     h[:rm_private_ip] = rm_private_ip
@@ -313,7 +315,7 @@ template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
   source "hadoop-metrics2.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "750"
+  mode "754"
   variables({
     :influxdb_ip => influxdb_ip
   })
@@ -358,7 +360,7 @@ end
 
 # hops-system anaconda environment is created at conda::default
 cron "copy_hadoop_logs" do
-  command "HADOOP_HOME=#{node['hops']['base_dir']} CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini backup"
+  command "HADOOP_HOME=#{node['hops']['base_dir']} PATH=#{node['hops']['bin_dir']}:$PATH CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini backup"
   user node['hops']['hdfs']['user']
   minute '0'
   hour '2'
@@ -370,7 +372,7 @@ end
 # Schedule deletion of old logs to run only on a single machine
 if my_ip.eql? node['hops']['nn']['private_ips'][0]
   cron "delete_hadoop_logs" do
-    command "HADOOP_HOME=#{node['hops']['base_dir']} CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini delete"
+    command "HADOOP_HOME=#{node['hops']['base_dir']} PATH=#{node['hops']['bin_dir']}:$PATH CLASSPATH=$(#{node['hops']['bin_dir']}/hadoop classpath --glob) #{node['conda']['base_dir']}/envs/hops-system/bin/python #{node['hops']['bin_dir']}/hadoop_logs_mgm.py -c #{node['hops']['conf_dir']}/hadoop_logs_mgm.ini delete"
     user node['hops']['hdfs']['user']
     minute '0'
     hour '4'

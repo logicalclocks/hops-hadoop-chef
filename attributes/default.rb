@@ -213,8 +213,6 @@ default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-
 
 default['hops']['log_level']                = "DEBUG"
 
-default['hops']['hdfs']['blocksize']        = "134217728"
-
 default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['dal']['lib_url']                   = "#{node['hops']['root_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['hops']['root_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
@@ -294,10 +292,17 @@ default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 
 #hdfs-site.xml
 default['hops']['dfs']['https']['enable']                    = "true"
-default['hops']['dfs']['http']['policy']   		     = "HTTPS_ONLY"
+default['hops']['dfs']['http']['policy']   		             = "HTTPS_ONLY"
 default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
 default['hops']['dfs']['https']['port']                      = "50470"
 default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
+
+default['hops']['dfs']['inodeid']['batchsize']              = "100000"
+default['hops']['dfs']['blockid']['batchsize']              = "100000"
+
+default['hops']['dfs']['processReport']['batchsize']        = "10"
+default['hops']['dfs']['misreplicated']['batchsize']        = "500"
+default['hops']['dfs']['misreplicated']['noofbatches']      = "20"
 
 #mapred-site.xml
 default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"
@@ -396,7 +401,6 @@ default['hops']['yarn']['max_gpus']                    = 10
 default['hops']['gpu']                                 = "false"
 default['hops']['yarn']['gpus']                        = "*"
 default['hops']['yarn']['gpu_impl_class']              = "io.hops.management.nvidia.NvidiaManagementLibrary"
-default['hops']['yarn']['linux_container_local_user']  = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarnapp']['home_dir']                 = "/home"
 default['hops']['yarn']['linux_container_limit_users'] = "true"
 

@@ -43,6 +43,7 @@ action :install_hops do
 
   bash "flyway_migrate" do
     user "root"
+    timeout 36000
     code <<-EOF
     set -e
     cd #{flyway_dir}

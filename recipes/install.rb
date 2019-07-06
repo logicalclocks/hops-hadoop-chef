@@ -287,7 +287,7 @@ bash 'extract-hadoop' do
 
         # chown -L : traverse symbolic links
         chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
-        chmod 750 #{node['hops']['home']}
+        chmod 755 #{node['hops']['home']}
 
         # Write flag
         touch #{hin}
@@ -315,7 +315,7 @@ for dir in lce_dirs do
   directory dir do
     owner "root"
     group node['hops']['group']
-    mode "0750"
+    mode "0755"
   end
 end
 
@@ -402,7 +402,7 @@ template "#{node['hops']['conf_dir']}/mapred-site.xml" do
   source "mapred-site.xml.erb"
   owner node['hops']['mr']['user']
   group node['hops']['group']
-  mode "750"
+  mode "754"
   variables({
       :rm_private_ip => rm_private_ip,
       :jhs_private_ip => jhs_private_ip
