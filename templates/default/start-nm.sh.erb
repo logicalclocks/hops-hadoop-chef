@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-sudo <%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh
+cloud=<%= @cloud %>
+if [ "$cloud" == "true" ] ; then
+  sudo <%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh
+fi
 
 command=nodemanager
 h=$(hostname)

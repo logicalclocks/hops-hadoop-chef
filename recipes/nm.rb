@@ -19,29 +19,39 @@ directory node['hops']['yarn']['nodemanager_recovery_dir'] do
 end
 
 
+cloud="false"
+if node['cloud'] == "true" || node['install']['localhost'].casecmp("true") == 0 
+  cloud="true"
+end
+
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode 0775
+    variables({
+                :cloud => cloud
+              })
   end
 end
 
-template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
-  source "nm-gpu-fix.sh.erb"
-  owner "root"
-  group node['hops']['group']
-  mode 0744
-end
 
-template "#{node['hops']['home']}/sbin/edit-xml-inplace.py" do
-  source "edit-xml-inplace.py.erb"
-  owner "root"
-  group node['hops']['group']
-  mode 0744
-end
+if cloud == "true"
+  template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
+    source "nm-gpu-fix.sh.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0744
+  end
 
+  template "#{node['hops']['home']}/sbin/edit-xml-inplace.py" do
+    source "edit-xml-inplace.py.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0744
+  end
+end
 
 
 if node['install']['gce'].casecmp("true")
