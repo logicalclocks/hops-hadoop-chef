@@ -22,6 +22,19 @@ end
 cloud="false"
 if node['cloud'] == "true" || node['install']['localhost'].casecmp("true") == 0 
   cloud="true"
+
+  template "/etc/sudoers.d/yarn" do
+    source "yarn_sudoers.erb"
+    owner "root"
+    group "root"
+    mode "0440"
+    variables({
+                :user => node["hops"]["yarn"]["user"],
+                :gpu =>  "#{node['hops']['base_dir']}/sbin/nm-gpu-fix.sh"
+              })
+    action :create
+  end
+
 end
 
 for script in node['hops']['yarn']['scripts']
@@ -228,19 +241,6 @@ if node.attribute?('tensorflow') == true
     end
 
   end
-end
-
-
-template "/etc/sudoers.d/yarn" do
-  source "yarn_sudoers.erb"
-  owner "root"
-  group "root"
-  mode "0440"
-  variables({
-              :user => node["hops"]["yarn"]["user"],
-              :gpu =>  "#{node['hops']['base_dir']}/sbin/nm-gpu-fix.sh"
-            })
-  action :create
 end
 
 

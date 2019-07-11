@@ -75,7 +75,6 @@ defaultFS = "hdfs://#{nn_rpc_address}"
 if node['hops']['gpu'].eql?("false")
   if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
     node.override['hops']['gpu'] = "true"
-    node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"      
   end
 end
 

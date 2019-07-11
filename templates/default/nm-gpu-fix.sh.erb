@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # if nodemanager is running, exit
-systemctl status nodemanager
+systemctl is-active nodemanager
 if [ $? -ne 0 ] ; then
 
     mem_found=$(free -m | grep Mem | awk '{ print $2 }')
