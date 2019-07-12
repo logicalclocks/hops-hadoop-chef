@@ -295,6 +295,13 @@ bash 'extract-hadoop' do
   not_if { ::File.exist?("#{hin}") }
 end
 
+directory node['hops']['sbin_dir'] do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['secure_group']
+  mode "0750"
+  action :create
+end
+
 directory node['hops']['logs_dir'] do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
