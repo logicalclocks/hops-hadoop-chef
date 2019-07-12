@@ -229,7 +229,7 @@ template "#{node['hops']['home']}/sbin/kill-process.sh" do
   source "kill-process.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "754"
+  mode "700"
   action :create
 end
 
@@ -237,7 +237,7 @@ template "#{node['hops']['home']}/sbin/set-env.sh" do
   source "set-env.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "774"
+  mode "700"
   action :create
 end
 

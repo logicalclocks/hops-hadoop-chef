@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-<%= node['mysql']['base_dir'] %>/bin/mysql -u <%= node['mysql']['user'] %> -p<%= node['mysql']['password'] %> -e "drop database <%= node['hops']['db'] %>"
-<%= node['mysql']['base_dir'] %>/bin/mysql -u <%= node['mysql']['user'] %> -p<%= node['mysql']['password'] %> -e "create database <%= node['hops']['db'] %>"
-<%= node['mysql']['base_dir'] %>/bin/mysql -u <%= node['mysql']['user'] %> -p<%= node['mysql']['password'] %> <%= node['hops']['db'] %> < <%= node['hops']['conf_dir'] %>/hops.sql
-

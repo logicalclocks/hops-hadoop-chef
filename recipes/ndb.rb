@@ -148,7 +148,7 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
       source "#{script}.erb"
       owner node['hops']['hdfs']['user']
       group node['hops']['group']
-      mode 0770
+      mode 0700
     end
   end 
 
@@ -159,10 +159,10 @@ if node['hops'].attribute?('nn') == true && node['hops']['nn'].attribute?(:priva
     source "format-nn.sh.erb"
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
-    mode 0770
+    mode 0700
     variables({
-                :format_opts => node['hops']['nn']['format_options']
-              })
+        :format_opts => node['hops']['nn']['format_options']
+    })
   end
 
   

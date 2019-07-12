@@ -61,8 +61,8 @@ default['hops']['leader_check_interval_ms']    = 1000
 default['hops']['missed_hb']                   = 1
 default['hops']['num_replicas']                = 3
 default['hops']['db']                          = "hops"
-default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh restart-nn.sh root-start-nn.sh hdfs.sh yarn.sh hadoop.sh }
-default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh root-start-dn.sh hdfs.sh yarn.sh hadoop.sh }
+default['hops']['nn']['scripts']               = %w{ start-nn.sh stop-nn.sh restart-nn.sh }
+default['hops']['dn']['scripts']               = %w{ start-dn.sh stop-dn.sh restart-dn.sh }
 default['hops']['max_retries']                 = 0
 default['hops']['retry_policy_spec']           = "1000,3"
 default['hops']['retry_policy_enabled']         = "true"
@@ -71,7 +71,7 @@ default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
-default['hops']['yarn']['scripts']             = %w{ start stop restart root-start }
+default['hops']['yarn']['scripts']             = %w{ start stop restart }
 default['hops']['yarn']['ps_port']             = 20888
 
 case node['platform_family']

@@ -8,7 +8,7 @@ for script in node['hops']['dn']['scripts']
     owner node['hops']['hdfs']['user']
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
-    mode 0775
+    mode 0700
   end
 end 
 

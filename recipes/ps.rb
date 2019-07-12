@@ -69,7 +69,7 @@ end
 if node['kagent']['enabled'] == "true" 
   kagent_config service_name do
     service "YARN"
-    start_script "#{node['hops']['home']}/sbin/root-start-#{yarn_service}.sh"
+    start_script "#{node['hops']['home']}/sbin/start-#{yarn_service}.sh"
     stop_script "#{node['hops']['home']}/sbin/stop-#{yarn_service}.sh"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
     pid_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}.pid"
