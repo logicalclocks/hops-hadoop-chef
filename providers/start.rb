@@ -32,7 +32,7 @@ action :format_nn do
   
     bash 'format-nn' do
       user node['hops']['hdfs']['user']
-      group node['hops']['group']
+      group node['hops']['secure_group']
       retries 1
       retry_delay 30
       code <<-EOH

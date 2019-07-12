@@ -47,16 +47,9 @@ for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['rm']['user']
-     group node['hops']['group']
-    mode 0755
+     group node['hops']['secure_group']
+    mode 0750
   end
-end
-
-template "#{node['hops']['home']}/sbin/yarn.sh" do
-  source "yarn.sh.erb"
-  owner node['hops']['rm']['user']
-  group node['hops']['group']
-  mode 0755
 end
 
 

@@ -4,11 +4,11 @@ yarn_service="ps"
 service_name="proxyserver"
 
 for script in node['hops']['yarn']['scripts']
-  template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
+  template "#{node['hops']['sbin_dir']}/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['yarn']['user']
-    group node['hops']['group']
-    mode 0775
+    group node['hops']['secure_group']
+    mode 0750
   end
 end 
 
