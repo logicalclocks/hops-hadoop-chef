@@ -1,0 +1,21 @@
+rules:
+  - pattern: 'Hadoop<service=NameNode, name=RpcActivityForPort(\d+)><>(.*): (\d+)' 
+    name: namenode_rpcactivity_$2
+    value: $3
+    labels:
+      port: $1
+    help: "Namenode metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
+
+  - pattern: 'Hadoop<service=NameNode, name=(.*)><>(.*): (\d+)'
+    name: namenode_$1_$2
+    value: $3
+    labels: {}
+    help: "Namenode metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true

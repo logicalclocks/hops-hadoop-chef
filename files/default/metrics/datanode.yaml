@@ -1,0 +1,31 @@
+rules:
+  - pattern: 'Hadoop<service=DataNode, name=DataNodeActivity-(.*)-(\d+)><>(.*): (\d+)'
+    name: datanode_activity_$3
+    value: $4
+    labels: {}
+    help: "Datanode metric $3"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
+
+  - pattern: 'Hadoop<service=DataNode, name=RpcActivityForPort(\d+)><>(.*): (\d+)'
+    name: datanode_rpcactivity_$2
+    value: $3
+    labels: 
+      port: $1
+    help: "Datanode metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
+
+  - pattern: 'Hadoop<service=DataNode, name=(.*)><>(.*): (\d+)'
+    name: datanode_$1_$2
+    value: $3
+    labels: {}
+    help: "Datanode metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
