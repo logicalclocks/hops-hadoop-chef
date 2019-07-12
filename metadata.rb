@@ -20,7 +20,6 @@ recipe            "hops::ps", "Installs a WebProxy Server for YARN"
 recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
 recipe            "hops::client", "Installs libaries and configuration files for writing HDFS and YARN progams"
 recipe            "hops::purge", "Removes all hops-hadoop files and dirs and ndb-dal, but doesnt drop hops db from NDB"
-recipe            "hops::purge-ndb", "Drops  hops db from NDB"
 recipe            "hops::_config", "Internal recipe for setting config values"
 
 depends 'java'
