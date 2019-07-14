@@ -295,11 +295,13 @@ bash 'extract-hadoop' do
   not_if { ::File.exist?("#{hin}") }
 end
 
-directory node['hops']['sbin_dir'] do
-  owner node['hops']['hdfs']['user']
-  group node['hops']['secure_group']
-  mode "0750"
-  action :create
+bash 'chown-sbin' do 
+  user 'root'
+  group 'root'
+  code <<-EOH
+    chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['secure_group']} #{node['hops']['sbin_dir']}
+    chmod -R 750 #{node['hops']['sbin_dir']}
+  EOH
 end
 
 directory node['hops']['logs_dir'] do

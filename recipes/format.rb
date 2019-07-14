@@ -6,7 +6,7 @@ exec=node['ndb']['scripts_dir'] + "/mysql-client.sh"
 # TODO: test if the NameNode is running
 if "#{node['hops']['format']}" === "true"
   if ::File.exist?("#{node['hops']['base_dir']}/.nn_formatted") === false || "#{node['hops']['reformat']}" === "true"
-    hops_start "format-nn" do
+    hops_ndb "format-nn" do
       action :format_nn
       only_if "#{exec} hops -e 'select count(*) from hdfs_variables' | tail -n 1 | egrep '^0$'"
     end

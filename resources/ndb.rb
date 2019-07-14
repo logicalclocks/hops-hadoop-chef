@@ -1,4 +1,4 @@
-actions :install_hops, :install_ndb_hops
+actions :install_hops, :install_ndb_hops, :format_nn
 
 attribute :base_filename, :kind_of => String
 
