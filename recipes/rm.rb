@@ -24,9 +24,6 @@ deps = ""
 if exists_local("ndb", "mysqld")
   deps = "mysqld.service "
 end
-if exists_local("hopsmonitor", "default")
-  deps += "influxdb.service"
-end
 
 yarn_service="rm"
 service_name="resourcemanager"
@@ -48,6 +45,12 @@ for script in node['hops']['yarn']['scripts']
   end
 end
 
+template "#{node['hops']['conf_dir']}/resourcemanager.yaml" do 
+  source "metrics/resourcemanager.yaml"
+  owner node['hops']['rm']['user']
+  group node['hops']['group']
+  mode 500
+end
 
 if node['hops']['systemd'] == "true"
 

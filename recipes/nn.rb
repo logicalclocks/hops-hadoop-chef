@@ -14,9 +14,6 @@ deps = ""
 if exists_local("ndb", "mysqld")
   deps = "mysqld.service "
 end
-if exists_local("hopsmonitor", "default")
-  deps += "influxdb.service"
-end
 
 service_name="namenode"
 

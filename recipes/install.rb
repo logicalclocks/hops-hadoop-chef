@@ -326,6 +326,17 @@ file "#{node['hops']['bin_dir']}/container-executor" do
   mode "6150"
 end
 
+# Download JMX prometheus exporter 
+jmx_prometheus_filename = File.basename(node['hops']['jmx']['prometheus_exporter']['url'])
+remote_file "#{node['hops']['share_dir']}/common/lib/#{jmx_prometheus_filename}" do
+  source node['hops']['jmx']['prometheus_exporter']['url']
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode '0755'
+  action :create
+end
+
+
 if node['hops']['native_libraries'] == "true"
 
   hadoop_src_url = node['hops']['hadoop_src_url']

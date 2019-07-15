@@ -9,13 +9,6 @@ if not node["hopsworks"]["default"].attribute?("public_ips")
   node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
 end
 
-case node['platform']
-when "ubuntu"
- if node['platform_version'].to_f <= 14.04
-   node.override['hops']['systemd'] = "false"
- end
-end
-
 require 'resolv'
 
 nnPort=node['hops']['nn']['port']
@@ -24,7 +17,6 @@ my_ip = my_private_ip()
 my_public_ip = my_public_ip()
 rm_private_ip = private_recipe_ip("hops","rm")
 zk_ip = private_recipe_ip('kzookeeper', 'default')
-influxdb_ip = private_recipe_ip("hopsmonitor","default")
 
 # Convert all private_ips to their hostnames
 # Hadoop requires fqdns to work - won't work with IPs
@@ -306,17 +298,6 @@ template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   variables({
               :hops_group => hops_group
             })
-  action :create
-end
-
-template "#{node['hops']['conf_dir']}/hadoop-metrics2.properties" do
-  source "hadoop-metrics2.properties.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "754"
-  variables({
-    :influxdb_ip => influxdb_ip
-  })
   action :create
 end
 

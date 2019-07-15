@@ -6,7 +6,6 @@ metadata
 cookbook 'java'
 cookbook 'kagent', github: "logicalclocks/kagent-chef", branch: "master"
 cookbook 'ndb', github: "logicalclocks/ndb-chef", branch: "master"
-cookbook 'hopsmonitor', github: "logicalclocks/hopsmonitor-chef", branch: "master"
 cookbook 'conda', github: "logicalclocks/conda-chef", branch: "master"
 cookbook 'kzookeeper', github: "logicalclocks/kzookeeper", branch: "master"
 cookbook 'elastic', github: "logicalclocks/elasticsearch-chef", branch: "master"

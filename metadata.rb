@@ -29,7 +29,6 @@ depends 'magic_shell'
 depends 'sysctl'
 depends 'cmake'
 depends 'kzookeeper'
-depends 'hopsmonitor'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -475,10 +474,6 @@ attribute "install/user",
           :description => "User to install the services as",
           :type => "string"
 
-attribute "influxdb/graphite/port",
-          :description => "Port for influxdb graphite connector",
-          :type => "string"
-
 #GPU settings
 attribute "hops/yarn/min_gpus",
           :description => "Min number of GPUs per container",
@@ -541,10 +536,6 @@ attribute "hops/jmx/adminPassword",
           :description => "Password for JMX admin role",
           :type => "string"
 
-attribute "hopsmonitor/default/private_ips",
-          :description => "Hopsworks username",
-          :type => "string"
-
 attribute "hopsworks/default/private_ips",
           :description => "Hopsworks private ip",
           :type => "string"
@@ -559,10 +550,6 @@ attribute "hops/dn/private_ips_domainIds",
 
 attribute "hops/topology",
           :description => "'true' or 'false' - true to enable the network topology. Default is false.",
-          :type => "string"
-
-attribute "hops/metrics/use_graphite",
-          :description => "'true' or 'false' - true to use graphite as a sink for metrics. Default is true.",
           :type => "string"
 
 attribute "hops/nn/enable_retrycache",
