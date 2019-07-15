@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cloud=<%= @cloud %>
-if [ "$cloud" == "true" ] ; then
+cloud=<%= node['install']['cloud'] %>
+if [ "$cloud" != "" ] ; then
   sudo <%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh
 fi
 

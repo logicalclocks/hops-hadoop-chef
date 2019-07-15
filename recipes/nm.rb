@@ -20,7 +20,7 @@ end
 
 
 cloud="false"
-if node['cloud'] == "true" || node['install']['localhost'].casecmp("true") == 0 
+if ! node['install']['cloud'].empty?  || node['install']['localhost'].casecmp("true") == 0 
   cloud="true"
 
   template "/etc/sudoers.d/yarn" do
@@ -35,22 +35,6 @@ if node['cloud'] == "true" || node['install']['localhost'].casecmp("true") == 0
     action :create
   end
 
-end
-
-for script in node['hops']['yarn']['scripts']
-  template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
-    source "#{script}-#{yarn_service}.sh.erb"
-    owner node['hops']['yarn']['user']
-    group node['hops']['group']
-    mode 0775
-    variables({
-                :cloud => cloud
-              })
-  end
-end
-
-
-if cloud == "true"
   template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
     source "nm-gpu-fix.sh.erb"
     owner "root"
@@ -64,10 +48,21 @@ if cloud == "true"
     group node['hops']['group']
     mode 0744
   end
+  
+end
+
+for script in node['hops']['yarn']['scripts']
+  template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
+    source "#{script}-#{yarn_service}.sh.erb"
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode 0775
+  end
 end
 
 
-if node['install']['gce'].casecmp("true")
+
+if node['install']['cloud'].casecmp("gce") == 0
   
   gcs_url = node['hops']['gcs_url']
   gcs_jar = File.basename(gcs_url)

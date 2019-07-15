@@ -1,3 +1,4 @@
+include_attribute "conda"
 include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
