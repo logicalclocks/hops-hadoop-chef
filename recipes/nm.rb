@@ -20,7 +20,7 @@ end
 
 
 cloud="false"
-if ! node['install']['cloud'].empty?  || node['install']['localhost'].casecmp("true") == 0 
+if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp("true") == 0 
   cloud="true"
 
   template "/etc/sudoers.d/yarn" do
