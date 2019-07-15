@@ -300,7 +300,7 @@ bash 'chown-sbin' do
   group 'root'
   code <<-EOH
     chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['secure_group']} #{node['hops']['sbin_dir']}
-    chmod -R 750 #{node['hops']['sbin_dir']}
+    chmod -R 550 #{node['hops']['sbin_dir']}
   EOH
 end
 
