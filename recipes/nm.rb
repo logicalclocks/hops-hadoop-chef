@@ -19,12 +19,61 @@ directory node['hops']['yarn']['nodemanager_recovery_dir'] do
 end
 
 
+cloud="false"
+if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp("true") == 0 
+  cloud="true"
+
+  template "/etc/sudoers.d/yarn" do
+    source "yarn_sudoers.erb"
+    owner "root"
+    group "root"
+    mode "0440"
+    variables({
+                :user => node["hops"]["yarn"]["user"],
+                :gpu =>  "#{node['hops']['base_dir']}/sbin/nm-gpu-fix.sh"
+              })
+    action :create
+  end
+
+  template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
+    source "nm-gpu-fix.sh.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0744
+  end
+
+  template "#{node['hops']['home']}/sbin/edit-xml-inplace.py" do
+    source "edit-xml-inplace.py.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0744
+  end
+  
+end
+
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode 0775
+  end
+end
+
+
+
+if node['install']['cloud'].casecmp("gce") == 0
+  
+  gcs_url = node['hops']['gcs_url']
+  gcs_jar = File.basename(gcs_url)
+  
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{gcs_jar}" do
+    source gcs_url
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "0755"
+  # TODO - checksum
+    action :create_if_missing
   end
 end
 
@@ -70,6 +119,7 @@ remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{amd_jar}" do
   #  action :create_if_missing
   action :create
 end
+
 
 libhopsrocm = File.basename(node['hops']['librocm_url'])
 remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}" do
@@ -187,4 +237,6 @@ if node.attribute?('tensorflow') == true
 
   end
 end
+
+
 

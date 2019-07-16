@@ -1,3 +1,4 @@
+include_attribute "conda"
 include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
@@ -44,6 +45,8 @@ default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['dat
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['blocksize']           = "134217728"
 default['hops']['hdfs']['umask']               = "0022"
+
+
 
 default['hops']['root_url']                    = node['download_url']
 default['hops']['dist_url']                    = node['hops']['root_url'] + "/hops-" + node['hops']['version'] + ".tgz"
@@ -179,7 +182,7 @@ default['hops']['limits']['memory_limit']      = '100000'
 default['hops']['user_envs']                   = "true"
 
 default['hops']['logging_level']               = "WARN"
-default['hops']['nn']['direct_memory_size']    = 100
+default['hops']['nn']['direct_memory_size']    = "250"
 default['hops']['ha_enabled']                  = "false"
 
 default['hops']['systemd']                     = "true"
@@ -433,3 +436,5 @@ default['hops']['nn']['enable_retrycache']            = "true"
 
 default['hops']['hdfs']['quota_enabled']              = "true"
 default['hops']['nn']['handler_count']                = 120
+
+default['hops']['gcs_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"

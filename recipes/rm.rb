@@ -31,10 +31,6 @@ end
 yarn_service="rm"
 service_name="resourcemanager"
 
-if node['hops']['yarn']['cluster']['gpu'].eql? "true"
-  node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"
-end
-
 template "#{node['hops']['conf_dir']}/capacity-scheduler.xml" do
   source "capacity-scheduler.xml.erb"
   owner node['hops']['rm']['user']

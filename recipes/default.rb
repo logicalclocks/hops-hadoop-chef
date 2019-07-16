@@ -74,7 +74,7 @@ defaultFS = "hdfs://#{nn_rpc_address}"
 # Else, if cuda/accept_nvidia_download_terms is set to true, then make 'gpu' true.
 if node['hops']['gpu'].eql?("false")
   if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
-     node.override['hops']['gpu'] = "true"
+    node.override['hops']['gpu'] = "true"
   end
 end
 
