@@ -107,25 +107,25 @@ end
 
 group "video" do
   action :modify
-  members ["#{node['hops']['yarnapp']['user']}"]
+  members [node['hops']['yarnapp']['user']]
   append true
 end
 
 group node['hops']['secure_group'] do
   action :modify
-  members ["#{node['hops']['rm']['user']}"]
+  members [node['hops']['rm']['user'], node['hops']['mr']['user'], node['hops']['yarn']['user']]
   append true
 end
 
 group node['hops']['group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['mr']['user']}", "#{node['hops']['yarnapp']['user']}", "#{node['hops']['rm']['user']}"]
+  members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['mr']['user'], node['hops']['yarnapp']['user'], node['hops']['rm']['user']]
   append true
 end
 
 group node['kagent']['certs_group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}", "#{node['hops']['yarn']['user']}", "#{node['hops']['rm']['user']}", "#{node['hops']['mr']['user']}"]
+  members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['rm']['user'], node['hops']['mr']['user']]
   append true
 end
 
@@ -293,6 +293,15 @@ bash 'extract-hadoop' do
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
+end
+
+bash 'chown-sbin' do 
+  user 'root'
+  group 'root'
+  code <<-EOH
+    chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['secure_group']} #{node['hops']['sbin_dir']}
+    chmod -R 550 #{node['hops']['sbin_dir']}
+  EOH
 end
 
 directory node['hops']['logs_dir'] do

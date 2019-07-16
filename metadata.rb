@@ -20,7 +20,6 @@ recipe            "hops::ps", "Installs a WebProxy Server for YARN"
 recipe            "hops::rt", "Installs a ResourceTracker server for YARN"
 recipe            "hops::client", "Installs libaries and configuration files for writing HDFS and YARN progams"
 recipe            "hops::purge", "Removes all hops-hadoop files and dirs and ndb-dal, but doesnt drop hops db from NDB"
-recipe            "hops::purge-ndb", "Drops  hops db from NDB"
 recipe            "hops::_config", "Internal recipe for setting config values"
 
 depends 'java'
@@ -405,10 +404,6 @@ attribute "hops/yarn/nodemanager_hb_ms",
 
 attribute "hops/rm/scheduler_class",
           :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
-          :type => 'string'
-
-attribute "hops/user_envs",
-          :description => "Update the PATH environment variable for the hdfs and yarn users to include hadoop/bin in the PATH ",
           :type => 'string'
 
 attribute "hops/logging_level",

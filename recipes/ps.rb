@@ -4,11 +4,11 @@ yarn_service="ps"
 service_name="proxyserver"
 
 for script in node['hops']['yarn']['scripts']
-  template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
+  template "#{node['hops']['sbin_dir']}/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['yarn']['user']
-    group node['hops']['group']
-    mode 0775
+    group node['hops']['secure_group']
+    mode 0750
   end
 end 
 
@@ -69,7 +69,7 @@ end
 if node['kagent']['enabled'] == "true" 
   kagent_config service_name do
     service "YARN"
-    start_script "#{node['hops']['home']}/sbin/root-start-#{yarn_service}.sh"
+    start_script "#{node['hops']['home']}/sbin/start-#{yarn_service}.sh"
     stop_script "#{node['hops']['home']}/sbin/stop-#{yarn_service}.sh"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
     pid_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}.pid"

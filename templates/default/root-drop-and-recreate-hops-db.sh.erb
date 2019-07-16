@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-<%= node['ndb']['scripts_dir'] %>/mysql-client.sh -e "drop database <%= node['hops']['db'] %>"
-<%= node['ndb']['scripts_dir'] %>/mysql-client.sh -e "create database <%= node['hops']['db'] %>"
-<%= node['ndb']['scripts_dir'] %>/mysql-client.sh <%= node['hops']['db'] %> < <%= node['hops']['conf_dir'] %>/hops.sql
-

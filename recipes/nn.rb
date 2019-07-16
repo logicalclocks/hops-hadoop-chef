@@ -10,27 +10,6 @@ group node['hops']['secure_group'] do
   append true
 end
 
-template "#{node['hops']['home']}/sbin/root-drop-and-recreate-hops-db.sh" do
-  source "root-drop-and-recreate-hops-db.sh.erb"
-  owner "root"
-  mode "700"
-  action :create
-end
-
-template "#{node['hops']['home']}/sbin/drop-and-recreate-hops-db.sh" do
-  source "drop-and-recreate-hops-db.sh.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "771"
-  action :create
-end
-
-template "#{node['hops']['home']}/sbin/root-test-drop-full-recreate.sh" do
-  source "root-test-drop-full-recreate.sh.erb"
-  owner "root"
-  mode "700"
-end
-
 deps = ""
 if exists_local("ndb", "mysqld")
   deps = "mysqld.service "

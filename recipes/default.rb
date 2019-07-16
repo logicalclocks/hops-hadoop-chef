@@ -225,19 +225,19 @@ template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
 end
 
 
-template "#{node['hops']['home']}/sbin/kill-process.sh" do
+template "#{node['hops']['sbin_dir']}/kill-process.sh" do
   source "kill-process.sh.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "754"
+  group node['hops']['secure_group']
+  mode "750"
   action :create
 end
 
-template "#{node['hops']['home']}/sbin/set-env.sh" do
+template "#{node['hops']['sbin_dir']}/set-env.sh" do
   source "set-env.sh.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "774"
+  group node['hops']['secure_group']
+  mode "750"
   action :create
 end
 

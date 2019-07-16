@@ -3,12 +3,11 @@ include_recipe "hops::default"
 template_ssl_server()
 
 for script in node['hops']['dn']['scripts']
-  template "#{node['hops']['home']}/sbin/#{script}" do
+  template "#{node['hops']['sbin_dir']}/#{script}" do
     source "#{script}.erb"
     owner node['hops']['hdfs']['user']
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode 0775
+    group node['hops']['secure_group']
+    mode 0750
   end
 end 
 
