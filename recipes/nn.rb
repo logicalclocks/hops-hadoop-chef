@@ -12,7 +12,7 @@ end
 
 deps = ""
 if exists_local("ndb", "mysqld")
-  deps = "mysqld.service "
+  deps = "mysqld.service"
 end
 
 service_name="namenode"
