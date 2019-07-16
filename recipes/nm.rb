@@ -20,7 +20,7 @@ end
 
 
 cloud="false"
-if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp("true") == 0 
+if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp("true") 
   cloud="true"
 
   template "/etc/sudoers.d/yarn" do
@@ -62,7 +62,7 @@ end
 
 
 
-if node['install']['cloud'].casecmp("gce") == 0
+if node['install']['cloud'].casecmp("gce")
   
   gcs_url = node['hops']['gcs_url']
   gcs_jar = File.basename(gcs_url)
