@@ -7,7 +7,7 @@ if node['hops']['tls']['prod'].eql?("true")
 end
 
 
-if node.attribute?(:cuda) and node["cuda"].attribute?(:accept_nvidia_download_terms) == 0
+if node.attribute?(:cuda) and node["cuda"].attribute?(:accept_nvidia_download_terms) 
   if ['cuda']['accept_nvidia_download_terms'].casecmp?("true") == 0
     node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"    
   end
