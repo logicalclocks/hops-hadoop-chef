@@ -22,6 +22,7 @@ deps = ""
 if exists_local("hops", "nn") 
   deps = "namenode.service"
 end  
+
 service_name="datanode"
 
 if node['hops']['systemd'] == "true"
