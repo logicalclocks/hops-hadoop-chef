@@ -32,8 +32,6 @@ hostf = Resolv::Hosts.new
 
 ndb_connectstring()
 
-jdbc_url()
-
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
 if node['hops']['tls']['enabled'].eql? "true"
