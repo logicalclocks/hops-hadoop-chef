@@ -45,7 +45,7 @@ for script in node['hops']['yarn']['scripts']
   end
 end
 
-template "#{node['hops']['conf_dir']}/resourcemanager.yaml" do 
+cookbook_file "#{node['hops']['conf_dir']}/resourcemanager.yaml" do 
   source "metrics/resourcemanager.yaml"
   owner node['hops']['rm']['user']
   group node['hops']['group']

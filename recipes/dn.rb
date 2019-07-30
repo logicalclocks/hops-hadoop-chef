@@ -11,7 +11,7 @@ for script in node['hops']['dn']['scripts']
   end
 end 
 
-template "#{node['hops']['conf_dir']}/datanode.yaml" do 
+cookbook_file "#{node['hops']['conf_dir']}/datanode.yaml" do 
   source "metrics/datanode.yaml"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']

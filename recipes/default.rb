@@ -378,3 +378,11 @@ if node['hops']['topology'].eql? "true"
     action :create
   end
 end
+
+# This is templated here so that the hops::ndb recipe will find it when invoking the format 
+cookbook_file "#{node['hops']['conf_dir']}/namenode.yaml" do 
+  source "metrics/namenode.yaml"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode 500
+end

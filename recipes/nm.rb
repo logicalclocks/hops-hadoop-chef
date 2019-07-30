@@ -137,7 +137,7 @@ link "#{node['hops']['base_dir']}/lib/native/libhopsrocm.so" do
   to "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}"
 end
 
-template "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
+cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
   source "metrics/nodemanager.yaml"
   owner node['hops']['yarn']['user']
   group node['hops']['group']
