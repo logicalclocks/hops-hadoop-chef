@@ -9,6 +9,6 @@ end
 
 if node.attribute?(:cuda) and node["cuda"].attribute?(:accept_nvidia_download_terms) 
   if node['cuda']['accept_nvidia_download_terms'].casecmp?("true")
-    node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculatorGPU"    
+    node.override['hops']['capacity']['resource_calculator_class'] = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"    
   end
 end

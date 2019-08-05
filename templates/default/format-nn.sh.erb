@@ -9,7 +9,6 @@ bin=$(cd "$bin"; pwd)
 
 DEFAULT_LIBEXEC_DIR="$bin"/../libexec
 HADOOP_LIBEXEC_DIR="${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}"
-. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
 . "${bin}"/set-env.sh
 
 rootDir=<%= node['hops']['base_dir'] %>

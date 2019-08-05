@@ -61,24 +61,6 @@ action :install_ndb_hops do
   common="share/hadoop/common/lib"
   base_filename = "#{new_resource.base_filename}"
 
-  lib_url = node['dal']['lib_url']
-  lib = ::File.basename(lib_url)
-
-  remote_file "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}/#{lib}" do
-    source lib_url
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode "0755"
-    # TODO - checksum
-    action :create_if_missing
-  end
-
-  link "#{node['hops']['dir']}/ndb-hops/libhopsyarn.so" do
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    to "#{node['hops']['dir']}/ndb-hops/#{lib}"
-  end
-
   link "#{node['hops']['home']}/#{common}/ndb-dal.jar" do
     action :delete
     only_if "test -L #{node['hops']['home']}/#{common}/ndb-dal.jar"
@@ -89,17 +71,6 @@ action :install_ndb_hops do
     to "#{node['hops']['dir']}/ndb-hops/#{base_filename}"
   end
 
-  link "#{node['hops']['home']}/#{common}/nvidia-management.jar" do
-    action :delete
-    only_if "test -L #{node['hops']['home']}/#{common}/nvidia-management.jar"
-  end
-  link "#{node['hops']['home']}/#{common}/nvidia-management.jar" do
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    to "#{node['hops']['dir']}/ndb-hops/nvidia-management.jar"
-  end
-
-
   link "#{node['hops']['home']}/lib/native/libndbclient.so" do
     action :delete
     only_if "test -L #{node['hops']['home']}/lib/native/libndbclient.so"
@@ -108,16 +79,6 @@ action :install_ndb_hops do
     owner "root"
     group "root"
     to "#{node['mysql']['dir']}/mysql/lib/libndbclient.so"
-  end
-
-  link "#{node['hops']['home']}/lib/native/libhopsyarn.so" do
-    action :delete
-    only_if "test -L #{node['hops']['home']}/lib/native/libhopsyarn.so"
-  end
-  link "#{node['hops']['home']}/lib/native/libhopsyarn.so" do
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    to "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
   end
 
 end

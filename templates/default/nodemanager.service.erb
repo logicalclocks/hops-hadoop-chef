@@ -6,7 +6,7 @@ After = syslog.target network.target remote-fs.target <%= @deps %>
 User = <%= node['hops']['yarn']['user'] %>
 Group = <%= node['hops']['group'] %>
 
-PIDFile = <%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
+PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
 
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nm.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-nm.sh

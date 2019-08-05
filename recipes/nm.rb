@@ -18,22 +18,23 @@ directory node['hops']['yarn']['nodemanager_recovery_dir'] do
   action :create
 end
 
-
-cloud="false"
-if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp?("true") == 0
-  cloud="true"
-
-  template "/etc/sudoers.d/yarn" do
+template "/etc/sudoers.d/yarn" do
     source "yarn_sudoers.erb"
     owner "root"
     group "root"
     mode "0440"
     variables({
                 :user => node["hops"]["yarn"]["user"],
-                :gpu =>  "#{node['hops']['base_dir']}/sbin/nm-gpu-fix.sh"
+                :gpu =>  "#{node['hops']['base_dir']}/sbin/nm-gpu-fix.sh",
+                :cgroup => "#{node['hops']['base_dir']}/sbin/nm-cgroup-fix.sh"
               })
     action :create
   end
+
+
+cloud="false"
+if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp?("true") == 0
+  cloud="true"
 
   template "#{node['hops']['home']}/sbin/nm-gpu-fix.sh" do
     source "nm-gpu-fix.sh.erb"
@@ -50,6 +51,15 @@ if ! node['install']['cloud'].eql?("")  || node['install']['localhost'].casecmp?
   end
   
 end
+
+  
+template "#{node['hops']['home']}/sbin/nm-cgroup-fix.sh" do
+    source "nm-cgroup-fix.sh.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0544
+end
+
 
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
@@ -75,66 +85,6 @@ if node['install']['cloud'].casecmp?("gce") == 0
   # TODO - checksum
     action :create_if_missing
   end
-end
-
-
-nvidia_url = node['nvidia']['download_url']
-nvidia_jar = File.basename(nvidia_url)
-
-remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
-  source nvidia_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  #  action :create_if_missing
-  action :create
-end
-
-libhopsnvml = File.basename(node['hops']['libnvml_url'])
-remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
-  source node['hops']['libnvml_url']
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
-
-link "#{node['hops']['base_dir']}/lib/native/libhopsnvml.so" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}"
-end
-
-amd_url = node['amd']['download_url']
-amd_jar = File.basename(amd_url)
-
-remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{amd_jar}" do
-  source amd_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  #  action :create_if_missing
-  action :create
-end
-
-
-libhopsrocm = File.basename(node['hops']['librocm_url'])
-remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}" do
-  source node['hops']['librocm_url']
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
-
-link "#{node['hops']['base_dir']}/lib/native/libhopsrocm.so" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}"
 end
 
 cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
