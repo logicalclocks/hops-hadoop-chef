@@ -85,46 +85,6 @@ node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
 nn_rpc_endpoint = "#{rpc_namenode_fqdn}:#{nnPort}"
 defaultFS = "hdfs://#{rpc_namenode_fqdn}:#{nnPort}"
 
-#
-# Constraints for Attributes - enforce them!
-#
-# If the user specified "gpu" to be true in a cluster definition, then accept that.
-# Else, if cuda/accept_nvidia_download_terms is set to true, then make 'gpu' true.
-if node['hops']['gpu'].eql?("false")
-  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
-    node.override['hops']['gpu'] = "true"
-  end
-end
-
-if node['hops']['yarn']['gpus'].eql?("*")
-  num_gpus = 0
-  if node['hops']['yarn']['gpus'].eql?("*") && node['hops']['yarn']['gpu_impl_class'].eql?("io.hops.management.nvidia.NvidiaManagementLibrary")
-    ruby_block 'discover_gpus' do
-      block do
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-        command = "nvidia-smi -L | wc -l"
-        num_gpus = shell_out(command).stdout.gsub(/\n/, '')
-      end
-    end
-  end
-  if node['hops']['yarn']['gpus'].eql?("*") && node['hops']['yarn']['gpu_impl_class'].eql?("io.hops.management.amd.AMDManagementLibrary")
-    ruby_block 'discover_gpus' do
-      block do
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-        num_gpus = Dir["/sys/module/amdgpu/drivers/pci:amdgpu/*/drm/card*"].length
-      end
-    end
-  end
-
-else
-  num_gpus = node['hops']['yarn']['gpus']
-end
-
-Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
-
-#
-# End Constraints
-#
 
 hopsworksUser = "glassfish"
 if node.attribute?("hopsworks")
@@ -253,14 +213,6 @@ template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
 end
 
 
-template "#{node['hops']['sbin_dir']}/kill-process.sh" do
-  source "kill-process.sh.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['secure_group']
-  mode "750"
-  action :create
-end
-
 template "#{node['hops']['sbin_dir']}/set-env.sh" do
   source "set-env.sh.erb"
   owner node['hops']['hdfs']['user']
@@ -314,9 +266,7 @@ template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
 end
 
 # If CGroups are enabled, set the correct LCEResourceHandler
-if node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("true")
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandlerGPU"
-elsif node['hops']['yarn']['cgroups'].eql?("true") && node['hops']['gpu'].eql?("false")
+if node['hops']['yarn']['cgroups'].eql?("true")
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler"
 else
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
@@ -330,6 +280,12 @@ end
 ha_ids = (0...node['hops']['rm']['private_ips'].size()).to_a()
 my_id = node['hops']['rm']['private_ips'].index(my_ip)
 
+if node['hops']['gpu'].eql?("false")
+  if node.attribute?("cuda") && node['cuda'].attribute?("accept_nvidia_download_terms") && node['cuda']['accept_nvidia_download_terms'].eql?("true")
+    node.override['hops']['gpu'] = "true"
+  end
+end
+
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
@@ -341,12 +297,20 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
     h[:resourcemanager_fqdn] = resourcemanager_fqdn
     h[:zookeeper_fqdn] = zookeeper_fqdn
     h[:resource_handler] = resource_handler
-    h[:num_gpus] = num_gpus
     h[:ha_ids] = ha_ids
     h[:my_id] = my_id
     h[:bind_ip] = bind_ip
     h
   })
+  action :create
+end
+
+template "#{node['hops']['conf_dir']}/resource-types.xml" do
+  source "resource-types.xml.erb"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  cookbook "hops"
+  mode "744"
   action :create
 end
 

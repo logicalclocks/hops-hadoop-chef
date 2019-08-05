@@ -63,10 +63,6 @@ attribute "hops/nn/partition_key",
           :description => "'true' or 'false' - true to enable the partition key when starting transactions. Distribution-aware transactions.",
           :type => 'string'
 
-attribute "hops/yarn/resource_tracker",
-          :description => "Hadoop Resource Tracker enabled on this nodegroup",
-          :type => 'string'
-
 attribute "hops/install_db",
           :description => "Install hops database and tables in MySQL Cluster ('true' (default) or 'false')",
           :type => 'string'
@@ -91,6 +87,10 @@ attribute "hops/yarn/max_allocation_memory_mb",
           :description => "The maximum allocation for every container request at the RM, in MBs",
           :type => 'string'
 
+attribute "hops/yarn/min_allocation_memory_mb",
+          :description => "Min ammount of Memory in MB that can be allocated to a container",
+          :type => 'string'
+
 attribute "hops/yarn/nodemanager_log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
@@ -99,11 +99,19 @@ attribute "hops/yarn/nodemanager_recovery_dir",
           :description => "The directory in which yarn node manager stores recovery state",
           :type => 'string'
 
-attribute "hops/yarn/nodemanager_ha_enabled",
+attribute "hops/yarn/resourcemanager_ha_enabled",
           :description => "",
           :type => "string"
 
-attribute "hops/yarn/nodemanager_auto_failover_enabled",
+attribute "hops/yarn/resourcemanager_auto_failover_enabled",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/resourcemanager_recovery_enabled",
+          :description => "",
+          :type => "string"
+
+attribute "hops/yarn/resourcemanager_recovery_supervised",
           :description => "",
           :type => "string"
 
@@ -111,64 +119,65 @@ attribute "hops/yarn/nodemanager_recovery_enabled",
           :description => "",
           :type => "string"
 
-attribute "hops/yarn/nodemanager_rpc_batch_max_size",
-          :description => "",
-          :type => "string"
-
-attribute "hops/yarn/nodemanager_rpc_batch_max_duration",
-          :description => "",
-          :type => "string"
-
-attribute "hops/yarn/rm_distributed",
-          :description => "Set to 'true' to enable distributed RMs",
-          :type => "string"
-
-attribute "hops/yarn/nodemanager_rm_streaming_enabled",
-          :description => "",
-          :type => "string"
-
 attribute "hops/yarn/rm_heartbeat",
           :description => "",
           :type => "string"
 
-attribute "hops/yarn/client_failover_sleep_base_ms",
-          :description => "",
+attribute "hops/yarn/quota/enabled",
+          :description => "enable the yarn quota system",
           :type => "string"
 
-attribute "hops/yarn/client_failover_sleep_max_ms",
-          :description => "",
+attribute "hops/yarn/quota/price/base_general",
+          :description => "price per unit of general resource per second",
           :type => "string"
 
-attribute "hops/yarn/quota_enabled",
-          :description => "",
+attribute "hops/yarn/quota/price/base_general",
+          :description => "price per unit of gpu per second",
           :type => "string"
 
-attribute "hops/yarn/quota_monitor_interval",
-          :description => "",
+attribute "hops/yarn/quota/min_runtime",
+          :description => "minimum ammount of time a container is charged for, a container running for less than this time will stil be charged for this ammount of time",
           :type => "string"
 
-attribute "hops/yarn/quota_ticks_per_credit",
-          :description => "",
+attribute "hops/yarn/quota/price/mb_unit",
+          :description => "ammoung of MB in a unit of memory for computation of the price",
           :type => "string"
 
-attribute "hops/yarn/quota_min_ticks_charge",
-          :description => "",
+
+attribute "hops/yarn/quota/prive/gpu_unit",
+          :description => "number of gpu in a unit of gpu for computation of the price",
           :type => "string"
 
-attribute "hops/yarn/quota_checkpoint_nbticks",
-          :description => "",
+attribute "hops/yarn/quota/period",
+          :description => "period at which the quota system comput containers resource utilisation",
           :type => "string"
 
-attribute "hops/yarn/quota_threshold_gpu",
-          :description => "",
+attribute "hops/yarn/quota/price/variable",
+          :description => "enable variable pricing system",
           :type => "string"
 
-attribute "hops/yarn/quota_minimum_charged_mb",
-          :description => "",
+attribute "hops/yarn/quota/price/variable_interval",
+          :description => "period at which to reevaluate the variable price",
           :type => "string"
 
-attribute "hops/yarn/quota_variable_price_enabled",
-          :description => "",
+attribute "hops/yarn/quota/price/multiplicator_threshold_general",
+          :description => "threshold of cluster general resource utilisation above wich to start increase the price",
+          :type => "string"
+
+attribute "hops/yarn/quota/price/multiplicator_threshold_gpu",
+          :description => "threshold of cluster gpu utilisation above which to start increase the price",
+          :type => "string"
+
+attribute "hops/yarn/quota/price/multiplicator_general",
+          :description => "multiplicator by wich to increase the price for general resources",
+          :type => "string"
+
+attribute "hops/yarn/quota/price/multiplicator_gpu",
+          :description => "multiplicator by which to increase the price for gpu resources",
+          :type => "string"
+
+attribute "hops/yarn/quota/poolsize",
+          :description => "size of the threadpool to handle quota updates",
           :type => "string"
 
 attribute "hops/yarn/nm_heapsize_mbs",
@@ -195,15 +204,7 @@ attribute "hops/nn/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
-attribute "hops/nn/public_ips",
-          :description => "Set ip addresses",
-          :type => "array"
-
 attribute "hops/rm/private_ips",
-          :description => "Set ip addresses",
-          :type => "array"
-
-attribute "hops/rm/public_ips",
           :description => "Set ip addresses",
           :type => "array"
 
@@ -456,10 +457,6 @@ attribute "hops/fs-security-actions/x509/get-path",
           :description => "HTTP endpoint to fetch clients' X.509 certificates",
           :type => 'string'
 
-attribute "hops/format",
-          :description => "Format HDFS, Run 'hdfs namenode -format",
-          :type => 'string'
-
 attribute "hops/tmp_dir",
           :description => "The directory in which Hadoop stores temporary data, including container data",
           :type => 'string'
@@ -594,31 +591,6 @@ attribute "install/user",
           :description => "User to install the services as",
           :type => "string"
 
-#GPU settings
-attribute "hops/yarn/min_gpus",
-          :description => "Min number of GPUs per container",
-          :type => "string"
-
-attribute "hops/yarn/max_gpus",
-          :description => "Max number of GPUs per container",
-          :type => "string"
-
-attribute "hops/gpu",
-          :description => "Are GPUs enabled for YARN? (on this node) Default: false",
-          :type => "string"
-
-attribute "hops/yarn/gpus",
-          :description => "'*' default: use all GPUs on the host. Otherwise, specify the number  of GPUs per host (e.g., '4'). Otherwise, specify a comma-separated list of minor device-ids:  '0,1,2' or '0-3')",
-          :type => "string"
-
-attribute "hops/yarn/cluster/gpu",
-          :description => "Is there a machine in the cluster with gpus?",
-          :type => "string"
-
-attribute "hops/yarn/gpu_impl_class",
-          :description => "hops-gpu-management-impl class to use, set to 'io.hops.management.nvidia.NvidiaManagementLibrary' for Nvidia GPUs, 'io.hops.management.amd.AMDManagementLibrary' for AMD GPUs",
-          :type => "string"
-
 #CGroups settings
 attribute "hops/yarn/groups",
           :description => "",
@@ -729,8 +701,21 @@ attribute "hops/ndb/version",
           :description => "version of ndb expected by hops, this is for development purpose and should be set to an empty string if the version expected by hops is the same as the version of ndb installed on the machine",
           :type => "string"
 
+
 attribute "hops/adl_v1_version",
           :description => "Version of the ADL v1 Hadoop connector (jar file).",
           :type => "string"
 
+
+attribute "hops/am/max_attempts",
+          :description => "max number of attempts for applications",
+          :type => "string"
+
+attribute "hops/yarn/log_aggregation",
+          :description => "enable aggregation of application log files to HDFS",
+          :type => "string"
+
+attribute "hops/gpu",
+          :description => "Are GPUs enabled for YARN? (on this node) Default: false",
+          :type => "string"
 

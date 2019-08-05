@@ -21,6 +21,26 @@ directory node['hops']['yarn']['nodemanager_recovery_dir'] do
   action :create
 end
 
+template "/etc/sudoers.d/yarn" do
+    source "yarn_sudoers.erb"
+    owner "root"
+    group "root"
+    mode "0440"
+    variables({
+                :user => node["hops"]["yarn"]["user"],
+                :cgroup => "#{node['hops']['base_dir']}/sbin/nm-cgroup-fix.sh"
+              })
+    action :create
+  end
+  
+template "#{node['hops']['home']}/sbin/nm-cgroup-fix.sh" do
+    source "nm-cgroup-fix.sh.erb"
+    owner "root"
+    group node['hops']['group']
+    mode 0544
+end
+
+
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
@@ -47,6 +67,7 @@ if node['install']['cloud'].casecmp?("gcp") == 0
   end
 end
 
+
 if node['install']['cloud'].casecmp?("azure") == 0
   
   adl_v1_url = node['hops']['adl_v1_url']
@@ -63,67 +84,6 @@ if node['install']['cloud'].casecmp?("azure") == 0
 end
 
 
-
-nvidia_url = node['nvidia']['download_url'].sub("-EE", "")
-# remove the EE prefix from the version as there is only one nvidiajar for both Hops CE and EE
-nvidia_jar = File.basename(nvidia_url).sub("-EE", "")
-
-remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{nvidia_jar}" do
-  source nvidia_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  #  action :create_if_missing
-  action :create
-end
-
-libnvml_url = node['hops']['libnvml_url'].sub("-EE", "")
-libhopsnvml = File.basename(libnvml_url)
-remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}" do
-  source libnvml_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
-
-link "#{node['hops']['base_dir']}/lib/native/libhopsnvml.so" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/lib/native/#{libhopsnvml}"
-end
-
-amd_url = node['amd']['download_url'].sub("-EE", "")
-amd_jar = File.basename(amd_url).sub("-EE", "")
-
-remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{amd_jar}" do
-  source amd_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  #  action :create_if_missing
-  action :create
-end
-
-librocm_url = node['hops']['librocm_url'].sub("-EE", "")
-libhopsrocm = File.basename(librocm_url)
-remote_file "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}" do
-  source librocm_url
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "0755"
-  # TODO - checksum
-  action :create_if_missing
-end
-
-link "#{node['hops']['base_dir']}/lib/native/libhopsrocm.so" do
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  to "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}"
-end
 
 cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
   source "metrics/nodemanager.yaml"

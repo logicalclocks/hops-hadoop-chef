@@ -1,2 +1,14 @@
 yarn.nodemanager.linux-container-executor.group=<%= @hops_group %>
 min.user.id=0
+
+<% if node['hops']['gpu'] == "true" -%>
+[gpu]
+module.enabled=true
+
+[cgroups]
+# This should be same as yarn.nodemanager.linux-container-executor.cgroups.mount-path inside yarn-site.xml
+root=/sys/fs/cgroup
+# This should be same as yarn.nodemanager.linux-container-executor.cgroups.hierarchy inside yarn-site.xml
+yarn-hierarchy=hops-yarn
+
+<% end -%>

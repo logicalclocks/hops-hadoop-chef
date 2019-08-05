@@ -443,8 +443,6 @@ magic_shell_environment 'HADOOP_PID_DIR' do
 end
 
 
-Chef::Log.info "Number of gpus set was: #{node['hops']['yarn']['gpus']}"
-
 rm_private_ip = private_recipe_ip("hops","rm")
 
 begin

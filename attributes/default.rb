@@ -3,8 +3,8 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9"
-default['hops']['version']                     = "2.8.2.10-RC0"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10"
+default['hops']['version']                     = "3.2.0.0-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -114,11 +114,9 @@ default['hops']['yarn']['log_retain_secs']     = 86400
 default['hops']['yarn']['log_retain_check']    = 100
 default['hops']['yarn']['log_roll_interval']    = 3600
 
-default['hops']['yarn']['container_cleanup_delay_sec']  = 0
-
 default['hops']['yarn']['nodemanager_hb_ms']   = "1000"
 
-default['hops']['am']['max_retries']           = 2
+default['hops']['am']['max_attempts']           = 2
 
 default['hops']['yarn']['aux_services']        = "spark_shuffle,mapreduce_shuffle"
 
@@ -139,14 +137,8 @@ default['hops']['yarn']['app_classpath']       = "#{node['hops']['home']},
 #                                                  #{node['hops']['home']}/share/hadoop/yarn/test/*,
 #                                                  #{node['hops']['home']}/share/hadoop/mapreduce/test/*"
 
-default['hops']['rm']['addr']                  = []
-default['hops']['rm']['http_port']             = 8088
-default['hops']['nm']['http_port']             = 8042
-default['hops']['jhs']['http_port']            = 19888
 
-#default['hops']['rm']['scheduler_class']       = "org.apache.hadoop.yarn.server.resourcemanager.scheduler.fifo.FifoScheduler"
 default['hops']['rm']['scheduler_class']       = "org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler"
-default['hops']['rm']['scheduler_capacity']['calculator_class']  = "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
 
 default['hops']['mr']['tmp_dir']               = "/mapreduce"
 default['hops']['mr']['staging_dir']           = "#{default['hops']['mr']['tmp_dir']}/#{default['hops']['mr']['user']}/staging"
@@ -168,16 +160,9 @@ default['hops']['nm']['jmxport']               = "8083"
 
 default['hops']['nn']['public_ips']            = ['10.0.2.15']
 default['hops']['nn']['private_ips']           = ['10.0.2.15']
-default['hops']['dn']['public_ips']            = ['10.0.2.15']
 default['hops']['dn']['private_ips']           = ['10.0.2.15']
-default['hops']['rm']['public_ips']            = ['10.0.2.15']
 default['hops']['rm']['private_ips']           = ['10.0.2.15']
-default['hops']['nm']['public_ips']            = ['10.0.2.15']
 default['hops']['nm']['private_ips']           = ['10.0.2.15']
-default['hops']['jhs']['public_ips']           = ['10.0.2.15']
-default['hops']['jhs']['private_ips']          = ['10.0.2.15']
-default['hops']['ps']['public_ips']            = ['10.0.2.15']
-default['hops']['ps']['private_ips']           = ['10.0.2.15']
 
 # comma-separated list of namenode addrs
 default['hops']['nn']['addrs']                 = []
@@ -189,8 +174,9 @@ default['maven']['version']                    = "3.2.5"
 default['maven']['checksum']                   = ""
 
 
-# If yarn.nm.memory_mbs is not set, then memory_percent is used instead
 default['hops']['yarn']['memory_mbs']          = 12000
+
+default['hops']['yarn']['min_allocation_memory_mb']          = 128
 default['hops']['yarn']['max_allocation_memory_mb'] = 64000
 
 default['hops']['limits']['nofile']            = '32768'
@@ -236,11 +222,6 @@ if node['hops']['ndb']['version'] != ""
 end
 
 default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-default['dal']['lib_url']                   = "#{node['hops']['root_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
-default['nvidia']['download_url']           = "#{node['hops']['root_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-default['hops']['libnvml_url']              = "#{node['hops']['root_url']}/libhopsnvml-#{node['hops']['version']}.so"
-default['amd']['download_url']              = "#{node['hops']['root_url']}/amd-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
-default['hops']['librocm_url']              = "#{node['hops']['root_url']}/libhopsrocm-#{node['hops']['version']}.so"
 
 default['hops']['recipes']                  = %w{ nn dn rm nm jhs ps }
 
@@ -256,19 +237,10 @@ default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 1000
 default['hops']['nn']['heap_size']          = 1000
 
-default['hops']['nn']['public_ips']         = ['10.0.2.15']
 default['hops']['nn']['private_ips']        = ['10.0.2.15']
-default['hops']['dn']['public_ips']         = ['10.0.2.15']
 default['hops']['dn']['private_ips']        = ['10.0.2.15']
-default['hops']['rm']['public_ips']         = ['10.0.2.15']
 default['hops']['rm']['private_ips']        = ['10.0.2.15']
-default['hops']['nm']['public_ips']         = ['10.0.2.15']
 default['hops']['nm']['private_ips']        = ['10.0.2.15']
-default['hops']['jhs']['public_ips']        = ['10.0.2.15']
-default['hops']['jhs']['private_ips']       = ['10.0.2.15']
-default['hops']['ps']['public_ips']         = ['10.0.2.15']
-default['hops']['ps']['private_ips']        = ['10.0.2.15']
-default['hops']['yarn']['resource_tracker'] = "false"
 
 default['hops']['erasure_coding']           = "false"
 
@@ -280,33 +252,34 @@ default['vagrant']                       = "false"
 default['hops']['reverse_dns_lookup_supported']    = "false"
 
 default['hops']['use_systemd']              = "false"
-default['hops']['yarn']['log_aggregation']     = "true"
 default['hops']['nn']['format_options']        = "-formatAll"
 
 default['hops']['trash']['interval']           = 360
 default['hops']['trash']['checkpoint']['interval']= 60
 
-default['hops']['yarn']['nodemanager_ha_enabled']            = "false"
-default['hops']['yarn']['nodemanager_auto_failover_enabled'] = "false"
+default['hops']['yarn']['resourcemanager_ha_enabled']            = "false"
+default['hops']['yarn']['resourcemanager_auto_failover_enabled'] = "false"
 default['hops']['yarn']['nodemanager_recovery_enabled']      = "true"
+default['hops']['yarn']['nodemanager_recovery_supervised']      = "true"
+default['hops']['yarn']['resourcemanager_recovery_enabled']      = "true"
 # NM heartbeats need to be at least twice as long as NDB transaction timeouts
 
 
 default['hops']['yarn']['rm_heartbeat']                      = 1000
-default['hops']['yarn']['nodemanager_rpc_batch_max_size']    = 60
-default['hops']['yarn']['nodemanager_rpc_batch_max_duration']= 60
-default['hops']['yarn']['rm_distributed']                    = "false"
-default['hops']['yarn']['nodemanager_rm_streaming_enabled']  = "true"
-default['hops']['yarn']['client_failover_sleep_base_ms']     = 100
-default['hops']['yarn']['client_failover_sleep_max_ms']      = 1000
-default['hops']['yarn']['quota_enabled']                     = "true"
-default['hops']['yarn']['quota_monitor_interval']            = 1000
-default['hops']['yarn']['quota_ticks_per_credit']            = 60
-default['hops']['yarn']['quota_min_ticks_charge']            = 600
-default['hops']['yarn']['quota_checkpoint_nbticks']          = 600
-default['hops']['yarn']['quota_threshold_gpu']               = 0.2
-default['hops']['yarn']['quota_minimum_charged_mb']          = 1024
-default['hops']['yarn']['quota_variable_price_enabled']      = "true"
+default['hops']['yarn']['quota']['enabled']                  = "true"
+default['hops']['yarn']['quota']['price']['base_general']    = 1
+default['hops']['yarn']['quota']['price']['base_gpu']        = 1
+default['hops']['yarn']['quota']['min_runtime']              = 10000
+default['hops']['yarn']['quota']['price']['mb_unit']         = 1024
+default['hops']['yarn']['quota']['price']['gpu_unit']        = 1
+default['hops']['yarn']['quota']['period']                   = 10000
+default['hops']['yarn']['quota']['price']['variable']        = "true"
+default['hops']['yarn']['quota']['price']['variable_interval'] = 10000
+default['hops']['yarn']['quota']['price']['multiplicator_threshold_general'] = 0.2
+default['hops']['yarn']['quota']['price']['multiplicator_threshold_gpu'] = 0.2
+default['hops']['yarn']['quota']['price']['multiplicator_general'] = 1
+default['hops']['yarn']['quota']['price']['multiplicator_gpu'] = 1
+default['hops']['yarn']['quota']['poolsize']                 = 10
 default['hops']['yarn']['nm_heapsize_mbs']                   = 1000
 default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 
@@ -336,15 +309,7 @@ default['hops']['dfs']['excluded_hosts']                               = ""
 default['hops']['fs-security-actions']['actor_class']                  = "io.hops.common.security.DevHopsworksFsSecurityActions"
 default['hops']['fs-security-actions']['x509']['get-path']             = "/hopsworks-api/api/admin/credentials/x509"
 
-#mapred-site.xml
-default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"
-default['hops']['mapreduce']['jobhistory']['webapp']['https']['address']  = "#{node['hops']['jhs']['public_ips']}:#{node['hops']['jhs']['https']['port']}"
-
 #yarn-site.xml
-default['hops']['yarn']['http']['policy']                    = "HTTPS_ONLY"
-default['hops']['yarn']['log']['server']['url']              = "https://#{node['hops']['jhs']['private_ips']}:#{node['hops']['jhs']['https']['port']}/jobhistory/logs"
-default['hops']['yarn']['resourcemanager']['webapp']['https']['address']  = "#{node['hops']['rm']['private_ips']}:#{node['hops']['rm']['https']['port']}"
-default['hops']['yarn']['nodemanager']['webapp']['https']['address'] 		= "0.0.0.0:#{node['hops']['nm']['https']['port']}"
 default['hops']['yarn']['container_executor']                = "org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 
 # Use Cgroup isolation
@@ -437,17 +402,7 @@ default['hops']['capacity']['queue_mapping_override']['enable']         = "false
 default['hops']['flyway']['version']                                    = "5.0.3"
 default['hops']['flyway_url']                                           = node['hops']['root_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
-#GPU
-default['hops']['yarn']['min_gpus']                    = 0
-default['hops']['yarn']['max_gpus']                    = 10
-default['hops']['gpu']                                 = "false"
-default['hops']['yarn']['gpus']                        = "*"
-default['hops']['yarn']['gpu_impl_class']              = "io.hops.management.nvidia.NvidiaManagementLibrary"
 default['hops']['yarnapp']['home_dir']                 = "/home"
-default['hops']['yarn']['linux_container_limit_users'] = "true"
-
-# Does a machine in the cluster contain gpus?
-default['hops']['yarn']['cluster']['gpu']              = "false"
 
 #Store Small files in NDB
 default['hops']['small_files']['store_in_db']                                       = "true"
@@ -487,8 +442,14 @@ default['hops']['nn']['handler_count']                = 120
 
 default['hops']['gcp_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"
 
+
 default['hops']['s3a']['sse_algorithm']        = ""
 default['hops']['s3a']['sse_key']              = ""
 
 default['hops']['adl_v1_version']                     = "2.3.8"
 default['hops']['adl_v1_url']                         = node['hops']['root_url'] + "/azure-data-lake-store-sdk-" + node['hops']['adl_v1_version'] + ".jar"
+
+#GPU
+default['hops']['gpu']                                = "false"
+
+

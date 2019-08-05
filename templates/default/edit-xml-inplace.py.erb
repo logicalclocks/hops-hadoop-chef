@@ -21,7 +21,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Hops services xml editor service')
     parser.add_argument('-hadoopconfdir', '--hadoopconfdir', default='/srv/hops/hadoop/etc/hadoop', help='Path to HADOOP_CONF_DIR')
     parser.add_argument('-f', '--file', default='yarn-site.xml', help='Path to yarn/nodemanager xml file')
-    parser.add_argument('-gpus', '--gpus', default='0', help='Number of GPUs on this host')
     parser.add_argument('-cpus', '--cpus', default='1', help='Number of vcores (CPUs) on this host')
     parser.add_argument('-mem', '--memory', default='8096', help='Amount of memory available on this host')    
     parser.add_argument('-maxcpus', '--maxcpus', default='1', help='Maximum number of vcores (CPUs) per app')
@@ -31,7 +30,6 @@ if __name__ == '__main__':
 
     hadoop_home = args.hadoopconfdir
     xml_file = args.file
-    gpus = args.gpus
     cpus = args.cpus
     mem = args.memory
     maxmem = args.maxmem
@@ -46,8 +44,6 @@ if __name__ == '__main__':
         for element in root.iter("name"):
             replace_value(element, 'yarn.nodemanager.resource.memory-mb', mem)
             replace_value(element, 'yarn.scheduler.maximum-allocation-mb', maxmem)            
-            replace_value(element, 'yarn.nodemanager.resource.gpus', gpus)
-            replace_value(element, 'yarn.scheduler.maximum-allocation-gpus', gpus)
             replace_value(element, 'yarn.nodemanager.resource.cpu-vcores', cpus)
             replace_value(element, 'yarn.scheduler.maximum-allocation-vcores', maxcpus)
 

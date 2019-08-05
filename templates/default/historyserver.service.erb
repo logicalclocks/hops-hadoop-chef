@@ -5,7 +5,7 @@ After = syslog.target network.target remote-fs.target <%= @deps %>
 [Service]
 User = <%= node['hops']['mr']['user'] %>
 
-PIDFile = /tmp/mapred-<%= node['hops']['mr']['user'] %>-historyserver.pid
+PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['mr']['user'] %>-historyserver.pid
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-jhs.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-jhs.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-jhs.sh

@@ -1,26 +1,25 @@
 #!/usr/bin/env bash
 
+sudo <%= node['hops']['base_dir'] %>/sbin/nm-cgroup-fix.sh
+
 command=nodemanager
 h=$(hostname)
-bin=$(dirname "${BASH_SOURCE-$0}")
-bin=$(cd "$bin"; pwd)
 
-DEFAULT_LIBEXEC_DIR="$bin"/../libexec
-HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
-. "${bin}"/set-env.sh
+sbin=$(dirname "${BASH_SOURCE-$0}")
+sbin=$(cd "$sbin"; pwd)
 
-export PATH=$PATH:/usr/local/cuda/bin
-# nccl2 needed by horovod
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/lib64:/usr/local/nccl2/lib:/usr/lib64
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+hadoop-metrics2.propertiesHADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. "${sbin}"/set-env.sh
 
-log=<%= node['hops']['logs_dir'] %>/yarn-<%= node['hops']['yarn']['user'] %>-$command-$h.log
+log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['yarn']['user'] %>-$command-$h.log
 
-"$bin"/yarn-daemon.sh --config "$YARN_CONF_DIR"  start $command
+bin="$sbin"/../bin
+"$bin"/yarn --daemon start $command 
 sleep 2; head "$log"
 
-PID_FILE=$YARN_PID_DIR/yarn-<%= node['hops']['yarn']['user'] %>-$command.pid
-PID=$(cat "$PID_FILE")
+PID_FILE=$HADOOP_PID_DIR/hadoop-<%= node['hops']['yarn']['user'] %>-$command.pid
+PID=$(cat $PID_FILE)
 kill -0 "$PID"
 
 exit $?
