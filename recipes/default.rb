@@ -149,6 +149,14 @@ if node.attribute?('serving')
 end
 node.override['serving']['user'] = servingUser
 
+flinkUser = "flink"
+if node.attribute?('flink')
+  if node['flink'].attribute?('user')
+    flinkUser = node['flink']['user']
+  end
+end
+node.override['flink']['user'] = flinkUser
+
 template "#{node['hops']['conf_dir']}/log4j.properties" do
   source "log4j.properties.erb"
   owner node['hops']['hdfs']['user']
@@ -175,6 +183,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :jupyterUser => jupyterUser,
      :sqoopUser => sqoopUser,
      :servingUser => servingUser,
+     :flinkUser => flinkUser,
      :allNNs => allNNIps,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => hopsworks_crl_uri
