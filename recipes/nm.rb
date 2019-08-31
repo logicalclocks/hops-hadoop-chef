@@ -222,7 +222,6 @@ if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service "YARN"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['yarn']['user']}-#{service_name}-#{node['hostname']}.log"
-    web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
 

@@ -73,7 +73,6 @@ if node['kagent']['enabled'] == "true"
     stop_script "#{node['hops']['home']}/sbin/stop-#{yarn_service}.sh"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
     pid_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['hdfs']['user']}-#{service_name}.pid"
-    web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
 

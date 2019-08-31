@@ -107,6 +107,5 @@ if node['kagent']['enabled'] == "true"
     service "HDFS"
     log_file "#{node['hops']['logs_dir']}/hadoop-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
     config_file "#{node['hops']['conf_dir']}/hdfs-site.xml"
-    web_port node['hops']['dn']['http_port']
   end
 end
