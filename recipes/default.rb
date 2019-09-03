@@ -52,7 +52,9 @@ if node['hops']['nn']['private_ips'].include?(my_ip)
   nn_https_address = "#{my_ip}:#{node['hops']['dfs']['https']['port']}"
 else
   # This is a non namenode machine, a random namenode works
-    nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
+  nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
+  nn_http_address = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['http_port']}"
+  nn_https_address = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['https_port']}"
 end
 
 defaultFS = "hdfs://#{nn_rpc_address}"
