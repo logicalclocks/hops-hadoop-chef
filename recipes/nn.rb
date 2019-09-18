@@ -12,10 +12,7 @@ end
 
 deps = ""
 if exists_local("ndb", "mysqld")
-  deps = "mysqld.service "
-end
-if exists_local("hopsmonitor", "default")
-  deps += "influxdb.service"
+  deps = "mysqld.service"
 end
 
 service_name="namenode"
@@ -103,7 +100,6 @@ if node['kagent']['enabled'] == "true"
     service "HDFS"
     config_file "#{node['hops']['conf_dir']}/hdfs-site.xml"
     log_file "#{node['hops']['logs_dir']}/hadoop-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
-    web_port node['hops']['nn']['http_port']
   end
 end
 

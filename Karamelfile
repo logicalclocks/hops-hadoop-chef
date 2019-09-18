@@ -8,7 +8,6 @@ dependencies:
       - ndb::mysqld
   - recipe: hops::nn
     global:
-      - hopsmonitor::default
       - kagent::default
       - hops::ndb
 # This is to handle upgrades from 0.6 to 0.7

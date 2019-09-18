@@ -1,0 +1,32 @@
+rules:
+  - pattern: 'Hadoop<service=ResourceManager, name=RpcActivityForPort(\d+)><>(.*): (\d+)' 
+    name: resourcemanager_rpcactivity_$2
+    value: $3
+    labels:
+      port: $1
+    help: "Resource Manager metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
+
+  - pattern: 'Hadoop<service=ResourceManager, name=QueueMetrics, q0=root, q1=(.*)><>(.*): (\d+)' 
+    name: resourcemanager_queue_$2
+    value: $3
+    labels:
+      queue: $1
+    help: "Resource Manager queue metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true
+
+  - pattern: 'Hadoop<service=ResourceManager, name=(.*)><>(.*): (\d+)'
+    name: resourcemanager_$1_$2
+    value: $3
+    labels: {}
+    help: "Resource Manager metric $2"
+    type: GAUGE
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    attrNameSnakeCase: true

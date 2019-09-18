@@ -137,6 +137,13 @@ link "#{node['hops']['base_dir']}/lib/native/libhopsrocm.so" do
   to "#{node['hops']['base_dir']}/lib/native/#{libhopsrocm}"
 end
 
+cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
+  source "metrics/nodemanager.yaml"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode 500
+end
+
 if node['hops']['systemd'] == "true"
 
   service service_name do
@@ -215,7 +222,6 @@ if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service "YARN"
     log_file "#{node['hops']['logs_dir']}/yarn-#{node['hops']['yarn']['user']}-#{service_name}-#{node['hostname']}.log"
-    web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
 

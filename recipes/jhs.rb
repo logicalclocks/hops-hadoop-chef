@@ -121,7 +121,6 @@ if node['kagent']['enabled'] == "true"
     service "HISTORY_SERVERS"
     log_file "#{node['hops']['logs_dir']}/mapred-#{node['hops']['mr']['user']}-#{service_name}-#{node['hostname']}.log"
     config_file "#{node['hops']['conf_dir']}/mapred-site.xml"
-    web_port node['hops']["#{yarn_service}"]['http_port']
   end
 end
 

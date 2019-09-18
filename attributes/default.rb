@@ -2,7 +2,6 @@ include_attribute "conda"
 include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
-include_attribute "hopsmonitor"
 
 default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7"
 default['hops']['version']                     = "2.8.2.8"
@@ -34,6 +33,7 @@ default['hops']['logs_dir']                    = node['hops']['base_dir'] + "/lo
 default['hops']['tmp_dir']                     = node['hops']['data_dir'] + "/tmp"
 default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/etc"
 default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
+default['hops']['share_dir']                    = node['hops']['base_dir'] + "/share/hadoop"
 
 default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
 default['hops']['dn']['data_dir_permissions']  = '700'
@@ -145,6 +145,7 @@ default['hops']['jhs']['done_dir']             = "#{node['hops']['jhs']['root_di
 # http://hadoop.apache.org/docs/r2.1.0-beta/hadoop-mapreduce-client/hadoop-mapreduce-client-core/PluggableShuffleAndPluggableSort.html
 
 default['hops']['nn']['jmxport']               = "8077"
+default['hops']['dn']['jmxport']               = "8078"
 default['hops']['rm']['jmxport']               = "8082"
 default['hops']['nm']['jmxport']               = "8083"
 
@@ -428,8 +429,15 @@ default['hops']['nn']['private_ips_domainIds']        = {}
 default['hops']['dn']['private_ips_domainIds']        = {}
 default['hops']['topology']                           = "false"
 
-# graphite metrics
-default['hops']['metrics']['use_graphite']            = "true"
+# Monitoring 
+default['hops']['jmx']['prometheus_exporter']['version']  = "0.12.0"
+default['hops']['jmx']['prometheus_exporter']['url']      = "#{node['download_url']}/prometheus/jmx_prometheus_javaagent-#{node['hops']['jmx']['prometheus_exporter']['version']}.jar"
+
+default['hops']['nn']['metrics_port']                     = "19850"
+default['hops']['dn']['metrics_port']                     = "19851"
+default['hops']['nm']['metrics_port']                     = "19852"
+default['hops']['rm']['metrics_port']                     = "19853"
+
 default['hops']['nn']['enable_retrycache']            = "true"
 
 default['hops']['hdfs']['quota_enabled']              = "true"

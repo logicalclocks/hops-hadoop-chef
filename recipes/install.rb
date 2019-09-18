@@ -11,15 +11,6 @@ magic_shell_environment 'LD_LIBRARY_PATH' do
   value "#{node['hops']['base_dir']}/lib/native:$LD_LIBRARY_PATH"
 end
 
-
-case node['platform']
-when "ubuntu"
- if node['platform_version'].to_f <= 14.04
-   node.override['hops']['systemd'] = "false"
- end
-end
-
-
 # http://blog.cloudera.com/blog/2015/01/how-to-deploy-apache-hadoop-clusters-like-a-boss/
 # Set Kernel parameters
 sysctl_param 'vm.swappiness' do
@@ -334,6 +325,17 @@ file "#{node['hops']['bin_dir']}/container-executor" do
   group node['hops']['group']
   mode "6150"
 end
+
+# Download JMX prometheus exporter 
+jmx_prometheus_filename = File.basename(node['hops']['jmx']['prometheus_exporter']['url'])
+remote_file "#{node['hops']['share_dir']}/common/lib/#{jmx_prometheus_filename}" do
+  source node['hops']['jmx']['prometheus_exporter']['url']
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode '0755'
+  action :create
+end
+
 
 if node['hops']['native_libraries'] == "true"
 
