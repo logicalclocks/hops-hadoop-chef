@@ -8,6 +8,7 @@ group node['hops']['secure_group'] do
   action :modify
   members ["#{node['hops']['hdfs']['user']}"]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 deps = ""
