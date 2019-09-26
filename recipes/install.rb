@@ -4,6 +4,7 @@ include_recipe "java"
 group node['kagent']['certs_group'] do
   action :create
   not_if "getent group #{node['kagent']['certs_group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 
@@ -46,11 +47,13 @@ end
 group node['hops']['group'] do
   action :create
   not_if "getent group #{node['hops']['group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hops']['secure_group'] do
   action :create
   not_if "getent group #{node['hops']['secure_group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['hdfs']['user'] do
@@ -61,6 +64,7 @@ user node['hops']['hdfs']['user'] do
   manage_home true
   action :create
   not_if "getent passwd #{node['hops']['hdfs']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['yarn']['user'] do
@@ -69,6 +73,7 @@ user node['hops']['yarn']['user'] do
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['yarn']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['mr']['user'] do
@@ -77,6 +82,7 @@ user node['hops']['mr']['user'] do
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['mr']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['yarnapp']['user'] do
@@ -86,6 +92,7 @@ user node['hops']['yarnapp']['user'] do
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['yarnapp']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['rm']['user'] do
@@ -94,30 +101,35 @@ user node['hops']['rm']['user'] do
   shell "/bin/bash"
   action :create
   not_if "getent passwd #{node['hops']['rm']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group "video" do
   action :modify
   members [node['hops']['yarnapp']['user']]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hops']['secure_group'] do
   action :modify
   members [node['hops']['rm']['user'], node['hops']['mr']['user'], node['hops']['yarn']['user']]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hops']['group'] do
   action :modify
   members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['mr']['user'], node['hops']['yarnapp']['user'], node['hops']['rm']['user']]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['kagent']['certs_group'] do
   action :modify
   members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['rm']['user'], node['hops']['mr']['user']]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 case node['platform_family']
