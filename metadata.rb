@@ -30,7 +30,7 @@ depends 'sysctl'
 depends 'cmake'
 depends 'kzookeeper'
 
-%w{ ubuntu debian rhel centos }.each do |os|
+%w{ ubuntu debian rhel centos amazon }.each do |os|
   supports os
 end
 
