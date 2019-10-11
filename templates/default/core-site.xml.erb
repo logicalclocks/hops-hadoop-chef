@@ -310,9 +310,24 @@
 
   <% end -%>
 <% if node['hops']['topology'].eql? "true" -%>
- <property>
-   <name>net.topology.script.file.name</name>
-   <value><%=node['hops']['conf_dir']%>/get-topology.sh</value>
- </property>
+  <property>
+    <name>net.topology.script.file.name</name>
+    <value><%=node['hops']['conf_dir']%>/get-topology.sh</value>
+  </property>
 <% end -%>
+
+<% if !node['hops']['s3a']['sse_algorithm'].eql? "" -%>
+  <property>
+    <name>fs.s3a.server-side-encryption-algorithm</name>
+    <value><%= node['hops']['s3a']['sse_algorithm'] %></value>
+  </property>
+<% end -%>
+
+<% if !node['hops']['s3a']['sse_key'].eql? "" -%>
+  <property>
+    <name>fs.s3a.server-side-encryption.key</name>
+    <value><%= node['hops']['s3a']['sse_key'] %></value>
+  </property>
+<% end -%>
+
 </configuration>

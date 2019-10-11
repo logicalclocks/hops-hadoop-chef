@@ -444,3 +444,6 @@ default['hops']['hdfs']['quota_enabled']              = "true"
 default['hops']['nn']['handler_count']                = 120
 
 default['hops']['gcs_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"
+
+default['hops']['s3a']['sse_algorithm']        = ""
+default['hops']['s3a']['sse_key']              = ""
