@@ -6,6 +6,7 @@ dependencies:
   - recipe: hops::ndb
     global:
       - ndb::mysqld
+      - ndb::mysqld_tls
   - recipe: hops::nn
     global:
       - kagent::default
