@@ -588,3 +588,11 @@ attribute "hops/kernel/overcommit_memory",
 attribute "hops/kernel/overcommit_ratio",
           :description => "vm.overcommit_ratio value",
           :type => "string"
+
+attribute "hops/s3a/sse_algorithm",
+          :description => "Default server side encryption algorithm to use when writing to s3 buckets (default: empty)",
+          :type => "string"
+
+attribute "hops/s3a/sse_key",
+          :description => "Default Key to use when using S3 SSE-KMS (default: empty)",
+          :type => "string"
