@@ -11,6 +11,13 @@ group node['hops']['secure_group'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
+file "#{node['hops']['conf_dir']}/dfs.exclude" do 
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "700"
+  content node['hops']['dfs']['excluded_hosts'].gsub(',', "\n")
+end
+
 deps = ""
 if exists_local("ndb", "mysqld")
   deps = "mysqld.service"

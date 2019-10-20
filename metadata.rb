@@ -373,6 +373,26 @@ attribute "hops/dfs/misreplicated/noofbatches",
           :description => "Misreplicated number of batches",
           :type => 'string'
 
+attribute "hops/dfs/replication/max_streams",
+          :description => "Hard limit for the number of highest-priority replication streams.",
+          :type => 'string'
+
+attribute "hops/dfs/replication/max_streams_hard_limit",
+          :description => "Hard limit for all replication streams.",
+          :type => 'string'
+
+attribute "hops/dfs/replication/work_multiplier_per_ieration",
+          :description => "Set dfs.namenode.replication.work.multiplier.per.iteration",
+          :type => 'string'
+
+attribute "hops/dfs/balance/max_concurrent_moves",
+          :description => "Maximum number of threads for Datanode balancer pending moves",
+          :type => 'string'
+
+attribute "hops/dfs/excluded_hosts",
+          :description => "Comma separated list of hosts to exclude from the HDFS cluster",
+          :type => 'string'
+
 attribute "hops/format",
           :description => "Format HDFS, Run 'hdfs namenode -format",
           :type => 'string'

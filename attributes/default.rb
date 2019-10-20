@@ -297,12 +297,19 @@ default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
 default['hops']['dfs']['https']['port']                      = "50470"
 default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
 
-default['hops']['dfs']['inodeid']['batchsize']              = "100000"
-default['hops']['dfs']['blockid']['batchsize']              = "100000"
+default['hops']['dfs']['inodeid']['batchsize']                         = "100000"
+default['hops']['dfs']['blockid']['batchsize']                         = "100000"
 
-default['hops']['dfs']['processReport']['batchsize']        = "10"
-default['hops']['dfs']['misreplicated']['batchsize']        = "500"
-default['hops']['dfs']['misreplicated']['noofbatches']      = "20"
+default['hops']['dfs']['processReport']['batchsize']                   = "10"
+default['hops']['dfs']['misreplicated']['batchsize']                   = "500"
+default['hops']['dfs']['misreplicated']['noofbatches']                 = "20"
+default['hops']['dfs']['replication']['max_streams']                   = "50"
+default['hops']['dfs']['replication']['max_streams_hard_limit']        = "100"
+default['hops']['dfs']['replication']['work_multiplier_per_ieration']  = "2"
+
+default['hops']['dfs']['balance']['max_concurrent_moves']              = "50"
+
+default['hops']['dfs']['excluded_hosts']                               = ""
 
 #mapred-site.xml
 default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"
