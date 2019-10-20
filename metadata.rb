@@ -381,7 +381,7 @@ attribute "hops/dfs/replication/max_streams_hard_limit",
           :description => "Hard limit for all replication streams.",
           :type => 'string'
 
-attribute "hops/dfs/replication/work_multiplier_per_ieration",
+attribute "hops/dfs/replication/work_multiplier_per_iteration",
           :description => "Set dfs.namenode.replication.work.multiplier.per.iteration",
           :type => 'string'
 

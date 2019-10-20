@@ -305,7 +305,7 @@ default['hops']['dfs']['misreplicated']['batchsize']                   = "500"
 default['hops']['dfs']['misreplicated']['noofbatches']                 = "20"
 default['hops']['dfs']['replication']['max_streams']                   = "50"
 default['hops']['dfs']['replication']['max_streams_hard_limit']        = "100"
-default['hops']['dfs']['replication']['work_multiplier_per_ieration']  = "2"
+default['hops']['dfs']['replication']['work_multiplier_per_iteration']  = "2"
 
 default['hops']['dfs']['balance']['max_concurrent_moves']              = "50"
 
