@@ -399,4 +399,29 @@
    <value><%= @location_domain_id %></value>
 </property>
 
+<property>
+  <name>dfs.hosts.exclude</name>
+  <value><%= node['hops']['conf_dir'] %>/dfs.exclude</value>
+</property>
+
+<property>
+   <name>dfs.datanode.balance.max.concurrent.moves</name>
+   <value><%= node['hops']['dfs']['balance']['max_concurrent_moves'] %></value>
+</property>
+
+<property>
+   <name>dfs.namenode.replication.max-streams</name>
+   <value><%= node['hops']['dfs']['replication']['max_streams'] %></value>
+</property>
+
+<property>
+   <name>dfs.namenode.replication.max-streams-hard-limit</name>
+   <value><%= node['hops']['dfs']['replication']['max_streams_hard_limit'] %></value>
+</property>
+
+<property>
+   <name>dfs.namenode.replication.work.multiplier.per.iteration</name>
+   <value><%= node['hops']['dfs']['replication']['work_multiplier_per_iteration'] %></value>
+</property>
+
 </configuration>
