@@ -282,6 +282,11 @@
     <value>true</value>
   </property>
 
+  <property>
+    <name>hops.hopsworks.host</name>
+    <value><%= @hopsworks %></value>
+  </property>
+  
   <!-- CRL validation configuration -->
   <property>
     <name>hops.crl.validation.enabled</name>
@@ -308,6 +313,22 @@
     <value><%= node['hops']['tls']['crl_fetcher_interval'] %></value>
   </property>
 
+  <!-- Service JWT renewal configuration -->
+  <property>
+    <name>hops.jwt-manager.master-token-validity</name>
+    <value><%= node['hops']['jwt-manager']['master-token-validity'] %></value>
+  </property>
+
+  <property>
+    <name>hops.jwt-manager.service-renew-path</name>
+    <value><%= node['hops']['jwt-manager']['renew-path'] %></value>
+  </property>
+
+  <property>
+    <name>hops.jwt-manager.service-invalidate-path</name>
+    <value><%= node['hops']['jwt-manager']['invalidate-path'] %></value>
+  </property>
+  
   <% end -%>
 <% if node['hops']['topology'].eql? "true" -%>
   <property>
