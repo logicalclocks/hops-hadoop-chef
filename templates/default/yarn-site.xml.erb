@@ -477,18 +477,13 @@
 </property>
 
 <property>
-  <name>yarn.resourcemanager.rmappsecurity.actions-host</name>
-  <value><%= @hopsworks_host %></value>
-</property>
-
-<property>
   <name>yarn.resourcemanager.rmappsecurity.x509.sign-path</name>
-  <value>/hopsworks-ca/v2/certificate/app</value>
+  <value><%= node['hops']['rmappsecurity']['x509']['sign-path'] %></value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.x509.revoke-path</name>
-  <value>/hopsworks-ca/v2/certificate/app?</value>
+  <value><%= node['hops']['rmappsecurity']['x509']['revoke-path'] %></value>
 </property>
 
 <property>
@@ -522,33 +517,18 @@
 </property>
 
 <property>
-  <name>yarn.resourcemanager.rmappsecurity.jwt.master-token-validity</name>
-  <value><%= node['hops']['rmappsecurity']['jwt']['master-token-validity'] %></value>
-</property>
-
-<property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.generate-path</name>
-  <value>/hopsworks-api/api/jwt</value>
+  <value><%= node['hops']['rmappsecurity']['jwt']['generate-path'] %></value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.invalidate-path</name>
-  <value>/hopsworks-api/api/jwt/key</value>
+  <value><%= node['hops']['rmappsecurity']['jwt']['invalidate-path'] %></value>
 </property>
 
 <property>
   <name>yarn.resourcemanager.rmappsecurity.jwt.renew-path</name>
-  <value>/hopsworks-api/api/jwt</value>
-</property>
-
-<property>
-  <name>yarn.resourcemanager.rmappsecurity.jwt.service-invalidate-path</name>
-  <value>/hopsworks-api/api/jwt/service</value>
-</property>
-
-<property>
-  <name>yarn.resourcemanager.rmappsecurity.jwt.service-renew-path</name>
-  <value>/hopsworks-api/api/jwt/service</value>
+  <value><%= node['hops']['rmappsecurity']['jwt']['renew-path'] %></value>
 </property>
 
 <!--<property>

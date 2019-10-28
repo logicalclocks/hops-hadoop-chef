@@ -94,11 +94,8 @@ Chef::Log.info "Number of gpus found was: #{node['hops']['yarn']['gpus']}"
 # End Constraints
 #
 
-hopsworksNodes = ""
-
 hopsworksUser = "glassfish"
 if node.attribute?("hopsworks")
-  hopsworksNodes = node['hopsworks']['default']['private_ips'].join(",")
   if node['hopsworks'].attribute?("user")
     hopsworksUser = node['hopsworks']['user']
   end
@@ -165,6 +162,8 @@ if node['ndb']['TransactionInactiveTimeout'].to_i < node['hops']['leader_check_i
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
+var_hopsworks_host = hopsworks_host()
+
 template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
@@ -172,7 +171,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
   mode "744"
   variables({
      :defaultFS => defaultFS,
-     :hopsworks => hopsworksNodes,
+     :hopsworks => var_hopsworks_host,
      :hopsworksUser => hopsworksUser,
      :livyUser => livyUser,
      :hiveUser => hiveUser,
@@ -269,7 +268,6 @@ else
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
-var_hopsworks_host = hopsworks_host()
 if node['hops']['rm']['private_ips'].include?(my_ip)
   # This is a resource manager machine
   rm_private_ip = my_ip;
@@ -287,7 +285,6 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
     h[:my_private_ip] = my_ip
     h[:zk_ip] = zk_ip
     h[:resource_handler] = resource_handler
-    h[:hopsworks_host] = var_hopsworks_host
     h[:num_gpus] = num_gpus
     h
   })

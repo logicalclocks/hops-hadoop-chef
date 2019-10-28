@@ -339,6 +339,16 @@
   <name>dfs.client.https.need-auth</name>
   <value>true</value>
 </property>
+
+<property>
+  <name>dfs.security-actions.actor-class</name>
+  <value><%= node['hops']['fs-security-actions']['actor_class'] %></value>
+</property>
+
+<property>
+  <name>dfs.security-actions.x509.get-path</name>
+  <value><%= node['hops']['fs-security-actions']['x509']['get-path'] %></value>
+</property>
 <% end %>
 
 <!-- Store Small Files in NDB-->
