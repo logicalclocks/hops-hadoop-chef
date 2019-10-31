@@ -265,8 +265,8 @@ attribute "hops/tls/crl_fetcher_class",
           :description => "Canonical name of the CRL fetcher class",
           :type => 'string'
 
-attribute "hops/tls/crl_input_uri",
-          :description => "Location where the CRL will be fetched from",
+attribute "hops/tls/crl_fetch_path",
+          :description => "HTTP Path to fetch CA CRL",
           :type => 'string'
 
 attribute "hops/tls/crl_output_file",
