@@ -28,13 +28,7 @@ rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
 if node['hops']['tls']['enabled'].eql? "true"
   rpcSocketFactory = node['hops']['hadoop']['rpc']['socket']['factory']
-  if node['hops']['tls']['crl_input_uri'].empty?
-    if node['hops']['tls']['enabled'].eql? "true"
-      hopsworks_crl_uri = "#{hopsworks_host()}/intermediate.crl.pem"
-    end
-  else
-    hopsworks_crl_uri = node['hops']['tls']['crl_input_uri']
-  end
+  hopsworks_crl_uri = "#{hopsworks_host()}#{node['hops']['tls']['crl_fetch_path']}"
 end
 
 node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
