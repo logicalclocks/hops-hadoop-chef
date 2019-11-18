@@ -118,7 +118,7 @@
   </property>
   <property>
     <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
-    <value>false</value>
+    <value><%= node['hops']['yarn']['cgroups_strict_resource_usage'] %></value>
   </property>
    <property>
     <name>yarn.resourcemanager.scheduler.client.thread-count</name>

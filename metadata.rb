@@ -540,6 +540,10 @@ attribute "hops/yarn/cgroups_max_cpu_usage",
           :description => "max accumulated CPU usage of containers",
           :type => "string"
 
+attribute "hops/yarn/cgroups_strict_resource_usage",
+          :description => "Allows cpu usage limits to be hard or soft. When this setting is true, containers cannot use more CPU usage than allocated even if spare CPU is available.",
+          :type => "string"
+
 attribute "hops/yarnapp/home_dir",
           :description => "home directory for yarnapp user",
           :type => "string"

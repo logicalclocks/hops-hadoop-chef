@@ -325,7 +325,8 @@ default['hops']['yarn']['container_executor']                = "org.apache.hadoo
 # Use Cgroup isolation
 default['hops']['yarn']['cgroups']                        = "true"
 default['hops']['yarn']['cgroups_deletion_timeout']       = "5000"
-default['hops']['yarn']['cgroups_max_cpu_usage']          = "100"
+default['hops']['yarn']['cgroups_max_cpu_usage']          = "90"
+default['hops']['yarn']['cgroups_strict_resource_usage']  = "true"
 
 #ssl-server.xml
 default['hops']['ssl']['server']['keystore']['password']   		= node['hopsworks']['master']['password']
