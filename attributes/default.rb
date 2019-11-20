@@ -454,3 +454,5 @@ default['hops']['gcs_url']                            = node['hops']['root_url']
 
 default['hops']['s3a']['sse_algorithm']        = ""
 default['hops']['s3a']['sse_key']              = ""
+
+default['hops']['ndb']['version']              = "7.6.12"

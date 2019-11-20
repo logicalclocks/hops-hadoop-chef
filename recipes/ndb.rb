@@ -4,6 +4,10 @@ require 'resolv'
 ndb_connectstring()
 my_ip = my_private_ip()
 
+if node['hops']['ndb']['version'] != ""
+  node.override['ndb']['version'] = node['hops']['ndb']['version']
+end
+
 directory "#{node['hops']['dir']}/ndb-hops-#{node['hops']['version']}-#{node['ndb']['version']}" do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']

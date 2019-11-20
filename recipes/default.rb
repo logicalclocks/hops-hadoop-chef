@@ -52,7 +52,6 @@ else
 end
 
 defaultFS = "hopsfs://#{nn_rpc_address}"
-alternativeScheme = "hdfs"
 
 #
 # Constraints for Attributes - enforce them!
