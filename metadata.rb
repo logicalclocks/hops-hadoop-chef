@@ -237,6 +237,14 @@ attribute "hops/rmappsecurity/x509/revocation_monitor_interval",
           :description => "Period to check for stale X509 certificates that should be revoked",
           :type => 'string'
 
+attribute "hops/rmappsecurity/x509/sign-path",
+          :description => "HTTP endpoint to submit application CSR",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/x509/revoke-path",
+          :description => "HTTP endpoint to revoke application X.509",
+          :type => 'string'
+
 attribute "hops/rmappsecurity/jwt/enabled",
           :description => "Enable JWT on Yarn",
           :type => 'string'
@@ -253,8 +261,28 @@ attribute "hops/rmappsecurity/jwt/audience",
           :description => "Comma separated list of JWT audiences",
           :type => 'string'
 
-attribute "hops/rmappsecurity/jwt/master-token-validity",
-          :description => "Validity period for ResourceManager's master service JWT. Valid suffices are s, m, h, d",
+attribute "hops/rmappsecurity/jwt/generate-path",
+          :description => "HTTP endpoint to generate application JWT",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/invalidate-path",
+          :description => "HTTP endpoint to invalidate application JWT",
+          :type => 'string'
+
+attribute "hops/rmappsecurity/jwt/renew-path",
+          :description => "HTTP endpoint to renew application JWT",
+          :type => 'string'
+
+attribute "hops/jwt-manager/master-token-validity",
+          :description => "Validity period for master service JWT. Valid suffices are s, m, h, d",
+          :type => 'string'
+
+attribute "hops/jwt-manager/renew-path",
+          :description => "HTTP endpoint to renew service JWT",
+          :type => 'string'
+
+attribute "hops/jwt-manager/invalidate-path",
+          :description => "HTTP endpoint to invalidate service JWT",
           :type => 'string'
 
 attribute "hops/tls/crl_enabled",
@@ -391,6 +419,14 @@ attribute "hops/dfs/balance/max_concurrent_moves",
 
 attribute "hops/dfs/excluded_hosts",
           :description => "Comma separated list of hosts to exclude from the HDFS cluster",
+          :type => 'string'
+
+attribute "hops/fs-security-actions/actor_class",
+          :description => "Actor class for FsSecurityActions to fetch clients' X.509 certificates in DataNodes",
+          :type => 'string'
+
+attribute "hops/fs-security-actions/x509/get-path",
+          :description => "HTTP endpoint to fetch clients' X.509 certificates",
           :type => 'string'
 
 attribute "hops/format",
@@ -619,4 +655,8 @@ attribute "hops/s3a/sse_algorithm",
 
 attribute "hops/s3a/sse_key",
           :description => "Default Key to use when using S3 SSE-KMS (default: empty)",
+          :type => "string"
+
+attribute "hops/ndb/version",
+          :description => "version of ndb expected by hops, this is for development purpose and should be set to an empty string if the version expected by hops is the same as the version of ndb installed on the machine",
           :type => "string"

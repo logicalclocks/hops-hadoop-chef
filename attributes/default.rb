@@ -3,8 +3,8 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7"
-default['hops']['version']                     = "2.8.2.8"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8"
+default['hops']['version']                     = "2.8.2.9-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -311,6 +311,9 @@ default['hops']['dfs']['balance']['max_concurrent_moves']              = "50"
 
 default['hops']['dfs']['excluded_hosts']                               = ""
 
+default['hops']['fs-security-actions']['actor_class']                  = "io.hops.common.security.DevHopsworksFsSecurityActions"
+default['hops']['fs-security-actions']['x509']['get-path']             = "/hopsworks-api/api/admin/credentials/x509"
+
 #mapred-site.xml
 default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"
 default['hops']['mapreduce']['jobhistory']['webapp']['https']['address']  = "#{node['hops']['jhs']['public_ips']}:#{node['hops']['jhs']['https']['port']}"
@@ -361,13 +364,17 @@ default['hops']['rmappsecurity']['actor_class']                         = "org.a
 
 default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
 default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
+default['hops']['rmappsecurity']['x509']['sign-path']                   = "/hopsworks-ca/v2/certificate/app"
+default['hops']['rmappsecurity']['x509']['revoke-path']                 = "/hopsworks-ca/v2/certificate/app"
 
 default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
 default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
 default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 # Comma separated list of JWT audience
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
-default['hops']['rmappsecurity']['jwt']['master-token-validity']        = "7d"
+default['hops']['rmappsecurity']['jwt']['generate-path']                = "/hopsworks-api/api/jwt"
+default['hops']['rmappsecurity']['jwt']['invalidate-path']              = "/hopsworks-api/api/jwt/key"
+default['hops']['rmappsecurity']['jwt']['renew-path']                   = "/hopsworks-api/api/jwt"
 
 # Set to 'true' if you want production TLS certificates.
 default['hops']['tls']['prod']                                          = "false"
@@ -378,6 +385,11 @@ default['hops']['tls']['crl_fetcher_class']                             = "org.a
 default['hops']['tls']['crl_fetch_path']                                = "/hopsworks-ca/v2/certificate/crl/intermediate"
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
 default['hops']['tls']['crl_fetcher_interval']                          = "5m"
+
+# Service JWT properties
+default['hops']['jwt-manager']['master-token-validity']                 = "7d"
+default['hops']['jwt-manager']['renew-path']                            = "/hopsworks-api/api/jwt/service"
+default['hops']['jwt-manager']['invalidate-path']                       = "/hopsworks-api/api/jwt/service"
 
 # DataNode Data Transfer Protocol encryption
 default['hops']['encrypt_data_transfer']['enabled']                     = "false"
@@ -455,3 +467,5 @@ default['hops']['gcs_url']                            = node['hops']['root_url']
 
 default['hops']['s3a']['sse_algorithm']        = ""
 default['hops']['s3a']['sse_key']              = ""
+
+default['hops']['ndb']['version']              = "7.6.12"
