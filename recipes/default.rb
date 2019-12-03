@@ -51,7 +51,7 @@ else
   nn_https_address = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['https_port']}"
 end
 
-defaultFS = "hopsfs://#{nn_rpc_address}"
+defaultFS = "hdfs://#{nn_rpc_address}"
 
 #
 # Constraints for Attributes - enforce them!
