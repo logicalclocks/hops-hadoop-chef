@@ -213,6 +213,12 @@ default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-
 
 default['hops']['log_level']                = "DEBUG"
 
+default['hops']['ndb']['version']              = "7.6.12"
+
+if node['hops']['ndb']['version'] != ""
+  node.override['ndb']['version'] = node['hops']['ndb']['version']
+end
+
 default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 default['dal']['lib_url']                   = "#{node['hops']['root_url']}/libhopsyarn-#{node['hops']['version']}-#{node['ndb']['version']}.so"
 default['nvidia']['download_url']           = "#{node['hops']['root_url']}/nvidia-management-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
@@ -467,5 +473,3 @@ default['hops']['gcs_url']                            = node['hops']['root_url']
 
 default['hops']['s3a']['sse_algorithm']        = ""
 default['hops']['s3a']['sse_key']              = ""
-
-default['hops']['ndb']['version']              = "7.6.12"
