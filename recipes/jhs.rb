@@ -45,6 +45,11 @@ node.normal['mr']['dirs'] = [node['hops']['mr']['staging_dir'], node['hops']['mr
    end
  end
 
+deps = ""
+if exists_local("hops", "nn") 
+  deps = "namenode.service"
+end
+
 if node['hops']['systemd'] == "true"
 
   service service_name do
@@ -71,6 +76,9 @@ if node['hops']['systemd'] == "true"
     owner "root"
     group "root"
     mode 0664
+    variables({
+              :deps => deps
+              })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
 end
