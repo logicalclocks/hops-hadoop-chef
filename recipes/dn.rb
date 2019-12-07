@@ -23,6 +23,16 @@ if exists_local("hops", "nn")
   deps = "namenode.service"
 end  
 
+
+# wait for kagent to start if the datadirs are encrypted with ZFS
+# kagent will mount and unlock the datadir before the datanode starts
+if node.attribute?("zfs") && node["zfs"].attribute?("datasets")
+  if node['zfs']['datasets'].empty? == false
+    deps = "kagent.service " + deps
+  end
+end
+
+
 service_name="datanode"
 
 if node['hops']['systemd'] == "true"
@@ -52,7 +62,7 @@ if node['hops']['systemd'] == "true"
     group "root"
     mode 0664
     variables({
-              :deps => deps
+                :deps => deps
               })
 if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
