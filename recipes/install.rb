@@ -231,7 +231,6 @@ if "#{node['hops']['dn']['data_dir']}".include? ","
            mkdir -p #{dir}
            chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
         fi
-        # chown -R #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{dir}
       EOH
     end
    end

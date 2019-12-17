@@ -11,6 +11,24 @@ for script in node['hops']['dn']['scripts']
   end
 end 
 
+#
+# ZFS datadir may need to be createed/mounted by kagent
+# Need to make sure it has correct owner/permissions
+#
+
+dd=node['hops']['dn']['data_dir']
+dataDir=dd.gsub("file://","")
+dirs = dataDir.split(",")
+
+for d in dirs do
+  directory d do
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode "0770"
+    action :create
+  end
+end
+
 cookbook_file "#{node['hops']['conf_dir']}/datanode.yaml" do 
   source "metrics/datanode.yaml"
   owner node['hops']['hdfs']['user']
