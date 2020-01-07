@@ -44,8 +44,8 @@ end
 
 # wait for kagent to start if the datadirs are encrypted with ZFS
 # kagent will mount and unlock the datadir before the datanode starts
-if node.attribute?("zfs") && node["zfs"].attribute?("datasets")
-  if node['zfs']['datasets'].empty? == false
+if node.attribute?("zfs") && node["zfs"].attribute?("pools")
+  if node['zfs']['pools'].empty? == false
     deps = "kagent.service " + deps
   end
 end
