@@ -84,6 +84,10 @@ attribute "hops/yarn/memory_mbs",
           :description => "Apache_Hadoop NodeManager Memory in MB",
           :type => 'string'
 
+attribute "hops/yarn/max_allocation_memory_mb",
+          :description => "The maximum allocation for every container request at the RM, in MBs",
+          :type => 'string'
+
 attribute "hops/yarn/nodemanager_log_dir",
           :description => "The directory in which yarn node manager store containers logs",
           :type => 'string'
@@ -311,6 +315,26 @@ attribute "hops/encrypt_data_transfer/enabled",
 
 attribute "hops/encrypt_data_transfer/algorithm",
           :description => "Encryption algorithm, 3des or rc4",
+          :type => 'string'
+
+attribute "hops/yarn/detect-hardware-capabilities",
+          :description => "Enable auto-detection of node capabilities such as memory and CPU.",
+          :type => 'string'
+
+attribute "hops/yarn/logical-processors-as-cores",
+          :description => "Determine if logical processors should be counted as cores",
+          :type => 'string'
+
+attribute "hops/yarn/pcores-vcores-multiplier",
+          :description => "Multiplier to determine how to convert phyiscal cores to vcores",
+          :type => 'string'
+
+attribute "hops/yarn/system-reserved-memory-mb",
+          :description => "Amount of physical memory, in MB, that is reserved for non-YARN processes. If set to -1 it's 20% of total memory",
+          :type => 'string'
+
+attribute "hops/yarn/pmem_check",
+          :description => "Whether physical memory limits will be enforced for containers.",
           :type => 'string'
 
 attribute "hops/yarn/vcores",

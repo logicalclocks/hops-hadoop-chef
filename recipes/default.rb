@@ -273,6 +273,11 @@ if node['hops']['rm']['private_ips'].include?(my_ip)
   rm_private_ip = my_ip;
 end
 
+if node['hops']['yarn']['detect-hardware-capabilities'].casecmp?("true")
+  node.override['hops']['yarn']['vcores'] = "-1"
+  node.override['hops']['yarn']['memory_mbs'] = "-1"
+end
+
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
   owner node['hops']['yarn']['user']
