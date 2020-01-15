@@ -25,6 +25,10 @@ if exists_local("ndb", "mysqld")
   deps = "mysqld.service "
 end
 
+if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
+  deps += "glassfish-domain1.service "
+end
+
 yarn_service="rm"
 service_name="resourcemanager"
 
