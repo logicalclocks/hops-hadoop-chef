@@ -85,9 +85,13 @@ when "rhel"
 default['hops']['yarn']['vpmem_ratio']         = "50.1"
 default['hops']['yarn']['vmem_check']          = false
 end
+default['hops']['yarn']['pmem_check']          = "true"
 
+default['hops']['yarn']['detect-hardware-capabilities'] = "false"
+default['hops']['yarn']['logical-processors-as-cores']  = "true"
+default['hops']['yarn']['pcores-vcores-multiplier']     = "0.9"
+default['hops']['yarn']['system-reserved-memory-mb']    = "-1"
 
-default['hops']['yarn']['pmem_check']          = true
 default['hops']['yarn']['vcores']              = 8
 default['hops']['yarn']['min_vcores']          = 1
 default['hops']['yarn']['max_vcores']          = 8
@@ -174,7 +178,7 @@ default['maven']['checksum']                   = ""
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
 default['hops']['yarn']['memory_mbs']          = 12000
-default['hops']['yarn']['memory_percent']      = "75"
+default['hops']['yarn']['max_allocation_memory_mb'] = 64000
 
 default['hops']['limits']['nofile']            = '32768'
 default['hops']['limits']['nproc']             = '65536'
