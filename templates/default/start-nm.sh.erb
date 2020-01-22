@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-cloud=<%= node['install']['cloud'] %>
-if [ "$cloud" != "" ] ; then
-  sudo <%= node['hops']['base_dir'] %>/sbin/nm-gpu-fix.sh
-fi
-
 command=nodemanager
 h=$(hostname)
 bin=$(dirname "${BASH_SOURCE-$0}")
