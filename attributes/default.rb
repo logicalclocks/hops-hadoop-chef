@@ -253,8 +253,8 @@ default['hops']['rm']['https']['port'] 	    = "8090"
 default['hops']['nm']['https']['port']      = "45443"
 
 default['hops']['yarn']['resource_tracker'] = "false"
-default['hops']['nn']['direct_memory_size'] = 50
-default['hops']['nn']['heap_size']          = 500
+default['hops']['nn']['direct_memory_size'] = 1000
+default['hops']['nn']['heap_size']          = 1000
 
 default['hops']['nn']['public_ips']         = ['10.0.2.15']
 default['hops']['nn']['private_ips']        = ['10.0.2.15']
