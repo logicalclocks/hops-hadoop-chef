@@ -313,6 +313,14 @@ directory node['hops']['logs_dir'] do
   action :create
 end
 
+# Touch file with correct ownership and permission
+file "#{node['hops']['logs_dir']}/hadoop.log" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "0770"
+  action :create_if_missing
+end
+
 directory node['hops']['tmp_dir'] do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
