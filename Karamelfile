@@ -8,10 +8,10 @@ dependencies:
       - ndb::mysqld
   - recipe: hops::nn
     global:
+      - consul::master
       - consul::slave
       - ndb::mysqld_tls
-      - kagent::default
-      - hops::ndb      
+      - hops::ndb
 # This is to handle upgrades from 0.6 to 0.7
 # Make sure the hive db has been migrated with inodeid long
 # before starting the fs.

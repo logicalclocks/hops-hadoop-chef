@@ -15,8 +15,56 @@
   </property>
 
   <property>
+    <name>dfs.namenode.rpc-bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>
+      The actual address the RPC server will bind to. If this optional address is
+      set, it overrides only the hostname portion of dfs.namenode.rpc-address.
+      It can also be specified per name node or name service for HA/Federation.
+      This is useful for making the name node listen on all interfaces by
+      setting it to 0.0.0.0.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.servicerpc-bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>
+      The actual address the service RPC server will bind to. If this optional address is
+      set, it overrides only the hostname portion of dfs.namenode.servicerpc-address.
+      It can also be specified per name node or name service for HA/Federation.
+      This is useful for making the name node listen on all interfaces by
+      setting it to 0.0.0.0.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.http-bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>
+      The actual adress the HTTP server will bind to. If this optional address
+      is set, it overrides only the hostname portion of dfs.namenode.http-address.
+      It can also be specified per name node or name service for HA/Federation.
+      This is useful for making the name node HTTP server listen on all
+      interfaces by setting it to 0.0.0.0.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.https-bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>
+      The actual adress the HTTPS server will bind to. If this optional address
+      is set, it overrides only the hostname portion of dfs.namenode.https-address.
+      It can also be specified per name node or name service for HA/Federation.
+      This is useful for making the name node HTTPS server listen on all
+      interfaces by setting it to 0.0.0.0.
+    </description>
+  </property>
+
+  <property>
     <name>dfs.namenode.rpc-address</name>
-    <value><%= @nn_rpc_address %></value>
+    <value><%= @nn_address %>:<%= node['hops']['nn']['port'] %></value>
     <description>
       RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
       the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
@@ -27,7 +75,7 @@
 
   <property>
     <name>dfs.namenode.http-address</name>
-    <value><%= @nn_http_address %></value>
+    <value><%= @nn_address %>:<%= node['hops']['nn']['http_port'] %></value>
     <description>The address and the base port where the dfs namenode web ui will listen on. </description>
   </property>
 
@@ -326,7 +374,7 @@
 
 <property>
   <name>dfs.namenode.https-address</name>
-  <value><%= @nn_https_address %></value>
+  <value><%= @nn_address %>:<%= node['hops']['dfs']['https']['port'] %></value>
   <description>The address and the base port where the dfs namenode web ui will listen on. </description>
 </property>
 

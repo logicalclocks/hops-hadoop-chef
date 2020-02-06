@@ -1,0 +1,92 @@
+services = [
+    {
+        id = "rm/rpc"
+        name = "resourcemanager"
+        tags = [
+            "rpc",
+            "rm",
+            "<%= @id %>"
+        ]
+        port = 8032
+        check = {
+            id = "rm-health-check"
+            name = "Health check for ResourceManager"
+            args = ["<%= node['hops']['bin_dir'] %>/consul/rm-health.sh"]
+            interval = "20s"
+            timeout = "5s"
+        }
+    },
+    {
+        id = "rm/rt"
+        name = "resourcemanager"
+        tags = [
+            "rpc",
+            "rm",
+            "rt",
+            "resourcetracker"
+        ]
+        port = 8031
+        check = {
+            id = "rm-rt-check"
+            alias_service = "rm/rpc"
+        }
+    },
+    {
+        id = "rm/sch"
+        name = "resourcemanager"
+        tags = [
+            "rpc",
+            "rm",
+            "sch",
+            "scheduler"
+        ]
+        port = 8030
+        check = {
+            id = "rm-sch-check"
+            alias_service = "rm/rpc"
+        }
+    },
+    {
+        id = "rm/admin"
+        name = "resourcemanager"
+        tags = [
+            "rpc",
+            "rm",
+            "admin",
+        ]
+        port = 8033
+        check = {
+            id = "rm-admin-check"
+            alias_service = "rm/rpc"
+        }
+    },
+    {
+        id = "rm/gms"
+        name = "resourcemanager"
+        tags = [
+            "rpc",
+            "rm",
+            "gms",
+            "groupmembershipservice",
+        ]
+        port = 8034
+        check = {
+            id = "rm-gms-check"
+            alias_service = "rm/rpc"
+        }
+    },
+    {
+        id = "rm/http"
+        name = "resourcemanager"
+        tags = [
+            "rm",
+            "http",
+            "webapp"
+        ]
+        port = 8088
+        check = {
+            id = "rm-http-check"
+            alias_service = "rm/rpc"
+        }
+    }
+]

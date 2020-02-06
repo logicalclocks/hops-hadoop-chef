@@ -14,44 +14,46 @@ require 'resolv'
 nnPort=node['hops']['nn']['port']
 hops_group=node['hops']['group']
 my_ip = my_private_ip()
-my_public_ip = my_public_ip()
-rm_private_ip = private_recipe_ip("hops","rm")
-zk_ip = private_recipe_ip('kzookeeper', 'default')
-
-# Convert all private_ips to their hostnames
-# Hadoop requires fqdns to work - won't work with IPs
-hostf = Resolv::Hosts.new
 
 ndb_connectstring()
+
+## Do not try to discover Hopsworks before it has been actual deployed
+## default recipe is included by hops::ndb
+run_list = node.primary_runlist
+run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]']
+run_discovery = false
+for dr in run_discovery_recipes do
+  if run_list.include?(dr)
+    run_discovery = true
+    break
+  end
+end
+
+hopsworks_port = ""
+if run_discovery
+  ruby_block 'Discover Hopsworks port' do
+    block do
+      _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
+      if hopsworks_port.nil?
+        raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
+      end
+    end
+  end
+end
+
+glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
 if node['hops']['tls']['enabled'].eql? "true"
   rpcSocketFactory = node['hops']['hadoop']['rpc']['socket']['factory']
-  hopsworks_crl_uri = "#{hopsworks_host()}#{node['hops']['tls']['crl_fetch_path']}"
 end
 
 node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
 
-if node['hops']['nn']['private_ips'].length > 1
-  allNNIps = node['hops']['nn']['private_ips'].join(":#{nnPort},") + ":#{nnPort}"
-else
-  allNNIps = "#{node['hops']['nn']['private_ips'][0]}" + ":#{nnPort}"
-end
-
-# This is a namenode machine, the rpc-address in hdfs-site.xml is used as "bind to" address
-if node['hops']['nn']['private_ips'].include?(my_ip)
-  nn_rpc_address = "#{my_ip}:#{nnPort}"
-  nn_http_address = "#{my_ip}:#{node['hops']['nn']['http_port']}"
-  nn_https_address = "#{my_ip}:#{node['hops']['dfs']['https']['port']}"
-else
-  # This is a non namenode machine, a random namenode works
-  nn_rpc_address = private_recipe_ip("hops", "nn") + ":#{nnPort}"
-  nn_http_address = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['http_port']}"
-  nn_https_address = private_recipe_ip("hops", "nn") + ":#{node['hops']['dfs']['https']['port']}"
-end
-
-defaultFS = "hdfs://#{nn_rpc_address}"
+rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
+nn_rpc_endpoint = "#{rpc_namenode_fqdn}:#{nnPort}"
+defaultFS = "hdfs://#{rpc_namenode_fqdn}:#{nnPort}"
 
 #
 # Constraints for Attributes - enforce them!
@@ -162,16 +164,21 @@ if node['ndb']['TransactionInactiveTimeout'].to_i < node['hops']['leader_check_i
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
-var_hopsworks_host = hopsworks_host()
+if exists_local('consul', 'default')
+  service_discovery_enabled = "true"
+else
+  service_discovery_enabled = "false"
+end
 
 template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "744"
-  variables({
+  variables( lazy {
+    {
      :defaultFS => defaultFS,
-     :hopsworks => var_hopsworks_host,
+     :hopsworks => "https://#{glassfish_fqdn}:#{hopsworks_port}",
      :hopsworksUser => hopsworksUser,
      :livyUser => livyUser,
      :hiveUser => hiveUser,
@@ -179,9 +186,11 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :sqoopUser => sqoopUser,
      :servingUser => servingUser,
      :flinkUser => flinkUser,
-     :allNNs => allNNIps,
+     :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
-     :hopsworks_crl_uri => hopsworks_crl_uri
+     :hopsworks_crl_uri => "https://#{glassfish_fqdn}:#{hopsworks_port}#{node['hops']['tls']['crl_fetch_path']}",
+     :service_discovery_enabled => service_discovery_enabled
+    }
   })
   action :create
 end
@@ -235,6 +244,23 @@ template "#{node['hops']['sbin_dir']}/set-env.sh" do
   action :create
 end
 
+bind_ip = "0.0.0.0"
+if conda_helpers.bind_services_private_ip
+  bind_ip = my_ip
+end
+
+if node['install']['localhost'].casecmp?("true")
+  nn_address = "localhost"
+else 
+  if node['hops']['nn']['private_ips'].include?(my_ip)
+    # If I'm a NameNode set it to my fqdn
+    nn_address = node['fqdn']
+  else
+    # Otherwise use Service Discovery FQDN
+    nn_address = rpc_namenode_fqdn
+  end
+end
+
 location_domain_id = node['hops']['nn']['private_ips_domainIds'].has_key?(my_ip) ? node['hops']['nn']['private_ips_domainIds'][my_ip] : 0
 template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   source "hdfs-site.xml.erb"
@@ -243,10 +269,9 @@ template "#{node['hops']['conf_dir']}/hdfs-site.xml" do
   mode "754"
   cookbook "hops"
   variables({
-    :nn_rpc_address => nn_rpc_address,
     :location_domain_id => location_domain_id,
-    :nn_http_address => nn_http_address,
-    :nn_https_address => nn_https_address
+    :bind_ip => bind_ip,
+    :nn_address => nn_address
   })
   action :create
 end
@@ -268,15 +293,13 @@ else
   resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
 end
 
-if node['hops']['rm']['private_ips'].include?(my_ip)
-  # This is a resource manager machine
-  rm_private_ip = my_ip;
-end
-
 if node['hops']['yarn']['detect-hardware-capabilities'].casecmp?("true")
   node.override['hops']['yarn']['vcores'] = "-1"
   node.override['hops']['yarn']['memory_mbs'] = "-1"
 end
+
+ha_ids = (0...node['hops']['rm']['private_ips'].size()).to_a()
+my_id = node['hops']['rm']['private_ips'].index(my_ip)
 
 template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   source "yarn-site.xml.erb"
@@ -286,11 +309,13 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   mode "744"
   variables( lazy {
     h = {}
-    h[:rm_private_ip] = rm_private_ip
-    h[:my_private_ip] = my_ip
-    h[:zk_ip] = zk_ip
+    h[:resourcemanager_fqdn] = consul_helper.get_service_fqdn("resourcemanager")
+    h[:zookeeper_fqdn] = consul_helper.get_service_fqdn("client.zookeeper")
     h[:resource_handler] = resource_handler
     h[:num_gpus] = num_gpus
+    h[:ha_ids] = ha_ids
+    h[:my_id] = my_id
+    h[:bind_ip] = bind_ip
     h
   })
   action :create

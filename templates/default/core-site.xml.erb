@@ -22,7 +22,7 @@
 
   <property>
     <name>dfs.namenodes.rpc.addresses</name>
-    <value><%= @allNNs %></value>
+    <value><%= @nn_rpc_endpoint %></value>
     <description>HopsFS-specific list of comma-separated host:port pairs for NameNodes.</description>
   </property>
 
@@ -51,6 +51,11 @@
     </description>
   </property>
 
+  <property>
+    <name>hops.service-discovery.enabled</name>
+    <value><%= @service_discovery_enabled %></value>
+    <description>Flag to get address from Service Discovery instead of configuration file.</description>
+  </property>
 
   <property>
     <name>hadoop.proxyuser.<%= node['hops']['hdfs']['user'] %>.hosts</name>

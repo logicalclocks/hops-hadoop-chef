@@ -20,13 +20,13 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   mode "400"
 end
 
-deps = ""
+deps = "consul.service"
 if exists_local("ndb", "mysqld")
-  deps = "mysqld.service "
+  deps = "#{deps} mysqld.service"
 end
 
 if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
-  deps += "glassfish-domain1.service "
+  deps = "#{deps} glassfish-domain1.service"
 end
 
 yarn_service="rm"
@@ -158,4 +158,23 @@ for d in tmp_dirs
     group node['hops']['group']
     mode "1773"
   end
+end
+
+# Register ResourceManager with Consul
+template "#{node['hops']['bin_dir']}/consul/rm-health.sh" do
+  source "consul/rm-health.sh.erb"
+  owner node['hops']['rm']['user']
+  group node['hops']['group']
+  mode 0750
+end
+
+ha_ids = (0...node['hops']['rm']['private_ips'].size()).to_a()
+my_id = node['hops']['rm']['private_ips'].index(my_private_ip())
+
+consul_service "Registering ResourceManager with Consul" do
+  service_definition "consul/rm-consul.hcl.erb"
+  template_variables({
+    :id => my_id
+  })
+  action :register
 end

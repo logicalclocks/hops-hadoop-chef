@@ -45,9 +45,9 @@ node.normal['mr']['dirs'] = [node['hops']['mr']['staging_dir'], node['hops']['mr
    end
  end
 
-deps = ""
+deps = "consul.service"
 if exists_local("hops", "nn") 
-  deps = "namenode.service"
+  deps = "#{deps} namenode.service"
 end
 
 if node['hops']['systemd'] == "true"

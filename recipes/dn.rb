@@ -18,9 +18,9 @@ cookbook_file "#{node['hops']['conf_dir']}/datanode.yaml" do
   mode 500
 end
 
-deps = ""
+deps = "consul.service"
 if exists_local("hops", "nn") 
-  deps = "namenode.service"
+  deps = "#{deps} namenode.service"
 end  
 
 service_name="datanode"

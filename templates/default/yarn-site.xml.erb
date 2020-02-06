@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
+<property>
+    <name>yarn.resourcemanager.bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>The actual address the server will bind to. If this optional address is set, the RPC and webapp servers will bind to this address and the port specified in yarn.resourcemanager.address and yarn.resourcemanager.webapp.address, respectively. This is most useful for making RM listen to all interfaces by setting to 0.0.0.0.</description>
+  </property>
+
   <property>
     <name>yarn.resourcemanager.resource-tracker.address</name>
-    <value><%= @rm_private_ip %>:8031</value>
+    <value><%= @resourcemanager_fqdn %>:8031</value>
     <description>host is the hostname of the resource manager and port is the port on which the NodeManagers contact the Resource Manager.</description>
   </property>
    <property>
@@ -12,7 +18,7 @@
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.address</name>
-    <value><%= @rm_private_ip %>:8030</value>
+    <value><%= @resourcemanager_fqdn %>:8030</value>
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.port</name>
@@ -20,7 +26,7 @@
   </property>
   <property>
     <name>yarn.resourcemanager.address</name>
-    <value><%= @rm_private_ip %>:8032</value>
+    <value><%= @resourcemanager_fqdn %>:8032</value>
   </property>
   <property>
     <name>yarn.resourcemanager.port</name>
@@ -28,7 +34,7 @@
   </property>
   <property>
     <name>yarn.resourcemanager.admin.address</name>
-    <value><%= @rm_private_ip %>:8033</value>
+    <value><%= @resourcemanager_fqdn %>:8033</value>
   </property>
   <property>
     <name>yarn.resourcemanager.admin.port</name>
@@ -36,7 +42,7 @@
   </property>
   <property>
     <name>yarn.resourcemanager.groupMembership.address</name>
-    <value><%= @rm_private_ip %>:8034</value>
+    <value><%= @resourcemanager_fqdn %>:8034</value>
   </property>
   <property>
     <name>yarn.resourcemanager.groupMembership.port</name>
@@ -45,8 +51,15 @@
 
   <property>
     <name>yarn.resourcemanager.webapp.address</name>
-    <value><%= @rm_private_ip %>:8088</value>
+    <value><%= @resourcemanager_fqdn %>:8088</value>
     <description>The http address of the RM web application.</description>
+  </property>
+
+
+  <property>
+    <name>yarn.nodemanager.bind-host</name>
+    <value><%= @bind_ip %></value>
+    <description>The actual address the server will bind to. If this optional address is set, the RPC and webapp servers will bind to this address and the port specified in yarn.nodemanager.address and yarn.nodemanager.webapp.address, respectively. This is most useful for making NM listen to all interfaces by setting to 0.0.0.0.</description>
   </property>
 
   <property>
@@ -56,15 +69,15 @@
   <property>
     <description>NM Webapp address.</description>
     <name>yarn.nodemanager.webapp.address</name>
-    <value><%= @my_private_ip %>:8042</value>
+    <value>0.0.0.0:8042</value>
   </property>
   <property>
     <name>yarn.nodemanager.address</name>
-    <value><%= @my_private_ip %>:9000</value>
+    <value>0.0.0.0:9000</value>
   </property>
   <property>
     <name>yarn.nodemanager.localizer.address</name>
-    <value><%= @my_private_ip %>:9001</value>
+    <value>0.0.0.0:9001</value>
   </property>
   <property>
     <name>yarn.application.classpath</name>
@@ -77,7 +90,7 @@
   </property>
   <property>
     <name>hadoop.registry.zk.quorum</name>
-    <value><%= @zk_ip %>:2181</value>
+    <value><%= @zookeeper_fqdn %>:2181</value>
   </property>
   <property>
     <name>yarn.nodemanager.container-executor.class</name>
@@ -304,39 +317,44 @@
   </property>
 
   <property>
+    <name>yarn.resourcemanager.ha.id</name>
+    <value><%= @my_id %></value>
+  </property>
+
+  <property>
     <name>yarn.resourcemanager.ha.rm-ids</name>
-    <value><%= node['hops']['rm']['private_ips'].join(",") %></value>
+    <value><%= @ha_ids.join(",") %></value>
   </property>
 
 
-<% for id in node['hops']['rm']['private_ips'] -%>
+<% for id in @ha_ids -%>
   <property>
     <name>yarn.resourcemanager.hostname.<%= id %></name>
-    <value><%= id %></value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.address.<%= id %></name>
-    <value><%= id %>:8030</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8030</value>
   </property>
   <property>
     <name>yarn.resourcemanager.resource-tracker.address.<%= id %></name>
-    <value><%= id %>:8031</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8031</value>
   </property>
   <property>
     <name>yarn.resourcemanager.address.<%= id %></name>
-    <value><%= id %>:8032</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8032</value>
   </property>
   <property>
     <name>yarn.resourcemanager.admin.address.<%= id %></name>
-    <value><%= id %>:8033</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8033</value>
   </property>
   <property>
     <name>yarn.resourcemanager.groupMembership.address.<%= id %></name>
-    <value><%= id %>:8034</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8034</value>
   </property>
   <property>
     <name>yarn.resourcemanager.webapp.address.<%= id %></name>
-    <value><%= id %>:8088</value>
+    <value><%= id %>.<%= @resourcemanager_fqdn %>:8088</value>
   </property>
 
 <% end -%>
