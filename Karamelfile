@@ -18,7 +18,7 @@ dependencies:
   - recipe: hops::rm
     global:
       - hops::ndb
-      - kzookeeper::default
+#      - kzookeeper::default
   - recipe: hops::dn
     global:
       - hops::nn
