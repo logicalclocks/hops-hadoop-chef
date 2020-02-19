@@ -18,7 +18,8 @@ dependencies:
       - hive2::db
   - recipe: hops::rm
     global:
-     - kzookeeper::default
+      - hops::dn
+      - kzookeeper::default
   - recipe: hops::dn
     global:
       - hops::nn
