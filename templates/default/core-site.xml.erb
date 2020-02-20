@@ -360,7 +360,7 @@
   </property>
 <% end -%>
 
-<% if !node['install']['cloud'].eql? "azure" -%>
+<% if node['install']['cloud'].eql? "azure" -%>
   <property>
     <name>fs.adl.oauth2.access.token.provider.type</name>
     <value>RefreshToken</value>
