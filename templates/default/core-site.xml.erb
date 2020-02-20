@@ -360,4 +360,22 @@
   </property>
 <% end -%>
 
+<% if node['install']['cloud'].eql? "azure" -%>
+  <property>
+    <name>fs.adl.oauth2.access.token.provider.type</name>
+    <value>RefreshToken</value>
+  </property>
+
+  <property>
+    <name>fs.adl.oauth2.client.id</name>
+    <value></value>
+  </property>
+
+  <property>
+    <name>fs.adl.oauth2.refresh.token</name>
+    <value></value>
+  </property>
+  
+<% end -%>
+
 </configuration>
