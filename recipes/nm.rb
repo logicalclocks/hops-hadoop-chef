@@ -29,13 +29,13 @@ end
 
 
 
-if node['install']['cloud'].casecmp?("gce") == 0
+if node['install']['cloud'].casecmp?("gcp") == 0
   
-  gcs_url = node['hops']['gcs_url']
-  gcs_jar = File.basename(gcs_url)
+  gcp_url = node['hops']['gcp_url']
+  gcp_jar = File.basename(gcp_url)
   
-  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{gcs_jar}" do
-    source gcs_url
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{gcp_jar}" do
+    source gcp_url
     owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode "0755"
@@ -43,6 +43,22 @@ if node['install']['cloud'].casecmp?("gce") == 0
     action :create_if_missing
   end
 end
+
+if node['install']['cloud'].casecmp?("azure") == 0
+  
+  adl_v1_url = node['hops']['adl_v1_url']
+  adl_v1_jar = File.basename(adl_v1_url)
+  
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{adl_v1_jar}" do
+    source adl_v1_url
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "0755"
+  # TODO - checksum
+    action :create_if_missing
+  end
+end
+
 
 
 nvidia_url = node['nvidia']['download_url']

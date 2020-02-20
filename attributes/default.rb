@@ -473,7 +473,10 @@ default['hops']['nn']['enable_retrycache']            = "true"
 default['hops']['hdfs']['quota_enabled']              = "true"
 default['hops']['nn']['handler_count']                = 120
 
-default['hops']['gcs_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"
+default['hops']['gcp_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"
 
 default['hops']['s3a']['sse_algorithm']        = ""
 default['hops']['s3a']['sse_key']              = ""
+
+default['hops']['adl_v1_version']                     = "2.3.8"
+default['hops']['adl_v1_url']                         = node['hops']['root_url'] + "/azure-data-lake-store-sdk-" + node['hops']['adl_v1_version'] + ".jar"
