@@ -8,6 +8,7 @@ dependencies:
       - ndb::mysqld
   - recipe: hops::nn
     global:
+      - consul::slave
       - ndb::mysqld_tls
       - kagent::default
       - hops::ndb      
