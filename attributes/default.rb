@@ -8,9 +8,11 @@ default['hops']['version']                     = "3.2.0.0-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
+default['hops']['group_id']                    = 1234
 default['hops']['secure_group']                = node['install']['user'].empty? ? "metaserver" : node['install']['user']
 default['hops']['yarn']['user']                = node['install']['user'].empty? ? "yarn" : node['install']['user']
 default['hops']['yarnapp']['user']             = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
+default['hops']['yarnapp']['uid']              = 1235
 default['hops']['rm']['user']                  = node['install']['user'].empty? ? "rmyarn" : node['install']['user']
 default['hops']['mr']['user']                  = node['install']['user'].empty? ? "mapred" : node['install']['user']
 
@@ -51,7 +53,6 @@ default['hops']['dn']['data_dir_permissions']           = '700'
 default['hops']['dn']['cloud_data_dir_permissions']     = '700'
 default['hops']['nn']['name_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
-default['hops']['yarn']['nodemanager_log_dir']               = node['hops']['logs_dir'] + "/userlogs"
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
@@ -452,4 +453,12 @@ default['hops']['adl_v1_url']                         = node['hops']['root_url']
 #GPU
 default['hops']['gpu']                                = "false"
 
-
+#DOCKER
+default['hops']['docker_img_version']                 = node['install']['version'].gsub("-SNAPSHOT", "")
+default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
+default['hops']['docker']['trusted-registers']        = "local"
+default['hops']['docker']['mounts']                   = "#{node['hops']['conf_dir']},#{node['hops']['dir']}/spark,#{node['hops']['dir']}/flink"
+default['hops']['docker']['base_env']['download_url'] = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/python36.tar"
+default['hops']['cgroup-driver']                      = "cgroupfs"
+default['hops']['docker']['registry']['port']         = 4443
+default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/registry_image.tar"

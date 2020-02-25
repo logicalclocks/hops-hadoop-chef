@@ -20,10 +20,10 @@ export CLASSPATH=$HADOOP_CLASSPATH
 
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 # Extra Java runtime options. Empty by default.
-# $HADOOP_OPTS gets overwritten in /etc/hadoop/hadoop-env.sh, so make changes in HADOOP_NAMENODE_OPTS, HADOOP_DATANODE_OPTS
+# $HADOOP_OPTS gets overwritten in /etc/hadoop/hadoop-env.sh, so make changes in HDFS_NAMENODE_OPTS, HADOOP_DATANODE_OPTS
 
 # Command specific options appended to HADOOP_OPTS when specified
-export HADOOP_NAMENODE_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['nn']['metrics_port'] %>:'$HADOOP_CONF_DIR'/namenode.yaml -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<%= node['hops']['nn']['jmxport'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
+export HDFS_NAMENODE_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['nn']['metrics_port'] %>:'$HADOOP_CONF_DIR'/namenode.yaml -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<%= node['hops']['nn']['jmxport'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
 
 export HADOOP_DATANODE_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['dn']['metrics_port'] %>:'$HADOOP_CONF_DIR'/datanode.yaml -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<%= node['hops']['dn']['jmxport'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
 

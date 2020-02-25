@@ -1,4 +1,5 @@
 include_recipe "hops::default"
+include_recipe "hops::docker_image"
 
 template_ssl_server()
 

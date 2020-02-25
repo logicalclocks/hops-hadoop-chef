@@ -94,14 +94,6 @@ if node.attribute?("hopsworks")
 end
 node.override['hopsworks']['user'] = hopsworksUser
 
-jupyterUser = "jupyter"
-if node.attribute?('jupyter')
-  if node['jupyter'].attribute?('user')
-    jupyterUser = node['jupyter']['user']
-  end
-end
-node.override['jupyter']['user'] = jupyterUser
-
 livyUser = "livy"
 if node.attribute?("livy")
   if node['livy'].attribute?("user")
@@ -126,13 +118,6 @@ if node.attribute?('sqoop')
 end
 node.override['sqoop']['user'] = sqoopUser
 
-servingUser = "serving"
-if node.attribute?('serving')
-  if node['serving'].attribute?('user')
-    servingUser = node['serving']['user']
-  end
-end
-node.override['serving']['user'] = servingUser
 
 flinkUser = "flink"
 if node.attribute?('flink')
@@ -167,9 +152,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :hopsworksUser => hopsworksUser,
      :livyUser => livyUser,
      :hiveUser => hiveUser,
-     :jupyterUser => jupyterUser,
      :sqoopUser => sqoopUser,
-     :servingUser => servingUser,
      :flinkUser => flinkUser,
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
@@ -314,6 +297,16 @@ template "#{node['hops']['conf_dir']}/resource-types.xml" do
   action :create
 end
 
+begin
+  registry_ip = private_recipe_ip("hops","docker_registry")
+  registry_host = resolve_hostname(registry_ip)
+rescue
+  registry_host = "localhost"
+  Chef::Log.warn "could not find the docker registry ip!"
+end
+
+trusted_registries = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
+
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner "root"
@@ -321,7 +314,8 @@ template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   cookbook "hops"
   mode "740"
   variables({
-              :hops_group => hops_group
+              :hops_group => hops_group,
+              :trusted_registries => trusted_registries
             })
   action :create
 end

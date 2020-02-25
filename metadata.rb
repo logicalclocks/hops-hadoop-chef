@@ -91,10 +91,6 @@ attribute "hops/yarn/min_allocation_memory_mb",
           :description => "Min ammount of Memory in MB that can be allocated to a container",
           :type => 'string'
 
-attribute "hops/yarn/nodemanager_log_dir",
-          :description => "The directory in which yarn node manager store containers logs",
-          :type => 'string'
-
 attribute "hops/yarn/nodemanager_recovery_dir",
           :description => "The directory in which yarn node manager stores recovery state",
           :type => 'string'
@@ -381,12 +377,20 @@ attribute "hops/group",
           :description => "Group to run hdfs/yarn/yarnapp/mr as",
           :type => 'string'
 
+attribute "hops/group_id",
+          :description => "the group_id for hops/group. If you change this value you must ensure that it match the gid in the docker image",
+          :type => 'string'
+
 attribute "hops/yarn/user",
           :description => "Username to run yarn as",
           :type => 'string'
 
 attribute "hops/yarnapp/user",
           :description => "Username to run yarn applications as",
+          :type => 'string'
+
+attribute "hops/yarnapp/uid",
+          :description => "uid for the user to run yarn applications as. If you change this value you need to ensure that it match the uid in the docker image.",
           :type => 'string'
 
 attribute "hops/mr/user",
@@ -719,3 +723,27 @@ attribute "hops/gpu",
           :description => "Are GPUs enabled for YARN? (on this node) Default: false",
           :type => "string"
 
+#DOCKER
+attribute "hops/docker_dir",
+          :description =>  "Path on the host machine to be used to store docker containers,imgs,logs",
+          :type => 'string'
+
+attribute "hops/docker/trusted-registers",
+          :description => "Trustested registers for docker images",
+          :type => 'string'
+
+attribute "hops/docker/mounts",
+          :description => "A coma separated list of folder to be mounted as read only in the yarn docker containers",
+          :type => 'string'
+
+attribute "hops/docker/base_env/download_url",
+          :description => "the url of the base conda env docker image",
+          :type => 'string'
+
+attribute "hops/cgroup-driver",
+          :description =>  "Cgroup driver",
+          :type => 'string'
+
+attribute "hops/docker/registry/port",
+          :description => "the port on which the docker registry listen",
+          :type => 'string'
