@@ -20,8 +20,8 @@ HEADERS = {'Content-Type': 'application/x-www-form-urlencoded',
            'User-Agent': 'service_renew_py'}
 AUTH_HEADER = "Authorization"
 
-MASTER_TOKEN_PROPERTY = "yarn.resourcemanager.rmappsecurity.jwt.master-token"
-RENEW_TOKENS_PROPERTY_TEMPLATE = "yarn.resourcemanager.rmappsecurity.jwt.renew-token-{0}"
+MASTER_TOKEN_PROPERTY = "hops.jwt-manager.master-token"
+RENEW_TOKENS_PROPERTY_TEMPLATE = "hops.jwt-manager.renew-token-{0}"
 
 def login(username, password, host):
     print("Login to: " + host)
