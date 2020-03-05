@@ -53,6 +53,12 @@ directory node['hops']['data_dir'] do
   ignore_failure true
 end
 
+directory node['hops']['dn']['cloud_data_dir'] do
+  recursive true
+  action :delete
+  ignore_failure true
+end
+
 directory Chef::Config.file_cache_path do
   recursive true
   action :delete

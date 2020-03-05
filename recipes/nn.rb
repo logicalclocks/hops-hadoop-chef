@@ -204,5 +204,14 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
     end
   end    
 
+  if node['hops']['nn']['root_dir_storage_policy'] != ""    
+    exec = "#{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path / -policy "
+    bash 'set_root_storage_plicy' do
+      user node['hops']['hdfs']['user']
+      code <<-EOF
+        #{exec} "#{node['hops']['nn']['root_dir_storage_policy']}\"
+      EOF
+    end
+  end
   
 end

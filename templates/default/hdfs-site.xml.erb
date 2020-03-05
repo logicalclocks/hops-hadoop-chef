@@ -434,4 +434,51 @@
    <value><%= node['hops']['dfs']['replication']['work_multiplier_per_iteration'] %></value>
 </property>
 
+<property>
+   <name>dfs.enable.cloud.persistence</name>
+   <value><%= node['hops']['enable_cloud_storage'] %></value>
+</property>
+
+<property>
+   <name>dfs.cloud.provider</name>
+   <value><%= node['hops']['cloud_provider'] %></value>
+   <description>Cloud provider. Currently only AWS is supported</description>
+</property>
+
+<property>
+   <name>dfs.cloud.aws.s3.bucket</name>
+   <value><%= node['hops']['aws_s3_bucket'] %></value>
+   <description>Hopsfs S3 bucket used to store file system blocks</description>
+</property>
+
+<property>
+   <name>dfs.cloud.aws.s3.region</name>
+   <value><%= node['hops']['aws_s3_region'] %></value>
+   <description>AWS Region for file system buckets</description>
+</property>
+
+<property>
+   <name>dfs.dn.cloud.bypass.cache</name>
+   <value><%= node['hops']['cloud_bypass_disk_cache'] %></value>
+   <description></description>
+</property>
+
+<property>
+   <name>dfs.dn.cloud.max.upload.threads</name>
+   <value><%= node['hops']['cloud_max_upload_threads'] %></value>
+   <description></description>
+</property>
+
+<property>
+   <name>dfs.cloud.store.small.files.in.db</name>
+   <value><%= node['hops']['cloud_store_small_files_in_db'] %></value>
+   <description></description>
+</property>
+
+<property>
+   <name>dfs.cloud.concurrent.upload</name>
+   <value>true</value>
+   <description>Upload file block to s3 using multipart API</description>
+</property>
+
 </configuration>
