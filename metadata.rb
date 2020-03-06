@@ -477,43 +477,6 @@ attribute "hops/dn/data_dir_permissions",
           :description => "The permissions for the directory in which Hadoop's DataNodes store their data (default: 700)",
           :type => 'string'
 
-attribute "hops/enable_cloud_storage",
-          :description => "Enable cloud storage on the DataNodes.",
-          :type => 'string'
-
-attribute "hops/cloud_provider",
-          :description => "Name of the cloud provider. Default: AWS",
-          :type => 'string'
-
-attribute "hops/aws_s3_region",
-          :description => "AWS S3 Region. Default is eu-west-1",
-          :type => 'string'
-
-attribute "hops/cloud_bypass_disk_cache",
-          :description => "Bypass disk cache",
-          :type => 'string'
-
-attribute "hops/cloud_max_upload_threads",
-          :description => "Max number of threads for uploading blocks to cloud",
-          :type => 'string'
-
-attribute "hops/cloud_store_small_files_in_db",
-          :description => "Enable/Disable storing small files in NDB for CLOUD storage policy",
-          :type => 'string'
-
-attribute "hops/aws_s3_bucket",
-          :description => "S3 bucket used to store file system blocks",
-          :type => 'string'
-
-attribute "hops/dn/cloud_data_dir",
-          :description => "The directory in which Hadoop's DataNodes put cached data from cloud storage, such as, S3.",
-          :type => 'string'
-
-attribute "hops/dn/cloud_data_dir_permissions",
-          :description => "The permissions for the directory in which Hadoop's DataNodes put cached data from cloud storage (default: 700)",
-          :type => 'string'
-
-
 attribute "hops/yarn/nodemanager_hb_ms",
           :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
           :type => 'string'
@@ -683,10 +646,6 @@ attribute "hops/hdfs/quota_enabled",
 
 attribute "hops/nn/handler_count",
           :description => "Number of RPC handlers",
-          :type => "string" 
-
-attribute "hops/nn/root_dir_storage_policy",
-          :description => "Storage policy for root directory",
           :type => "string" 
 
 attribute "hops/retry_policy_spec",
