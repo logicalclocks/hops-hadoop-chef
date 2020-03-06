@@ -221,8 +221,7 @@ end
 if "#{node['hops']['dn']['data_dir']}".include? ","
   dirs = node['hops']['dn']['data_dir'].split(",")
   for d in dirs do
-    dir = d.gsub(/\[.*\]/, "") #remove [HOT], [CLOUD] storage type tags
-    dir = dir.gsub("file://","")
+    dir = d.gsub("file://","")
     bash 'chown_datadirs_if_exist' do
       user "root"
       code <<-EOH
@@ -238,8 +237,7 @@ if "#{node['hops']['dn']['data_dir']}".include? ","
    end
 else
   ad=node['hops']['dn']['data_dir']
-  ddir = ad.gsub(/\[.*\]/, "") #remove [HOT], [CLOUD] storage type tags
-  ddir = ddir.gsub("file://","")
+  ddir=ad.gsub("file://","")
   directory ddir do
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
@@ -248,19 +246,6 @@ else
     action :create
   end
 end
-
-if node['hops']['enable_cloud_storage'].casecmp?("true")
-  cdd=node['hops']['dn']['cloud_data_dir']
-  cloudDataDir=cdd.gsub("file://","")
-
-  directory cloudDataDir do
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode "0770"
-    recursive true
-    action :create
-  end
-end 
 
 ann=node['hops']['nn']['name_dir']
 nndir=ann.gsub("file://","")
@@ -283,8 +268,6 @@ remote_file cached_package_filename do
   retries 2
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  headers get_ee_basic_auth_header()
-  sensitive true
   mode "0755"
   ignore_failure true
   # TODO - checksum

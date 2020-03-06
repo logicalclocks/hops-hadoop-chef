@@ -3,8 +3,8 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9"
-default['hops']['version']                     = "2.8.2.10-SNAPSHOT"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8"
+default['hops']['version']                     = "2.8.2.9"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
@@ -35,21 +35,9 @@ default['hops']['conf_dir_parent']             = node['hops']['base_dir'] + "/et
 default['hops']['conf_dir']                    = node['hops']['conf_dir_parent'] + "/hadoop"
 default['hops']['share_dir']                    = node['hops']['base_dir'] + "/share/hadoop"
 
-default['hops']['enable_cloud_storage']        = "false"
-default['hops']['cloud_provider']              = node["install"]["cloud"]
-default['hops']['aws_s3_region']               = "eu-west-1"
-default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
-default['hops']['cloud_bypass_disk_cache']         = "false" 
-default['hops']['cloud_max_upload_threads']        = "20"
-default['hops']['cloud_store_small_files_in_db']   = "true" 
-default['hops']['nn']['root_dir_storage_policy']       = "" 
-
-
-default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn/disk"
-default['hops']['dn']['cloud_data_dir']                 = "file://" + node['hops']['data_dir'] + "/hdfs/dn/cloud"
-default['hops']['dn']['data_dir_permissions']           = '700'
-default['hops']['dn']['cloud_data_dir_permissions']     = '700'
-default['hops']['nn']['name_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
+default['hops']['dn']['data_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
+default['hops']['dn']['data_dir_permissions']  = '700'
+default['hops']['nn']['name_dir']              = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['yarn']['nodemanager_log_dir']               = node['hops']['logs_dir'] + "/userlogs"
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"
@@ -319,8 +307,8 @@ default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
 default['hops']['dfs']['https']['port']                      = "50470"
 default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
 
-default['hops']['dfs']['inodeid']['batchsize']              = "10000"
-default['hops']['dfs']['blockid']['batchsize']              = "10000"
+default['hops']['dfs']['inodeid']['batchsize']                         = "100000"
+default['hops']['dfs']['blockid']['batchsize']                         = "100000"
 
 default['hops']['dfs']['processReport']['batchsize']                   = "10"
 default['hops']['dfs']['misreplicated']['batchsize']                   = "500"

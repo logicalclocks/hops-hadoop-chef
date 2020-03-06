@@ -1,5 +1,5 @@
-include_recipe "hops::_config"
 require 'resolv'
+
 
 ndb_connectstring()
 my_ip = my_private_ip()
@@ -65,8 +65,6 @@ end
 remote_file "#{flyway_basedir}/flyway/sql/V0.0.2__initial_tables.sql" do
   source "#{node['hops']['schema_dir']}/schema.sql"
   owner node['hops']['hdfs']['user']
-  headers get_ee_basic_auth_header()
-  sensitive true
   mode 0750
   action :create_if_missing
 end
@@ -86,8 +84,6 @@ for version in versions do
   remote_file "#{flyway_basedir}/flyway/sql/V#{version}__hops.sql" do
     source "#{node['hops']['schema_dir']}/update-schema_#{prev}_to_#{version}.sql"
     owner node['hops']['hdfs']['user']
-    headers get_ee_basic_auth_header()
-    sensitive true
     mode 0750
     action :create_if_missing
   end
@@ -101,8 +97,6 @@ remote_file "#{node['hops']['dir']}/ndb-hops/#{base_filename}" do
   source package_url
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  headers get_ee_basic_auth_header()
-  sensitive true
   mode "0755"
   # TODO - checksum
   action :create_if_missing
