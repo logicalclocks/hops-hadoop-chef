@@ -349,6 +349,13 @@
   <name>dfs.security-actions.x509.get-path</name>
   <value><%= node['hops']['fs-security-actions']['x509']['get-path'] %></value>
 </property>
+
+<property>
+  <name>dfs.security-actions.x509.webhdfs-use-appId</name>
+  <value><%= node['hops']['fs-security-actions']['x509']['webhdfs-use-appId'] %></value>
+  <description>Optional. Whether HopsX509Authenticator will set the YARN ApplicationId if
+  organization ins UserGroupInformation is not set.</description>
+</property>
 <% end %>
 
 <!-- Store Small Files in NDB-->

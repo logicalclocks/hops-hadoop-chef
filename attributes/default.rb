@@ -323,6 +323,7 @@ default['hops']['dfs']['excluded_hosts']                               = ""
 
 default['hops']['fs-security-actions']['actor_class']                  = "io.hops.common.security.DevHopsworksFsSecurityActions"
 default['hops']['fs-security-actions']['x509']['get-path']             = "/hopsworks-api/api/admin/credentials/x509"
+default['hops']['fs-security-actions']['x509']['webhdfs-use-appId']    = "false"
 
 #mapred-site.xml
 default['hops']['mapreduce']['jobhistory']['http']['policy'] = "HTTPS_ONLY"

@@ -453,6 +453,10 @@ attribute "hops/fs-security-actions/x509/get-path",
           :description => "HTTP endpoint to fetch clients' X.509 certificates",
           :type => 'string'
 
+attribute "hops/fs-security-actions/x509/webhdfs-use-appId",
+          :description => "Whether HopsX509Authenticator will set the YARN ApplicationId if organization ins UserGroupInformation is not set.",
+          :type => 'string'
+
 attribute "hops/format",
           :description => "Format HDFS, Run 'hdfs namenode -format",
           :type => 'string'
