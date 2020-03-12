@@ -27,6 +27,7 @@ dependencies:
     global:
       - hops::rm
       - hadoop_spark::yarn
+      - hops::docker_registry
   - recipe: hops::jhs
     global:
       - hops::dn
@@ -36,4 +37,9 @@ dependencies:
   - recipe: hops::test
     global:
       - hops::dn
-
+  - recipe: hops::docker_image
+    global:
+      - hops::docker_registry
+  - recipe: hops::docker_registry
+    global:
+      - kagent::default
