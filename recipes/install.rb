@@ -1,6 +1,10 @@
 include_recipe "hops::_config"
 include_recipe "java"
 
+if node['hops']['nn']['direct_memory_size'].to_i < node['hops']['nn']['heap_size'].to_i
+  raise "Invalid Configuration. Set Java DirectByteBuffer memory as high as Java heap size otherwise, the NNs might experience severe GC pauses."
+end
+
 group node['kagent']['certs_group'] do
   action :create
   not_if "getent group #{node['kagent']['certs_group']}"
