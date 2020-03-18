@@ -99,7 +99,7 @@ default['hops']['yarn']['vmem_check']          = false
 end
 default['hops']['yarn']['pmem_check']          = "true"
 
-default['hops']['yarn']['detect-hardware-capabilities'] = "false"
+default['hops']['yarn']['detect-hardware-capabilities'] = "true"
 default['hops']['yarn']['logical-processors-as-cores']  = "true"
 default['hops']['yarn']['pcores-vcores-multiplier']     = "0.9"
 default['hops']['yarn']['system-reserved-memory-mb']    = "-1"
