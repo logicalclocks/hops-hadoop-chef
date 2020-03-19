@@ -18,21 +18,6 @@ limitations under the License.
 -->
 
 <configuration>
-
-  <property>
-    <name>ssl.server.truststore.location</name>
-    <value><%= @tstore %></value>
-    <description>Truststore to be used by NN and DN. Must be specified.
-    </description>
-  </property>
-  
-  <property>
-    <name>ssl.server.truststore.password</name>
-    <value><%= node['hops']['ssl']['server']['truststore']['password'] %></value>
-    <description>Optional. Default value is "".
-    </description>
-  </property>
-
   <property>
     <name>ssl.server.truststore.type</name>
     <value>jks</value>
@@ -44,25 +29,6 @@ limitations under the License.
     <value>10000</value>
     <description>Truststore reload check interval, in milliseconds.
     Default value is 10000 (10 seconds).</description>
-  </property>
-
-  <property>
-    <name>ssl.server.keystore.location</name>
-    <value><%= @kstore %></value>
-    <description>Keystore to be used by NN and DN. Must be specified.
-    </description>
-  </property>
-
-  <property>
-    <name>ssl.server.keystore.password</name>
-    <value><%= node['hops']['ssl']['server']['keystore']['password'] %></value>
-    <description>Must be specified.</description>
-  </property>
-
-  <property>
-    <name>ssl.server.keystore.keypassword</name>
-    <value><%= node['hops']['ssl']['server']['keystore']['keypassword'] %></value>
-    <description>Must be specified.</description>
   </property>
 
   <property>

@@ -9,13 +9,6 @@ if node['hops']['nn']['direct_memory_size'].to_i < node['hops']['nn']['heap_size
   raise "Invalid Configuration. Set Java DirectByteBuffer memory as high as Java heap size otherwise, the NNs might experience severe GC pauses."
 end
 
-group node['kagent']['certs_group'] do
-  action :create
-  not_if "getent group #{node['kagent']['certs_group']}"
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
-
 magic_shell_environment 'LD_LIBRARY_PATH' do
   value "#{node['hops']['base_dir']}/lib/native:$LD_LIBRARY_PATH"
 end
@@ -66,7 +59,7 @@ group node['hops']['secure_group'] do
 end
 
 user node['hops']['hdfs']['user'] do
-  home "/home/#{node['hops']['hdfs']['user']}"
+  home node['hops']['hdfs']['user-home']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
@@ -77,18 +70,22 @@ user node['hops']['hdfs']['user'] do
 end
 
 user node['hops']['yarn']['user'] do
+  home node['hops']['yarn']['user-home']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
+  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['yarn']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['mr']['user'] do
+  home node['hops']['mr']['user-home']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
+  manage_home true
   action :create
   not_if "getent passwd #{node['hops']['mr']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
@@ -107,10 +104,12 @@ user node['hops']['yarnapp']['user'] do
 end
 
 user node['hops']['rm']['user'] do
+  home node['hops']['rm']['user-home']
   gid node['hops']['secure_group']
   system true
   shell "/bin/bash"
   action :create
+  manage_home true
   not_if "getent passwd #{node['hops']['rm']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
@@ -132,13 +131,6 @@ end
 group node['hops']['group'] do
   action :modify
   members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['mr']['user'], node['hops']['yarnapp']['user'], node['hops']['rm']['user']]
-  append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
-group node['kagent']['certs_group'] do
-  action :modify
-  members [node['hops']['hdfs']['user'], node['hops']['yarn']['user'], node['hops']['rm']['user'], node['hops']['mr']['user']]
   append true
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
@@ -510,7 +502,7 @@ end
 cookbook_file "#{node['hops']['sbin_dir']}/renew_service_jwt.py" do
   source "renew_service_jwt.py"
   owner node['hops']['hdfs']['user']
-  group node['kagent']['certs_group']
+  group node['hops']['secure_group']
   mode "0700"
   action :create
 end
@@ -518,7 +510,7 @@ end
 template "#{node['hops']['sbin_dir']}/conda_renew_service_jwt.sh" do
   source "conda_renew_service_jwt.sh.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['certs_group']
+  group node['hops']['secure_group']
   mode "0700"
   action :create
 end

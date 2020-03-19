@@ -16,11 +16,14 @@ when 'debian'
   update_command = "update-ca-certificates"
 end
 
+# we are root, using kagent's certificate should be ok
+kagent_crypto_dir = x509_helper.get_crypto_dir(node['kagent']['user'])
+hops_ca = "#{kagent_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['kagent']['user'])}"
 if ::File.exist?("#{cert_target}") === false && "#{registry_host}" != "local"
   bash 'add_trust_cert' do
     user "root"
     code <<-EOH
-         ln -s #{node['kagent']['certs_dir']}/hops_ca.pem #{cert_target}
+         ln -s #{hops_ca} #{cert_target}
          #{update_command}
          EOH
   end
@@ -57,11 +60,15 @@ file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end
 
+# we are root, using kagent's certificate should be ok
+kagent_crypto_dir = x509_helper.get_crypto_dir(node['kagent']['user'])
+certificate_name = x509_helper.get_certificate_bundle_name(node['kagent']['user'])
+key_name = x509_helper.get_private_key_pkcs8_name(node['kagent']['user'])
 #start docker registry
 bash "start_docker_registry" do
   user "root"
   code <<-EOF
-   docker run -d --restart=always --name registry -v #{node['kagent']['certs_dir']}:/certs -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/elastic_host.pem -e REGISTRY_HTTP_TLS_KEY=/certs/priv.key -p #{node['hops']['docker']['registry']['port']}:443 registry
+   docker run -d --restart=always --name registry -v #{kagent_crypto_dir}:/certs -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} -p #{node['hops']['docker']['registry']['port']}:443 registry
    EOF
   not_if "docker container inspect registry"
 end

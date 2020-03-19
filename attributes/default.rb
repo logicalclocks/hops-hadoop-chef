@@ -7,13 +7,17 @@ default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.
 default['hops']['version']                     = "3.2.0.0-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
+default['hops']['hdfs']['user-home']           = "/home/#{node['hops']['hdfs']['user']}"
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
 default['hops']['secure_group']                = node['install']['user'].empty? ? "metaserver" : node['install']['user']
 default['hops']['yarn']['user']                = node['install']['user'].empty? ? "yarn" : node['install']['user']
+default['hops']['yarn']['user-home']           = "/home/#{node['hops']['yarn']['user']}"
 default['hops']['yarnapp']['user']             = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
 default['hops']['yarnapp']['uid']              = 1235
 default['hops']['rm']['user']                  = node['install']['user'].empty? ? "rmyarn" : node['install']['user']
+default['hops']['rm']['user-home']             = "/home/#{node['hops']['rm']['user']}"
 default['hops']['mr']['user']                  = node['install']['user'].empty? ? "mapred" : node['install']['user']
+default['hops']['mr']['user-home']             = "/home/#{node['hops']['mr']['user']}"
 
 default['hopsworks']['user']                   = node['install']['user'].empty? ? "glassfish" : node['install']['user']
 

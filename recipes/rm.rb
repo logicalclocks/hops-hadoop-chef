@@ -3,6 +3,15 @@ include_recipe "hops::default"
 template_ssl_server()
 ndb_connectstring()
 
+crypto_dir = x509_helper.get_crypto_dir(node['hops']['rm']['user'])
+kagent_hopsify "Generate x.509" do
+  user node['hops']['rm']['user']
+  crypto_directory crypto_dir
+  common_name consul_helper.get_service_fqdn("resourcemanager")
+  action :generate_x509
+  not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+end
+
 template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['rm']['user']
@@ -37,7 +46,7 @@ for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do
     source "#{script}-#{yarn_service}.sh.erb"
     owner node['hops']['rm']['user']
-     group node['hops']['secure_group']
+    group node['hops']['secure_group']
     mode 0750
   end
 end

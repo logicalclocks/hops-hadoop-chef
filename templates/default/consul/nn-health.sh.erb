@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CHECK="curl --fail --silent --insecure --key <%= node["kagent"]["certs_dir"] %>/priv.key --cert <%= node["kagent"]["certs"]["elastic_host_certificate"] %> <%= @scheme %>://$HOSTNAME:<%= @http_port %> > /dev/null 2>&1"
+CHECK="curl --fail --silent --insecure --key <%= @key %> --cert <%= @certificate %> <%= @scheme %>://$HOSTNAME:<%= @http_port %> > /dev/null 2>&1"
 
 source <%= node['consul']['health-check']['retryable-check-file'] %>
 

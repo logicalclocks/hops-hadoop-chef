@@ -334,16 +334,6 @@ template "#{node['hops']['conf_dir']}/yarn-env.sh" do
   action :create
 end
 
-# The ACL to keystore directory is needed during deployment
-if node['hops']['tls']['enabled'].eql? "true"
-  bash "update-acl-of-keystore" do
-    user "root"
-    code <<-EOH
-         setfacl -Rm u:#{node['hops']['hdfs']['user']}:rx #{node['kagent']['certs_dir']}
-         EOH
-  end
-end
-
 # Remove previous cron entry
 bash "remove-hadoop-log-copy-cron" do
   case node['platform_family']

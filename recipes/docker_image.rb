@@ -16,11 +16,14 @@ when 'debian'
   update_command = "update-ca-certificates"
 end
 
+# we are root, using kagent's certificate should be ok
+kagent_crypto_dir = x509_helper.get_crypto_dir(node['kagent']['user'])
+hops_ca = "#{kagent_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['kagent']['user'])}"
 if ::File.exist?("#{cert_target}") === false && "#{registry_host}" != "local"
   bash 'add_trust_cert' do
     user "root"
     code <<-EOH
-         ln -s #{node['kagent']['certs_dir']}/hops_ca.pem #{cert_target}
+         ln -s #{hops_ca} #{cert_target}
          #{update_command}
          EOH
   end

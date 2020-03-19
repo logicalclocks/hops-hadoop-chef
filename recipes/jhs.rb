@@ -1,5 +1,12 @@
 include_recipe "hops::default"
 
+crypto_dir = x509_helper.get_crypto_dir(node['hops']['mr']['user'])
+kagent_hopsify "Generate x.509" do
+  user node['hops']['mr']['user']
+  crypto_directory crypto_dir
+  action :generate_x509
+  not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+end
 
 yarn_service="jhs"
 service_name="historyserver"

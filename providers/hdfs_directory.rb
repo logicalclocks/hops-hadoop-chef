@@ -73,7 +73,6 @@ action :put_as_superuser do
      fi
     EOF
   end
-
 end
 
 
