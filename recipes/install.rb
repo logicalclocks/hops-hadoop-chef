@@ -350,6 +350,13 @@ directory node['hops']['tmp_dir'] do
   action :create
 end
 
+directory "#{node['hops']['bin_dir']}/consul" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "0750"
+  action :create
+end
+
 # For the LinuxContainerExecutor to work the path the following dirs need to be root:hadoop and not group writable
 lce_dirs = [node['hops']['home'], node['hops']['conf_dir_parent'], node['hops']['conf_dir']]
 for dir in lce_dirs do

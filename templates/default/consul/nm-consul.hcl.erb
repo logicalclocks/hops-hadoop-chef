@@ -1,0 +1,45 @@
+services = [
+    {
+        id = "nm/rpc"
+        name = "nodemanager"
+        tags = [
+            "rpc",
+            "nm"
+        ]
+        port = 9000
+        check = {
+            id = "nm-health-check"
+            name = "Health check for NodeManager"
+            args = ["<%= node['hops']['bin_dir'] %>/consul/nm-health.sh"]
+            interval = "20s"
+            timeout = "5s"
+        }
+    },
+    {
+        id = "nm/loc"
+        name = "nodemanager"
+        tags = [
+            "rpc",
+            "localizer",
+            "loc"
+        ]
+        port = 9001
+        check = {
+            id = "loc-health-check"
+            alias_service = "nm/rpc"
+        }
+    },
+    {
+        id = "nm/http"
+        name = "nodemanager"
+        tags = [
+            "http",
+            "webapp"
+        ]
+        port = 8042
+        check = {
+            id = "http-health-check"
+            alias_service = "nm/rpc"
+        }
+    }
+]

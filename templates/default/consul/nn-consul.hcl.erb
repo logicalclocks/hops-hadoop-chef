@@ -1,0 +1,29 @@
+services = [
+    {
+        id = "nn/rpc"
+        name = "namenode"
+        tags = [
+            "rpc"
+        ]
+        port = <%= node['hops']['nn']['port'] %>
+        check = {
+            id = "nn-health-check"
+            name = "Health check for NameNode"
+            args = ["<%= node['hops']['bin_dir'] %>/consul/nn-health.sh"]
+            interval = "10s"
+            timeout = "5s"
+        }
+    },
+    {
+        id = "nn/http"
+        name = "namenode"
+        tags = [
+            "http"
+        ]
+        port = <%= @http_port %>
+        check = {
+            id = "nn-http-check"
+            alias_service = "nn/rpc"
+        }
+    }
+]

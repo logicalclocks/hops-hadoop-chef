@@ -18,13 +18,13 @@ file "#{node['hops']['conf_dir']}/dfs.exclude" do
   content node['hops']['dfs']['excluded_hosts'].gsub(',', "\n")
 end
 
-deps = ""
+deps = "consul.service"
 if exists_local("ndb", "mysqld")
-  deps = "mysqld.service "
+  deps = "#{deps} mysqld.service"
 end
 
 if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
-  deps += "glassfish-domain1.service "
+  deps = "#{deps} glassfish-domain1.service "
 end
 
 service_name="namenode"
@@ -113,6 +113,35 @@ if node['kagent']['enabled'] == "true"
     config_file "#{node['hops']['conf_dir']}/hdfs-site.xml"
     log_file "#{node['hops']['logs_dir']}/hadoop-#{node['hops']['hdfs']['user']}-#{service_name}-#{node['hostname']}.log"
   end
+end
+
+
+# Register NameNode with Consul
+if node['hops']['tls']['enabled'].casecmp?("true")
+  scheme = "https"
+  http_port = node['hops']['dfs']['https']['port']
+else
+  scheme = "http"
+  http_port = node['hops']['nn']['http_port']
+end
+
+template "#{node['hops']['bin_dir']}/consul/nn-health.sh" do
+  source "consul/nn-health.sh.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode 0750
+  variables({
+    :scheme => scheme,
+    :http_port => http_port
+  })
+end
+
+consul_service "Registering NameNode with Consul" do
+  service_definition "consul/nn-consul.hcl.erb"
+  template_variables({
+    :http_port => http_port
+  })
+  action :register
 end
 
 ruby_block 'wait_until_nn_started' do

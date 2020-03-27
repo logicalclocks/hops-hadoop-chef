@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+curl --fail --silent http://$HOSTNAME:8042/ws/v1/node > /dev/null 2>&1
