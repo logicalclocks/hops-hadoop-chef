@@ -22,14 +22,10 @@ recipe            "hops::client", "Installs libaries and configuration files for
 recipe            "hops::purge", "Removes all hops-hadoop files and dirs and ndb-dal, but doesnt drop hops db from NDB"
 recipe            "hops::_config", "Internal recipe for setting config values"
 
-depends 'java'
-depends 'kagent'
-depends 'ndb'
-depends 'magic_shell'
-depends 'sysctl'
-depends 'cmake'
-depends 'kzookeeper'
-depends 'consul'
+depends 'java', '~> 7.0.0'
+depends 'magic_shell', '~> 1.0.0'
+depends 'sysctl', '~> 1.0.3'
+depends 'cmake', '~> 0.3.0'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
