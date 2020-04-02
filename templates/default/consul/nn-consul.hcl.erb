@@ -10,8 +10,8 @@ services = [
             id = "nn-health-check"
             name = "Health check for NameNode"
             args = ["<%= node['hops']['bin_dir'] %>/consul/nn-health.sh"]
-            interval = "2s"
-            timeout = "2s"
+            interval = "20s"
+            timeout = "20s"
         }
     },
     {

@@ -11,8 +11,8 @@ services = [
             id = "nm-health-check"
             name = "Health check for NodeManager"
             args = ["<%= node['hops']['bin_dir'] %>/consul/nm-health.sh"]
-            interval = "2s"
-            timeout = "2s"
+            interval = "20s"
+            timeout = "20s"
         }
     },
     {
