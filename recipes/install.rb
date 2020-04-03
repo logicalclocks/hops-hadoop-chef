@@ -143,65 +143,6 @@ when 'rhel'
   package 'snappy'
 end
 
-if node['hops']['native_libraries'].eql? "true"
-
-  # build hadoop native libraries: http://www.drweiwang.com/build-hadoop-native-libraries/
-  # g++ autoconf automake libtool zlib1g-dev pkg-config libssl-dev cmake
-
-  include_recipe 'build-essential::default'
-  include_recipe 'cmake::default'
-
-    protobuf_url = node['hops']['protobuf_url']
-    base_protobuf_filename = File.basename(protobuf_url)
-    cached_protobuf_filename = "#{Chef::Config['file_cache_path']}/#{base_protobuf_filename}"
-
-    remote_file cached_protobuf_filename do
-      source protobuf_url
-      owner node['hops']['hdfs']['user']
-      group node['hops']['group']
-      mode "0775"
-      action :create_if_missing
-    end
-
-  protobuf_lib_prefix = "/usr"
-  case node['platform_family']
-  when "debian"
-    package ['g++', 'autoconf', 'automake', 'libtool', 'zlib1g-dev', 'libssl-dev', 'pkg-config', 'maven']
-  when "rhel"
-    protobuf_lib_prefix = "/"
-
-    # https://github.com/burtlo/ark
-    ark "maven" do
-      url "http://apache.mirrors.spacedump.net/maven/maven-3/#{node['maven']['version']}/binaries/apache-maven-#{node['maven']['version']}-bin.tar.gz"
-      version "#{node['maven']['version']}"
-      path "/usr/local/maven/"
-      home_dir "/usr/local/maven"
- #     checksum  "#{node['maven']['checksum']}"
-      append_env_path true
-      owner "#{node['hops']['hdfs']['user']}"
-    end
-
-  end
-   protobuf_name_no_extension = File.basename(base_protobuf_filename, ".tar.gz")
-   protobuf_name = "#{protobuf_lib_prefix}/.#{protobuf_name_no_extension}_downloaded"
-   bash 'extract-protobuf' do
-      user "root"
-      code <<-EOH
-        set -e
-        cd #{Chef::Config['file_cache_path']}
-	tar -zxf #{cached_protobuf_filename}
-        cd #{protobuf_name_no_extension}
-        ./configure --prefix=#{protobuf_lib_prefix}
-        make
-        make check
-        make install
-        touch #{protobuf_name}
-	EOH
-     not_if { ::File.exist?("#{protobuf_name}") }
-    end
-
-end
-
 # For LinuxContainerExecutor the the whole hadoop subtree should be own by root and not group writable.
 # If another cookbook has created the directory before, it will be updaste to have the correct ownership/permissions
 directory node['hops']['dir'] do

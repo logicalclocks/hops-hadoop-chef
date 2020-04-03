@@ -181,12 +181,6 @@ default['hops']['ps']['private_ips']           = ['10.0.2.15']
 # comma-separated list of namenode addrs
 default['hops']['nn']['addrs']                 = []
 
-# build the native libraries. Is much slower, but removes warning when using services.
-default['hops']['native_libraries']            = "false"
-
-default['maven']['version']                    = "3.2.5"
-default['maven']['checksum']                   = ""
-
 
 # If yarn.nm.memory_mbs is not set, then memory_percent is used instead
 default['hops']['yarn']['memory_mbs']          = 12000
