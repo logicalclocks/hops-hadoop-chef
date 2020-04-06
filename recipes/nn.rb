@@ -18,13 +18,17 @@ file "#{node['hops']['conf_dir']}/dfs.exclude" do
   content node['hops']['dfs']['excluded_hosts'].gsub(',', "\n")
 end
 
-deps = "consul.service"
+deps = ""
+if service_discovery_enabled()
+  deps += "consul.service "
+end
+
 if exists_local("ndb", "mysqld")
-  deps = "#{deps} mysqld.service"
+  deps += "mysqld.service "
 end
 
 if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
-  deps = "#{deps} glassfish-domain1.service "
+  deps += "glassfish-domain1.service "
 end
 
 service_name="namenode"
@@ -136,12 +140,14 @@ template "#{node['hops']['bin_dir']}/consul/nn-health.sh" do
   })
 end
 
-consul_service "Registering NameNode with Consul" do
-  service_definition "consul/nn-consul.hcl.erb"
-  template_variables({
-    :http_port => http_port
-  })
-  action :register
+if service_discovery_enabled()
+  consul_service "Registering NameNode with Consul" do
+    service_definition "consul/nn-consul.hcl.erb"
+    template_variables({
+      :http_port => http_port
+    })
+    action :register
+  end
 end
 
 ruby_block 'wait_until_nn_started' do

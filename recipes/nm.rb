@@ -2,9 +2,12 @@ include_recipe "hops::default"
 
 template_ssl_server()
 
-deps = "consul.service"
+deps = ""
+if service_discovery_enabled()
+  deps += "consul.service "
+end
 if exists_local("hops", "rm")
-  deps = "#{deps} resourcemanager.service"
+  deps += "resourcemanager.service "
 end
 
 yarn_service="nm"
@@ -235,7 +238,9 @@ template "#{node['hops']['bin_dir']}/consul/nm-health.sh" do
   mode 0750
 end
 
-consul_service "Registering NodeManager with Consul" do
-  service_definition "consul/nm-consul.hcl.erb"
-  action :register
+if service_discovery_enabled()
+  consul_service "Registering NodeManager with Consul" do
+    service_definition "consul/nm-consul.hcl.erb"
+    action :register
+  end
 end
