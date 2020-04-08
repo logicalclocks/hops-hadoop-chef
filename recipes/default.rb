@@ -17,31 +17,62 @@ my_ip = my_private_ip()
 
 ndb_connectstring()
 
-## Do not try to discover Hopsworks before it has been actual deployed
-## default recipe is included by hops::ndb
-run_list = node.primary_runlist
-run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]']
-run_discovery = false
-for dr in run_discovery_recipes do
-  if run_list.include?(dr)
-    run_discovery = true
-    break
+if service_discovery_enabled()
+  ## Do not try to discover Hopsworks before it has been actual deployed
+  ## default recipe is included by hops::ndb
+  run_list = node.primary_runlist
+  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]']
+  run_discovery = false
+  for dr in run_discovery_recipes do
+    if run_list.include?(dr)
+      run_discovery = true
+      break
+    end
   end
-end
 
-hopsworks_port = ""
-if run_discovery
-  ruby_block 'Discover Hopsworks port' do
-    block do
-      _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
-      if hopsworks_port.nil?
-        raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
+  hopsworks_port = ""
+  if run_discovery
+    ruby_block 'Discover Hopsworks port' do
+      block do
+        _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
+        if hopsworks_port.nil?
+          raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
+        end
       end
     end
   end
+
+  glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
+  rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
+  resourcemanager_fqdn = consul_helper.get_service_fqdn("resourcemanager")
+  zookeeper_fqdn = consul_helper.get_service_fqdn("client.zookeeper")
+else
+  ## Service Discovery is disabled
+
+  glassfish_fqdn = ""
+  if node.attribute?("hopsworks")
+    glassfish_fqdn = private_recipe_ip("hopsworks", "default")
+    hopsworks_port = "8181"	
+    if node['hopsworks'].attribute?('https') and node['hopsworks']['https'].attribute?('port')	
+        hopsworks_port = node['hopsworks']['https']['port']	
+    end
+  end
+
+  if node['hops']['nn']['private_ips'].include?(my_ip)
+    rpc_namenode_fqdn = my_ip
+  else
+    rpc_namenode_fqdn = private_recipe_ip("hops", "nn")
+  end
+
+  if node['hops']['rm']['private_ips'].include?(my_ip)	
+    resourcemanager_fqdn = my_ip;
+  else
+    resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+  end
+  zookeeper_fqdn = private_recipe_ip('kzookeeper', 'default')
 end
 
-glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
+
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
@@ -51,7 +82,6 @@ end
 
 node.override['hops']['hadoop']['rpc']['socket']['factory'] = rpcSocketFactory
 
-rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
 nn_rpc_endpoint = "#{rpc_namenode_fqdn}:#{nnPort}"
 defaultFS = "hdfs://#{rpc_namenode_fqdn}:#{nnPort}"
 
@@ -164,12 +194,7 @@ if node['ndb']['TransactionInactiveTimeout'].to_i < node['hops']['leader_check_i
  raise "The leader election protocol has a higher timeout than the transaction timeout in NDB. We can get false suspicions for a live leader. Invalid configuration."
 end
 
-if exists_local('consul', 'default')
-  service_discovery_enabled = "true"
-else
-  service_discovery_enabled = "false"
-end
-
+sd_enabled = service_discovery_enabled() ? "true" : "false"
 template "#{node['hops']['conf_dir']}/core-site.xml" do
   source "core-site.xml.erb"
   owner node['hops']['hdfs']['user']
@@ -189,7 +214,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => "https://#{glassfish_fqdn}:#{hopsworks_port}#{node['hops']['tls']['crl_fetch_path']}",
-     :service_discovery_enabled => service_discovery_enabled
+     :service_discovery_enabled => sd_enabled
     }
   })
   action :create
@@ -253,8 +278,12 @@ if node['install']['localhost'].casecmp?("true")
   nn_address = "localhost"
 else 
   if node['hops']['nn']['private_ips'].include?(my_ip)
-    # If I'm a NameNode set it to my fqdn
-    nn_address = node['fqdn']
+    # If I'm a NameNode set it to my fqdn or IP
+    if service_discovery_enabled()
+      nn_address = node['fqdn']
+    else
+      nn_address = my_ip
+    end
   else
     # Otherwise use Service Discovery FQDN
     nn_address = rpc_namenode_fqdn
@@ -309,8 +338,8 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
   mode "744"
   variables( lazy {
     h = {}
-    h[:resourcemanager_fqdn] = consul_helper.get_service_fqdn("resourcemanager")
-    h[:zookeeper_fqdn] = consul_helper.get_service_fqdn("client.zookeeper")
+    h[:resourcemanager_fqdn] = resourcemanager_fqdn
+    h[:zookeeper_fqdn] = zookeeper_fqdn
     h[:resource_handler] = resource_handler
     h[:num_gpus] = num_gpus
     h[:ha_ids] = ha_ids
