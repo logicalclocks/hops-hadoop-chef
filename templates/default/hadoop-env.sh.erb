@@ -80,4 +80,10 @@ export HADOOP_SECURE_DN_PID_DIR=${HADOOP_PID_DIR}
 # A string representing this instance of hadoop. $USER by default.
 export HADOOP_IDENT_STRING=$USER
 
-export HADOOP_ROOT_LOGGER=<%= node['hops']['logging_level'] %>,RFA
+export CLUSTERJ_LOGGER_FACTORY=io.hops.metadata.ndb.wrapper.HopsLoggerFactory
+export ENABLE_CLUSTERJ_LOGS=false
+
+if [ -z "$HADOOP_ROOT_LOGGER" ]
+then
+  export HADOOP_ROOT_LOGGER=<%= node['hops']['logging_level'] %>,RFA,console
+fi
