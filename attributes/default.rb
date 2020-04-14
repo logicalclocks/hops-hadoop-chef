@@ -39,10 +39,10 @@ default['hops']['enable_cloud_storage']        = "false"
 default['hops']['cloud_provider']              = node["install"]["cloud"]
 default['hops']['aws_s3_region']               = "eu-west-1"
 default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
-default['hops']['cloud_bypass_disk_cache']         = "false" 
+default['hops']['cloud_bypass_disk_cache']         = "false"
 default['hops']['cloud_max_upload_threads']        = "20"
-default['hops']['cloud_store_small_files_in_db']   = "true" 
-default['hops']['nn']['root_dir_storage_policy']       = "" 
+default['hops']['cloud_store_small_files_in_db']   = "true"
+default['hops']['nn']['root_dir_storage_policy']       = ""
 
 
 default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn/disk"
@@ -56,7 +56,7 @@ default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['dat
 
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['blocksize']           = "134217728"
-default['hops']['hdfs']['umask']               = "0022"
+default['hops']['hdfs']['umask']               = "0027"
 
 
 
@@ -470,7 +470,7 @@ default['hops']['nn']['private_ips_domainIds']        = {}
 default['hops']['dn']['private_ips_domainIds']        = {}
 default['hops']['topology']                           = "false"
 
-# Monitoring 
+# Monitoring
 default['hops']['jmx']['prometheus_exporter']['version']  = "0.12.0"
 default['hops']['jmx']['prometheus_exporter']['url']      = "#{node['download_url']}/prometheus/jmx_prometheus_javaagent-#{node['hops']['jmx']['prometheus_exporter']['version']}.jar"
 
