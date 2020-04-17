@@ -13,6 +13,7 @@ services = [
             args = ["<%= node['hops']['bin_dir'] %>/consul/nm-health.sh"]
             interval = "20s"
             timeout = "20s"
+            status = "passing"
         }
     },
     {
