@@ -30,5 +30,8 @@ module Hops
       end
     end
     
+    def service_discovery_enabled()
+      exists_local('consul', 'default')
+    end
   end
 end
