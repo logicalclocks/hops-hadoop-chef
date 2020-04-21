@@ -230,15 +230,15 @@ if node.attribute?('tensorflow') == true
   end
 end
 
-# Register NodeManager with Consul
-template "#{node['hops']['bin_dir']}/consul/nm-health.sh" do
-  source "consul/nm-health.sh.erb"
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode 0750
-end
-
 if service_discovery_enabled()
+  # Register NodeManager with Consul
+  template "#{node['hops']['bin_dir']}/consul/nm-health.sh" do
+    source "consul/nm-health.sh.erb"
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode 0750
+  end
+
   consul_service "Registering NodeManager with Consul" do
     service_definition "consul/nm-consul.hcl.erb"
     action :register
