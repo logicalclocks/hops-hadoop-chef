@@ -197,7 +197,6 @@ default['hops']['limits']['nproc']             = '65536'
 default['hops']['limits']['memory_limit']      = '100000'
 
 default['hops']['logging_level']               = "INFO"
-default['hops']['nn']['direct_memory_size']    = "250"
 default['hops']['ha_enabled']                  = "false"
 
 default['hops']['systemd']                     = "true"
