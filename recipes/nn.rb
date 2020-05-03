@@ -119,28 +119,27 @@ if node['kagent']['enabled'] == "true"
   end
 end
 
-
-# Register NameNode with Consul
-if node['hops']['tls']['enabled'].casecmp?("true")
-  scheme = "https"
-  http_port = node['hops']['dfs']['https']['port']
-else
-  scheme = "http"
-  http_port = node['hops']['nn']['http_port']
-end
-
-template "#{node['hops']['bin_dir']}/consul/nn-health.sh" do
-  source "consul/nn-health.sh.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode 0750
-  variables({
-    :scheme => scheme,
-    :http_port => http_port
-  })
-end
-
 if service_discovery_enabled()
+  # Register NameNode with Consul
+  if node['hops']['tls']['enabled'].casecmp?("true")
+    scheme = "https"
+    http_port = node['hops']['dfs']['https']['port']
+  else
+    scheme = "http"
+    http_port = node['hops']['nn']['http_port']
+  end
+
+  template "#{node['hops']['bin_dir']}/consul/nn-health.sh" do
+    source "consul/nn-health.sh.erb"
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode 0750
+    variables({
+      :scheme => scheme,
+      :http_port => http_port
+    })
+  end
+
   consul_service "Registering NameNode with Consul" do
     service_definition "consul/nn-consul.hcl.erb"
     template_variables({
