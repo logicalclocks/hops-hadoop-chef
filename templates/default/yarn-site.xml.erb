@@ -232,21 +232,21 @@
   <property>
     <name>yarn.nodemanager.resource.pcores-vcores-multiplier</name>
     <value><%= node['hops']['yarn']['pcores-vcores-multiplier'] %></value>
-    <description>Multiplier to determine how to convert phyiscal cores to vcores. This value is used if yarn.nodemanager.resource.cpu-vcores is set to -1(which implies auto-calculate vcores) and 
+    <description>Multiplier to determine how to convert phyiscal cores to vcores. This value is used if yarn.nodemanager.resource.cpu-vcores is set to -1(which implies auto-calculate vcores) and
     yarn.nodemanager.resource.detect-hardware-capabilities is set to true. The number of vcores will be calculated as number of CPUs * multiplier.</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.resource.count-logical-processors-as-cores</name>
     <value><%= node['hops']['yarn']['logical-processors-as-cores'] %></value>
-    <description>Flag to determine if logical processors(such as hyperthreads) should be counted as cores. Only applicable on Linux when yarn.nodemanager.resource.cpu-vcores is set to -1 and 
+    <description>Flag to determine if logical processors(such as hyperthreads) should be counted as cores. Only applicable on Linux when yarn.nodemanager.resource.cpu-vcores is set to -1 and
     yarn.nodemanager.resource.detect-hardware-capabilities is true.</description>
   </property>
 
   <property>
     <name>yarn.nodemanager.resource.system-reserved-memory-mb</name>
     <value><%= node['hops']['yarn']['system-reserved-memory-mb'] %></value>
-    <description>Amount of physical memory, in MB, that is reserved for non-YARN processes. This configuration is only used if yarn.nodemanager.resource.detect-hardware-capabilities is set to true and 
+    <description>Amount of physical memory, in MB, that is reserved for non-YARN processes. This configuration is only used if yarn.nodemanager.resource.detect-hardware-capabilities is set to true and
     yarn.nodemanager.resource.memory-mb is -1. If set to -1, this amount is calculated as 20% of (system memory - 2*HADOOP_HEAPSIZE)</description>
   </property>
   <% end %>
@@ -279,7 +279,7 @@
   <property>
     <name>yarn.log-aggregation.retain-seconds</name>
     <value><%= node['hops']['yarn']['log_retain_secs'] %></value>
-    <description>Default time (in seconds) to retain log files in HDFS. Only applicable if log-aggregation is disabled.</description>
+    <description>How long to keep aggregation logs before deleting them. -1 disables. Be careful set this too small and you will spam the name node.</description>
   </property>
   <property>
     <name>yarn.log-aggregation.retain-check-interval-seconds</name>

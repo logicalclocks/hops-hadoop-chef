@@ -39,10 +39,10 @@ default['hops']['enable_cloud_storage']        = "false"
 default['hops']['cloud_provider']              = node["install"]["cloud"]
 default['hops']['aws_s3_region']               = "eu-west-1"
 default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
-default['hops']['cloud_bypass_disk_cache']         = "false" 
+default['hops']['cloud_bypass_disk_cache']         = "false"
 default['hops']['cloud_max_upload_threads']        = "20"
-default['hops']['cloud_store_small_files_in_db']   = "true" 
-default['hops']['nn']['root_dir_storage_policy']       = "" 
+default['hops']['cloud_store_small_files_in_db']   = "true"
+default['hops']['nn']['root_dir_storage_policy']       = ""
 
 
 default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn/disk"
@@ -55,8 +55,9 @@ default['hops']['yarn']['nodemanager_log_dir']               = node['hops']['log
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
+default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
-default['hops']['hdfs']['umask']               = "0022"
+default['hops']['hdfs']['umask']               = "0027"
 
 
 
@@ -108,7 +109,7 @@ default['hops']['yarn']['vcores']              = 8
 default['hops']['yarn']['min_vcores']          = 1
 default['hops']['yarn']['max_vcores']          = 8
 default['hops']['yarn']['log_aggregation']     = "true"
-default['hops']['yarn']['nodemanager']['remote_app_log_dir'] = node['hops']['hdfs']['user_home'] + "/" + node['hops']['yarn']['user'] + "/logs"
+default['hops']['yarn']['nodemanager']['remote_app_log_dir'] = "#{node['hops']['hdfs']['user_home']}/#{node['hops']['yarn']['user']}/logs"
 default['hops']['yarn']['log_retain_secs']     = 86400
 default['hops']['yarn']['log_retain_check']    = 100
 default['hops']['yarn']['log_roll_interval']    = 3600
@@ -470,7 +471,7 @@ default['hops']['nn']['private_ips_domainIds']        = {}
 default['hops']['dn']['private_ips_domainIds']        = {}
 default['hops']['topology']                           = "false"
 
-# Monitoring 
+# Monitoring
 default['hops']['jmx']['prometheus_exporter']['version']  = "0.12.0"
 default['hops']['jmx']['prometheus_exporter']['url']      = "#{node['download_url']}/prometheus/jmx_prometheus_javaagent-#{node['hops']['jmx']['prometheus_exporter']['version']}.jar"
 

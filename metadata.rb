@@ -405,7 +405,7 @@ attribute "hops/hdfs/blocksize",
           :type => 'string'
 
 attribute "hops/hdfs/umask",
-          :description => "Set the default HDFS umask (default: 0022).",
+          :description => "Set the default HDFS umask (default: 0027).",
           :type => 'string'
 
 attribute "hops/dfs/inodeid/batchsize",
@@ -686,19 +686,19 @@ attribute "hops/hdfs/quota_enabled",
 
 attribute "hops/nn/handler_count",
           :description => "Number of RPC handlers",
-          :type => "string" 
+          :type => "string"
 
 attribute "hops/nn/root_dir_storage_policy",
           :description => "Storage policy for root directory",
-          :type => "string" 
+          :type => "string"
 
 attribute "hops/retry_policy_spec",
           :description => "Retry policy specification. For example '1.3.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
-          :type => "string" 
+          :type => "string"
 
 attribute "hops/retry_policy_enabled",
           :description => "Enable retry upon connection failure",
-          :type => "string" 
+          :type => "string"
 
 # Kernel tuning parameters
 attribute "hops/kernel/somaxconn",
