@@ -153,14 +153,18 @@ for d in tmp_dirs
   end
 end
 
-tmp_dirs   = [node['hops']['yarn']['nodemanager']['remote_app_log_dir'], "#{node['hops']['hdfs']['user_home']}/#{node['hops']['yarn']['user']}"]
-for d in tmp_dirs
-  hops_hdfs_directory d do
-    action :create_as_superuser
-    owner node['hops']['yarn']['user']
-    group node['hops']['group']
-    mode "1773"
-  end
+hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hops']['yarn']['user']}" do
+  action :create_as_superuser
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "1775"
+end
+
+hops_hdfs_directory node['hops']['yarn']['nodemanager']['remote_app_log_dir'] do
+  action :create_as_superuser
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "1773"
 end
 
 if service_discovery_enabled()

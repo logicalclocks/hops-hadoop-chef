@@ -31,7 +31,7 @@ module Hops
     end
     
     def service_discovery_enabled()
-      exists_local('consul', 'default')
+      exists_local('consul', 'master') or exists_local('consul', 'slave')
     end
   end
 end
