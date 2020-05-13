@@ -454,6 +454,7 @@ default['hops']['adl_v1_url']                         = node['hops']['root_url']
 default['hops']['gpu']                                = "false"
 
 #DOCKER
+default['hops']['docker_version']                     = "19.03.6"
 default['hops']['docker_img_version']                 = node['install']['version'].gsub("-SNAPSHOT", "")
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
 default['hops']['docker']['trusted-registers']        = "local"

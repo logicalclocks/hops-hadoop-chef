@@ -724,6 +724,10 @@ attribute "hops/gpu",
           :type => "string"
 
 #DOCKER
+attribute "hops/docker_version",
+          :description =>  "the version of docker to use",
+          :type => 'string'
+
 attribute "hops/docker_dir",
           :description =>  "Path on the host machine to be used to store docker containers,imgs,logs",
           :type => 'string'

@@ -14,7 +14,9 @@ when 'rhel'
   end
   package 'docker-ce'
 when 'debian'
-  package 'docker.io'
+  package 'docker.io' do
+    version node['hops']['docker_version']
+  end
 end
 
 if node['hops']['gpu'].eql?("false")
