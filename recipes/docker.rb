@@ -2,12 +2,7 @@
 
 case node['platform_family']
 when 'rhel'
-  package 'lvm2'
-  package 'device-mapper'
-  package 'device-mapper-persistent-data'
-  package 'device-mapper-event'
-  package 'device-mapper-libs'
-  package 'device-mapper-event-libs'
+  package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs']
 
   remote_file '/etc/yum.repos.d/docker-ce.repo' do
     source 'https://download.docker.com/linux/centos/docker-ce.repo'
