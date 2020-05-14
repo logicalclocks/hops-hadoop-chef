@@ -454,7 +454,7 @@ default['hops']['adl_v1_url']                         = node['hops']['root_url']
 default['hops']['gpu']                                = "false"
 
 #DOCKER
-default['hops']['docker_version']['ubuntu']           = "19.03.6"
+default['hops']['docker_version']['ubuntu']           = "19.03.6-0ubuntu1~18.04.1"
 default['hops']['docker_version']['centos']           = "19.03.8-3"
 default['hops']['selinux_version']['centos']          = "2.119.1-1.c57a6f9"
 default['hops']['containerd_version']['centos']           = "1.2.13-3.1"

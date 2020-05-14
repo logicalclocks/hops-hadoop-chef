@@ -8,7 +8,7 @@ when 'rhel'
 
   packages.each do |pkg|
     remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']/rhel/#{pkg}"
+      source "#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel/#{pkg}"
       owner 'root'
       group 'root'
       mode '0755'
@@ -23,7 +23,7 @@ when 'rhel'
     code <<-EOH
         yum install -y #{packages.join(" ")}
     EOH
-    not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']"
+    not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}"
   end
   
 when 'debian'

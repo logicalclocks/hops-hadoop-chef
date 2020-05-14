@@ -35,7 +35,7 @@ end
 image_url = node['hops']['docker']['registry']['download_url']
 base_filename = File.basename(image_url)
 
-remote_file "/tmp/#{base_filename}" do
+remote_file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   source image_url
   backup false
   action :create_if_missing
@@ -46,15 +46,15 @@ end
 bash "import_image" do
   user "root"
   code <<-EOF
-    docker load -i /tmp/#{base_filename}
+    docker load -i #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
   not_if "docker image inspect registry"
 end
 
 #delete registry image tar
-file "/tmp/#{base_filename}" do
+file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   action :delete
-  only_if { File.exist? "/tmp/#{base_filename}" }
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end
 
 #start docker registry
@@ -80,7 +80,7 @@ bash "download_image" do
   user "root"
   sensitive true
   code <<-EOF
-       #{download_command} -O /tmp/#{base_filename}
+       #{download_command} -O #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
   not_if "docker image inspect #{registry_host}:#{node['hops']['docker']['registry']['port']}/python36"
 end
@@ -89,7 +89,7 @@ end
 bash "import_image" do
   user "root"
   code <<-EOF
-    docker load -i /tmp/#{base_filename}
+    docker load -i #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
   not_if "docker image inspect #{registry_host}:#{node['hops']['docker']['registry']['port']}/python36"
 end
@@ -112,7 +112,7 @@ bash "push_image" do
 end
 
 #delete tar
-file "/tmp/#{base_filename}" do
+file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   action :delete
-  only_if { File.exist? "/tmp/#{base_filename}" }
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end

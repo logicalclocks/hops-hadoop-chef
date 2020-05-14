@@ -119,13 +119,6 @@ group "video" do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group "docker" do
-  action :modify
-  members [node['hops']['yarnapp']['user']]
-  append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
 group node['hops']['secure_group'] do
   action :modify
   members [node['hops']['rm']['user'], node['hops']['mr']['user'], node['hops']['yarn']['user']]

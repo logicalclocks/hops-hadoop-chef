@@ -22,25 +22,13 @@ directory node['hops']['yarn']['nodemanager_recovery_dir'] do
   action :create
 end
 
-template "/etc/sudoers.d/yarn" do
-    source "yarn_sudoers.erb"
-    owner "root"
-    group "root"
-    mode "0440"
-    variables({
-                :user => node["hops"]["yarn"]["user"],
-                :cgroup => "#{node['hops']['base_dir']}/sbin/nm-cgroup-fix.sh"
-              })
-    action :create
-  end
-  
-template "#{node['hops']['home']}/sbin/nm-cgroup-fix.sh" do
-    source "nm-cgroup-fix.sh.erb"
-    owner "root"
-    group node['hops']['group']
-    mode 0544
+kagent_sudoers "nm-cgroup-fix" do 
+  user          node['hops']['yarn']['user']
+  group         node['hops']['group']
+  script_name   "nm-cgroup-fix.sh"
+  template      "nm-cgroup-fix.sh.erb"
+  run_as        "ALL"
 end
-
 
 for script in node['hops']['yarn']['scripts']
   template "#{node['hops']['home']}/sbin/#{script}-#{yarn_service}.sh" do

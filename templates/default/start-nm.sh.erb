@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo <%= node['hops']['base_dir'] %>/sbin/nm-cgroup-fix.sh
+sudo <%= node['hops']['dir'] %>/sbin/nm-cgroup-fix.sh
 
 command=nodemanager
 h=$(hostname)

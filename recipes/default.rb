@@ -307,6 +307,8 @@ end
 
 trusted_registries = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 
+docker_path = shell_out("which docker").stdout
+
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
   owner "root"
@@ -315,7 +317,8 @@ template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   mode "740"
   variables({
               :hops_group => hops_group,
-              :trusted_registries => trusted_registries
+              :trusted_registries => trusted_registries,
+              :docker_path => docker_path
             })
   action :create
 end
