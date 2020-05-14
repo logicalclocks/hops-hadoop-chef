@@ -4,18 +4,31 @@ case node['platform_family']
 when 'rhel'
   package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs']
 
-  remote_file '/etc/yum.repos.d/docker-ce.repo' do
-    source 'https://download.docker.com/linux/centos/docker-ce.repo'
-    retries 2
-    owner 'root'
-    group 'root'
-    mode "0644"
-    action :create_if_missing
+  packages = ["container-selinux-#{node['hops']['selinux_version']['centos']}.el7.noarch.rpm", "containerd.io-#{node['hops']['containerd_version']['centos']}.el7.x86_64.rpm","docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm","docker-ce-cli-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm"]
+
+  packages.each do |pkg|
+    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
+      source "#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']/rhel/#{pkg}"
+      owner 'root'
+      group 'root'
+      mode '0755'
+      action :create
+    end
   end
-  package 'docker-ce'
+  
+  bash "install_pkgs" do
+    user 'root'
+    group 'root'
+    cwd Chef::Config['file_cache_path']
+    code <<-EOH
+        yum install -y #{packages.join(" ")}
+    EOH
+    not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']"
+  end
+  
 when 'debian'
   package 'docker.io' do
-    version node['hops']['docker_version']
+    version node['hops']['docker_version']['ubuntu']
   end
 end
 
