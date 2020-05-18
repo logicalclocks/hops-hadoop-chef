@@ -14,5 +14,7 @@
     "log-opts": {
       "max-size": "100m"
     },
-    "storage-driver":  "overlay2"    
+    "storage-driver":  "overlay2"<% if ! @registry_addr.eql?("") %>,
+    "insecure-registries" : ["<%= @registry_addr %>"]
+    <% end -%>
 }

@@ -1,0 +1,15 @@
+services = [
+    {
+        id = "registry"
+        name = "registry"
+        port = <%= node['hops']['docker']['registry']['port'] %>
+        check = {
+            id = "registry-health-check"
+            name = "Health check for Docker Registry"
+            args = ["<%= node['hops']['bin_dir'] %>/consul/registry-health.sh"]
+            interval = "20s"
+            timeout = "20s"
+            status = "passing"
+        }
+    }
+]
