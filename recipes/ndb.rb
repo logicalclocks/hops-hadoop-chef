@@ -83,6 +83,8 @@ versions.push(flyway_version)
 
 prev="2.8.2.1"
 for version in versions do
+  # Handle versions that are of type X.Y.Z-RC or X.Y.Z-EE-RC
+  version = version.split("-")[0]
   remote_file "#{flyway_basedir}/flyway/sql/V#{version}__hops.sql" do
     source "#{node['hops']['schema_dir']}/update-schema_#{prev}_to_#{version}.sql"
     owner node['hops']['hdfs']['user']
