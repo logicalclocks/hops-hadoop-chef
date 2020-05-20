@@ -43,4 +43,5 @@ dependencies:
       - hops::docker_registry
   - recipe: hops::docker_registry
     global:
-      - kagent::default
+      - consul::master
+      - consul::slave
