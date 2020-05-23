@@ -41,10 +41,12 @@ module Hops
       else
         version = hops_version
       end
-      version_arr = version.split("-")
-      version = version_arr[0] + "-EE"
-      if version_arr.size > 1
-        version = version + "-" + version_arr[1]
+      if node['install']['enterprise']['install'].casecmp? "true"
+        version_arr = version.split("-")
+        version = version_arr[0] + "-EE"
+        if version_arr.size > 1
+          version = version + "-" + version_arr[1]
+        end
       end
       version
     end
