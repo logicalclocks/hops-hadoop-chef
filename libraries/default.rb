@@ -34,7 +34,7 @@ module Hops
       exists_local('consul', 'master') or exists_local('consul', 'slave')
     end
 
-    def get_hops_version(hops_version)
+    def get_hops_version(hops_version=nil)
       # Set Hops EE version
       if hops_version.nil?
         version = node['hops']['version']
