@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-bin=$(dirname "${BASH_SOURCE-$0}")
-bin=$(cd "$bin"; pwd)
-DEFAULT_LIBEXEC_DIR="$bin"/../libexec
-HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
-. "${bin}"/set-env.sh
-
 command=namenode
-pidDir=$HADOOP_PID_DIR
-service=hadoop
+h=$(hostname)
 
-<%= node['hops']['base_dir'] %>/sbin/kill-process.sh $service <%= node['hops']['hdfs']['user'] %> $command "$pidDir"
+sbin=$(dirname "${BASH_SOURCE-$0}")
+sbin=$(cd "$sbin"; pwd)
+
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. "${sbin}"/set-env.sh
+
+log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-$command-$h.log
+
+bin="$sbin"/../bin
+"$bin"/hdfs --daemon stop $command 
+sleep 2; head "$log"
+
+PID_FILE=$HADOOP_PID_DIR/hadoop-<%= node['hops']['hdfs']['user'] %>-$command.pid
+PID=$(cat $PID_FILE)
+kill -0 "$PID"
 
 exit $?

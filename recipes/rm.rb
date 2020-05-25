@@ -3,16 +3,6 @@ include_recipe "hops::default"
 template_ssl_server()
 ndb_connectstring()
 
-template "#{node['hops']['conf_dir']}/RM_EventAPIConfig.ini" do
-  source "RM_EventAPIConfig.ini.erb"
-  owner node['hops']['rm']['user']
-  group node['hops']['group']
-  mode "750"
-  variables({
-    :ndb_connectstring => node['ndb']['connectstring']
-  })
-end
-
 template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   source "jmxremote.password.erb"
   owner node['hops']['rm']['user']

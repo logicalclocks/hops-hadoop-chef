@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# if nodemanager is running, exit
+systemctl is-active nodemanager
+if [ $? -ne 0 ] ; then
+
+   if [ ! -f /sys/fs/cgroup/devices/hops-yarn ]; then
+      mkdir /sys/fs/cgroup/devices/hops-yarn
+   fi
+   chown -R <%= node['hops']['yarn']['user'] %> /sys/fs/cgroup/devices/hops-yarn
+   if [ ! -f /sys/fs/cgroup/cpu/hops-yarn ]; then
+      mkdir /sys/fs/cgroup/cpu/hops-yarn     
+   fi
+   chown -R <%= node['hops']['yarn']['user'] %> /sys/fs/cgroup/cpu/hops-yarn
+   
+else
+    echo "Nodemanager is running. Cannot check gpu configuration if the nodemanager is running"
+    exit 0
+fi
+
+exit 0

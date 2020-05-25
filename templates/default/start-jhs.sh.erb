@@ -2,23 +2,22 @@
 
 command=historyserver
 h=$(hostname)
-rootDir=<%= node['hops']['base_dir'] %>
-bin=$(dirname "${BASH_SOURCE-$0}")
-bin=$(cd "$bin"; pwd)
-DEFAULT_LIBEXEC_DIR="$bin"/../libexec
-HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
-. "$HADOOP_LIBEXEC_DIR"/hadoop-config.sh
-. "${bin}"/set-env.sh
 
-MRJH="$rootDir"/sbin/mr-jobhistory-daemon.sh
+sbin=$(dirname "${BASH_SOURCE-$0}")
+sbin=$(cd "$sbin"; pwd)
 
-echo "Starting $command on ..."
-$MRJH --config "$HADOOP_CONF_DIR" start $command 
+DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
+hadoop-metrics2.propertiesHADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+. "${sbin}"/set-env.sh
 
-sleep 2; head <%= node['hops']['logs_dir'] %>/mapred-<%= node['hops']['mr']['user'] %>-$command-$h.log
+log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['mr']['user'] %>-$command-$h.log
 
-PID_FILE=/tmp/mapred-<%= node['hops']['mr']['user'] %>-$command.pid
-PID=$(cat "$PID_FILE")
+bin="$sbin"/../bin
+"$bin"/mapred --daemon start $command 
+sleep 2; head "$log"
+
+PID_FILE=$HADOOP_PID_DIR/hadoop-<%= node['hops']['mr']['user'] %>-$command.pid
+PID=$(cat $PID_FILE)
 kill -0 "$PID"
 
 exit $?
