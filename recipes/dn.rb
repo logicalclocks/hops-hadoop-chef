@@ -112,3 +112,18 @@ if node['kagent']['enabled'] == "true"
     config_file "#{node['hops']['conf_dir']}/hdfs-site.xml"
   end
 end
+
+if service_discovery_enabled()
+  # Register DataNode with Consul
+  template "#{node['hops']['bin_dir']}/consul/dn-health.sh" do
+    source "consul/dn-health.sh.erb"
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode 0750
+  end
+
+  consul_service "Registering DataNode with Consul" do
+    service_definition "consul/dn-consul.hcl.erb"
+    action :register
+  end
+end
