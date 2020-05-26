@@ -8,7 +8,7 @@ when 'rhel'
 
   packages.each do |pkg|
     remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel/#{pkg}"
+      source "#{node['hops']['docker']['pkg']['download_url']['centos']/#{pkg}"
       owner 'root'
       group 'root'
       mode '0755'
@@ -55,7 +55,7 @@ if node['hops']['gpu'].eql?("true")
   end
   nvidia_docker_packages.each do |pkg|
     remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['download_url']}/kube/nvidia/#{pkg}"
+      source "#{node['hops']['nvidia_pkgs']['download_url']/#{pkg}"
       owner 'root'
       group 'root'
       mode '0755'
