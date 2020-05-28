@@ -4,6 +4,7 @@ yarn.nodemanager.linux-container-executor.group=<%= @hops_group %>
 min.user.id=0
 banned.users=<%= node['hops']['hdfs']['user'] %>,<%= node['hops']['yarn']['user'] %>,<%= node['hops']['mr']['user'] %>,bin
 min.user.id=50
+<% if node['hops']['docker']['enabled'] == "true" -%>
 [docker]
 module.enabled=true
 docker.binary=<%= @docker_path %>
@@ -14,10 +15,13 @@ docker.allowed.ro-mounts=/sys/fs/cgroup,<%= node['hops']['tmp_dir'] %>/nm-local-
 docker.allowed.rw-mounts=/sys/fs/cgroup,<%= node['hops']['tmp_dir'] %>/nm-local-dir,<%= node['hops']['logs_dir'] %>/userlogs
 docker.privileged-containers.enabled=false
 docker.trusted.registries=<%= @trusted_registries %>
+<% end -%>
 <% if node['hops']['gpu'] == "true" -%>
+<% if node['hops']['docker']['enabled'] == "true" -%>
 docker.allowed.volume-drivers=nvidia-docker
 docker.allowed.ro-mounts=nvidia_driver_430.26
 docker.allowed.runtimes=nvidia
+<% end -%>
 [gpu]
 module.enabled=true
 [cgroups]

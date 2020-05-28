@@ -1,5 +1,8 @@
 include_recipe "hops::default"
-include_recipe "hops::docker_image"
+
+if node['hops']['docker']['enabled'].eql?("true")
+  include_recipe "hops::docker_image"
+end
 
 template_ssl_server()
 

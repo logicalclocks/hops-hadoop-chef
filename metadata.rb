@@ -724,6 +724,10 @@ attribute "hops/gpu",
           :type => "string"
 
 #DOCKER
+attribute "hops/docker/enabled",
+          :description =>  "switch to install or not install docker (installing docker need hopsworks for certificates)",
+          :type => 'string'
+
 attribute "hops/docker_version/ubuntu",
           :description =>  "the version of docker to use on ubuntu installation",
           :type => 'string'

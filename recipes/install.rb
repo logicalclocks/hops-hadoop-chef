@@ -1,6 +1,9 @@
 include_recipe "hops::_config"
 include_recipe "java"
-include_recipe "hops::docker"
+
+if node['hops']['docker']['enabled'].eql?("true")
+  include_recipe "hops::docker"
+end
 
 if node['hops']['nn']['direct_memory_size'].to_i < node['hops']['nn']['heap_size'].to_i
   raise "Invalid Configuration. Set Java DirectByteBuffer memory as high as Java heap size otherwise, the NNs might experience severe GC pauses."

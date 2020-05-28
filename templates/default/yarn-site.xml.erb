@@ -603,7 +603,7 @@
   </property>
 
   <% end -%>
-
+  <% if node['hops']['docker']['enabled'] == "true" -%>
   <property>
     <name>yarn.nodemanager.runtime.linux.allowed-runtimes</name>
     <value>default,docker</value>
@@ -639,5 +639,5 @@
     <name> yarn.nodemanager.resource-plugins.gpu.docker-plugin </name>
     <value>nvidia-docker-v2</value>
   </property>
-
+  <% end -%>
 </configuration>
