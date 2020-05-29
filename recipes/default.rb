@@ -297,17 +297,20 @@ template "#{node['hops']['conf_dir']}/resource-types.xml" do
   action :create
 end
 
-begin
-  registry_ip = private_recipe_ip("hops","docker_registry")
-  registry_host = resolve_hostname(registry_ip)
-rescue
-  registry_host = "localhost"
-  Chef::Log.warn "could not find the docker registry ip!"
+if node['hops']['docker']['enabled'].eql?("true")
+  begin
+    registry_ip = private_recipe_ip("hops","docker_registry")
+    registry_host = resolve_hostname(registry_ip)
+  rescue
+    registry_host = "localhost"
+    Chef::Log.warn "could not find the docker registry ip!"
+  end
+  
+  trusted_registries = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
+  
+  docker_path = shell_out("which docker").stdout
+
 end
-
-trusted_registries = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
-
-docker_path = shell_out("which docker").stdout
 
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
   source "container-executor.cfg.erb"
