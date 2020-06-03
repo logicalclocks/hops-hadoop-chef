@@ -210,7 +210,6 @@ default['hops']['log']['remote_retention']     = "150d"
 # set the location of libndbclient.so. set-env.sh sets LD_LIBRARY_PATH to find this library.
 default['ndb']['libndb']                    = "#{node['mysql']['version_dir']}/lib"
 default['mysql']['port']                    = default['ndb']['mysql_port']
-default['hadoop']['mysql_url']              = "jdbc:mysql://#{node['ndb']['mysql_ip']}:#{default['ndb']['mysql_port']}/"
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
