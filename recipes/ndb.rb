@@ -28,7 +28,6 @@ remote_file "#{Chef::Config['file_cache_path']}/#{flyway_tgz}" do
   action :create_if_missing
 end
 
-mysql_host = private_recipe_ip("ndb","mysqld")
 flyway_basedir="#{node['hops']['dir']}/ndb-hops"
 
 bash "unpack_flyway" do
@@ -50,9 +49,6 @@ template "#{flyway_basedir}/flyway/conf/flyway.conf" do
   source "flyway.conf.erb"
   owner node['hops']['hdfs']['user']
   mode 0750
-  variables({
-              :mysql_host => my_ip
-            })
   action :create  
 end
 
@@ -121,11 +117,6 @@ link "#{node['hops']['dir']}/ndb-hops/ndb-dal.jar" do
   to "#{node['hops']['dir']}/ndb-hops/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 end
 
-mysql_ip = my_ip
-if node['mysql']['localhost'] == "true"
-  mysql_ip = "localhost"
-end
-
 template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
   source "ndb.props.erb"
   owner node['hops']['hdfs']['user']
@@ -133,7 +124,6 @@ template "#{node['hops']['home']}/etc/hadoop/ndb.props" do
   mode "750"
   variables({
               :ndb_connectstring => node['ndb']['connectstring'],
-              :mysql_host => my_ip
             })
 end
 
