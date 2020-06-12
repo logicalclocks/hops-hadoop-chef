@@ -98,7 +98,7 @@ services = [
         ]
         port = <%= node['hops']['rm']['metrics_port'] %> 
         check = {
-            id = "rm-http-check"
+            id = "rm-monitoring-check"
             alias_service = "rm/rpc"
         }
     }
