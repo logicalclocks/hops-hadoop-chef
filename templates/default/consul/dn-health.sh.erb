@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+CHECK="curl --fail --silent http://$HOSTNAME:<%= node['hops']['dn']['metrics_port'] %>/metrics > /dev/null 2>&1"
+
+source <%= node['consul']['health-check']['retryable-check-file'] %>
+
+_run_health_check "$CHECK"

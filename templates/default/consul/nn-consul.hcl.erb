@@ -26,5 +26,17 @@ services = [
             id = "nn-http-check"
             alias_service = "nn/rpc"
         }
+    },
+    {
+        id = "nn/monitoring"
+        name = "namenode"
+        tags = [
+            "monitoring"
+        ]
+        port = <%= node['hops']['nn']['metrics_port'] %>
+        check = {
+            id = "nn-monitoring-check"
+            alias_service = "nn/rpc"
+        }
     }
 ]

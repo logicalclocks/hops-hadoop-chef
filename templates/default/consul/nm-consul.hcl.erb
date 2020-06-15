@@ -42,5 +42,17 @@ services = [
             id = "http-health-check"
             alias_service = "nm/rpc"
         }
+    },
+    {
+        id = "nm/monitoring"
+        name = "nodemanager"
+        tags = [
+            "monitoring"
+        ]
+        port = <%= node['hops']['nm']['metrics_port'] %> 
+        check = {
+            id = "nm-monitoring-check"
+            alias_service = "nm/rpc"
+        }
     }
 ]

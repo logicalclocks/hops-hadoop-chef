@@ -1,0 +1,18 @@
+services = [
+    {
+        id = "dn/monitoring"
+        name = "datanode"
+        tags = [
+            "monitoring"
+        ]
+        port = <%= node['hops']['dn']['metrics_port'] %>
+        check = {
+            id = "dn-health-check"
+            name = "Health check for DataNode"
+            args = ["<%= node['hops']['bin_dir'] %>/consul/dn-health.sh"]
+            interval = "20s"
+            timeout = "20s"
+            status = "passing"
+        }
+    }
+]

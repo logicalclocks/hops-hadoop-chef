@@ -89,5 +89,17 @@ services = [
             id = "rm-http-check"
             alias_service = "rm/rpc"
         }
+    },
+    {
+        id = "rm/monitoring"
+        name = "resourcemanager"
+        tags = [
+            "monitoring"
+        ]
+        port = <%= node['hops']['rm']['metrics_port'] %> 
+        check = {
+            id = "rm-monitoring-check"
+            alias_service = "rm/rpc"
+        }
     }
 ]
