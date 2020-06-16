@@ -377,10 +377,6 @@ attribute "hops/group",
           :description => "Group to run hdfs/yarn/yarnapp/mr as",
           :type => 'string'
 
-attribute "hops/group_id",
-          :description => "the group_id for hops/group. If you change this value you must ensure that it match the gid in the docker image",
-          :type => 'string'
-
 attribute "hops/yarn/user",
           :description => "Username to run yarn as",
           :type => 'string'

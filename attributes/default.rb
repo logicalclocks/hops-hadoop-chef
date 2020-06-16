@@ -8,7 +8,6 @@ default['hops']['version']                     = "3.2.0.0-SNAPSHOT"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
-default['hops']['group_id']                    = 1234
 default['hops']['secure_group']                = node['install']['user'].empty? ? "metaserver" : node['install']['user']
 default['hops']['yarn']['user']                = node['install']['user'].empty? ? "yarn" : node['install']['user']
 default['hops']['yarnapp']['user']             = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
