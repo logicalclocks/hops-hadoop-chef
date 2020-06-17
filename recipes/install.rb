@@ -260,19 +260,6 @@ else
   end
 end
 
-if node['hops']['enable_cloud_storage'].casecmp?("true")
-  cdd=node['hops']['dn']['cloud_data_dir']
-  cloudDataDir=cdd.gsub("file://","")
-
-  directory cloudDataDir do
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode "0770"
-    recursive true
-    action :create
-  end
-end 
-
 ann=node['hops']['nn']['name_dir']
 nndir=ann.gsub("file://","")
 directory nndir do
