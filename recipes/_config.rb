@@ -29,5 +29,11 @@ if node['install']['enterprise']['install'].casecmp? "true"
   node.override['hops']['librocm_url']    = "#{node['hops']['root_url']}/libhopsrocm-#{version}.so"
   node.override['hops']['yarn']['app_classpath'] = node['hops']['yarn']['app_classpath'].gsub(node['hops']['version'], version)
   node.override['hops']['version'] = version
-
+  versions=node['hops']['versions']
+  versions_arr=versions.split("2.8.2.9")
+  versions=versions_arr[0] + "2.8.2.9,2.8.2.9.1"
+  if versions_arr.size > 1
+    versions=versions + versions_arr[1]
+  end
+  node.override['hops']['versions'] = versions
 end
