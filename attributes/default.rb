@@ -45,10 +45,8 @@ default['hops']['cloud_store_small_files_in_db']   = "true"
 default['hops']['nn']['root_dir_storage_policy']       = ""
 
 
-default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn/disk"
-default['hops']['dn']['cloud_data_dir']                 = "file://" + node['hops']['data_dir'] + "/hdfs/dn/cloud"
+default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
 default['hops']['dn']['data_dir_permissions']           = '700'
-default['hops']['dn']['cloud_data_dir_permissions']     = '700'
 default['hops']['nn']['name_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['yarn']['nodemanager_log_dir']               = node['hops']['logs_dir'] + "/userlogs"
