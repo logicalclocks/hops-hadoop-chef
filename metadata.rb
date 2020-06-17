@@ -509,15 +509,6 @@ attribute "hops/aws_s3_bucket",
           :description => "S3 bucket used to store file system blocks",
           :type => 'string'
 
-attribute "hops/dn/cloud_data_dir",
-          :description => "The directory in which Hadoop's DataNodes put cached data from cloud storage, such as, S3.",
-          :type => 'string'
-
-attribute "hops/dn/cloud_data_dir_permissions",
-          :description => "The permissions for the directory in which Hadoop's DataNodes put cached data from cloud storage (default: 700)",
-          :type => 'string'
-
-
 attribute "hops/yarn/nodemanager_hb_ms",
           :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
           :type => 'string'
