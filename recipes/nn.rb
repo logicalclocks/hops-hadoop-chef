@@ -6,12 +6,20 @@ my_ip = my_private_ip()
 
 group node['hops']['secure_group'] do
   action :modify
-  members ["#{node['hops']['hdfs']['user']}"]
+  members node['hops']['hdfs']['user']
   append true
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-file "#{node['hops']['conf_dir']}/dfs.exclude" do
+crypto_dir = x509_helper.get_crypto_dir(node['hops']['hdfs']['user'])
+kagent_hopsify "Generate x.509" do
+  user node['hops']['hdfs']['user']
+  crypto_directory crypto_dir
+  action :generate_x509
+  not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+end
+
+file "#{node['hops']['conf_dir']}/dfs.exclude" do 
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "700"
@@ -109,8 +117,6 @@ end
   end
 end
 
-
-
 if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service "HDFS"
@@ -129,12 +135,15 @@ if service_discovery_enabled()
     http_port = node['hops']['nn']['http_port']
   end
 
+  consul_crypto_dir = x509_helper.get_crypto_dir(node['consul']['user'])
   template "#{node['hops']['bin_dir']}/consul/nn-health.sh" do
     source "consul/nn-health.sh.erb"
     owner node['hops']['hdfs']['user']
     group node['hops']['group']
     mode 0750
     variables({
+      :key => "#{consul_crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['consul']['user'])}",
+      :certificate => "#{consul_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['consul']['user'])}",
       :scheme => scheme,
       :http_port => http_port
     })

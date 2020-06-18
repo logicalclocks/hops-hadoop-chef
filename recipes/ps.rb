@@ -1,5 +1,17 @@
 include_recipe "hops::default"
 
+# Proxyserver and NodeManager run as the same user
+# Generate certificate only once
+unless exists_local("hops", "nm")
+  crypto_dir = x509_helper.get_crypto_dir(node['hops']['yarn']['user'])
+  kagent_hopsify "Generate x.509" do
+    user node['hops']['yarn']['user']
+    crypto_directory crypto_dir
+    action :generate_x509
+    not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+  end
+end
+
 yarn_service="ps"
 service_name="proxyserver"
 

@@ -2,6 +2,18 @@ include_recipe "hops::default"
 
 template_ssl_server()
 
+# DataNode and NameNode run as the same user
+# Generate certificate only once
+unless exists_local("hops", "nn")
+  crypto_dir = x509_helper.get_crypto_dir(node['hops']['hdfs']['user'])
+  kagent_hopsify "Generate x.509" do
+    user node['hops']['hdfs']['user']
+    crypto_directory crypto_dir
+    action :generate_x509
+    not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+  end
+end
+
 for script in node['hops']['dn']['scripts']
   template "#{node['hops']['sbin_dir']}/#{script}" do
     source "#{script}.erb"

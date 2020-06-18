@@ -263,14 +263,9 @@
     <value><%= node['hops']['hadoop']['ssl']['enabled']['protocols'] %></value>
   </property>
 
-  <!--
-      Directory where service certificates exist. It is used by
-      HopsSSLSocketFactory for superuser.
-      Default: /srv/hops/kagent-certs/keystores
-  -->
   <property>
-    <name>hops.service.certificates.directory</name>
-    <value><%= node['kagent']['keystore_dir'] %></value>
+    <name>hops.tls.superuser-material-directory</name>
+    <value><%= node['x509']['super-crypto']['dir'] %></value>
   </property>
 
   <!--
