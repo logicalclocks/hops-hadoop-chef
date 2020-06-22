@@ -234,6 +234,11 @@
   <% if node['hops']['tls']['enabled'].casecmp?("true") or node['hops']['rmappsecurity']['jwt']['enabled'].casecmp?("true") -%>
 
   <property>
+    <name>hops.tls.superuser-material-directory</name>
+    <value><%= node['x509']['super-crypto']['dir'] %></value>
+  </property>
+
+  <property>
     <name>hops.hopsworks.host</name>
     <value><%= @hopsworks %></value>
   </property>
@@ -261,11 +266,6 @@
   <property>
     <name>hadoop.ssl.enabled.protocols</name>
     <value><%= node['hops']['hadoop']['ssl']['enabled']['protocols'] %></value>
-  </property>
-
-  <property>
-    <name>hops.tls.superuser-material-directory</name>
-    <value><%= node['x509']['super-crypto']['dir'] %></value>
   </property>
 
   <!--
