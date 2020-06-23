@@ -675,6 +675,15 @@ attribute "hops/nn/root_dir_storage_policy",
           :description => "Storage policy for root directory",
           :type => "string"
 
+
+attribute "hops/nn/replace-dn-on-failure",
+          :description => "When the cluster size is extremely small, e.g. 3 nodes or less, cluster administrators may want to set the 'hops/nn/root_dir_storage_policy' policy to NEVER in the default configuration file or disable this feature. Otherwise, users may experience an unusually high rate of pipeline failures since it is impossible to find new datanodes for replacement.",
+          :type => "string"
+
+attribute "hops/nn/root_dir_storage_policy",
+          :description => "This property is used only if the value of hops/nn/replace-dn-on-failure is true. Defult values are ALWAYS, NEVER, DEFAULT",
+          :type => "string"
+
 attribute "hops/retry_policy_spec",
           :description => "Retry policy specification. For example '1.4.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
