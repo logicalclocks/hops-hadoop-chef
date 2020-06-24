@@ -368,11 +368,6 @@
 </property>
 
 <property>
-  <name>dfs.https.port</name>
-  <value><%= node['hops']['dfs']['https']['port'] %></value>
-</property>
-
-<property>
   <name>dfs.namenode.https-address</name>
   <value><%= @nn_address %>:<%= node['hops']['dfs']['https']['port'] %></value>
   <description>The address and the base port where the dfs namenode web ui will listen on. </description>
@@ -527,6 +522,18 @@
    <name>dfs.cloud.concurrent.upload</name>
    <value>true</value>
    <description>Upload file block to s3 using multipart API</description>
+</property>
+
+<property>
+   <name>dfs.datanode.ipc.address</name>
+   <value><%= @bind_ip %>:<%= node['hops']['dn']['ipc_port'] %></value>
+   <description>The datanode ipc server address and port. </description>
+</property>
+
+<property>
+   <name>dfs.datanode.address</name>
+   <value><%= @bind_ip %>:<%= node['hops']['dn']['port'] %></value>
+   <description>The datanode server address and port for data transfer.</description>
 </property>
 
 </configuration>
