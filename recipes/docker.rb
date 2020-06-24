@@ -23,7 +23,7 @@ when 'rhel'
     code <<-EOH
         yum install -y #{packages.join(" ")}
     EOH
-    not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}"
+    not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64"
   end
   
 when 'debian'
@@ -49,7 +49,7 @@ if node['hops']['gpu'].eql?("true")
   package_type = node['platform_family'].eql?("debian") ? "_amd64.deb" : ".x86_64.rpm"
   case node['platform_family']
   when 'rhel'
-    nvidia_docker_packages = ["libnvidia-container1-1.0.5-1#{package_type}", "libnvidia-container-tools-1.0.5-1#{package_type}", "nvidia-container-toolkit-1.0.5-2#{package_type}", "nvidia-container-runtime-2.0.0-1.docker1.13.1#{package_type}", "nvidia-docker2_2.2.2-1.noarch.rpm"]
+    nvidia_docker_packages = ["libnvidia-container1-1.0.7-1#{package_type}", "libnvidia-container-tools-1.0.7-1#{package_type}", "nvidia-container-toolkit-1.0.5-2#{package_type}", "nvidia-container-runtime-3.1.4-1#{package_type}", "nvidia-docker2-2.2.2-1.noarch.rpm"]
   when 'debian'
     nvidia_docker_packages = ["libnvidia-container1_1.0.7-1#{package_type}", "libnvidia-container-tools_1.0.7-1#{package_type}", "nvidia-container-toolkit_1.0.5-1#{package_type}", "nvidia-container-runtime_3.1.4-1#{package_type}", "nvidia-docker2_2.2.2-1_all.deb"]
   end
