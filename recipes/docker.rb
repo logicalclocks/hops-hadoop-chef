@@ -55,7 +55,7 @@ if node['hops']['gpu'].eql?("true")
   end
   nvidia_docker_packages.each do |pkg|
     remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['hops']['nvidia_pkgs']['download_url']}/#{pkg}"
+      source "http://snurran.sics.se/hops/alex/docker/#{pkg}"
       owner 'root'
       group 'root'
       mode '0755'
