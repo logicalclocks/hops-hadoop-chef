@@ -294,9 +294,8 @@ default['hops']['yarn']['rm_heapsize_mbs']                   = 1000
 #hdfs-site.xml
 default['hops']['dfs']['https']['enable']                    = "true"
 default['hops']['dfs']['http']['policy']   		             = "HTTPS_ONLY"
-default['hops']['dfs']['datanode']['https']['address'] 	     = "0.0.0.0:50475"
-default['hops']['dfs']['https']['port']                      = "50470"
-default['hops']['dfs']['namenode']["https-address"]   	     = "0.0.0.0:50470"
+default['hops']['dn']['https']['address'] 	            = "0.0.0.0:50475"
+default['hops']['nn']['https']['port']                      = "50470"
 
 default['hops']['dfs']['inodeid']['batchsize']              = "10000"
 default['hops']['dfs']['blockid']['batchsize']              = "10000"
