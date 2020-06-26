@@ -129,7 +129,7 @@ if service_discovery_enabled()
   # Register NameNode with Consul
   if node['hops']['tls']['enabled'].casecmp?("true")
     scheme = "https"
-    http_port = node['hops']['dfs']['https']['port']
+    http_port = node['hops']['nn']['https']['port']
   else
     scheme = "http"
     http_port = node['hops']['nn']['http_port']
