@@ -411,7 +411,7 @@
 
 <property>
   <name>dfs.namenode.https-address</name>
-  <value><%= @nn_address %>:<%= node['hops']['dfs']['https']['port'] %></value>
+  <value><%= @nn_address %>:<%= node['hops']['nn']['https']['port'] %></value>
   <description>The address and the base port where the dfs namenode web ui will listen on. </description>
 </property>
 
