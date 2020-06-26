@@ -68,6 +68,8 @@ default['hops']['hadoop_src_url']              = "https://archive.apache.org/dis
 default['hops']['nn']['http_port']             = 50070
 default['hops']['dn']['http_port']             = 50075
 default['hops']['nn']['port']                  = 8020
+default['hops']['dn']['port']                  = 50010
+default['hops']['dn']['ipc_port']              = 50020
 
 default['hops']['nn']['format_options']        = "-format -nonInteractive"
 

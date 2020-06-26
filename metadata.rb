@@ -724,4 +724,22 @@ attribute "hops/adl_v1_version",
           :description => "Version of the ADL v1 Hadoop connector (jar file).",
           :type => "string"
 
+attribute "hops/nn/http_port",
+          :description => "The namenode http server port.",
+          :type => 'string'
 
+attribute "hops/dn/http_port",
+          :description => "The datanode http server port.",
+          :type => 'string'
+
+attribute "hops/dn/port",
+          :description => "The datanode server port for data transfer.",
+          :type => 'string'
+
+attribute "hops/dn/ipc_port",
+          :description => "The datanode ipc server port.",
+          :type => 'string'
+
+attribute "hops/dfs/datanode/https/address",
+          :description => "the address on which the datanode should listen for https requests",
+          :type => 'string'
