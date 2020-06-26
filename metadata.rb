@@ -740,6 +740,10 @@ attribute "hops/dn/ipc_port",
           :description => "The datanode ipc server port.",
           :type => 'string'
 
-attribute "hops/dfs/datanode/https/address",
+attribute "hops/dn/https/address",
           :description => "the address on which the datanode should listen for https requests",
+          :type => 'string'
+
+attribute "hops/nn/https/port",
+          :description => "The namenode http server port.",
           :type => 'string'
