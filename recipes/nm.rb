@@ -152,13 +152,20 @@ if node['hops']['systemd'] == "true"
     ignore_failure true
   end
 
+  rpc_resourcemanager_fqdn = my_private_ip()
+  if service_discovery_enabled()
+    rpc_resourcemanager_fqdn = consul_helper.get_service_fqdn("rpc.resourcemanager")
+  end
+
+
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
     group "root"
     mode 0664
     variables({
-              :deps => deps
+                :deps => deps,
+                :rm_rpc_endpoint => rpc_resourcemanager_fqdn
               })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
