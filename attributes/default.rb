@@ -473,3 +473,8 @@ default['hops']['docker']['registry']['port']         = 4443
 default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/registry_image.tar"
 default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
+
+#XAttrs
+default['hops']['xattrs']['enabled']                  = "true"
+default['hops']['xattrs']['max-xattrs-per-inode']     = 32
+default['hops']['xattrs']['max-xattr-size']           = 13755

@@ -807,3 +807,11 @@ attribute "hops/dn/https/address",
 attribute "hops/nn/https/port",
           :description => "The namenode http server port.",
           :type => 'string'
+
+attribute "hops/xattrs/max-xattrs-per-inode",
+          :description => "Maximum number of extended attributes per inode. The maximum allowed number is 127 extended attributes per inode.",
+          :type => "string"
+
+attribute "hops/xattrs/max-xattr-size",
+          :description => "The maximum combined size of the name and value of an extended attribute in bytes. It should be larger than 0 and less than or equal to the maximum size (hard limit), which is 3442755. By default, this limit is 13755 bytes, where the name can take up to 255 bytes, and the value size can take up to 13500 bytes.",
+          :type => "string"
