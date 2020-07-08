@@ -1,7 +1,9 @@
 include_recipe "hops::default"
 
 if node['hops']['docker']['enabled'].eql?("true")
-  include_recipe "hops::docker_image"
+  if node['install']['managed_docker_registry'].casecmp?("false")
+    include_recipe "hops::docker_image"
+  end 
 end
 
 template_ssl_server()

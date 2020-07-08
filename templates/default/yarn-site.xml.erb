@@ -639,5 +639,13 @@
     <name> yarn.nodemanager.resource-plugins.gpu.docker-plugin </name>
     <value>nvidia-docker-v2</value>
   </property>
+
+  <% if node['install']['enterprise']['install'].casecmp?("true") && node['install']['cloud'].casecmp?("aws") && node['install']['managed_docker_registry'].casecmp?("true") -%>
+  <property>
+    <name>yarn.nodemanager.docker.ecr-login-helper.dir</name>
+    <value><%= node["install"]["aws"]["docker"]["ecr-login_dir"] %></value>
+  </property>
+  <% end -%>
+
   <% end -%>
 </configuration>
