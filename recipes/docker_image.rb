@@ -37,7 +37,7 @@ end
 bash "pull_image" do
   user "root"
   code <<-EOF
-    docker pull #{registry_host}:#{node['hops']['docker']['registry']['port']}/python36
+    docker pull #{registry_host}:#{node['hops']['docker']['registry']['port']}/#{node['hops']['docker']['base']['name']}:#{node['install']['version']}
   EOF
-  not_if "docker image inspect python36"
+  not_if "docker image inspect #{node['hops']['docker']['base']['name']}:#{node['install']['version']}"
 end

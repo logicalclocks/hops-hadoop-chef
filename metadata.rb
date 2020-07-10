@@ -772,7 +772,7 @@ attribute "hops/docker/mounts",
           :description => "A coma separated list of folder to be mounted as read only in the yarn docker containers",
           :type => 'string'
 
-attribute "hops/docker/base_env/download_url",
+attribute "hops/docker/base/download_url",
           :description => "the url of the base conda env docker image",
           :type => 'string'
 
