@@ -480,3 +480,6 @@ default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/
 default['hops']['xattrs']['enabled']                  = "true"
 default['hops']['xattrs']['max-xattrs-per-inode']     = 32
 default['hops']['xattrs']['max-xattr-size']           = 1039755
+
+#ACL
+default['hops']['acl']['enabled']                     = "true"
