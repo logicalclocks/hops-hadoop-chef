@@ -89,6 +89,7 @@ bash "download_image" do
   code <<-EOF
        #{download_command} -O #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
   not_if "docker image inspect #{registry_host}:#{node['hops']['docker']['registry']['port']}/#{node['hops']['docker']['base']['name']}:#{node['install']['version']}"
 end
 
