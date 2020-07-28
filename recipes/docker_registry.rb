@@ -1,3 +1,5 @@
+Chef::Recipe.send(:include, Hops::Helpers)
+
 begin
   registry_ip = private_recipe_ip("hops","docker_registry")
   registry_host = resolve_hostname(registry_ip)
@@ -71,6 +73,28 @@ bash "start_docker_registry" do
    docker run -d --restart=always --name registry -v #{kagent_crypto_dir}:/certs -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} -p #{node['hops']['docker']['registry']['port']}:443 registry
    EOF
   not_if "docker container inspect registry"
+end
+
+consul_crypto_dir = x509_helper.get_crypto_dir(node['consul']['user'])
+if service_discovery_enabled()
+  #Register registry with Consul
+  template "#{node['hops']['bin_dir']}/consul/registry-health.sh" do
+    source "consul/registry-health.sh.erb"
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode 0750
+    variables({
+               :key => "#{consul_crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['consul']['user'])}",
+               :certificate => "#{consul_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['consul']['user'])}",
+              })
+  end
+
+  consul_service "Registering Registry with Consul" do
+    service_definition "consul/registry-consul.hcl.erb"
+    action :register
+  end
+
+  registry_host=consul_helper.get_service_fqdn("registry")
 end
 
 #download base env

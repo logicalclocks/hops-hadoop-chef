@@ -1,4 +1,5 @@
 # Install and start Docker
+Chef::Recipe.send(:include, Hops::Helpers)
 
 case node['platform_family']
 when 'rhel'
@@ -109,11 +110,21 @@ directory '/etc/docker/' do
   recursive true
 end
 
+registry_addr=""
+
+if service_discovery_enabled()
+  registry_host=consul_helper.get_service_fqdn("registry")
+  registry_addr="#{registry_host}:#{node['hops']['docker']['registry']['port']}"
+end
+
 template '/etc/docker/daemon.json' do
   source 'daemon.json.erb'
   owner 'root'
   mode '0755'
   action :create
+  variables({
+              :registry_addr => registry_addr
+            })
 end
 
 # Start the docker deamon

@@ -34,6 +34,10 @@ if ::File.exist?("#{cert_target}") === false && "#{registry_host}" != "local"
   end
 end
 
+if service_discovery_enabled()
+  registry_host=consul_helper.get_service_fqdn("registry")
+end
+
 bash "pull_image" do
   user "root"
   code <<-EOF

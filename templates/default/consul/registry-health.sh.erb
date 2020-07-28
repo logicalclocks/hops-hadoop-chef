@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+CHECK="curl --fail --silent --insecure --key <%= @key %> --cert <%= @certificate %> https://$HOSTNAME:<%= node['hops']['docker']['registry']['port'] %> > /dev/null 2>&1"
+
+source <%= node['consul']['health-check']['retryable-check-file'] %>
+
+_run_health_check "$CHECK"
