@@ -8,7 +8,7 @@ Group = <%= node['hops']['group'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
 
-ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @rm_rpc_endpoint %> ; do /bin/sleep 5; done'
+ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @rm_rpc_endpoint %> ; do if systemctl list-units --full -all | grep -Fq 'resourcemanager'; then if systemctl is-active --quiet resourcemanager; then /bin/sleep 5; else ! break; fi; else /bin/sleep 5; fi;  done'
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nm.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-nm.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-nm.sh
