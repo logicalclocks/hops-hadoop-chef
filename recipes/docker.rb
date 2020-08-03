@@ -127,8 +127,12 @@ template '/etc/docker/daemon.json' do
             })
 end
 
+service_name='docker'
 # Start the docker deamon
-service 'docker' do
+service service_name do
   action [:enable, :restart]
 end
 
+kagent_config service_name do
+  action :systemd_reload
+end
