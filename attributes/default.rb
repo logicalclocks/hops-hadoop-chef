@@ -223,7 +223,7 @@ default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-
 
 default['hops']['log_level']                = "DEBUG"
 
-default['hops']['ndb']['version']              = "7.6.12"
+default['hops']['ndb']['version']              = "8.0.21"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -406,7 +406,7 @@ default['hops']['capacity']['queue_mapping_override']['enable']         = "false
 #
 # Flyway - Database upgrades
 #
-default['hops']['flyway']['version']                                    = "5.0.3"
+default['hops']['flyway']['version']                                    = "6.5.1"
 default['hops']['flyway_url']                                           = node['hops']['root_url'] + "/flyway-commandline-#{node['hops']['flyway']['version']}-linux-x64.tar.gz"
 
 default['hops']['yarnapp']['home_dir']                 = "/home"
