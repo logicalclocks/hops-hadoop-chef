@@ -148,3 +148,18 @@ file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   action :delete
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end
+
+# We add docker in kagent in this recipe as the hops::docker recipe runs during the install phase and it might run
+# before kagent::install
+service_name='docker'
+if node['kagent']['enabled'] == "true"
+  kagent_config service_name do
+    service "docker"
+  end
+end
+
+if conda_helpers.is_upgrade
+  kagent_config service_name do
+    action :systemd_reload
+  end
+end
