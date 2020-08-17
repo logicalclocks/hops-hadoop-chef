@@ -148,6 +148,8 @@ when 'debian'
   package 'libsnappy1v5'
 when 'rhel'
   package 'snappy'
+  # bind-utils is needed to start the datanode, if HopsFS is installed without Hopsworks
+  package 'bind-utils'
 end
 
 if node['hops']['native_libraries'].eql? "true"
