@@ -70,7 +70,7 @@ key_name = x509_helper.get_private_key_pkcs8_name(node['kagent']['user'])
 bash "start_docker_registry" do
   user "root"
   code <<-EOF
-   docker run -d --restart=always --name registry -v #{kagent_crypto_dir}:/certs -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} -p #{node['hops']['docker']['registry']['port']}:443 registry
+   docker run -d --restart=always --name registry -v #{kagent_crypto_dir}:/certs -e REGISTRY_STORAGE_DELETE_ENABLED=true -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} -p #{node['hops']['docker']['registry']['port']}:443 registry
    EOF
   not_if "docker container inspect registry"
 end
