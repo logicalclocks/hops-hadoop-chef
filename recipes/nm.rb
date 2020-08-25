@@ -85,6 +85,23 @@ if node['install']['cloud'].casecmp?("azure") == 0
   end
 end
 
+if node['install']['cloud'].casecmp?("aws") == 0
+  
+  redshift_url = node['hops']['redshift_url']
+  redshift_jar = File.basename(redshift_url)
+  
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{redshift_jar}" do
+    source redshift_url
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "0755"
+  # TODO - checksum
+    action :create_if_missing
+  end
+end
+
+
+
 
 
 cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
