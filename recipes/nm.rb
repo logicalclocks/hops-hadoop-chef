@@ -98,6 +98,19 @@ if node['install']['cloud'].casecmp?("aws") == 0
   # TODO - checksum
     action :create_if_missing
   end
+
+  snowflake_url = node['hops']['snowflake_url']
+  snowflake_jar = File.basename(snowflake_url)
+  
+  remote_file "#{node['hops']['base_dir']}/share/hadoop/yarn/lib/#{snowflake_jar}" do
+    source snowflake_url
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "0755"
+  # TODO - checksum
+    action :create_if_missing
+  end
+  
 end
 
 

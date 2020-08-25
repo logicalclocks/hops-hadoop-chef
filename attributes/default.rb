@@ -482,4 +482,6 @@ default['hops']['xattrs']['max-xattrs-per-inode']     = 32
 default['hops']['xattrs']['max-xattr-size']           = 1039755
 
 #AWS
-default['hops']['redshift_url']                       = "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.47.1071/RedshiftJDBC42-no-awssdk-1.2.47.1071.jar"
+default['hops']['redshift_url']    = "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.47.1071/RedshiftJDBC42-no-awssdk-1.2.47.1071.jar"
+default['hops']['snowflake_url']="https://repo1.maven.org/maven2/net/snowflake/spark-snowflake_2.11/2.8.1-spark_2.4/spark-snowflake_2.11-2.8.1-spark_2.4.jar"
+
