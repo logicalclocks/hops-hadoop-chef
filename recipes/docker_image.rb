@@ -38,10 +38,12 @@ if service_discovery_enabled()
   registry_host=consul_helper.get_service_fqdn("registry")
 end
 
+base_image_python = "#{registry_host}:#{node['hops']['docker']['registry']['port']}/#{node['hops']['docker']['base']['image']['python']['name']}:#{node['hops']['docker_img_version']}"
+
 bash "pull_image" do
   user "root"
   code <<-EOF
-    docker pull #{registry_host}:#{node['hops']['docker']['registry']['port']}/#{node['hops']['docker']['base']['name']}:#{node['install']['version']}
+    docker pull #{base_image_python}
   EOF
-  not_if "docker image inspect #{node['hops']['docker']['base']['name']}:#{node['install']['version']}"
+  not_if "docker image inspect #{base_image_python}"
 end
