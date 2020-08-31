@@ -815,3 +815,7 @@ attribute "hops/xattrs/max-xattrs-per-inode",
 attribute "hops/xattrs/max-xattr-size",
           :description => "The maximum combined size of the name and value of an extended attribute in bytes. It should be larger than 0 and less than or equal to the maximum size (hard limit), which is 3442755. By default, this limit is 13755 bytes, where the name can take up to 255 bytes, and the value size can take up to 13500 bytes.",
           :type => "string"
+
+attribute "hops/acl/enabled",
+          :description =>  "enable acl support  Default: true",
+          :type => 'string'
