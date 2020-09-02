@@ -313,9 +313,12 @@ if node['hops']['docker']['enabled'].eql?("true")
   end
 
   trusted_registries = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
+  
+  unless node['hops']['docker']['trusted_registries'].eql?("")
+    trusted_registries = "#{trusted_registries},#{node['hops']['docker']['trusted_registries']}"
+  end
 
   docker_path = shell_out("which docker").stdout
-
 end
 
 template "#{node['hops']['conf_dir']}/container-executor.cfg" do
