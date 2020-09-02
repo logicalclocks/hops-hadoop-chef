@@ -6,9 +6,9 @@ when 'rhel'
 
   # During upgrades, there might be a previous version of docker (not -ce) which will conflict with 
   # The docker-ce package we will install below. 
-  package 'docker' do
+  package ['docker', 'docker-common'] do
     action :remove
-    only_if "yum list installed docker.x86.64"
+    only_if "yum list installed docker.x86_64"
   end
 
   package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs']
