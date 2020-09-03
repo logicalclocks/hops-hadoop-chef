@@ -5,7 +5,7 @@ kagent_hopsify "Generate x.509" do
   user node['hops']['mr']['user']
   crypto_directory crypto_dir
   action :generate_x509
-  not_if { conda_helpers.is_upgrade || node["kagent"]["enabled"] == "false" }
+  not_if { node["kagent"]["enabled"] == "false" }
 end
 
 yarn_service="jhs"

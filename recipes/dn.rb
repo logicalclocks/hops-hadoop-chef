@@ -10,7 +10,7 @@ unless exists_local("hops", "nn")
     user node['hops']['hdfs']['user']
     crypto_directory crypto_dir
     action :generate_x509
-    not_if { conda_helpers.is_upgrade || node["kagent"]["enabled"] == "false" }
+    not_if { node["kagent"]["enabled"] == "false" }
   end
 end
 
