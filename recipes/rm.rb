@@ -60,10 +60,9 @@ end
 
 # If we are upgrading from Pre 3.2 to 3.2 we should format the state-store
 bash 'format-state-store' do
-  user node['hops']['rm']['user']
-  group node['hops']['group'] 
+  user "root"
   code <<-EOH
-   #{node['hops']['bin_dir']}/yarn resourcemanager -format-state-store 
+    #{node['hops']['bin_dir']}/yarn resourcemanager -format-state-store
   EOH
   action :run
   only_if { conda_helpers.is_upgrade &&  
