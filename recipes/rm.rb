@@ -58,18 +58,6 @@ cookbook_file "#{node['hops']['conf_dir']}/resourcemanager.yaml" do
   mode 500
 end
 
-# If we are upgrading from Pre 3.2 to 3.2 we should format the state-store
-bash 'format-state-store' do
-  user "root"
-  code <<-EOH
-    #{node['hops']['bin_dir']}/yarn resourcemanager -format-state-store
-  EOH
-  action :run
-  only_if { conda_helpers.is_upgrade &&  
-    Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0') }
-end
-
-
 if node['hops']['systemd'] == "true"
 
   case node['platform_family']
