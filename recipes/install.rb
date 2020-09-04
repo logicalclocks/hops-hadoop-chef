@@ -1,3 +1,5 @@
+require 'etc' 
+
 include_recipe "hops::_config"
 include_recipe "java"
 
@@ -99,7 +101,18 @@ user node['hops']['mr']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-#we need to fix the uid to match the one in the docker image
+# we need to fix the uid to match the one in the docker image
+# during an upgrade the user id might not match what we expect. 
+# yarnapp doesn't own anything on the fs (at least not in /srv/hops)
+# so it's safe to remove and re-create the user
+user node['hops']['yarnapp']['user'] do
+  manage_home true
+  action :remove
+  only_if "getent passwd #{node['hops']['yarnapp']['user']}"
+  not_if { Etc.getpwnam(node['hops']['yarnapp']['user']).uid.to_s.eql?(node['hops']['yarnapp']['uid']) }
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
 user node['hops']['yarnapp']['user'] do
   uid node['hops']['yarnapp']['uid']
   gid node['hops']['group']
