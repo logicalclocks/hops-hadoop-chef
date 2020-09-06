@@ -55,16 +55,24 @@ if node['platform_family'].eql?("redhat")
 end
 
 #we need to fix the gid to match the one in the docker image
+
+hops_hadoop_gid 'updatae hadoop gid' do 
+  group_name  node['hops']['group']
+  gid         node['hops']['group_id']
+  install_dir node['install']['dir']
+  not_if { node['install']['current_version'].eql?("") }
+  only_if { Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0') }
+  not_if { Etc.getgrnam(node['hops']['group']).gid.to_s.eql?(node['hops']['group_id']) }
+end
+
 group node['hops']['group'] do
   gid node['hops']['group_id']
   action :create
-  not_if "getent group #{node['hops']['group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hops']['secure_group'] do
   action :create
-  not_if "getent group #{node['hops']['secure_group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -75,7 +83,6 @@ user node['hops']['hdfs']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
-  not_if "getent passwd #{node['hops']['hdfs']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -86,7 +93,6 @@ user node['hops']['yarn']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
-  not_if "getent passwd #{node['hops']['yarn']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -97,7 +103,6 @@ user node['hops']['mr']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
-  not_if "getent passwd #{node['hops']['mr']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -120,7 +125,6 @@ user node['hops']['yarnapp']['user'] do
   manage_home true
   shell "/bin/bash"
   action :create
-  not_if "getent passwd #{node['hops']['yarnapp']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -131,7 +135,6 @@ user node['hops']['rm']['user'] do
   shell "/bin/bash"
   action :create
   manage_home true
-  not_if "getent passwd #{node['hops']['rm']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
