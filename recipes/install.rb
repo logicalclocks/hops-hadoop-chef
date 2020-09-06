@@ -54,18 +54,22 @@ if node['platform_family'].eql?("redhat")
   end
 end
 
-#we need to fix the gid to match the one in the docker image
-
-hops_hadoop_gid 'updatae hadoop gid' do 
-  group_name  node['hops']['group']
-  gid         node['hops']['group_id']
-  install_dir node['install']['dir']
-  not_if { node['install']['current_version'].eql?("") }
-  not_if { Etc.getgrnam(node['hops']['group']).gid.to_s.eql?(node['hops']['group_id']) }
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-  only_if { Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0') }
+# We need to change the group from the previous ID to the new one during an upgrade
+bash 'chgrp' do 
+  user "root"
+  code <<-EOH
+    old_gid=`cat /etc/group | grep hadoop | awk '{split($0,a,":"); print a[3]}'`
+    if [ "$old_gid" != "#{node['hops']['group_id']}" ];
+    then
+      find #{node['install']['dir']} -group $old_gid -exec chgrp #{node['hops']['group_id']} {} \\;
+    fi 
+  EOH
+  only_if { !node['install']['current_version'].eql?("") && 
+    Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0')}
+  not_if  { node['install']['external_users'].casecmp("true") == 0 }
 end
 
+#we need to fix the gid to match the one in the docker image
 group node['hops']['group'] do
   gid node['hops']['group_id']
   action :create
@@ -84,6 +88,7 @@ user node['hops']['hdfs']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
+  not_if "getent passwd #{node['hops']['hdfs']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -94,6 +99,7 @@ user node['hops']['yarn']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
+  not_if "getent passwd #{node['hops']['yarn']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -104,21 +110,15 @@ user node['hops']['mr']['user'] do
   shell "/bin/bash"
   manage_home true
   action :create
+  not_if "getent passwd #{node['hops']['mr']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 # we need to fix the uid to match the one in the docker image
 # during an upgrade the user id might not match what we expect. 
+# the :create will re-create the user with a different id
 # yarnapp doesn't own anything on the fs (at least not in /srv/hops)
 # so it's safe to remove and re-create the user
-user node['hops']['yarnapp']['user'] do
-  manage_home true
-  action :remove
-  only_if "getent passwd #{node['hops']['yarnapp']['user']}"
-  not_if { Etc.getpwnam(node['hops']['yarnapp']['user']).uid.to_s.eql?(node['hops']['yarnapp']['uid']) }
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
 user node['hops']['yarnapp']['user'] do
   uid node['hops']['yarnapp']['uid']
   gid node['hops']['group']
@@ -136,6 +136,7 @@ user node['hops']['rm']['user'] do
   shell "/bin/bash"
   action :create
   manage_home true
+  not_if "getent passwd #{node['hops']['rm']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
