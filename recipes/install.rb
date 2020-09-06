@@ -61,8 +61,9 @@ hops_hadoop_gid 'updatae hadoop gid' do
   gid         node['hops']['group_id']
   install_dir node['install']['dir']
   not_if { node['install']['current_version'].eql?("") }
-  only_if { Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0') }
   not_if { Etc.getgrnam(node['hops']['group']).gid.to_s.eql?(node['hops']['group_id']) }
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+  only_if { Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0') }
 end
 
 group node['hops']['group'] do
