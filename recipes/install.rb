@@ -1,5 +1,3 @@
-require 'etc' 
-
 include_recipe "hops::_config"
 include_recipe "java"
 
