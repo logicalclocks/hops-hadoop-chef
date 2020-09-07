@@ -19,6 +19,17 @@ kagent_hopsify "Generate x.509" do
   not_if { conda_helpers.is_upgrade || node["kagent"]["enabled"] == "false" }
 end
 
+exec = "#{node['ndb']['scripts_dir']}/mysql-client.sh"
+bash 'truncate_le_tables' do
+  user "root"
+  code <<-EOF
+      set -e
+      #{exec} -e \"TRUNCATE #{node['hops']['db']}.hdfs_le_descriptors\"
+      #{exec} -e \"TRUNCATE #{node['hops']['db']}.yarn_le_descriptors\"
+    EOF
+  only_if { conda_helpers.is_upgrade }
+end
+
 file "#{node['hops']['conf_dir']}/dfs.exclude" do 
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
