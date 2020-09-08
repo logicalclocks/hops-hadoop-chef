@@ -1,3 +1,5 @@
+require 'etc'
+
 include_recipe "hops::_config"
 include_recipe "java"
 
@@ -67,9 +69,21 @@ bash 'chgrp' do
   not_if  { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-#we need to fix the gid to match the one in the docker image
+# we need to fix the gid to match the one in the docker image
+# here we re-create the group. users could have been added before this point
+# so we need to make sure we add them back to the new group
+current_hadoop_members = []
+ruby_block 'find current hadoop group members' do
+  block do
+    current_hadoop_members = Etc.getgrnam(node['hops']['group']).mem
+  end
+  action :run
+  only_if "getent group #{node['hops']['group']}"
+end
+
 group node['hops']['group'] do
   gid node['hops']['group_id']
+  members lazy { current_hadoop_members }
   action :create
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
