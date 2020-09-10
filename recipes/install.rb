@@ -1,3 +1,5 @@
+require 'etc'
+
 include_recipe "hops::_config"
 include_recipe "java"
 
@@ -52,17 +54,42 @@ if node['platform_family'].eql?("redhat")
   end
 end
 
-#we need to fix the gid to match the one in the docker image
+# We need to change the group from the previous ID to the new one during an upgrade
+bash 'chgrp' do 
+  user "root"
+  code <<-EOH
+    old_gid=`cat /etc/group | grep hadoop | awk '{split($0,a,":"); print a[3]}'`
+    if [ "$old_gid" != "#{node['hops']['group_id']}" ];
+    then
+      find #{node['install']['dir']} -group $old_gid -exec chgrp #{node['hops']['group_id']} {} \\;
+    fi 
+  EOH
+  only_if { !node['install']['current_version'].eql?("") && 
+    Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0')}
+  not_if  { node['install']['external_users'].casecmp("true") == 0 }
+end
+
+# we need to fix the gid to match the one in the docker image
+# here we re-create the group. users could have been added before this point
+# so we need to make sure we add them back to the new group
+current_hadoop_members = []
+ruby_block 'find current hadoop group members' do
+  block do
+    current_hadoop_members = Etc.getgrnam(node['hops']['group']).mem
+  end
+  action :run
+  only_if "getent group #{node['hops']['group']}"
+end
+
 group node['hops']['group'] do
   gid node['hops']['group_id']
+  members lazy { current_hadoop_members }
   action :create
-  not_if "getent group #{node['hops']['group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hops']['secure_group'] do
   action :create
-  not_if "getent group #{node['hops']['secure_group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -99,7 +126,11 @@ user node['hops']['mr']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-#we need to fix the uid to match the one in the docker image
+# we need to fix the uid to match the one in the docker image
+# during an upgrade the user id might not match what we expect. 
+# the :create will re-create the user with a different id
+# yarnapp doesn't own anything on the fs (at least not in /srv/hops)
+# so it's safe to remove and re-create the user
 user node['hops']['yarnapp']['user'] do
   uid node['hops']['yarnapp']['uid']
   gid node['hops']['group']
@@ -107,7 +138,6 @@ user node['hops']['yarnapp']['user'] do
   manage_home true
   shell "/bin/bash"
   action :create
-  not_if "getent passwd #{node['hops']['yarnapp']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 

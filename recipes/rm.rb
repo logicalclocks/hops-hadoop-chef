@@ -9,7 +9,7 @@ kagent_hopsify "Generate x.509" do
   crypto_directory crypto_dir
   common_name consul_helper.get_service_fqdn("resourcemanager")
   action :generate_x509
-  not_if { conda_helpers.is_upgrade || node["kagent"]["enabled"] == "false" }
+  not_if { node["kagent"]["enabled"] == "false" }
 end
 
 template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
