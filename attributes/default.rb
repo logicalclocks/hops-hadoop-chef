@@ -444,6 +444,7 @@ default['hops']['nn']['enable_retrycache']            = "true"
 
 default['hops']['hdfs']['quota_enabled']              = "true"
 default['hops']['nn']['handler_count']                = 120
+default['hops']['nn']['subtree-executor-limit']       = 40
 
 default['hops']['gcp_url']                            = node['hops']['root_url'] + "/gcs-connector-hadoop2-latest.jar"
 

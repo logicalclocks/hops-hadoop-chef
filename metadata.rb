@@ -819,3 +819,7 @@ attribute "hops/xattrs/max-xattr-size",
 attribute "hops/acl/enabled",
           :description =>  "enable acl support  Default: true",
           :type => 'string'
+
+attribute "hops/nn/subtree-executor-limit",
+          :description =>  "size of the threadpool for subtree operations",
+          :type => 'string'
