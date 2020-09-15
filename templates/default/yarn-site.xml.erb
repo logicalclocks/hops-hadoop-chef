@@ -596,6 +596,11 @@
     <value><%= @zookeeper_fqdn %>:2181</value>
   </property>
 
+  <property>
+    <name>yarn.resourcemanager.nodes.exclude-path</name>
+    <value><%= node['hops']['conf_dir'] %>/yarn_exclude_nodes.xml</value>
+  </property>
+  
   <% if node['hops']['gpu'] == "true" -%>
   <property>
     <name>yarn.nodemanager.resource-plugins</name>

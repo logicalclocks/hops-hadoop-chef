@@ -51,6 +51,13 @@ for script in node['hops']['yarn']['scripts']
   end
 end
 
+file "#{node['hops']['conf_dir']}/yarn_exclude_nodes.xml" do 
+  owner node['hops']['rm']['user']
+  group node['hops']['group']
+  mode "700"
+  content '<?xml version="1.0"?><hosts/>'
+end
+
 cookbook_file "#{node['hops']['conf_dir']}/resourcemanager.yaml" do 
   source "metrics/resourcemanager.yaml"
   owner node['hops']['rm']['user']
