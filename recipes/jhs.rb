@@ -87,11 +87,12 @@ if node['hops']['systemd'] == "true"
     group "root"
     mode 0664
     variables({
-              :deps => deps
-              })
-if node['services']['enabled'] == "true"
-    notifies :enable, resources(:service => service_name)
-end
+      :deps => deps,
+      :nn_rpc_endpoint => consul_helper.get_service_fqdn("namenode")
+    })
+    if node['services']['enabled'] == "true"
+      notifies :enable, resources(:service => service_name)
+    end
     notifies :restart, resources(:service => service_name)
   end
 
