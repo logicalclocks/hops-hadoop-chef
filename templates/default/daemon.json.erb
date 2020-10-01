@@ -4,7 +4,7 @@
     "runtimes": {
         "nvidia": {
             "path": "nvidia-container-runtime",
-	    "runtimeArgs": []
+            "runtimeArgs": []
         }
     },
     <% end -%>
@@ -15,6 +15,8 @@
       "max-size": "100m"
     },
     "storage-driver":  "overlay2"<% if ! @registry_addr.eql?("") %>,
-    "insecure-registries" : ["<%= @registry_addr %>"]
+    "insecure-registries" : ["<%= @registry_addr %>"]<% if @override_dns %>,<% end -%><% else %>,<% end -%>
+    <% if @override_dns %>
+    "dns": <%= @dns_servers %>
     <% end -%>
 }
