@@ -125,13 +125,20 @@ if service_discovery_enabled()
   registry_addr="#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 end
 
+# Special case where its a localhost installation for Ubuntu
+# If we don't override Docker's DNS servers, in AWS we can't
+# resolve our own hostname
+override_dns = node['install']['localhost'].casecmp?("true") && node['platform_family'].eql?("debian")
+dns_servers = ["127.0.0.53"]
 template '/etc/docker/daemon.json' do
   source 'daemon.json.erb'
   owner 'root'
   mode '0755'
   action :create
   variables({
-              :registry_addr => registry_addr
+              :registry_addr => registry_addr,
+              :override_dns => override_dns,
+              :dns_servers => dns_servers
             })
 end
 
