@@ -92,7 +92,7 @@ default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
 default['hops']['nn']['replace-dn-on-failure']        = true
-default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
+default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER"
 
 default['hops']['yarn']['scripts']             = %w{ start stop restart }
 default['hops']['yarn']['ps_port']             = 20888
@@ -464,7 +464,7 @@ default['hops']['docker_version']['ubuntu']           = "19.03.6-0ubuntu1~18.04.
 default['hops']['docker_version']['centos']           = "19.03.8-3"
 default['hops']['selinux_version']['centos']          = "2.119.1-1.c57a6f9"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
-default['hops']['docker_img_version']                 = node['install']['version']
+default['hops']['docker_img_version']                 = "1.4.1"
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
 default['hops']['docker']['trusted_registries']       = ""
 default['hops']['docker']['mounts']                   = "#{node['hops']['conf_dir']},#{node['hops']['dir']}/spark,#{node['hops']['dir']}/flink,#{node['hops']['dir']}/apache-livy"
