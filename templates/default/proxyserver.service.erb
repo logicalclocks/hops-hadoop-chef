@@ -12,6 +12,7 @@ ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-ps.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-ps.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-ps.sh
 Restart=on-failure
+RestartSec=5
 
 Type = forking
 

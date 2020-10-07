@@ -14,6 +14,7 @@ ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-rm.sh
 LimitNOFILE = 65000
 LimitNPROC = 10000
 Restart=on-failure
+RestartSec=2
 
 Type = forking
 
