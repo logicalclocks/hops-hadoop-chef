@@ -1,6 +1,8 @@
 [Unit]
 Description = ResourceManager. The scheduler for YARN.
 After = syslog.target network.target remote-fs.target <%= @deps %>
+StartLimitIntervalSec=30
+StartLimitBurst=20
 
 [Service]
 User = <%= node['hops']['rm']['user'] %>
@@ -11,6 +13,7 @@ ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-rm.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-rm.sh
 LimitNOFILE = 65000
 LimitNPROC = 10000
+Restart=on-failure
 
 Type = forking
 
