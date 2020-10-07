@@ -1,8 +1,8 @@
 [Unit]
 Description = DataNode, blocks server for HDFS.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=30
-StartLimitBurst=20
+StartLimitIntervalSec=40
+StartLimitBurst=5
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>

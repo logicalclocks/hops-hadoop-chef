@@ -1,8 +1,8 @@
 [Unit]
 Description = Hadoop YARN ProxyServer.
 After = syslog.target network.target remote-fs.target
-StartLimitIntervalSec=30
-StartLimitBurst=20
+StartLimitIntervalSec=40
+StartLimitBurst=5
 
 [Service]
 User = <%= node['hops']['yarn']['user'] %>

@@ -1,8 +1,8 @@
 [Unit]
 Description = MapReduce JobHistoryServer.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=30
-StartLimitBurst=20
+StartLimitIntervalSec=80
+StartLimitBurst=10
 
 [Service]
 User = <%= node['hops']['mr']['user'] %>
