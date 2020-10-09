@@ -1,6 +1,8 @@
 [Unit]
 Description = DataNode, blocks server for HDFS.
 After = syslog.target network.target remote-fs.target <%= @deps %>
+StartLimitIntervalSec=40
+StartLimitBurst=5
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
@@ -13,6 +15,8 @@ ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-dn.sh
 LimitNOFILE = 65000
 LimitNPROC = 10000
 TimeoutSec= 10min
+Restart=on-failure
+RestartSec=5
 
 Type = forking
 
