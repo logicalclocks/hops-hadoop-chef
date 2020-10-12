@@ -393,6 +393,14 @@ for dir in lce_dirs do
   end
 end
 
+ruby_block 'Check for native binaries' do
+  block do
+    if !File.exist? "#{node['hops']['bin_dir']}/container-executor"
+      raise "File #{node['hops']['bin_dir']}/container-executor does not exist! Does Hops distribution contain native binaries?"
+    end
+  end
+end
+
 # For the LinuxContainerExecutor to work the container-executor bin needs to be owned by root:hadoop and have permission ---sr-s--- (6150)
 file "#{node['hops']['bin_dir']}/container-executor" do
   owner "root"
