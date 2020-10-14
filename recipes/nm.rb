@@ -119,7 +119,6 @@ if node['hops']['systemd'] == "true"
     rpc_resourcemanager_fqdn = consul_helper.get_service_fqdn("rpc.resourcemanager")
   end
 
-
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
