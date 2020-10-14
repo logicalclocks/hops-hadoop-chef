@@ -91,7 +91,7 @@ default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
-default['hops']['nn']['replace-dn-on-failure']        = true
+default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
 
 default['hops']['yarn']['scripts']             = %w{ start stop restart }
