@@ -85,13 +85,18 @@ if node['hops']['systemd'] == "true"
     ignore_failure true
   end
 
+  hopsworks_fqdn = nil
+  if service_discovery_enabled() && node['hops']['tls']['crl_enabled'].casecmp?("true")
+    hopsworks_fqdn = consul_helper.get_service_fqdn("hopsworks.glassfish")
+  end
   template systemd_script do
     source "#{service_name}.service.erb"
     owner "root"
     group "root"
     mode 0664
     variables({
-              :deps => deps
+              :deps => deps,
+              :hopsworks_fqdn => hopsworks_fqdn
               })
 if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
