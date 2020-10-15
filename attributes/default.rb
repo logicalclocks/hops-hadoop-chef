@@ -123,6 +123,8 @@ default['hops']['yarn']['log_roll_interval']    = 3600
 
 default['hops']['yarn']['nodemanager_hb_ms']   = "1000"
 
+default['hops']['yarn']['max_connect_wait']   = "900000"
+
 default['hops']['am']['max_attempts']           = 2
 
 default['hops']['yarn']['aux_services']        = "spark_shuffle,mapreduce_shuffle"

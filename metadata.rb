@@ -529,6 +529,10 @@ attribute "hops/yarn/nodemanager_hb_ms",
           :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
           :type => 'string'
 
+attribute "hops/yarn/max_connect_wait",
+          :description => "Maximum time to wait to establish connection to ResourceManager.",
+          :type => 'string'
+
 attribute "hops/rm/scheduler_class",
           :description => "Java Classname for the Yarn scheduler (fifo, capacity, fair)",
           :type => 'string'
