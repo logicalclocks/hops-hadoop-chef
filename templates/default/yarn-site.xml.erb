@@ -132,6 +132,12 @@
     <value>true</value>
   </property>
 
+  <property>
+    <name>yarn.resourcemanager.connect.max-wait.ms</name>
+    <value><%= node['hops']['yarn']['max_connect_wait'] %></value>
+  </property>
+
+
   <!--HA-->
   <property>
     <name>yarn.resourcemanager.ha.enabled</name>
