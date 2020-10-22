@@ -4,7 +4,7 @@ com.mysql.clusterj.database = <%= node['hops']['db'] %>
 com.mysql.clusterj.connection.pool.size = <%= node['ndb']['num_ndb_slots_per_client'] %>
 com.mysql.clusterj.max.transactions = 1024
 
-io.hops.metadata.ndb.mysqlserver.data_source_class_name = com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+io.hops.metadata.ndb.mysqlserver.data_source_class_name = com.mysql.cj.jdbc.MysqlDataSource
 io.hops.metadata.ndb.mysqlserver.host = 127.0.0.1
 io.hops.metadata.ndb.mysqlserver.port = <%= node['ndb']['mysql_port'] %>
 io.hops.metadata.ndb.mysqlserver.username = <%= node['mysql']['user'] %>
