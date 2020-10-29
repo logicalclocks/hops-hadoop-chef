@@ -619,4 +619,9 @@
     <description></description>
   </property>
 
+  <property>
+    <name>dfs.db.replication</name>
+    <value><%= node['ndb']['NoOfReplicas'] %></value>
+    <description>Number of replicas configured in the NDB cluster.</description>
+  </property>
 </configuration>
