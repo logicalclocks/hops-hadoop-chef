@@ -311,6 +311,9 @@ default['hops']['dfs']['replication']['work_multiplier_per_iteration']  = "2"
 
 default['hops']['dfs']['balance']['max_concurrent_moves']              = "50"
 
+#default no retries for move operation is 10. 
+default['hops']['dfs']['mover']['retry_max_attempts']                  = "20"
+
 default['hops']['dfs']['excluded_hosts']                               = ""
 
 default['hops']['fs-security-actions']['actor_class']                  = "io.hops.common.security.DevHopsworksFsSecurityActions"
