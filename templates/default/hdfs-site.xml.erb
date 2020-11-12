@@ -505,6 +505,11 @@
 </property>
 
 <property>
+   <name>dfs.mover.retry.max.attempts</name>
+   <value><%= node['hops']['dfs']['mover']['retry_max_attempts'] %></value>
+</property>
+
+<property>
    <name>dfs.namenode.replication.max-streams</name>
    <value><%= node['hops']['dfs']['replication']['max_streams'] %></value>
 </property>
