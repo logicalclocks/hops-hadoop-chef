@@ -465,6 +465,10 @@ attribute "hops/dfs/balance/max_concurrent_moves",
           :description => "Maximum number of threads for Datanode balancer pending moves",
           :type => 'string'
 
+attribute "hops/dfs/mover/retry_max_attempts",
+          :description => "Maximum number of retries to move a block",
+          :type => 'string'
+
 attribute "hops/dfs/excluded_hosts",
           :description => "Comma separated list of hosts to exclude from the HDFS cluster",
           :type => 'string'
