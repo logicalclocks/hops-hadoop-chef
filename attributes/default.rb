@@ -59,7 +59,7 @@ default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['dat
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
-default['hops']['hdfs']['umask']               = "0027"
+default['hops']['hdfs']['umask']               = "0007"
 
 
 
