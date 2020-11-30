@@ -55,16 +55,16 @@ if node['platform_family'].eql?("redhat")
 end
 
 # We need to change the group from the previous ID to the new one during an upgrade
-bash 'chgrp' do 
+bash 'chgrp' do
   user "root"
   code <<-EOH
     old_gid=`cat /etc/group | grep hadoop | awk '{split($0,a,":"); print a[3]}'`
     if [ "$old_gid" != "#{node['hops']['group_id']}" ];
     then
       find #{node['install']['dir']} -group $old_gid -exec chgrp #{node['hops']['group_id']} {} \\;
-    fi 
+    fi
   EOH
-  only_if { !node['install']['current_version'].eql?("") && 
+  only_if { !node['install']['current_version'].eql?("") &&
     Gem::Version.new(node['install']['current_version']) <= Gem::Version.new('1.3.0')}
   not_if  { node['install']['external_users'].casecmp("true") == 0 }
 end
@@ -127,7 +127,7 @@ user node['hops']['mr']['user'] do
 end
 
 # we need to fix the uid to match the one in the docker image
-# during an upgrade the user id might not match what we expect. 
+# during an upgrade the user id might not match what we expect.
 # the :create will re-create the user with a different id
 # yarnapp doesn't own anything on the fs (at least not in /srv/hops)
 # so it's safe to remove and re-create the user
@@ -345,7 +345,7 @@ bash 'extract-hadoop' do
   not_if { ::File.exist?("#{hin}") }
 end
 
-bash 'chown-sbin' do 
+bash 'chown-sbin' do
   user 'root'
   group 'root'
   code <<-EOH
@@ -408,7 +408,7 @@ file "#{node['hops']['bin_dir']}/container-executor" do
   mode "6150"
 end
 
-# Download JMX prometheus exporter 
+# Download JMX prometheus exporter
 jmx_prometheus_filename = File.basename(node['hops']['jmx']['prometheus_exporter']['url'])
 remote_file "#{node['hops']['share_dir']}/common/lib/#{jmx_prometheus_filename}" do
   source node['hops']['jmx']['prometheus_exporter']['url']
@@ -501,35 +501,19 @@ template "#{node['hops']['conf_dir']}/mapred-site.xml" do
   action :create
 end
 
-# This is here for client machines. These are machines that run Hopsworks or 
-# other services, but they don't run Hadoop services. 
-# These services read the ssl-server.xml for configuring TLS. 
+# This is here for client machines. These are machines that run Hopsworks or
+# other services, but they don't run Hadoop services.
+# These services read the ssl-server.xml for configuring TLS.
 # We template it here, so that it can be used with single node vms, where when
 # Hopsworks starts, it needs to read the ssl-server.xml
 # During a fresh installation, certificates won't be available at this stage, however,
 # the configuration will be still correct. Clients will fail until the certificates are
 # actually generated. This is fine.
 # At this stage we don't add the JWT token (False parameter) as Hopsworks is not running yet
-# The RM recipe will re-template this file and, at that stage, with the Hopsworks server running, 
+# The RM recipe will re-template this file and, at that stage, with the Hopsworks server running,
 # the JWT will be added.
 Chef::Recipe.send(:include, Hops::Helpers)
 template_ssl_server(false)
-
-template "/etc/ld.so.conf.d/hops.conf" do
-  source "hops.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  action :create
-end
-
-
-bash "ldconfig" do
-  user "root"
-  code <<-EOF
-     ldconfig
-  EOF
-end
 
 cookbook_file "#{node['hops']['bin_dir']}/hadoop_logs_mgm.py" do
   source "hadoop_logs_mgm.py"
