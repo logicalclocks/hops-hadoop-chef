@@ -1,16 +1,16 @@
 [Unit]
 Description = NameNode server for HDFS.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=120
-StartLimitBurst=10
+#The namenode takes ~32s to fail if glassfish is not up
+#restartSec is 2 so the service restart every 34s
+#a maximum burst of 18 in 11min guaranty that it will at least try for 10min (18*34=612s=10,2min)
+StartLimitIntervalSec=660
+StartLimitBurst=18
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-namenode.pid
-<% if !@hopsworks_fqdn.nil? -%>
-ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @hopsworks_fqdn %> ; do if systemctl list-units --full -all | grep -Fq 'glassfish-domain1'; then if systemctl is-active --quiet glassfish-domain1; then /bin/sleep 5; else ! break; fi; else /bin/sleep 5; fi;  done'
-<% end -%>
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nn.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-nn.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-nn.sh
