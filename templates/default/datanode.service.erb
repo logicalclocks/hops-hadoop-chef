@@ -1,14 +1,16 @@
 [Unit]
 Description = DataNode, blocks server for HDFS.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=40
-StartLimitBurst=5
+#The datanode takes ~31s to fail if the namenode is not up
+#restartSec is 5 so the service restart every 36s
+#a maximum burst of 17 in 11min guaranty that it will at least try for 10min (17*36=612s=10,2min)
+StartLimitIntervalSec=660
+StartLimitBurst=17
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-datanode.pid
-ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @nn_rpc_endpoint %> ; do if systemctl list-units --full -all | grep -Fq 'namenode'; then if systemctl is-active --quiet namenode; then /bin/sleep 5; else ! break; fi; else /bin/sleep 5; fi;  done'
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-dn.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-dn.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-dn.sh
