@@ -1,14 +1,16 @@
 [Unit]
 Description = MapReduce JobHistoryServer.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=80
-StartLimitBurst=10
+#The historyserver takes less to fail if the namenode is not up
+#restartSec is 5 so the service restart every 5s
+#a maximum burst of 121 in 11min guaranty that it will at least try for 10min 
+StartLimitIntervalSec=660
+StartLimitBurst=121
 
 [Service]
 User = <%= node['hops']['mr']['user'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['mr']['user'] %>-historyserver.pid
-ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @nn_rpc_endpoint %> ; do if systemctl list-units --full -all | grep -Fq 'namenode'; then if systemctl is-active --quiet namenode; then /bin/sleep 5; else ! break; fi; else /bin/sleep 5; fi;  done'
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-jhs.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-jhs.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-jhs.sh

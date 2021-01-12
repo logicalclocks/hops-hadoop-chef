@@ -1,8 +1,11 @@
 [Unit]
 Description = NodeManager. The Processing Nodes for YARN.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=40
-StartLimitBurst=5
+#The nodemanager takes ~36s to fail if the resourcemanager is not up
+#restartSec is 5 so the service restart every 41s
+#a maximum burst of 15 in 11min guaranty that it will at least try for 10min (15*41=615s=10,25min)
+StartLimitIntervalSec=660
+StartLimitBurst=15
 
 [Service]
 User = <%= node['hops']['yarn']['user'] %>
@@ -10,7 +13,6 @@ Group = <%= node['hops']['group'] %>
 
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['yarn']['user'] %>-nodemanager.pid
 
-ExecStartPre=/bin/bash -c 'while ! /usr/bin/host <%= @rm_rpc_endpoint %> ; do if systemctl list-units --full -all | grep -Fq 'resourcemanager'; then if systemctl is-active --quiet resourcemanager; then /bin/sleep 5; else ! break; fi; else /bin/sleep 5; fi;  done'
 ExecStart = <%= node['hops']['base_dir'] %>/sbin/start-nm.sh
 ExecStop = <%= node['hops']['base_dir'] %>/sbin/stop-nm.sh
 ExecReload = <%= node['hops']['base_dir'] %>/sbin/restart-nm.sh
