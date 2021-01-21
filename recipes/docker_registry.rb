@@ -60,6 +60,7 @@ end
 file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   action :delete
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
+  not_if { exists_local("cloud", "default") }
 end
 
 # we are root, using kagent's certificate should be ok
