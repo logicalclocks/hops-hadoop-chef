@@ -573,6 +573,11 @@
   </property>
   
   <property>
+    <name>yarn.resourcemanager.rmappsecurity.x509.key-size</name>
+    <value><%= node['hops']['rmappsecurity']['x509']['key-size'] %></value>
+  </property>
+
+  <property>
     <name>yarn.resourcemanager.rmappsecurity.jwt.enabled</name>
     <value><%= node['hops']['rmappsecurity']['jwt']['enabled'] %></value>
   </property>

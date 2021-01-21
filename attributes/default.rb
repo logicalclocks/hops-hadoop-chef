@@ -363,6 +363,7 @@ default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
 default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
 default['hops']['rmappsecurity']['x509']['sign-path']                   = "/hopsworks-ca/v2/certificate/app"
 default['hops']['rmappsecurity']['x509']['revoke-path']                 = "/hopsworks-ca/v2/certificate/app"
+default['hops']['rmappsecurity']['x509']['key-size']                    = "2048"
 
 default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
 default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"

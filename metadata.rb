@@ -253,6 +253,10 @@ attribute "hops/rmappsecurity/x509/revoke-path",
           :description => "HTTP endpoint to revoke application X.509",
           :type => 'string'
 
+attribute "hops/rmappsecurity/x509/key-size",
+          :description => "Application X.509 key size. Default: 2048",
+          :type => 'string'
+
 attribute "hops/rmappsecurity/jwt/enabled",
           :description => "Enable JWT on Yarn",
           :type => 'string'
