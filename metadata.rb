@@ -225,6 +225,14 @@ attribute "hops/server/threadpool",
           :description => "Number of threads in RPC server reading from socket",
           :type => 'string'
 
+attribute "hops/clusterj/max_sessions",
+          :description => "Number of preallocated ClusterJ session objects. This should be atleast as high as max mumber of threads on NN that access the database.",
+          :type => 'string'
+
+attribute "hops/clusterj/session_max_reuse_count",
+          :description => "Reuse count for ClusterJ session object. After this the session is restarted to release the native memeory held by the session object. New session creation can be expensive taking more than a sec.",
+          :type => 'string'
+
 attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'

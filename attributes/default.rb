@@ -91,6 +91,9 @@ default['hops']['format']                      = "true"
 default['hops']['io_buffer_sz']                = 131072
 default['hops']['container_cleanup_delay_sec'] = 0
 
+default['hops']['clusterj']['max_sessions']               = 1000 
+default['hops']['clusterj']['session_max_reuse_count']    = 5000 
+
 default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
 
