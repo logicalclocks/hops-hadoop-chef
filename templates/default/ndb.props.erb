@@ -12,7 +12,7 @@ io.hops.metadata.ndb.mysqlserver.password = <%= node['mysql']['password'] %>
 io.hops.metadata.ndb.mysqlserver.connection_pool_size = 10
 
 #size of the session pool. should be altreat as big as the number of active Tx in the system
-io.hops.session.pool.size = 1000
+io.hops.session.pool.size = <%= node['hops']['clusterj']['max_sessions'] %>
 #Session is reused n times and then it is GCed
-io.hops.session.reuse.count = 5000
+io.hops.session.reuse.count = <%= node['hops']['clusterj']['session_max_reuse_count'] %>
 
