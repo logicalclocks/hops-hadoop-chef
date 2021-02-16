@@ -53,7 +53,6 @@ for script in node['hops']['yarn']['scripts']
 end
 
 
-
 if node['install']['cloud'].casecmp?("gcp") == 0
   
   gcp_url = node['hops']['gcp_url']
@@ -86,7 +85,6 @@ if node['install']['cloud'].casecmp?("azure") == 0
 end
 
 
-
 cookbook_file "#{node['hops']['conf_dir']}/nodemanager.yaml" do 
   source "metrics/nodemanager.yaml"
   owner node['hops']['yarn']['user']
@@ -107,11 +105,6 @@ else
   systemd_script = "/lib/systemd/system/#{service_name}.service"
 end
 
-file systemd_script do
-  action :delete
-  ignore_failure true
-end
-
 rpc_resourcemanager_fqdn = my_private_ip()
 if service_discovery_enabled()
   rpc_resourcemanager_fqdn = consul_helper.get_service_fqdn("rpc.resourcemanager")
@@ -126,29 +119,13 @@ template systemd_script do
               :deps => deps,
               :rm_rpc_endpoint => rpc_resourcemanager_fqdn
             })
-if node['services']['enabled'] == "true"
+  if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => "#{service_name}")
-end
-  notifies :restart, resources(:service => service_name)
-end
-
-directory "/etc/systemd/system/#{service_name}.service.d" do
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
-
-template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
-  source "limits.conf.erb"
-  owner "root"
-  mode 0774
-  action :create
+  end
 end
 
 kagent_config "#{service_name}" do
   action :systemd_reload
-  not_if "systemctl status nodemanager"
 end
 
 if node['kagent']['enabled'] == "true"

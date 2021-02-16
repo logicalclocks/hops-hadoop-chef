@@ -91,26 +91,11 @@ template systemd_script do
   if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end
-  notifies :restart, resources(:service => service_name)
 end
 
 kagent_config "#{service_name}" do
   action :systemd_reload
 end
-
-directory "/etc/systemd/system/#{service_name}.service.d" do
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
-
-template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
-  source "limits.conf.erb"
-  owner "root"
-  mode 0774
-  action :create
-end 
 
 if node['kagent']['enabled'] == "true" 
   kagent_config service_name do

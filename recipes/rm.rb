@@ -96,31 +96,14 @@ template systemd_script do
             :deps => deps,
             :hopsworks_fqdn => hopsworks_fqdn
             })
-if node['services']['enabled'] == "true"
-    notifies :enable, resources(:service => "#{service_name}")
-end
-  notifies :restart, "service[#{service_name}]"
+  if node['services']['enabled'] == "true"
+      notifies :enable, resources(:service => "#{service_name}")
+  end
 end
 
 kagent_config "#{service_name}" do
   action :systemd_reload
-  not_if "systemctl status resourcemanager"
 end
-
-directory "/etc/systemd/system/#{service_name}.service.d" do
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
-
-template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
-  source "limits.conf.erb"
-  owner "root"
-  mode 0664
-  action :create
-end
-
 
 if node['kagent']['enabled'] == "true"
   kagent_config service_name do

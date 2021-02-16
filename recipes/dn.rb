@@ -72,32 +72,14 @@ template systemd_script do
               :deps => deps,
               :nn_rpc_endpoint => rpc_namenode_fqdn
             })
-if node['services']['enabled'] == "true"
+  if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
+  end
 end
-  notifies :restart, "service[#{service_name}]"
-end
-
-directory "/etc/systemd/system/#{service_name}.service.d" do
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
-
-template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
-  source "limits.conf.erb"
-  owner "root"
-  mode 0664
-  action :create
-  notifies :restart, "service[#{service_name}]"    
-end 
 
 kagent_config "#{service_name}" do
   action :systemd_reload
-  not_if "systemctl status datanode"    
 end
-  
 
 if node['kagent']['enabled'] == "true" 
   kagent_config service_name do

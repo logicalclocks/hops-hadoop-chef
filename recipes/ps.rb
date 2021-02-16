@@ -42,10 +42,9 @@ template systemd_script do
   owner "root"
   group "root"
   mode 0664
-if node['services']['enabled'] == "true"
+  if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
-end
-    notifies :restart, "service[#{service_name}]"
+  end
 end
 
 if node['kagent']['enabled'] == "true" 
