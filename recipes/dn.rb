@@ -40,86 +40,45 @@ end
 
 service_name="datanode"
 
-if node['hops']['systemd'] == "true"
+case node['platform_family']
+when "rhel"
+  systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+else
+  systemd_script = "/lib/systemd/system/#{service_name}.service"
+end
 
-  case node['platform_family']
-  when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
-  else
-    systemd_script = "/lib/systemd/system/#{service_name}.service"
-  end
+service "#{service_name}" do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :nothing
+end
 
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Systemd
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :nothing
-  end
+file systemd_script do
+  action :delete
+  ignore_failure true
+end
 
-  file systemd_script do
-    action :delete
-    ignore_failure true
-  end
+rpc_namenode_fqdn = my_private_ip()
+if service_discovery_enabled()
+  rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
+end
 
-  rpc_namenode_fqdn = my_private_ip()
-  if service_discovery_enabled()
-    rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
-  end
-  
-  template systemd_script do
-    source "#{service_name}.service.erb"
-    owner "root"
-    group "root"
-    mode 0664
-    variables({
-                :deps => deps,
-                :nn_rpc_endpoint => rpc_namenode_fqdn
-              })
-if node['services']['enabled'] == "true"
+template systemd_script do
+  source "#{service_name}.service.erb"
+  owner "root"
+  group "root"
+  mode 0664
+  variables({
+              :deps => deps,
+              :nn_rpc_endpoint => rpc_namenode_fqdn
+            })
+  if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
+  end
 end
-    notifies :restart, "service[#{service_name}]"
-  end
 
-  directory "/etc/systemd/system/#{service_name}.service.d" do
-    owner "root"
-    group "root"
-    mode "755"
-    action :create
-  end
-
-  template "/etc/systemd/system/#{service_name}.service.d/limits.conf" do
-    source "limits.conf.erb"
-    owner "root"
-    mode 0664
-    action :create
-    notifies :restart, "service[#{service_name}]"    
-  end 
-
-  kagent_config "#{service_name}" do
-    action :systemd_reload
-    not_if "systemctl status datanode"    
-  end
-  
-  
-else #sysv
-
-  service "#{service_name}" do
-    provider Chef::Provider::Service::Init::Debian
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :nothing
-  end
-
-  template "/etc/init.d/#{service_name}" do
-    source "#{service_name}.erb"
-    owner "root"
-    group "root"
-    mode 0755        
-if node['services']['enabled'] == "true"
-    notifies :enable, resources(:service => "#{service_name}")
-end
-    notifies :restart, resources(:service => "#{service_name}"), :immediately
-  end
-
+kagent_config "#{service_name}" do
+  action :systemd_reload
 end
 
 if node['kagent']['enabled'] == "true" 
