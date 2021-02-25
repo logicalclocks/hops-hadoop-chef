@@ -629,4 +629,14 @@
     <value><%= node['ndb']['NoOfReplicas'] %></value>
     <description>Number of replicas configured in the NDB cluster.</description>
   </property>
+
+  <property>
+    <name>dfs.disable.non.cloud.storage.policies</name>
+    <value><%= node['hops']['disable_non_cloud_storage_policies'] %></value>
+    <description>
+      Enable/Disable non cloud storage policies. 
+      This parameter is only effective if 
+      dfs.enable.cloud.persistence is set to true.
+    </description>
+  </property>
 </configuration>
