@@ -537,6 +537,10 @@ attribute "hops/cloud_store_small_files_in_db",
           :description => "Enable/Disable storing small files in NDB for CLOUD storage policy",
           :type => 'string'
 
+attribute "hops/disable_non_cloud_storage_policies",
+          :description => "Enable/Disable non cloud storage policies",
+          :type => 'string'
+
 attribute "hops/aws_s3_bucket",
           :description => "S3 bucket used to store file system blocks",
           :type => 'string'
