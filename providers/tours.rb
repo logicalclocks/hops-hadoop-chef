@@ -9,7 +9,16 @@ action :update_local_cache do
         not_if { ::File.directory?(cloud_cache_dir) }
     end
 
+    if new_resource.abs_paths.any?{|arr| arr.length() != 2}
+        raise "abs_paths is expected to be an array of arrays, where each array has 2 items (src, dst)."
+    end 
+
+    if new_resource.abs_tours_info.any?{|arr| arr.length() != 2}
+        raise "abs_tours_info is expected to be an array of arrays, where each array has 2 items (src, dst)."
+    end 
+    
     new_resource.rel_paths.each do |src|
+        # dst is infered from the local cache dir 
         dst = "#{cloud_cache_dir}/#{::File.basename(src)}"
         bash "Copy #{src} to #{dst}" do
             user node['hops']['hdfs']['user']
@@ -36,12 +45,12 @@ action :update_local_cache do
     if ::File.exists?(tours_info_file)
         old_tours_info = "#{::File.read(tours_info_file)}\n"
     end 
-
-
-    # dst,user,group,mode
-    rel_tours_info = new_resource.rel_tours_info.map{|arr| ["#{cloud_cache_dir}/#{::File.basename(arr[0])}", arr[0], arr[1], arr[2], arr[3]].join(",")}.join("\n")
-    # src,dst,user,group,mode
-    abs_tours_info = new_resource.abs_tours_info.map{|arr| arr.join(",")}.join("\n")
+    
+    # dst
+    # src is infered from the local cache dir 
+    rel_tours_info = new_resource.rel_tours_info.map{|dst| ["#{cloud_cache_dir}/#{::File.basename(dst)}", dst, new_resource.owner, new_resource.group, new_resource.mode].join(",")}.join("\n")
+    # src,dst
+    abs_tours_info = new_resource.abs_tours_info.map{|arr| [arr[0], arr[1], new_resource.owner, new_resource.group, new_resource.mode].join(",")}.join("\n")
     
     tours_info = "#{old_tours_info}#{rel_tours_info}#{abs_tours_info.empty? ? "" : "\n"}#{abs_tours_info}"
     file tours_info_file do
