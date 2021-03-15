@@ -31,15 +31,15 @@ services = [
         }
     },
     {
-        id = "nm/http"
+        id = "nm/https"
         name = "nodemanager"
         tags = [
-            "http",
+            "https",
             "webapp"
         ]
-        port = 8042
+        port = 8044
         check = {
-            id = "http-health-check"
+            id = "https-health-check"
             alias_service = "nm/rpc"
         }
     },
