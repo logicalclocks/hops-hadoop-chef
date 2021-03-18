@@ -847,3 +847,7 @@ attribute "hops/acl/enabled",
 attribute "hops/nn/subtree-executor-limit",
           :description =>  "size of the threadpool for subtree operations",
           :type => 'string'
+
+attribute "hops/nn/tx_retry_count",
+          :description =>  "Number of times a transaction must be retried if it fails due to transient database exceptions",
+          :type => 'string'
