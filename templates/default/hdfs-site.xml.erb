@@ -639,4 +639,14 @@
       dfs.enable.cloud.persistence is set to true.
     </description>
   </property>
+
+  <property>
+    <name>dfs.namenode.subtree-executor-limit</name>
+    <value><%= node['hops']['nn']['tx_retry_count'] %></value>
+    <description>
+      Number of times a transaction must be retried
+      if it fails due to transient database exceptions.
+    </description>
+  </property>
+
 </configuration>
