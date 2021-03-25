@@ -541,6 +541,10 @@ attribute "hops/disable_non_cloud_storage_policies",
           :description => "Enable/Disable non cloud storage policies",
           :type => 'string'
 
+attribute "hops/nn/cloud_max_br_threads",
+          :description => "Number of threads for block reporting system for provided blocks",
+          :type => 'string'
+
 attribute "hops/aws_s3_bucket",
           :description => "S3 bucket used to store file system blocks",
           :type => 'string'
