@@ -77,16 +77,16 @@ services = [
         }
     },
     {
-        id = "rm/http"
+        id = "rm/https"
         name = "resourcemanager"
         tags = [
             "rm",
-            "http",
+            "https",
             "webapp"
         ]
-        port = 8088
+        port = 8089
         check = {
-            id = "rm-http-check"
+            id = "rm-https-check"
             alias_service = "rm/rpc"
         }
     },

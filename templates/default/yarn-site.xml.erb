@@ -43,9 +43,14 @@
   </property>
 
   <property>
-    <name>yarn.resourcemanager.webapp.address</name>
-    <value>${yarn.resourcemanager.hostname}:8088</value>
-    <description>The http address of the RM web application.</description>
+    <name>yarn.resourcemanager.webapp.https.address</name>
+    <value>${yarn.resourcemanager.hostname}:8089</value>
+    <description>The https address of the RM web application.</description>
+  </property>
+
+  <property>
+    <name>yarn.http.policy</name>
+    <value>HTTPS_ONLY</value>
   </property>
 
   <property>
@@ -218,7 +223,7 @@
   <property>
     <description>NM Webapp address.</description>
     <name>yarn.nodemanager.webapp.address</name>
-    <value>0.0.0.0:8042</value>
+    <value>0.0.0.0:8044</value>
   </property>
 
   <property>
