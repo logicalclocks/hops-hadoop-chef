@@ -500,3 +500,5 @@ default['hops']['acl']['enabled']                     = "true"
 #Cache tour files locally for cloud setup
 default["hops"]["cloud_tours_cache"]['base_dir']   = "#{node['hops']['hdfs']['user-home']}/tours_cache"
 default["hops"]["cloud_tours_cache"]['info_csv']   = "tours_info.csv"
+
+default['hops']['yarn']['is-elastic']              = "false"

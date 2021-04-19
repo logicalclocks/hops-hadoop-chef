@@ -855,3 +855,7 @@ attribute "hops/nn/subtree-executor-limit",
 attribute "hops/nn/tx_retry_count",
           :description =>  "Number of times a transaction must be retried if it fails due to transient database exceptions",
           :type => 'string'
+
+attribute "hops/yarn/is-elastic",
+          :description =>  "if true yarn allows allocating resources that are not in the cluster yet",
+          :type => 'string'
