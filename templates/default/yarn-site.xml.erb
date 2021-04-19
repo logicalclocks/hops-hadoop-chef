@@ -669,4 +669,15 @@
   <% end -%>
 
   <% end -%>
+
+  <property>
+    <name>yarn.client.load.resource-types.from-server</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.is-elastic</name>
+    <value><%= node['hops']['yarn']['is-elastic'] %></value>
+  </property>
+  
 </configuration>
