@@ -3,6 +3,7 @@ com.mysql.clusterj.connectstring = <%= @ndb_connectstring %>
 com.mysql.clusterj.database = <%= node['hops']['db'] %>
 com.mysql.clusterj.connection.pool.size = <%= node['ndb']['num_ndb_slots_per_client'] %>
 com.mysql.clusterj.max.transactions = 1024
+com.mysql.clusterj.max.cached.instances=256
 
 io.hops.metadata.ndb.mysqlserver.data_source_class_name = com.mysql.cj.jdbc.MysqlDataSource
 io.hops.metadata.ndb.mysqlserver.host = 127.0.0.1
