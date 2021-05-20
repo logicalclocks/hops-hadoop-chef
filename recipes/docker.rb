@@ -34,8 +34,12 @@ when 'rhel'
     EOH
     not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64"
   end
-  
+
 when 'debian'
+  package 'containerd' do
+    version node['hops']['containerd_version']['ubuntu']
+  end
+
   package 'docker.io' do
     version node['hops']['docker_version']['ubuntu']
   end
