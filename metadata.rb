@@ -233,6 +233,14 @@ attribute "hops/clusterj/session_max_reuse_count",
           :description => "Reuse count for ClusterJ session object. After this the session is restarted to release the native memeory held by the session object. New session creation can be expensive taking more than a sec.",
           :type => 'string'
 
+attribute "hops/clusterj/enable_dto_cache",
+          :description => "Enable dto cache provided by ClusterJ lib",
+          :type => 'string'
+
+attribute "hops/clusterj/enable_session_cache",
+          :description => "Enable session cache provided by ClusterJ lib",
+          :type => 'string'
+
 attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
