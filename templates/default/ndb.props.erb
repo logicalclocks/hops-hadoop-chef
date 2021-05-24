@@ -4,6 +4,15 @@ com.mysql.clusterj.database = <%= node['hops']['db'] %>
 com.mysql.clusterj.connection.pool.size = <%= node['ndb']['num_ndb_slots_per_client'] %>
 com.mysql.clusterj.max.transactions = 1024
 
+#clusterj caching
+#set io.hops.enable.clusterj.dto.cache and io.hops.enable.clusterj.session.cache to use dto and session caching provided by clusterj
+io.hops.enable.clusterj.dto.cache=<%= node['hops']['clusterj']['enable_dto_cache'] %>
+io.hops.enable.clusterj.session.cache=<%= node['hops']['clusterj']['enable_session_cache'] %>
+
+com.mysql.clusterj.max.cached.instances=256
+com.mysql.clusterj.max.cached.sessions=0
+com.mysql.clusterj.warmup.cached.sessions=0
+
 io.hops.metadata.ndb.mysqlserver.data_source_class_name = com.mysql.cj.jdbc.MysqlDataSource
 io.hops.metadata.ndb.mysqlserver.host = 127.0.0.1
 io.hops.metadata.ndb.mysqlserver.port = <%= node['ndb']['mysql_port'] %>

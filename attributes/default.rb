@@ -94,6 +94,9 @@ default['hops']['container_cleanup_delay_sec'] = 0
 
 default['hops']['clusterj']['max_sessions']               = 1000 
 default['hops']['clusterj']['session_max_reuse_count']    = 5000 
+default['hops']['clusterj']['enable_dto_cache']           = "false" 
+default['hops']['clusterj']['enable_session_cache']       = "false" 
+
 
 default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
@@ -227,7 +230,7 @@ default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-
 
 default['hops']['log_level']                = "DEBUG"
 
-default['hops']['ndb']['version']              = "8.0.21"
+default['hops']['ndb']['version']              = "21.04.0"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
