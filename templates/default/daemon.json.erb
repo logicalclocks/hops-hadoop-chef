@@ -18,8 +18,8 @@
     "storage-driver":  "overlay2"<% if ! @registry_addr.eql?("") %>,
 
     "insecure-registries" : [
-      <% @insecure_registries.each do |registry| %>
-      "<% "#{registry}" %>,"
+      <% @insecure_registries.each_with_index do |registry,index| %>
+        <% if index != 0 %>,<% end-%>"<%= registry %>"
       <% end -%>
     ]<% if @override_dns %>,<% end -%>
 

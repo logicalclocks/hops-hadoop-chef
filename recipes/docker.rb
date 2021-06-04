@@ -122,7 +122,7 @@ directory '/etc/docker/' do
   recursive true
 end
 
-insecure_registries = ['hops']['docker']['insecure_registries'].split(",")
+insecure_registries = node['hops']['docker']['insecure_registries'].split(",")
 if service_discovery_enabled()
   registry_host = consul_helper.get_service_fqdn("registry")
   insecure_registries << "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
