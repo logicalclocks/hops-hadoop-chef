@@ -481,6 +481,7 @@ default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04*"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
 default['hops']['docker_img_version']                 = node['install']['version']
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
+default['hops']['docker']['insecure_registries']      = ""
 default['hops']['docker']['trusted_registries']       = ""
 default['hops']['docker']['mounts']                   = "#{node['hops']['conf_dir']},#{node['hops']['dir']}/spark,#{node['hops']['dir']}/flink,#{node['hops']['dir']}/apache-livy"
 default['hops']['docker']['base']['image']['name']           = "base"

@@ -804,6 +804,10 @@ attribute "hops/docker_dir",
           :description =>  "Path on the host machine to be used to store docker containers,imgs,logs",
           :type => 'string'
 
+attribute "hops/docker/insecure_registries",
+          :description => "Insecure registries to add to the /etc/docker/daemon.json (comma separated list host:port)",
+          :type => 'string'
+
 attribute "hops/docker/trusted_registries",
           :description => "Trusted registries to pull docker images for yarn (comma separated list host:port)",
           :type => 'string'
