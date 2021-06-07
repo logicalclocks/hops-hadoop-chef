@@ -122,11 +122,10 @@ directory '/etc/docker/' do
   recursive true
 end
 
-registry_addr=""
-
+insecure_registries = node['hops']['docker']['insecure_registries'].split(",")
 if service_discovery_enabled()
-  registry_host=consul_helper.get_service_fqdn("registry")
-  registry_addr="#{registry_host}:#{node['hops']['docker']['registry']['port']}"
+  registry_host = consul_helper.get_service_fqdn("registry")
+  insecure_registries << "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 end
 
 # Special case where its a localhost installation for Ubuntu
@@ -134,13 +133,14 @@ end
 # resolve our own hostname
 override_dns = node['install']['localhost'].casecmp?("true") && node['platform_family'].eql?("debian")
 dns_servers = ["127.0.0.53"]
+
 template '/etc/docker/daemon.json' do
   source 'daemon.json.erb'
   owner 'root'
   mode '0755'
   action :create
   variables({
-              :registry_addr => registry_addr,
+              :insecure_registries => insecure_registries,
               :override_dns => override_dns,
               :dns_servers => dns_servers
             })
