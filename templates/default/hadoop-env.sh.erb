@@ -297,7 +297,9 @@ fi
 # messages. For non-namenode daemons, the Java property must be set in
 # the appropriate _OPTS if one wants something other than INFO,NullAppender
 # Java property: hdfs.audit.logger
-# export HDFS_AUDIT_LOGGER=INFO,NullAppender
+<% if node['hops']['nn']['audit_log'].casecmp?("true") %>
+export HDFS_AUDIT_LOGGER=INFO,RFAAUDIT
+<% end %>
 
 # Specify the JVM options to be used when starting the NameNode.
 # These options will be appended to the options specified as HADOOP_OPTS

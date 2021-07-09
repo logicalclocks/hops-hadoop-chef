@@ -228,8 +228,6 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['log_level']                = "DEBUG"
-
 default['hops']['ndb']['version']              = "21.04.0"
 
 if node['hops']['ndb']['version'] != ""
@@ -507,3 +505,7 @@ default["hops"]["cloud_tours_cache"]['base_dir']   = "#{node['hops']['hdfs']['us
 default["hops"]["cloud_tours_cache"]['info_csv']   = "tours_info.csv"
 
 default['hops']['yarn']['is-elastic']              = "false"
+
+# Audit logs
+default['hops']['nn']['audit_log']                 = "false"
+default['hops']['rm']['audit_log']                 = "false"
