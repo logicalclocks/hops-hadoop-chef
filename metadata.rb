@@ -875,3 +875,11 @@ attribute "hops/nn/tx_retry_count",
 attribute "hops/yarn/is-elastic",
           :description =>  "if true yarn allows allocating resources that are not in the cluster yet",
           :type => 'string'
+
+attribute "hops/nn/audit_log",
+          :description =>  "Enable audit logs for HopsFS (default false)",
+          :type => 'string'
+
+attribute "hops/rm/audit_log",
+          :description =>  "Enable audit logs for Yarn RM (default false)",
+          :type => 'string'
