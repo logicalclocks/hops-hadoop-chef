@@ -45,3 +45,7 @@ dependencies:
     global:
       - consul::master
       - consul::slave
+  - recipe: hops::fuse_mnt
+    global:
+      - hops::nn
+      - hops::dn
