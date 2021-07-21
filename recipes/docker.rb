@@ -36,12 +36,34 @@ when 'rhel'
   end
 
 when 'debian'
-  package 'containerd' do
-    version node['hops']['containerd_version']['ubuntu']
+  packages = [
+    "containerd_#{node['hops']['containerd_version']['ubuntu']}_amd64.deb",
+    "docker.io_#{node['hops']['docker_version']['ubuntu']}_amd64.deb",
+    "runc_#{node['hops']['runc_version']['ubuntu']}_amd64.deb"
+  ]
+
+  packages.each do |pkg|
+    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
+      source "#{node['hops']['docker']['pkg']['download_url']['ubuntu']}/#{pkg}"
+      owner 'root'
+      group 'root'
+      mode '0755'
+      action :create
+    end
   end
 
-  package 'docker.io' do
-    version node['hops']['docker_version']['ubuntu']
+  # Additional dependencies needed, but dpkg doesn't know how to fetch them
+  # from the repositories
+  package ['pigz', 'bridge-utils']
+
+  bash "install_pkgs" do
+    user 'root'
+    group 'root'
+    cwd Chef::Config['file_cache_path']
+    code <<-EOH
+        dpkg -i #{packages.join(" ")}
+    EOH
+    not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
   end
 end
 
