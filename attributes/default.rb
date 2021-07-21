@@ -471,11 +471,17 @@ default['hops']['gpu']                                = "false"
 
 #DOCKER
 default['hops']['docker']['enabled']                  = "true"
-default['hops']['docker_version']['ubuntu']           = "19.03.6-0ubuntu1~18.04.*"
+default['hops']['docker_version']['ubuntu']           = "19.03.6-0ubuntu1~18.04.2"
 default['hops']['docker_version']['centos']           = "19.03.8-3"
 default['hops']['selinux_version']['centos']          = "2.119.1-1.c57a6f9"
-default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04*"
+default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04.2"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
+default['hops']['runc_version']['ubuntu']             = "1.0.0~rc95-0ubuntu1~18.04.1"
+
+
+default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"
+default['hops']['docker']['pkg']['download_url']['ubuntu'] ="#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu'].split('-')[0]}/"
+
 default['hops']['docker_img_version']                 = node['install']['version']
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
 default['hops']['docker']['trusted_registries']       = ""
@@ -485,9 +491,11 @@ default['hops']['docker']['base']['image']['python']['name']  = "python37"
 default['hops']['docker']['base']['image']['python']['version'] = "3.7"
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
 default['hops']['cgroup-driver']                      = "cgroupfs"
+
 default['hops']['docker']['registry']['port']         = 4443
+
 default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/kube/docker-images/registry_image.tar"
-default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"
+
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 #XAttrs
