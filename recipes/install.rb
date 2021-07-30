@@ -254,11 +254,17 @@ directory node['data']['dir'] do
   not_if { ::File.directory?(node['data']['dir']) }
 end
 
+directory node['hops']['data_volume']['root_dir'] do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode "0770"
+  action :create
+end
+
 directory node['hops']['data_volume']['data_dir'] do
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0770"
-  recursive true
   action :create
 end
 
