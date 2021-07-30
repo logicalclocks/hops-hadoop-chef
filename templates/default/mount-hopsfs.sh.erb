@@ -6,7 +6,7 @@ mount_point=<%= node['hops']['fuse']['mount_point'] %>
 mount_bin="<%= @fuse_mount_bin %>"
 common_params="--stageDir <%= node['hops']['fuse']['staging_folder'] %>  <%= @nn_address %>:<%= node['hops']['nn']['port'] %>  <%= node['hops']['fuse']['mount_point'] %>  > <%=node['hops']['logs_dir']%>/fuse-mount.log 2>&1"
 
-<% if node['hops']['tls']['enabled'].eql? "true" -%>
+<% if node['hops']['tls']['enabled'].casecmp?("true") -%>
 command="$mount_bin  -tls $common_params"
 <% else %>
 command="$mount_bin  $common_params"
@@ -23,5 +23,5 @@ files=$(ls $mount_point | wc -l)
 if [ "$files" -gt "0" ]; then
         exit 0;
 else
-        exit -1;
+        exit 1;
 fi

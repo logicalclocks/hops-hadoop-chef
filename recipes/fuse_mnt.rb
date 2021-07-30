@@ -40,11 +40,6 @@ fuse_mount_bin_url = node['hops']['fuse']['dist_url']
 bin_name = File.basename(fuse_mount_bin_url)
 fuse_mount_bin = "#{node['hops']['sbin_dir']}/#{bin_name}"
 
-file fuse_mount_bin do
-  action :delete
-  only_if { File.exist? "#{fuse_mount_bin}" }
-end
-
 remote_file fuse_mount_bin do
   source fuse_mount_bin_url
   owner node['hops']['hdfs']['user']
@@ -53,55 +48,45 @@ remote_file fuse_mount_bin do
   action :create
 end
 
-# FS URI
+link "#{node['hops']['sbin_dir']}/hops-fuse-mount" do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  to "#{fuse_mount_bin}"
+end
+
+# nn address
 my_ip = my_private_ip()
-if node['install']['localhost'].casecmp?("true")
-  nn_address = "localhost"
-else 
+if service_discovery_enabled()
+  rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
+else
   if node['hops']['nn']['private_ips'].include?(my_ip)
-    # If I'm a NameNode set it to my fqdn or IP
-    if service_discovery_enabled()
-      nn_address = node['fqdn']
-    else
-      nn_address = my_ip
-    end
+    rpc_namenode_fqdn = my_ip
   else
-    # Otherwise use Service Discovery FQDN
-    nn_address = rpc_namenode_fqdn
+    rpc_namenode_fqdn = private_recipe_ip("hops", "nn")
   end
 end
 
 # creating script to mount FS
-file "#{node['hops']['sbin_dir']}/mount-fs.sh" do
-  action :delete
-  only_if { File.exist? "#{node['hops']['sbin_dir']}/mount-fs.sh" }
-end
-
-file "#{node['hops']['sbin_dir']}/unmount-fs.sh" do
-  action :delete
-  only_if { File.exist? "#{node['hops']['sbin_dir']}/unmount-fs.sh" }
-end
-
-template "#{node['hops']['sbin_dir']}/mount-fs.sh" do
+template "#{node['hops']['sbin_dir']}/mount-hopsfs.sh" do
   source "mount-hopsfs.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['hdfs']['group']
   mode "750"
   variables({
-    :nn_address => nn_address,
-    :fuse_mount_bin => fuse_mount_bin
+    :nn_address => rpc_namenode_fqdn,
+    :fuse_mount_bin => "#{node['hops']['sbin_dir']}/hops-fuse-mount"
   })
   action :create
 end
 
-template "#{node['hops']['sbin_dir']}/unmount-fs.sh" do
+template "#{node['hops']['sbin_dir']}/umount-hopsfs.sh" do
   source "umount-hopsfs.sh.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['hdfs']['group']
   mode "750"
   variables({
-    :nn_address => nn_address,
-    :fuse_mount_bin => fuse_mount_bin
+    :nn_address => rpc_namenode_fqdn,
+    :fuse_mount_bin => "#{node['hops']['sbin_dir']}/hops-fuse-mount"
   })
   action :create
 end
@@ -127,11 +112,6 @@ when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
 when "debian"
   systemd_script = "/lib/systemd/system/#{service_name}.service"
-end
-
-file systemd_script do
-  action :delete
-  ignore_failure true
 end
 
 template systemd_script do
