@@ -212,6 +212,7 @@ default['hops']['systemd']                     = "true"
 
 default['hops']['log']['maxfilesize']          = "256MB"
 default['hops']['log']['maxbackupindex']       = 10
+default['hops']['log']['pattern']              = "%d{ISO8601} %p %c: %m%n"
 
 # Retention period for Hadoop log copied over to HDFS
 # Value suffix can be
