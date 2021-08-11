@@ -7,8 +7,8 @@ StartLimitBurst=15
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-hopsfsmount.pid
-ExecStart = <%= node['hops']['sbin_dir'] %>/mount-fs.sh
-ExecStop = <%= node['hops']['sbin_dir'] %>/unmount-fs.sh
+ExecStart = <%= node['hops']['sbin_dir'] %>/mount-hopsfs.sh
+ExecStop = <%= node['hops']['sbin_dir'] %>/unmount-hopsfs.sh
 LimitNOFILE = 20000
 Type = forking
 
