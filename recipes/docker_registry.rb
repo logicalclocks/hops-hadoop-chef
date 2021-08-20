@@ -156,6 +156,58 @@ file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end
 
+#rstudio
+
+rstudio_image_url = node['hops']['docker']['rstudio']['download_url']
+rstudio_filename = File.basename(rstudio_image_url)
+download_rstudio_command = " wget #{rstudio_image_url}"
+rstudio_image = "#{node['hops']['docker']['rstudio']['image']['name']}:#{node['hops']['docker_img_version']}"
+
+if node['install']['enterprise']['install'].casecmp? "true"
+  download_rstudio_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{rstudio_image_url}"
+end
+
+
+bash "download_rstudio_image" do
+  user "root"
+  sensitive true
+  code <<-EOF
+       #{download_rstudio_command} -O #{Chef::Config['file_cache_path']}/#{rstudio_filename}
+  EOF
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{rstudio_filename}" }
+  not_if "docker image inspect #{registry_address}/#{rstudio_image}
+end
+
+bash "import_rstudio_image" do
+  user "root"
+  code <<-EOF
+    docker load -i #{Chef::Config['file_cache_path']}/#{rstudio_filename}
+  EOF
+  not_if "docker image inspect #{registry_address}/#{rstudio_image}"
+end
+
+bash "tag_rstudio_images" do
+  user "root"
+  code <<-EOF
+    docker tag #{rstudio_image} #{registry_address}/#{rstudio_image}
+    docker rmi #{rstudio_image}
+  EOF
+  not_if "docker image inspect #{registry_address}/#{rstudio_image}"
+end
+
+bash "push_rstudio_image" do
+  user "root"
+  code <<-EOF
+    docker push #{registry_address}/#{rstudio_image}
+  EOF
+end
+
+file "#{Chef::Config['file_cache_path']}/#{rstudio_filename}" do
+  action :delete
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{rstudio_filename}" }
+end
+
+
 # We add docker in kagent in this recipe as the hops::docker recipe runs during the install phase and it might run
 # before kagent::install
 service_name='docker'

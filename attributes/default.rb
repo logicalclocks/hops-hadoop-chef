@@ -514,6 +514,9 @@ default['hops']['docker']['base']['image']['python']['version'] = "3.7"
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
 default['hops']['cgroup-driver']                      = "cgroupfs"
 
+default['hops']['docker']['rstudio']['image']['name'] = "rstudio"
+default['hops']['docker']['rstudio']['download_url']  = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/rstudio.tar"
+
 default['hops']['docker']['registry']['port']         = 4443
 
 default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/kube/docker-images/registry_image.tar"
