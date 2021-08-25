@@ -175,7 +175,7 @@ bash "download_rstudio_image" do
        #{download_rstudio_command} -O #{Chef::Config['file_cache_path']}/#{rstudio_filename}
   EOF
   not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{rstudio_filename}" }
-  not_if "docker image inspect #{registry_address}/#{rstudio_image}
+  not_if "docker image inspect #{registry_address}/#{rstudio_image}"
 end
 
 bash "import_rstudio_image" do
