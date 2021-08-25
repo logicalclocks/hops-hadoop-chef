@@ -70,7 +70,7 @@ end
 template "#{node['hops']['sbin_dir']}/mount-hopsfs.sh" do
   source "mount-hopsfs.sh.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['hdfs']['group']
+  group node['hops']['group']
   mode "750"
   variables({
     :nn_address => rpc_namenode_fqdn,
@@ -82,7 +82,7 @@ end
 template "#{node['hops']['sbin_dir']}/umount-hopsfs.sh" do
   source "umount-hopsfs.sh.erb"
   owner node['hops']['hdfs']['user']
-  group node['hops']['hdfs']['group']
+  group node['hops']['group']
   mode "750"
   variables({
     :nn_address => rpc_namenode_fqdn,
