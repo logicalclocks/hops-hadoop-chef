@@ -401,12 +401,28 @@ attribute "hops/group",
           :description => "Group to run hdfs/yarn/yarnapp/mr as",
           :type => 'string'
 
+attribute "hops/secure_group",
+          :description => "Privileged group for service users",
+          :type => 'string'
+
+attribute "hops/secure_group_id",
+          :description => "Privileged group ID. Default: 1505",
+          :type => 'string'
+
 attribute "hops/hdfs/user-home",
           :description => "Home directory of hdfs user",
           :type => 'string'
 
 attribute "hops/yarn/user-home",
           :description => "Home directory of yarn user",
+          :type => 'string'
+
+attribute "hops/rm/user",
+          :description => "Username of the user running ResourceManager",
+          :type => 'string'
+
+attribute "hops/rm/user_id",
+          :description => "rmyarn user id. Default: 1508",
           :type => 'string'
 
 attribute "hops/rm/user-home",
@@ -421,6 +437,10 @@ attribute "hops/yarn/user",
           :description => "Username to run yarn as",
           :type => 'string'
 
+attribute "hops/yarn/user_id",
+          :description => "Yarn user id. Default: 1507",
+          :type => 'string'
+
 attribute "hops/yarnapp/user",
           :description => "Username to run yarn applications as",
           :type => 'string'
@@ -433,8 +453,24 @@ attribute "hops/mr/user",
           :description => "Username to run mapReduce as",
           :type => 'string'
 
+attribute "hops/mr/user_id",
+          :description => "MapReduce user id. Default: 1509",
+          :type => 'string'
+
 attribute "hops/hdfs/user",
           :description => "Username to run hdfs as",
+          :type => 'string'
+
+attribute "hops/hdfs/user_id",
+          :description => "hdfs user id. Default: 1506",
+          :type => 'string'
+
+attribute "hops/hdfs/group",
+          :description => "hdfs group name",
+          :type => 'string'
+
+attribute "hops/hdfs/group_id",
+          :description => "hdfs group id. Default: 1506",
           :type => 'string'
 
 attribute "hops/hdfs/superuser_group",
@@ -778,6 +814,10 @@ attribute "hops/gpu",
 #DOCKER
 attribute "hops/docker/enabled",
           :description =>  "switch to install or not install docker (installing docker need hopsworks for certificates)",
+          :type => 'string'
+
+attribute "hops/docker/group_id",
+          :description =>  "docker group id. Default: 1513",
           :type => 'string'
 
 attribute "hops/docker_version/ubuntu",

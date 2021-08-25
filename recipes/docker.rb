@@ -1,6 +1,13 @@
 # Install and start Docker
 Chef::Recipe.send(:include, Hops::Helpers)
 
+group 'docker' do
+  gid node['hops']['docker']['group_id']
+  action :create
+  not_if "getent group docker"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
 case node['platform_family']
 when 'rhel'
 
