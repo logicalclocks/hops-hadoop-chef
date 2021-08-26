@@ -8,16 +8,23 @@ default['hops']['version']                     = "3.2.0.5-SNAPSHOT"
 default['hops']['fuse']['version']             = "1.0.0"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
+default['hops']['hdfs']['user_id']             = '1506'
 default['hops']['hdfs']['user-home']           = "/home/#{node['hops']['hdfs']['user']}"
+default['hops']['hdfs']['group']               = 'hdfs'
+default['hops']['hdfs']['group_id']            = '1506'
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
 default['hops']['secure_group']                = node['install']['user'].empty? ? "metaserver" : node['install']['user']
+default['hops']['secure_group_id']             = '1505'
 default['hops']['yarn']['user']                = node['install']['user'].empty? ? "yarn" : node['install']['user']
+default['hops']['yarn']['user_id']             = '1507'
 default['hops']['yarn']['user-home']           = "/home/#{node['hops']['yarn']['user']}"
 default['hops']['yarnapp']['user']             = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
-default['hops']['yarnapp']['uid']              = 1235
+default['hops']['yarnapp']['uid']              = '1235'
 default['hops']['rm']['user']                  = node['install']['user'].empty? ? "rmyarn" : node['install']['user']
+default['hops']['rm']['user_id']               = '1508'
 default['hops']['rm']['user-home']             = "/home/#{node['hops']['rm']['user']}"
 default['hops']['mr']['user']                  = node['install']['user'].empty? ? "mapred" : node['install']['user']
+default['hops']['mr']['user_id']               = '1509'
 default['hops']['mr']['user-home']             = "/home/#{node['hops']['mr']['user']}"
 
 default['hopsworks']['user']                   = node['install']['user'].empty? ? "glassfish" : node['install']['user']
@@ -490,6 +497,7 @@ default['hops']['selinux_version']['centos']          = "2.119.1-1.c57a6f9"
 default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04.2"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
 default['hops']['runc_version']['ubuntu']             = "1.0.0~rc95-0ubuntu1~18.04.1"
+default['hops']['docker']['group_id']                 = '1513'
 
 
 default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"

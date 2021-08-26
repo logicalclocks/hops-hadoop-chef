@@ -85,12 +85,14 @@ group node['hops']['group'] do
 end
 
 group node['hops']['secure_group'] do
+  gid node['hops']['secure_group_id']
   action :create
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hops']['hdfs']['user'] do
   home node['hops']['hdfs']['user-home']
+  uid node['hops']['hdfs']['user_id']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
@@ -102,6 +104,7 @@ end
 
 user node['hops']['yarn']['user'] do
   home node['hops']['yarn']['user-home']
+  uid node['hops']['yarn']['user_id']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
@@ -113,6 +116,7 @@ end
 
 user node['hops']['mr']['user'] do
   home node['hops']['mr']['user-home']
+  uid node['hops']['mr']['user_id']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
@@ -139,6 +143,7 @@ end
 
 user node['hops']['rm']['user'] do
   home node['hops']['rm']['user-home']
+  uid node['hops']['rm']['user_id']
   gid node['hops']['secure_group']
   system true
   shell "/bin/bash"
