@@ -3,20 +3,28 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3"
-default['hops']['version']                     = "3.2.0.4-RC0"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4"
+default['hops']['version']                     = "3.2.0.5-SNAPSHOT"
+default['hops']['fuse']['version']             = "1.1.0"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
+default['hops']['hdfs']['user_id']             = '1506'
 default['hops']['hdfs']['user-home']           = "/home/#{node['hops']['hdfs']['user']}"
+default['hops']['hdfs']['group']               = 'hdfs'
+default['hops']['hdfs']['group_id']            = '1506'
 default['hops']['group']                       = node['install']['user'].empty? ? "hadoop" : node['install']['user']
 default['hops']['secure_group']                = node['install']['user'].empty? ? "metaserver" : node['install']['user']
+default['hops']['secure_group_id']             = '1505'
 default['hops']['yarn']['user']                = node['install']['user'].empty? ? "yarn" : node['install']['user']
+default['hops']['yarn']['user_id']             = '1507'
 default['hops']['yarn']['user-home']           = "/home/#{node['hops']['yarn']['user']}"
 default['hops']['yarnapp']['user']             = node['install']['user'].empty? ? "yarnapp" : node['install']['user']
-default['hops']['yarnapp']['uid']              = 1235
+default['hops']['yarnapp']['uid']              = '1235'
 default['hops']['rm']['user']                  = node['install']['user'].empty? ? "rmyarn" : node['install']['user']
+default['hops']['rm']['user_id']               = '1508'
 default['hops']['rm']['user-home']             = "/home/#{node['hops']['rm']['user']}"
 default['hops']['mr']['user']                  = node['install']['user'].empty? ? "mapred" : node['install']['user']
+default['hops']['mr']['user_id']               = '1509'
 default['hops']['mr']['user-home']             = "/home/#{node['hops']['mr']['user']}"
 
 default['hopsworks']['user']                   = node['install']['user'].empty? ? "glassfish" : node['install']['user']
@@ -72,6 +80,11 @@ default['hops']['hdfs']['umask']               = "0007"
 
 default['hops']['root_url']                    = node['download_url']
 default['hops']['dist_url']                    = node['hops']['root_url'] + "/hops-" + node['hops']['version'] + ".tgz"
+
+default['hops']['fuse']['dist_url']            = node['hops']['root_url'] + "/hops-fuse-mount-" + node['hops']['fuse']['version'] 
+default['hops']['fuse']['staging_folder']      = node['hops']['dir'] + "/hops-staging"
+default['hops']['fuse']['mount_point']         = "/hopsfs" 
+
 
 default['hops']['install_protobuf']            = "false"
 default['hops']['protobuf_url']                = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
@@ -138,7 +151,7 @@ default['hops']['yarn']['nodemanager_hb_ms']   = "1000"
 
 default['hops']['yarn']['max_connect_wait']   = "900000"
 
-default['hops']['am']['max_attempts']           = 2
+default['hops']['am']['max_attempts']          = 1
 
 default['hops']['yarn']['aux_services']        = "spark_shuffle,mapreduce_shuffle"
 
@@ -485,6 +498,7 @@ default['hops']['selinux_version']['centos']          = "2.119.1-1.c57a6f9"
 default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04.2"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
 default['hops']['runc_version']['ubuntu']             = "1.0.0~rc95-0ubuntu1~18.04.1"
+default['hops']['docker']['group_id']                 = '1513'
 
 
 default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"
