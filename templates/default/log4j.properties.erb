@@ -37,27 +37,9 @@ log4j.appender.RFA.MaxBackupIndex=${hadoop.log.maxbackupindex}
 log4j.appender.RFA.layout=org.apache.log4j.PatternLayout
 
 # Pattern format: Date LogLevel LoggerName LogMessage
-log4j.appender.RFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+log4j.appender.RFA.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 # Debugging Pattern format
 #log4j.appender.RFA.layout.ConversionPattern=%d{ISO8601} %-5p %c{2} (%F:%M(%L)) - %m%n
-
-
-#
-# Daily Rolling File Appender
-#
-
-log4j.appender.DRFA=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.DRFA.File=${hadoop.log.dir}/${hadoop.log.file}
-
-# Rollover at midnight
-log4j.appender.DRFA.DatePattern=.yyyy-MM-dd
-
-log4j.appender.DRFA.layout=org.apache.log4j.PatternLayout
-
-# Pattern format: Date LogLevel LoggerName LogMessage
-log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
-# Debugging Pattern format
-#log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %-5p %c{2} (%F:%M(%L)) - %m%n
 
 
 #
@@ -68,7 +50,7 @@ log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
 log4j.appender.console=org.apache.log4j.ConsoleAppender
 log4j.appender.console.target=System.err
 log4j.appender.console.layout=org.apache.log4j.PatternLayout
-log4j.appender.console.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n
+log4j.appender.console.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 
 #
 # TaskLog Appender
@@ -88,7 +70,7 @@ log4j.appender.TLA.isCleanup=${hadoop.tasklog.iscleanup}
 log4j.appender.TLA.totalLogFileSize=${hadoop.tasklog.totalLogFileSize}
 
 log4j.appender.TLA.layout=org.apache.log4j.PatternLayout
-log4j.appender.TLA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+log4j.appender.TLA.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 
 #
 # HDFS block state change log from block manager
@@ -108,7 +90,7 @@ hadoop.security.log.file=SecurityAuth-${user.name}.audit
 log4j.appender.RFAS=org.apache.log4j.RollingFileAppender 
 log4j.appender.RFAS.File=${hadoop.log.dir}/${hadoop.security.log.file}
 log4j.appender.RFAS.layout=org.apache.log4j.PatternLayout
-log4j.appender.RFAS.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+log4j.appender.RFAS.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.appender.RFAS.MaxFileSize=${hadoop.security.log.maxfilesize}
 log4j.appender.RFAS.MaxBackupIndex=${hadoop.security.log.maxbackupindex}
 
@@ -118,7 +100,7 @@ log4j.appender.RFAS.MaxBackupIndex=${hadoop.security.log.maxbackupindex}
 log4j.appender.DRFAS=org.apache.log4j.DailyRollingFileAppender 
 log4j.appender.DRFAS.File=${hadoop.log.dir}/${hadoop.security.log.file}
 log4j.appender.DRFAS.layout=org.apache.log4j.PatternLayout
-log4j.appender.DRFAS.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+log4j.appender.DRFAS.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.appender.DRFAS.DatePattern=.yyyy-MM-dd
 
 #
@@ -140,7 +122,7 @@ log4j.additivity.org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit=false
 log4j.appender.RFAAUDIT=org.apache.log4j.RollingFileAppender
 log4j.appender.RFAAUDIT.File=${hadoop.log.dir}/nn-audit.log
 log4j.appender.RFAAUDIT.layout=org.apache.log4j.PatternLayout
-log4j.appender.RFAAUDIT.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n
+log4j.appender.RFAAUDIT.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.appender.RFAAUDIT.MaxFileSize=${hdfs.audit.log.maxfilesize}
 log4j.appender.RFAAUDIT.MaxBackupIndex=${hdfs.audit.log.maxbackupindex}
 <% end %>
@@ -154,7 +136,7 @@ log4j.additivity.org.apache.hadoop.yarn.server.resourcemanager.RMAuditLogger=fal
 log4j.appender.RFAAUDITRM=org.apache.log4j.RollingFileAppender
 log4j.appender.RFAAUDITRM.File=${hadoop.log.dir}/rm-audit.log
 log4j.appender.RFAAUDITRM.layout=org.apache.log4j.PatternLayout
-log4j.appender.RFAAUDITRM.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n
+log4j.appender.RFAAUDITRM.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.appender.RFAAUDITRM.MaxFileSize=${hdfs.audit.log.maxfilesize}
 log4j.appender.RFAAUDITRM.MaxBackupIndex=${hdfs.audit.log.maxbackupindex}
 <% end %>
@@ -170,7 +152,7 @@ log4j.additivity.org.apache.hadoop.mapred.AuditLogger=false
 log4j.appender.MRAUDIT=org.apache.log4j.RollingFileAppender
 log4j.appender.MRAUDIT.File=${hadoop.log.dir}/mapred-audit.log
 log4j.appender.MRAUDIT.layout=org.apache.log4j.PatternLayout
-log4j.appender.MRAUDIT.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n
+log4j.appender.MRAUDIT.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.appender.MRAUDIT.MaxFileSize=${mapred.audit.log.maxfilesize}
 log4j.appender.MRAUDIT.MaxBackupIndex=${mapred.audit.log.maxbackupindex}
 
@@ -210,7 +192,7 @@ log4j.appender.JSA.File=${hadoop.log.dir}/${hadoop.mapreduce.jobsummary.log.file
 log4j.appender.JSA.MaxFileSize=${hadoop.mapreduce.jobsummary.log.maxfilesize}
 log4j.appender.JSA.MaxBackupIndex=${hadoop.mapreduce.jobsummary.log.maxbackupindex}
 log4j.appender.JSA.layout=org.apache.log4j.PatternLayout
-log4j.appender.JSA.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n
+log4j.appender.JSA.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
 log4j.logger.org.apache.hadoop.mapred.JobInProgress$JobSummary=${hadoop.mapreduce.jobsummary.logger}
 log4j.additivity.org.apache.hadoop.mapred.JobInProgress$JobSummary=false
 
@@ -240,40 +222,4 @@ log4j.appender.RMSUMMARY.File=${hadoop.log.dir}/${yarn.server.resourcemanager.ap
 log4j.appender.RMSUMMARY.MaxFileSize=<%= node['hops']['log']['maxfilesize'] %>
 log4j.appender.RMSUMMARY.MaxBackupIndex=<%= node['hops']['log']['maxbackupindex'] %>
 log4j.appender.RMSUMMARY.layout=org.apache.log4j.PatternLayout
-log4j.appender.RMSUMMARY.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n
-
-# HS audit log configs
-#mapreduce.hs.audit.logger=INFO,HSAUDIT
-#log4j.logger.org.apache.hadoop.mapreduce.v2.hs.HSAuditLogger=${mapreduce.hs.audit.logger}
-#log4j.additivity.org.apache.hadoop.mapreduce.v2.hs.HSAuditLogger=false
-#log4j.appender.HSAUDIT=org.apache.log4j.DailyRollingFileAppender
-#log4j.appender.HSAUDIT.File=${hadoop.log.dir}/hs-audit.log
-#log4j.appender.HSAUDIT.layout=org.apache.log4j.PatternLayout
-#log4j.appender.HSAUDIT.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n
-#log4j.appender.HSAUDIT.DatePattern=.yyyy-MM-dd
-
-# Http Server Request Logs
-#log4j.logger.http.requests.namenode=INFO,namenoderequestlog
-#log4j.appender.namenoderequestlog=org.apache.hadoop.http.HttpRequestLogAppender
-#log4j.appender.namenoderequestlog.Filename=${hadoop.log.dir}/jetty-namenode-yyyy_mm_dd.log
-#log4j.appender.namenoderequestlog.RetainDays=3
-
-#log4j.logger.http.requests.datanode=INFO,datanoderequestlog
-#log4j.appender.datanoderequestlog=org.apache.hadoop.http.HttpRequestLogAppender
-#log4j.appender.datanoderequestlog.Filename=${hadoop.log.dir}/jetty-datanode-yyyy_mm_dd.log
-#log4j.appender.datanoderequestlog.RetainDays=3
-
-#log4j.logger.http.requests.resourcemanager=INFO,resourcemanagerrequestlog
-#log4j.appender.resourcemanagerrequestlog=org.apache.hadoop.http.HttpRequestLogAppender
-#log4j.appender.resourcemanagerrequestlog.Filename=${hadoop.log.dir}/jetty-resourcemanager-yyyy_mm_dd.log
-#log4j.appender.resourcemanagerrequestlog.RetainDays=3
-
-#log4j.logger.http.requests.jobhistory=INFO,jobhistoryrequestlog
-#log4j.appender.jobhistoryrequestlog=org.apache.hadoop.http.HttpRequestLogAppender
-#log4j.appender.jobhistoryrequestlog.Filename=${hadoop.log.dir}/jetty-jobhistory-yyyy_mm_dd.log
-#log4j.appender.jobhistoryrequestlog.RetainDays=3
-
-#log4j.logger.http.requests.nodemanager=INFO,nodemanagerrequestlog
-#log4j.appender.nodemanagerrequestlog=org.apache.hadoop.http.HttpRequestLogAppender
-#log4j.appender.nodemanagerrequestlog.Filename=${hadoop.log.dir}/jetty-nodemanager-yyyy_mm_dd.log
-#log4j.appender.nodemanagerrequestlog.RetainDays=3
+log4j.appender.RMSUMMARY.layout.ConversionPattern=<%= node['hops']['log']['pattern'] %>
