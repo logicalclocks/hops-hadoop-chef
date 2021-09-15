@@ -9,7 +9,7 @@ sbin=$(dirname "${BASH_SOURCE-$0}")
 sbin=$(cd "$sbin"; pwd)
 
 DEFAULT_LIBEXEC_DIR="$sbin"/../libexec
-hadoop-metrics2.propertiesHADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
 . "${sbin}"/set-env.sh
 
 log=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['yarn']['user'] %>-$command-$h.log
