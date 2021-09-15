@@ -49,3 +49,7 @@ dependencies:
     global:
       - hops::nn
       - hops::dn
+  - recipe: hops::airflow_mnt
+    global:
+      - hops::nn
+      - hops::dn
