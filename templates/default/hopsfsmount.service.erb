@@ -1,15 +1,19 @@
 [Unit]
 Description = HopsFS fuse mount
 After = syslog.target network.target remote-fs.target <%= @deps %>
-StartLimitIntervalSec=120
-StartLimitBurst=15
-
+#The namenode takes ~32s to fail if glassfish is not up
+#restartSec is 2 so the service restart every 34s
+#a maximum burst of 18 in 11min guaranty that it will at least try for 10min (18*34=612s=10,2min)
+StartLimitIntervalSec=660
+StartLimitBurst=18
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
 PIDFile = <%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-hopsfsmount.pid
 ExecStart = <%= node['hops']['sbin_dir'] %>/mount-hopsfs.sh
 ExecStop = <%= node['hops']['sbin_dir'] %>/umount-hopsfs.sh
 LimitNOFILE = 20000
+Restart=on-failure
+RestartSec=5
 Type = forking
 
 [Install]

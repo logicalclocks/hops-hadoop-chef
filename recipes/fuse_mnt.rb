@@ -100,6 +100,13 @@ end
 if exists_local("hops", "nn") 
   deps += "namenode.service "
 end  
+# If the namenode is located on a different, host, we should at least wait for glassfish and mysqld
+if exists_local("ndb", "mysqld")
+  deps += "mysqld.service "
+end
+if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
+  deps += "glassfish-domain1.service "
+end
 
 service service_name do
   provider Chef::Provider::Service::Systemd
