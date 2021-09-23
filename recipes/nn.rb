@@ -157,8 +157,8 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
     hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['airflow']['user']}" do
       action :create_as_superuser
       owner node['airflow']['user']
-      group node['hops']['group']
-      mode "1750"
+      group node['airflow']['group']
+      mode "1770"
     end
     
     # Create weblogs dir for Glassfish
