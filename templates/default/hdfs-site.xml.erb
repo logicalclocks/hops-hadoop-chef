@@ -517,7 +517,7 @@
 <property>
    <name>dfs.cloud.provider</name>
    <value><%= node['hops']['cloud_provider'] %></value>
-   <description>Cloud provider. Currently only AWS is supported</description>
+   <description>Cloud provider. Supported cloud providers are AWS, GCS, AZURE</description>
 </property>
 
 <property>
@@ -712,4 +712,24 @@
     </description>
   </property>
 
+  <property>
+    <name>dfs.cloud.block.report.delay</name>
+    <value>3600000</value>
+    <description>
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.cloud.mark.blocks.corrupt.or.missing.after</name>
+    <value>3600000</value>
+    <description>
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.cloud.max.br.threads</name>
+    <value>10</value>
+    <description>
+    </description>
+  </property>
 </configuration>
