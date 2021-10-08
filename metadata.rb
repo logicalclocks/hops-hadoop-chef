@@ -601,6 +601,46 @@ attribute "hops/aws_s3_bucket",
           :description => "S3 bucket used to store file system blocks",
           :type => 'string'
 
+attribute "hops/azure_container",
+          :description => "Azure container name", 
+          :type => 'string'
+
+attribute "hops/azure_storage",
+          :description => "Azure storage name", 
+          :type => 'string'
+
+attribute "hops/azure_enable_soft_deletes",
+          :description => "Enable soft deletes for the azure strage. This parameter is only used at the time of formatting the filesystem", 
+          :type => 'string'
+
+attribute "hops/azure_soft_deletes_retention_days",
+          :description => "Number of days to retain deleted blocks. This is only used if soft deletes are enabled", 
+          :type => 'string'
+
+attribute "hops/azure_client_id",
+          :description => "Azure management identity client id", 
+          :type => 'string'
+
+attribute "hops/gcs_bucket",
+          :description => "Google cloud storage bucket", 
+          :type => 'string'
+
+attribute "hops/gcs_enable_versioning",
+          :description => "Enable versioning for Google cloud strage bucket.  This parameter is only used at the time of formatting the filesystem", 
+          :type => 'string'
+
+attribute "hops/gcs_bucket_location",
+          :description => "Google cloud storage bucket location", 
+          :type => 'string'
+
+attribute "hops/gcs_bucket_requester_pays",
+          :description => "Enable requester pays for the bucket. This parameter is only used at the time of formatting the filesystem", 
+          :type => 'string'
+
+attribute "hops/gcs_bucket_requester_pays_project",
+          :description => "If the requester pays option is set for the bucket then this project will be used by HopsFS", 
+          :type => 'string'
+
 attribute "hops/yarn/nodemanager_hb_ms",
           :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
           :type => 'string'

@@ -56,12 +56,29 @@ default['hops']['share_dir']                    = node['hops']['base_dir'] + "/s
 
 default['hops']['enable_cloud_storage']        = "false"
 default['hops']['cloud_provider']              = node["install"]["cloud"]
-default['hops']['aws_s3_region']               = "eu-west-1"
-default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
 default['hops']['cloud_bypass_disk_cache']         = "false"
 default['hops']['cloud_max_upload_threads']        = "20"
 default['hops']['cloud_store_small_files_in_db']   = "true"
 default['hops']['disable_non_cloud_storage_policies']       = "false"
+
+# S3
+default['hops']['aws_s3_region']               = "eu-west-1"
+default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
+
+# Azure
+default['hops']['azure_container']                     = ""
+default['hops']['azure_storage']                       = ""
+default['hops']['azure_enable_soft_deletes']           = "false"
+default['hops']['azure_soft_deletes_retention_days']   = "90"
+default['hops']['azure_client_id']                     = ""
+
+#GCS
+default['hops']['gcs_bucket']                          = ""
+default['hops']['gcs_enable_versioning']               = "false"
+default['hops']['gcs_bucket_location']                 = ""
+default['hops']['gcs_bucket_requester_pays']           = "false"
+default['hops']['gcs_bucket_requester_pays_project']   = ""
+
 default['hops']['nn']['cloud_max_br_threads']               = "10"
 default['hops']['nn']['root_dir_storage_policy']       = ""
 
