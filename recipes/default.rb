@@ -143,7 +143,6 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :hopsworksUser => hopsworksUser,
      :livyUser => livyUser,
      :hiveUser => hiveUser,
-     :sqoopUser => sqoopUser,
      :flinkUser => flinkUser,
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
