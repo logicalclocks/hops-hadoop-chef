@@ -3,11 +3,11 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'kagent', github: "logicalclocks/kagent-chef", branch: "master"
-cookbook 'ndb', github: "logicalclocks/ndb-chef", branch: "master"
-cookbook 'conda', github: "logicalclocks/conda-chef", branch: "master"
-cookbook 'kzookeeper', github: "logicalclocks/kzookeeper", branch: "master"
-cookbook 'elastic', github: "logicalclocks/elasticsearch-chef", branch: "master"
-cookbook 'consul', github: "logicalclocks/consul-chef", branch: "master"
+cookbook 'kagent', github: "logicalclocks/kagent-chef", branch: "2.4"
+cookbook 'ndb', github: "logicalclocks/ndb-chef", branch: "2.4"
+cookbook 'conda', github: "logicalclocks/conda-chef", branch: "2.4"
+cookbook 'kzookeeper', github: "logicalclocks/kzookeeper", branch: "2.4"
+cookbook 'elastic', github: "logicalclocks/elasticsearch-chef", branch: "2.4"
+cookbook 'consul', github: "logicalclocks/consul-chef", branch: "2.4"
 cookbook 'java', github: "logicalclocks/java", branch: "v7.0.0-1"
 
