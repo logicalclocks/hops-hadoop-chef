@@ -18,30 +18,28 @@ when 'rhel'
     only_if "yum list installed docker.x86_64"
   end
 
-  package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs']
+  base_package_filename = File.basename(node['hops']['docker']['pkg']['download_url']['centos'])
+  cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
 
-  packages = ["container-selinux-#{node['hops']['selinux_version']['centos']}.el7.noarch.rpm", "containerd.io-#{node['hops']['containerd_version']['centos']}.el7.x86_64.rpm","docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm","docker-ce-cli-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm"]
-
-  packages.each do |pkg|
-    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['hops']['docker']['pkg']['download_url']['centos']}/#{pkg}"
-      owner 'root'
-      group 'root'
-      mode '0755'
-      action :create
-    end
+  remote_file cached_package_filename do
+    source node['hops']['docker']['pkg']['download_url']['centos']
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
   end
-  
+
   bash "install_pkgs" do
     user 'root'
     group 'root'
     cwd Chef::Config['file_cache_path']
     code <<-EOH
-        yum install -y #{packages.join(" ")}
+       tar xf #{base_package_filename}
+       cd #{node['hops']['docker_version']['centos']}
+       yum install -y *.rpm
     EOH
     not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64"
   end
-
 when 'debian'
   packages = [
     "containerd_#{node['hops']['containerd_version']['ubuntu']}_amd64.deb",
