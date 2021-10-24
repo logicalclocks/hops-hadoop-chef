@@ -509,8 +509,10 @@ default['hops']['docker_dir']                         = node['install']['dir'].e
 default['hops']['docker']['insecure_registries']      = ""
 default['hops']['docker']['trusted_registries']       = ""
 default['hops']['docker']['mounts']                   = "#{node['hops']['conf_dir']},#{node['hops']['dir']}/spark,#{node['hops']['dir']}/flink,#{node['hops']['dir']}/apache-livy"
-default['hops']['docker']['base']['image']['name']           = "base"
-default['hops']['docker']['base']['image']['python']['name']  = "python37"
+
+default['hops']['docker']['base']['image']['name']    = "base"
+default['hops']['docker']['base']['image']['python']['name']  = "python" + "#{node['install']['python']['version']}".sub('.',"")
+
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
 default['hops']['cgroup-driver']                      = "cgroupfs"
 

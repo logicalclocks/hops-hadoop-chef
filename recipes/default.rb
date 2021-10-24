@@ -119,15 +119,6 @@ if node.attribute?("hive2")
 end
 node.override['hive2']['user'] = hiveUser
 
-sqoopUser = "sqoop"
-if node.attribute?('sqoop')
-  if node['sqoop'].attribute?('user')
-    sqoopUser = node['sqoop']['user']
-  end
-end
-node.override['sqoop']['user'] = sqoopUser
-
-
 flinkUser = "flink"
 if node.attribute?('flink')
   if node['flink'].attribute?('user')
@@ -162,7 +153,6 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :airflowUser => airflowUser,       
      :livyUser => livyUser,
      :hiveUser => hiveUser,
-     :sqoopUser => sqoopUser,
      :flinkUser => flinkUser,
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
