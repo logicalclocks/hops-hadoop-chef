@@ -73,14 +73,14 @@
     <name>hadoop.proxyuser.<%= @hopsworksUser %>.groups</name>
     <value>*</value>
   </property>
-  <property>
-    <name>hadoop.proxyuser.<%= @airflowUser %>.hosts</name>
-    <value>*</value>
-  </property>
-  <property>
-    <name>hadoop.proxyuser.<%= @airflowUser %>.groups</name>
-    <value>*</value>
-  </property>
+  <!-- <property> -->
+  <!--   <name>hadoop.proxyuser.<%= @airflowUser %>.hosts</name> -->
+  <!--   <value>*</value> -->
+  <!-- </property> -->
+  <!-- <property> -->
+  <!--   <name>hadoop.proxyuser.<%= @airflowUser %>.groups</name> -->
+  <!--   <value>*</value> -->
+  <!-- </property> -->
   <property>
     <name>hadoop.proxyuser.<%= node['hops']['yarn']['user'] %>.hosts</name>
     <value>*</value>
