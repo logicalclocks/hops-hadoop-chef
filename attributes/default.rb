@@ -74,9 +74,9 @@ default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['dat
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
+default['hops']['hdfs']['max-blocks-per-file'] = "10240"
+default['hops']['hdfs']['max-directory-items'] = "10240"
 default['hops']['hdfs']['umask']               = "0007"
-
-
 
 default['hops']['root_url']                    = node['download_url']
 default['hops']['dist_url']                    = node['hops']['root_url'] + "/hops-" + node['hops']['version'] + ".tgz"
