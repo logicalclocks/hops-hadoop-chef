@@ -3,8 +3,8 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4"
-default['hops']['version']                     = "3.2.0.5-RC0"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5"
+default['hops']['version']                     = "3.2.0.6-SNAPSHOT"
 default['hops']['fuse']['version']             = "1.3.0"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
@@ -74,9 +74,9 @@ default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['dat
 default['hops']['hdfs']['user_home']           = "/user"
 default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
+default['hops']['hdfs']['max-blocks-per-file'] = "10240"
+default['hops']['hdfs']['max-directory-items'] = "10240"
 default['hops']['hdfs']['umask']               = "0007"
-
-
 
 default['hops']['root_url']                    = node['download_url']
 default['hops']['dist_url']                    = node['hops']['root_url'] + "/hops-" + node['hops']['version'] + ".tgz"

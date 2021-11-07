@@ -482,6 +482,14 @@ attribute "hops/hdfs/blocksize",
           :description => "HDFS Blocksize (128k, 512m, 1g, etc). Default 128m.",
           :type => 'string'
 
+attribute "hops/hdfs/max-blocks-per-file",
+          :description => "Max blocks per file. Default 10240",
+          :type => 'string'
+
+attribute "hops/hdfs/max-directory-items",
+          :description => "Max immediate descendants of a directory. Default 10240",
+          :type => 'string'
+
 attribute "hops/hdfs/umask",
           :description => "Set the default HDFS umask (default: 0027).",
           :type => 'string'
@@ -936,4 +944,3 @@ attribute "hops/fuse/staging_folder",
 attribute "hops/fuse/mount_point",
           :description =>  "Directory to mount the filesystem",
           :type => 'string'
-
