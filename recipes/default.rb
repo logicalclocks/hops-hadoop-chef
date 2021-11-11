@@ -94,15 +94,6 @@ if node.attribute?("hopsworks")
 end
 node.override['hopsworks']['user'] = hopsworksUser
 
-airflowUser = "airflow"
-if node.attribute?("airflow")
-  if node['airflow'].attribute?("user")
-    airflowUser = node['airflow']['user']
-  end
-end
-node.override['airflow']['user'] = airflowUser
-
-
 livyUser = "livy"
 if node.attribute?("livy")
   if node['livy'].attribute?("user")
@@ -150,7 +141,6 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :defaultFS => defaultFS,
      :hopsworks => "https://#{glassfish_fqdn}:#{hopsworks_port}",
      :hopsworksUser => hopsworksUser,
-     :airflowUser => airflowUser,       
      :livyUser => livyUser,
      :hiveUser => hiveUser,
      :flinkUser => flinkUser,
