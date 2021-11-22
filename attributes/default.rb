@@ -521,6 +521,9 @@ default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}
 
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
+default['hops']['docker']['git']['image']['name'] = "git"
+default['hops']['docker']['git']['download_url']  = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/git.tar"
+
 #XAttrs
 default['hops']['xattrs']['enabled']                  = "true"
 default['hops']['xattrs']['max-xattrs-per-inode']     = 32

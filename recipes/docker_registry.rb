@@ -156,6 +156,57 @@ file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
 end
 
+#git
+
+git_image_url = node['hops']['docker']['git']['download_url']
+git_filename = File.basename(git_image_url)
+download_git_command = " wget #{git_image_url}"
+git_image = "#{node['hops']['docker']['git']['image']['name']}:#{node['hops']['docker_img_version']}"
+
+if node['install']['enterprise']['install'].casecmp? "true"
+  download_git_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{git_image_url}"
+end
+
+
+bash "download_git_image" do
+  user "root"
+  sensitive true
+  code <<-EOF
+       #{download_git_command} -O #{Chef::Config['file_cache_path']}/#{git_filename}
+  EOF
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{git_filename}" }
+  not_if "docker image inspect #{registry_address}/#{git_image}"
+end
+
+bash "import_git_image" do
+  user "root"
+  code <<-EOF
+    docker load -i #{Chef::Config['file_cache_path']}/#{git_filename}
+  EOF
+  not_if "docker image inspect #{registry_address}/#{git_image}"
+end
+
+bash "tag_git_images" do
+  user "root"
+  code <<-EOF
+    docker tag #{git_image} #{registry_address}/#{git_image}
+    docker rmi #{git_image}
+  EOF
+  not_if "docker image inspect #{registry_address}/#{git_image}"
+end
+
+bash "push_git_image" do
+  user "root"
+  code <<-EOF
+    docker push #{registry_address}/#{git_image}
+  EOF
+end
+
+file "#{Chef::Config['file_cache_path']}/#{git_filename}" do
+  action :delete
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{git_filename}" }
+end
+
 # We add docker in kagent in this recipe as the hops::docker recipe runs during the install phase and it might run
 # before kagent::install
 service_name='docker'
