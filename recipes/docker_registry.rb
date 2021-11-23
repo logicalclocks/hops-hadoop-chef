@@ -157,13 +157,13 @@ file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
 end
 
 #git
-
 git_image_url = node['hops']['docker']['git']['download_url']
 git_filename = File.basename(git_image_url)
 download_git_command = " wget #{git_image_url}"
 git_image = "#{node['hops']['docker']['git']['image']['name']}:#{node['hops']['docker_img_version']}"
 
 if node['install']['enterprise']['install'].casecmp? "true"
+  git_image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{git_filename}"
   download_git_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{git_image_url}"
 end
 
