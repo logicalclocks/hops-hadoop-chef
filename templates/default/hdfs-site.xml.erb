@@ -153,6 +153,22 @@
   </property>
 
   <property>
+    <name>dfs.namenode.fs-limits.max-blocks-per-file</name>
+    <value><%= node['hops']['hdfs']['max-blocks-per-file'] %></value>
+    <description>
+       Max blocks per file
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.namenode.fs-limits.max-directory-items</name>
+    <value><%= node['hops']['hdfs']['max-directory-items'] %></value>
+    <description>
+       Max immediate descendants of a directory 
+    </description>
+  </property>
+
+  <property>
     <name>dfs.client.block.write.replace-datanode-on-failure.enable</name>
     <value><%= node['hops']['nn']['replace-dn-on-failure'] %></value>
     <description>
