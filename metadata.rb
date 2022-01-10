@@ -801,6 +801,9 @@ attribute "hops/ndb/version",
           :description => "version of ndb expected by hops, this is for development purpose and should be set to an empty string if the version expected by hops is the same as the version of ndb installed on the machine",
           :type => "string"
 
+attribute "hops/ndb/useSSL",
+          :description => "Use SSL when Hops connects to MySQLd",
+          :type => "string"
 
 attribute "hops/adl_v1_version",
           :description => "Version of the ADL v1 Hadoop connector (jar file).",

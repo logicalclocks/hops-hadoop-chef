@@ -248,11 +248,13 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']              = "21.04.0"
+default['hops']['ndb']['version']           = "21.04.0"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
 end
+
+default['hops']['mysql']['useSSL']          = "false"
 
 default['dal']['download_url']              = "#{node['hops']['root_url']}/ndb-dal-#{node['hops']['version']}-#{node['ndb']['version']}.jar"
 
