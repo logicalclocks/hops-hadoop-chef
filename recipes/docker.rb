@@ -18,7 +18,7 @@ when 'rhel'
     only_if "yum list installed docker.x86_64"
   end
 
-  base_package_filename = File.basename(node['hops']['docker']['pkg']['download_url']['centos'])
+  base_package_filename = File.basename(node['hops']['docker']['download_url']['centos'])
   cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
 
   remote_file cached_package_filename do
@@ -41,32 +41,30 @@ when 'rhel'
     not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64"
   end
 when 'debian'
-  packages = [
-    "containerd_#{node['hops']['containerd_version']['ubuntu']}_amd64.deb",
-    "docker.io_#{node['hops']['docker_version']['ubuntu']}_amd64.deb",
-    "runc_#{node['hops']['runc_version']['ubuntu']}_amd64.deb"
-  ]
 
-  packages.each do |pkg|
-    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['hops']['docker']['pkg']['download_url']['ubuntu']}/#{pkg}"
-      owner 'root'
-      group 'root'
-      mode '0755'
-      action :create
-    end
+  base_package_filename = File.basename(node['hops']['docker']['download_url']['ubuntu'])
+  cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
+
+  remote_file cached_package_filename do
+    source node['hops']['docker']['pkg']['download_url']['ubuntu']
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
   end
 
   # Additional dependencies needed, but dpkg doesn't know how to fetch them
   # from the repositories
-  package ['pigz', 'bridge-utils']
+  package ['pigz', 'bridge-utils', 'dns-root-data', 'dnsmasq-base', 'libidn11', 'ubuntu-fan']
 
   bash "install_pkgs" do
     user 'root'
     group 'root'
     cwd Chef::Config['file_cache_path']
     code <<-EOH
-        dpkg -i #{packages.join(" ")}
+       tar xf #{base_package_filename}
+       cd #{node['hops']['docker_version']['centos']}
+       dpkg -i #{packages.join(" ")}
     EOH
     not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
   end

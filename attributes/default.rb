@@ -492,15 +492,13 @@ default['hops']['gpu']                                = "false"
 
 #DOCKER
 default['hops']['docker']['enabled']                  = "true"
-default['hops']['docker_version']['ubuntu']           = "19.03.6-0ubuntu1~18.04.2"
 default['hops']['docker_version']['centos']           = "20.10.9-3"
-default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04.2"
-default['hops']['runc_version']['ubuntu']             = "1.0.0~rc95-0ubuntu1~18.04.1"
+default['hops']['docker_version']['ubuntu']           = "20.10.7"
 default['hops']['docker']['group_id']                 = '1513'
 
 
-default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/rhel/#{node['hops']['docker_version']['centos']}.tgz"
-default['hops']['docker']['pkg']['download_url']['ubuntu'] ="#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu'].split('-')[0]}/"
+default['hops']['docker']['download_url']['centos'] ="#{node['download_url']}/docker/rhel/#{node['hops']['docker_version']['centos']}.tgz"
+default['hops']['docker']['download_url']['ubuntu'] ="#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu']}.tgz"
 
 default['hops']['docker_img_version']                 = node['install']['version']
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
