@@ -22,7 +22,7 @@ when 'rhel'
   cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
 
   remote_file cached_package_filename do
-    source node['hops']['docker']['pkg']['download_url']['centos']
+    source node['hops']['docker']['download_url']['centos']
     owner 'root'
     group 'root'
     mode '0755'
@@ -46,7 +46,7 @@ when 'debian'
   cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
 
   remote_file cached_package_filename do
-    source node['hops']['docker']['pkg']['download_url']['ubuntu']
+    source node['hops']['docker']['download_url']['ubuntu']
     owner 'root'
     group 'root'
     mode '0755'
@@ -63,8 +63,8 @@ when 'debian'
     cwd Chef::Config['file_cache_path']
     code <<-EOH
        tar xf #{base_package_filename}
-       cd #{node['hops']['docker_version']['centos']}
-       dpkg -i #{packages.join(" ")}
+       cd #{node['hops']['docker_version']['ubuntu']}
+       dpkg -i *.deb
     EOH
     not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
   end
