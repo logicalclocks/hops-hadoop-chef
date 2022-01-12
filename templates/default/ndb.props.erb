@@ -36,6 +36,7 @@ io.hops.metadata.ndb.mysqlserver.port = <%= node['ndb']['mysql_port'] %>
 io.hops.metadata.ndb.mysqlserver.username = <%= node['mysql']['user'] %>
 io.hops.metadata.ndb.mysqlserver.password = <%= node['mysql']['password'] %>
 io.hops.metadata.ndb.mysqlserver.connection_pool_size = 10
+io.hops.metadata.ndb.mysqlserver.useSSL = <%= node['hops']['mysql']['useSSL'] %>
 
 #size of the session pool. should be altreat as big as the number of active Tx in the system
 io.hops.session.pool.size = <%= node['hops']['clusterj']['max_sessions'] %>
