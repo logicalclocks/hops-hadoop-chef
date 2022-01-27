@@ -523,7 +523,7 @@ default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/
 
 default['hops']['docker']['git']['image']['name']    = "git"
 default['hops']['docker']['git']['image']['version'] = "0.1.0"
-default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/#{node['hops']['docker']['git']['image']['name']}-#{node['hops']['docker']['git']['image']['version']}.tar"
+default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/hops-git/#{node['hops']['docker']['git']['image']['version']}/git.tgz"
 
 #XAttrs
 default['hops']['xattrs']['enabled']                  = "true"
