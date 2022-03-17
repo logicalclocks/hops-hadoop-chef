@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CHECK="curl --fail --silent -k https://$HOSTNAME:8089/ws/v1/cluster > /dev/null 2>&1"
+CHECK="curl --fail --silent -k https://$HOSTNAME:<%= node['hops']['rm']['https']['port'] %>/ws/v1/cluster > /dev/null 2>&1"
 
 source <%= node['consul']['health-check']['retryable-check-file'] %>
 
