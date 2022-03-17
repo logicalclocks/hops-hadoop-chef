@@ -899,8 +899,12 @@ attribute "hops/dn/https/address",
           :description => "the address on which the datanode should listen for https requests",
           :type => 'string'
 
+attribute "hops/rm/https/port",
+          :description => "The resource manager https server port (default: 8089)",
+          :type => 'string'
+
 attribute "hops/nn/https/port",
-          :description => "The namenode http server port.",
+          :description => "The namenode https server port.",
           :type => 'string'
 
 attribute "hops/xattrs/max-xattrs-per-inode",
