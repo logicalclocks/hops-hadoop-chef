@@ -20,19 +20,21 @@ bash "fuseconfig" do
 end
 
 directory node['hops']['fuse']['staging_folder'] do
-  action :create
+  action :create_if_missing
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0750"
   recursive true
+  not_if { ::File.directory?("#{node['hops']['fuse']['staging_folder']}") }  
 end
 
 directory node['hops']['fuse']['mount_point'] do
-  action :create
+  action :create_if_missing
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "0700"
   recursive true
+  not_if { ::File.directory?("#{node['hops']['fuse']['mount_point']}") }
 end
 
 # download fuse mount bin
