@@ -377,7 +377,7 @@ default['hops']['ssl']['client']['truststore']['location']		= "#{node['kagent'][
 default['hops']['server']['threadpool'] = 3
 
 # RPC TLS
-default['hops']['tls']['enabled'] = "false"
+default['hops']['tls']['enabled'] = "true"
 
 # Do not verify the hostname
 default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW_ALL"
