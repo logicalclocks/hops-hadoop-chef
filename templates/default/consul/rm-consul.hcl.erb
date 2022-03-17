@@ -84,7 +84,7 @@ services = [
             "https",
             "webapp"
         ]
-        port = 8089
+        port = <%= node['hops']['rm']['https']['port'] %>
         check = {
             id = "rm-https-check"
             alias_service = "rm/rpc"
