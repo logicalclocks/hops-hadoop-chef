@@ -265,24 +265,17 @@ default['hops']['limits']['nofile']         = '32768'
 default['hops']['limits']['nproc']          = '65536'
 
 default['hops']['jhs']['https']['port']     = "19443"
-default['hops']['rm']['https']['port'] 	    = "8090"
+default['hops']['rm']['https']['port']      = "8089"
 default['hops']['nm']['https']['port']      = "45443"
 
 default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 1000
 default['hops']['nn']['heap_size']          = 1000
 
-default['hops']['nn']['private_ips']        = ['10.0.2.15']
-default['hops']['dn']['private_ips']        = ['10.0.2.15']
-default['hops']['rm']['private_ips']        = ['10.0.2.15']
-default['hops']['nm']['private_ips']        = ['10.0.2.15']
-
 default['hops']['erasure_coding']           = "false"
 
 default['hops']['nn']['cache']                 = "true"
 default['hops']['nn']['partition_key']         = "true"
-
-default['vagrant']                       = "false"
 
 default['hops']['reverse_dns_lookup_supported']    = "false"
 
