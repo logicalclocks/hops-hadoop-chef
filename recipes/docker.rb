@@ -147,7 +147,6 @@ if !node['hops']['docker_dir'].eql?("/var/lib/docker")
     only_if { conda_helpers.is_upgrade }
     only_if { File.directory?(node['hops']['docker_dir'])}
     not_if { File.symlink?(node['hops']['docker_dir'])}
-    notifies :run, 'bash[move-docker-images]', :immediately
   end
 
   bash 'move-docker-images' do
@@ -155,14 +154,22 @@ if !node['hops']['docker_dir'].eql?("/var/lib/docker")
     code <<-EOH
       set -e
       mv -f #{node['hops']['docker_dir']}/* #{node['hops']['data_volume']['docker']}
-      rm -rf #{node['hops']['docker_dir']}
     EOH
-    action :nothing
-    notifies :start, 'systemd_unit[docker.service]', :immediately
+    only_if { conda_helpers.is_upgrade }
+    only_if { File.directory?(node['hops']['docker_dir']) }
+    not_if { File.symlink?(node['hops']['docker_dir']) }
+    not_if { Dir.empty?(node['hops']['docker_dir']) }
+  end
+
+  directory node['hops']['docker_dir'] do
+    action :delete
+    only_if { conda_helpers.is_upgrade }
+    only_if { File.directory?(node['hops']['docker_dir']) }
+    not_if { File.symlink?(node['hops']['docker_dir']) }
   end
 
   systemd_unit "docker.service" do
-    action :nothing
+    action :start
   end
 
   link node['hops']['docker_dir'] do
