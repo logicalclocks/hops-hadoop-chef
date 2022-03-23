@@ -32,6 +32,7 @@ end
 
 bash "unmount-hopsfs" do
   user "root" 
+  ignore_failure true
   code <<-EOH
     systemctl stop #{service_name}
     su - #{node['hops']['hdfs']['user']} -c "#{node['hops']['sbin_dir']}/umount-hopsfs.sh"
