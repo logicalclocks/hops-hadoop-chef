@@ -10,6 +10,8 @@ when 'rhel'
   package 'fuse-libs'
 end
 
+service_name="hopsfsmount"
+
 # Allow non root users to mount file systems 
 bash "fuseconfig" do
   user "root" 
@@ -27,13 +29,25 @@ directory node['hops']['fuse']['staging_folder'] do
   recursive true
 end
 
+
+bash "unmount-hopsfs" do
+  user "root" 
+  code <<-EOH
+    systemctl stop #{service_name}
+    su - node['hops']['hdfs']['user'] -c "node['hops']['sbin_dir']}/umount-hopsfs.sh"
+  EOH
+  not_if node['install']['current_version'].empty?
+end
+
+
 directory node['hops']['fuse']['mount_point'] do
   action :create
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
-  mode "0700"
+  mode "0755"
   recursive true
 end
+
 
 # download fuse mount bin
 fuse_mount_bin_url = node['hops']['fuse']['dist_url']
@@ -92,7 +106,7 @@ template "#{node['hops']['sbin_dir']}/umount-hopsfs.sh" do
 end
 
 # create service for it
-service_name="hopsfsmount"
+
 deps = ""
 if service_discovery_enabled()
   deps += "consul.service "
