@@ -67,6 +67,7 @@ default['hops']['nn']['root_dir_storage_policy']       = ""
 
 default['hops']['dn']['data_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/dn"
 default['hops']['dn']['data_dir_permissions']           = '700'
+default['hops']['dn']['du_reserved']                    = ""
 default['hops']['nn']['name_dir']                       = "file://" + node['hops']['data_dir'] + "/hdfs/nn"
 
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"

@@ -566,6 +566,10 @@ attribute "hops/dn/data_dir_permissions",
           :description => "The permissions for the directory in which Hadoop's DataNodes store their data (default: 700)",
           :type => 'string'
 
+attribute "hops/dn/du_reserved",
+          :description => "Amount in bytes of disk space reserved for non DFS usage. (default: not set)",
+          :type => 'string'
+
 attribute "hops/enable_cloud_storage",
           :description => "Enable cloud storage on the DataNodes.",
           :type => 'string'
