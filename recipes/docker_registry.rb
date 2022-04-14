@@ -108,7 +108,7 @@ base_image = "#{node['hops']['docker']['base']['image']['name']}:#{node['hops'][
 base_image_python = "#{node['hops']['docker']['base']['image']['python']['name']}:#{node['hops']['docker_img_version']}"
 
 if node['install']['enterprise']['install'].casecmp? "true"
-  image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{base_filename}"
+  image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}-RC0/#{base_filename}"
   download_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{image_url}"
 end
 
