@@ -1,0 +1,15 @@
+[Unit]
+Description = cadvisor
+StartLimitIntervalSec=30
+StartLimitBurst=20
+
+[Service]
+ExecStart = <%= @cadvisor_bin %> \
+--port=<%= node['hops']['cadvisor']['port'] %>
+LimitNOFILE = 20000
+Restart=on-failure
+
+Type = simple
+
+[Install]
+WantedBy = multi-user.target
