@@ -437,7 +437,7 @@ default['hops']['flyway_url']                                           = node['
 default['hops']['yarnapp']['home_dir']                 = "/home"
 
 #Store Small files in NDB
-default['hops']['small_files']['store_in_db']                                       = "true"
+default['hops']['small_files']['store_in_db']                                       = "false"
 default['hops']['small_files']['max_size']                                          = 65536
 
 default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
