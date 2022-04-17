@@ -101,7 +101,7 @@ end
 #download base env
 image_url = node['hops']['docker']['base']['download_url']
 base_filename = File.basename(image_url)
-download_command = " wget #{image_url}"
+download_command = " wget --no-check-certificate #{image_url}"
 
 registry_address = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 base_image = "#{node['hops']['docker']['base']['image']['name']}:#{node['hops']['docker_img_version']}"
@@ -109,7 +109,7 @@ base_image_python = "#{node['hops']['docker']['base']['image']['python']['name']
 
 if node['install']['enterprise']['install'].casecmp? "true"
   image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{base_filename}"
-  download_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{image_url}"
+  download_command = " wget --no-check-certificate --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{image_url}"
 end
 
 bash "download_images" do
@@ -165,7 +165,7 @@ bash "download_git_image" do
   user "root"
   sensitive true
   code <<-EOF
-    wget #{git_image_url} -O #{Chef::Config['file_cache_path']}/#{git_filename}
+    wget --no-check-certificate #{git_image_url} -O #{Chef::Config['file_cache_path']}/#{git_filename}
   EOF
   not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{git_filename}" }
   not_if "docker image inspect #{registry_address}/#{git_image}"
