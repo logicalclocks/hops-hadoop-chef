@@ -19,13 +19,6 @@ remote_file cadvisor_bin do
   action :create_if_missing
 end
 
-=begin
-link "#{node['hops']['sbin_dir']}/cadvisor" do
-  owner "root"
-  to "#{cadvisor_bin}"
-end
-=end
-
 case node['platform_family']
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/cadvisor.service"
