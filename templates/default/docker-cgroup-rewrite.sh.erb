@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#This script is used to reestablish the predefined docker cgroup on boot
+
+MEMORY_LIMIT_BYTES=<%= node['hops']['docker']['cgroup']['memory']['hard-limit'] %>
+MEMORY_SOFT_LIMIT_BYTES=<%= node['hops']['docker']['cgroup']['memory']['soft-limit'] %>
+CPU_CFS_QUOTA_US=<%= @cpu_quota %>
+if [ -d "/sys/fs/cgroup/memory/docker" ]; then
+   echo $MEMORY_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.limit_in_bytes"
+   echo $MEMORY_SOFT_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.soft_limit_in_bytes"
+   echo $CPU_CFS_QUOTA_US > "/sys/fs/cgroup/cpu/docker/cpu.cfs_quota_us"
+else
+  echo "Docker cgroup does not exist"
+fi
+
+exit 0
