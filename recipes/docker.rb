@@ -8,16 +8,6 @@ group 'docker' do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-docker_cgroup_rewrite_script="docker-cgroup-rewrite.sh"
-docker_cgroup_rewrite_script_path="#{node['hops']['base_dir']}/sbin}/#{docker_cgroup_rewrite_script}"
-template "#{docker_cgroup_rewrite_script_path}" do
-  source "#{docker_cgroup_rewrite_script}.erb"
-  owner root
-  group root
-  mode "500"
-  action :create
-end
-
 case node['platform_family']
 when 'rhel'
 
@@ -141,13 +131,6 @@ if node['hops']['gpu'].eql?("true")
     end
   end
 
-end
-
-bash 'add_docker_cgroup_rewrite_docker_service' do
-  user 'root'
-  code <<-EOH
-     systemctl set-property docker.service ExecStartPost=#{docker_cgroup_rewrite_script_path}
-  EOH
 end
 
 if !node['hops']['docker_dir'].eql?("/var/lib/docker")

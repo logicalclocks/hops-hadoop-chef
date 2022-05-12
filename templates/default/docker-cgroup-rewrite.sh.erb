@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 #This script is used to reestablish the predefined docker cgroup on boot
 
-MEMORY_LIMIT_BYTES=<%= node['hops']['docker']['cgroup']['memory']['hard-limit'] %>
-MEMORY_SOFT_LIMIT_BYTES=<%= node['hops']['docker']['cgroup']['memory']['soft-limit'] %>
-CPU_CFS_QUOTA_US=<%= @cpu_quota %>
+while getopts MEMORY_LIMIT_BYTES:MEMORY_SOFT_LIMIT_BYTES:CPU_QUOTA: flag
+do
+    case "${flag}"
+        in
+        DOCKER_CGROUP_MEMORY_LIMIT_BYTES)MEMORY_LIMIT_BYTES=${OPTARG};;
+        DOCKER_CGROUP_MEMORY_SOFT_LIMIT_BYTES)MEMORY_SOFT_LIMIT_BYTES=${OPTARG};;
+        DOCKER_CGROUP_CPU_QUOTA)CPU_QUOTA=${OPTARG};;
+    esac
+done
+
 if [ -d "/sys/fs/cgroup/memory/docker" ]; then
-   echo $MEMORY_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.limit_in_bytes"
-   echo $MEMORY_SOFT_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.soft_limit_in_bytes"
-   echo $CPU_CFS_QUOTA_US > "/sys/fs/cgroup/cpu/docker/cpu.cfs_quota_us"
+   echo $DOCKER_CGROUP_MEMORY_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.limit_in_bytes"
+   echo $DOCKER_CGROUP_MEMORY_SOFT_LIMIT_BYTES > "/sys/fs/cgroup/memory/docker/memory.soft_limit_in_bytes"
+   echo $DOCKER_CGROUP_CPU_QUOTA > "/sys/fs/cgroup/cpu/docker/cpu.cfs_quota_us"
 else
   echo "Docker cgroup does not exist"
 fi
