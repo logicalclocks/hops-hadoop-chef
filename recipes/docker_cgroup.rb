@@ -39,6 +39,13 @@ else
 end
 
 service_name = "docker-cgroup-rewrite"
+
+service service_name do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :nothing
+end
+
 template systemd_script do
   source "#{service_name}.service.erb"
   owner "root"
@@ -53,12 +60,6 @@ template systemd_script do
   if node['services']['enabled'] == "true"
     notifies :enable, "service[#{service_name}]"
   end
-end
-
-service service_name do
-  provider Chef::Provider::Service::Systemd
-  supports :restart => true, :stop => true, :start => true, :status => true
-  action :nothing
 end
 
 kagent_config "docker-cgroup-rewrite" do
