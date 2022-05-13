@@ -38,8 +38,9 @@ else
   systemd_script = "/lib/systemd/system/docker-cgroup-rewrite.service"
 end
 
+service_name = "docker-cgroup-rewrite"
 template systemd_script do
-  source "docker-cgroup-rewrite.service.erb"
+  source "#{service_name}.service.erb"
   owner "root"
   group "root"
   mode 0664
@@ -49,6 +50,15 @@ template systemd_script do
               'memory_soft_limit_bytes' => docker_cgroup_memory_soft_limit,
               'cpu_quota' => docker_cgroup_cpu_cfs_quota_us
             })
+  if node['services']['enabled'] == "true"
+    notifies :enable, "service[#{service_name}]"
+  end
+end
+
+service service_name do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :nothing
 end
 
 kagent_config "docker-cgroup-rewrite" do
