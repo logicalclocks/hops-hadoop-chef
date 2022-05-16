@@ -9,7 +9,7 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
   docker_cgroup_cpu_cfs_quota_us = (cpu_quota_period * ((cpu_quota_value).to_f / 100)).to_i
   docker_memory_cgroup_dir = "/sys/fs/cgroup/memory/docker"
   docker_cpu_cgroup_dir = "/sys/fs/cgroup/cpu/docker"
-  bash "install_pkgs" do
+  bash "write_cgroup" do
     user 'root'
     group 'root'
     code <<-EOH

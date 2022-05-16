@@ -15,7 +15,6 @@ done
 while true
 do
   if [ -d "/sys/fs/cgroup/memory/docker" ]; then
-   echo "memory limit is ${memory_limit_bytes}"
    echo $memory_limit_bytes > "/sys/fs/cgroup/memory/docker/memory.limit_in_bytes"
    echo $memory_soft_limit_bytes > "/sys/fs/cgroup/memory/docker/memory.soft_limit_in_bytes"
    echo $cpu_quota > "/sys/fs/cgroup/cpu/docker/cpu.cfs_quota_us"
@@ -28,5 +27,5 @@ done
 
 while true
 do
-        sleep 1
+    sleep 1
 done
