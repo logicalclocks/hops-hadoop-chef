@@ -7,7 +7,6 @@ crypto_dir = x509_helper.get_crypto_dir(node['hops']['rm']['user'])
 kagent_hopsify "Generate x.509" do
   user node['hops']['rm']['user']
   crypto_directory crypto_dir
-  common_name consul_helper.get_service_fqdn("resourcemanager")
   action :generate_x509
   not_if { node["kagent"]["enabled"] == "false" }
 end
@@ -138,17 +137,20 @@ hops_hdfs_directory node['hops']['yarn']['nodemanager']['remote_app_log_dir'] do
 end
 
 if service_discovery_enabled()
+  ha_ids = (0...node['hops']['rm']['private_ips'].size()).to_a()
+  my_id = node['hops']['rm']['private_ips'].index(my_private_ip())
+
   # Register ResourceManager with Consul
   template "#{node['hops']['bin_dir']}/consul/rm-health.sh" do
     source "consul/rm-health.sh.erb"
     owner node['hops']['rm']['user']
     group node['hops']['group']
     mode 0750
+    variables({
+      :id => my_id
+      })
   end
-
-  ha_ids = (0...node['hops']['rm']['private_ips'].size()).to_a()
-  my_id = node['hops']['rm']['private_ips'].index(my_private_ip())
-
+  
   consul_service "Registering ResourceManager with Consul" do
     service_definition "consul/rm-consul.hcl.erb"
     template_variables({
