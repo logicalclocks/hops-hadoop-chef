@@ -21,21 +21,31 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
   end
 end
 
+case node['platform_family']
+when "rhel"
+  systemd_script = "/usr/lib/systemd/system/docker-cgroup-rewrite.service"
+else
+  systemd_script = "/lib/systemd/system/docker-cgroup-rewrite.service"
+end
+
+
 docker_cgroup_rewrite_script="docker-cgroup-rewrite.sh"
 docker_cgroup_rewrite_script_path="#{node['hops']['dir']}/sbin/#{docker_cgroup_rewrite_script}"
 template "#{docker_cgroup_rewrite_script_path}" do
   source "#{docker_cgroup_rewrite_script}.erb"
   owner "root"
   group "root"
-  mode "500"
+  mode "0664"
   action :create
 end
 
-case node['platform_family']
-when "rhel"
-  systemd_script = "/usr/lib/systemd/system/docker-cgroup-rewrite.service"
-else
-  systemd_script = "/lib/systemd/system/docker-cgroup-rewrite.service"
+docker_cgroup_restart_script="docker-cgroup-service-restart.sh"
+kagent_sudoers "docker-cgroup-service-restart" do
+  user          node['glassfish']['user']
+  group         "root"
+  script_name   "#{docker_cgroup_restart_script}"
+  template      "#{docker_cgroup_restart_script}.erb"
+  run_as        "ALL"
 end
 
 service_name = "docker-cgroup-rewrite"
