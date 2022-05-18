@@ -955,3 +955,7 @@ attribute "hops/fuse/staging_folder",
 attribute "hops/fuse/mount_point",
           :description =>  "Directory to mount the filesystem",
           :type => 'string'
+
+attribute "hops/yarn/nodemanager-graceful-decommission-timeout-secs",
+          :description => "This is the maximal time to wait for running containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.",
+          :type => 'string'
