@@ -44,6 +44,7 @@ if service_discovery_enabled()
 
   glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
   rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
+  resourcemanager_fqdn = consul_helper.get_service_fqdn("resourcemanager")
   zookeeper_fqdn = consul_helper.get_service_fqdn("client.zookeeper")
 else
   ## Service Discovery is disabled
@@ -62,13 +63,21 @@ else
   else
     rpc_namenode_fqdn = private_recipe_ip("hops", "nn")
   end
+
+  if node['hops']['rm']['private_ips'].include?(my_ip)	
+    resourcemanager_fqdn = my_ip;
+  else
+    resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+  end
   zookeeper_fqdn = private_recipe_ip('kzookeeper', 'default')
 end
 
-if node['hops']['rm']['private_ips'].include?(my_ip)	
-  resourcemanager_fqdn = my_ip;
-else
-  resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+if exists_local("hops", "rm")
+  if node['hops']['rm']['private_ips'].include?(my_ip)	
+    resourcemanager_fqdn = my_ip;
+  else
+    resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+  end
 end
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
