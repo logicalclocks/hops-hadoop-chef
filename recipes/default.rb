@@ -44,7 +44,6 @@ if service_discovery_enabled()
 
   glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
   rpc_namenode_fqdn = consul_helper.get_service_fqdn("rpc.namenode")
-  resourcemanager_fqdn = consul_helper.get_service_fqdn("resourcemanager")
   zookeeper_fqdn = consul_helper.get_service_fqdn("client.zookeeper")
 else
   ## Service Discovery is disabled
@@ -63,16 +62,14 @@ else
   else
     rpc_namenode_fqdn = private_recipe_ip("hops", "nn")
   end
-
-  if node['hops']['rm']['private_ips'].include?(my_ip)	
-    resourcemanager_fqdn = my_ip;
-  else
-    resourcemanager_fqdn = private_recipe_ip("hops","rm")	
-  end
   zookeeper_fqdn = private_recipe_ip('kzookeeper', 'default')
 end
 
-
+if node['hops']['rm']['private_ips'].include?(my_ip)	
+  resourcemanager_fqdn = my_ip;
+else
+  resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+end
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
@@ -147,7 +144,8 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => "https://#{glassfish_fqdn}:#{hopsworks_port}#{node['hops']['tls']['crl_fetch_path']}",
-     :service_discovery_enabled => sd_enabled
+     :service_discovery_enabled => sd_enabled,
+     :my_ip => my_ip
     }
   })
   action :create

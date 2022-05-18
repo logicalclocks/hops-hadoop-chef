@@ -129,7 +129,14 @@
     <name>hadoop.proxyuser.<%= @flinkUser %>.groups</name>
     <value>*</value>
   </property>
-
+  <property>
+    <name>hadoop.proxyuser.<%= node['consul']['user'] %>.hosts</name>
+    <value><%= @my_ip %></value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= node['consul']['user'] %>.users</name>
+    <value><%= node['consul']['user'] %></value>
+  </property>
 
   <property>
     <name>dfs.leader.check.interval</name>
