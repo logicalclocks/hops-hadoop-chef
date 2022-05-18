@@ -530,6 +530,7 @@ default["hops"]["cloud_tours_cache"]['base_dir']   = "#{node['hops']['hdfs']['us
 default["hops"]["cloud_tours_cache"]['info_csv']   = "tours_info.csv"
 
 default['hops']['yarn']['is-elastic']              = "false"
+default['hops']['yarn']['nodemanager-graceful-decommission-timeout-secs']  =  3600
 
 # Audit logs
 default['hops']['nn']['audit_log']                 = "false"
