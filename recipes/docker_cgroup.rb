@@ -35,17 +35,8 @@ template "#{docker_cgroup_rewrite_script_path}" do
   source "#{docker_cgroup_rewrite_script}.erb"
   owner "root"
   group "root"
-  mode "0664"
+  mode "755"
   action :create
-end
-
-docker_cgroup_restart_script="docker-cgroup-service-restart.sh"
-kagent_sudoers "docker-cgroup-service-restart" do
-  user          node['glassfish']['user']
-  group         "root"
-  script_name   "#{docker_cgroup_restart_script}"
-  template      "#{docker_cgroup_restart_script}.erb"
-  run_as        "ALL"
 end
 
 service_name = "docker-cgroup-rewrite"
