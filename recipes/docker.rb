@@ -222,4 +222,6 @@ kagent_config service_name do
   action :systemd_reload
 end
 
-include_recipe "hops::cadvisor"
+if exists_local("hopsworks", "default")
+  include_recipe "hops::cadvisor"
+end
