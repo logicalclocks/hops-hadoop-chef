@@ -1,9 +1,20 @@
-docker_cgroup_cpu_cfs_quota_us = -1
-docker_cgroup_memory_hard_limit = 9223372036854771712
-docker_cgroup_memory_soft_limit = 9223372036854771712
+available_memory_in_host_bytes = (node['memory']['total'].gsub("kB","").to_i/10241024) * 1073741824
+docker_default_hard_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['hard-limit-default'].gsub("GB", "").to_i) * 1073741824
+docker_dedault_soft_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['soft-limit-default'].gsub("GB", "").to_i) * 1073741824
+docker_hard_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['hard-limit'].gsub("GB", "").to_i) * 1073741824
+docker_soft_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['soft-limit'].gsub("GB", "").to_i) * 1073741824
+# dyanamic memory allocation
+available_memory_in_host_bytes = available_memory_in_host_bytes - docker_hard_limit_memory_bytes
+excess_memory = available_memory_in_host_bytes - (30 * 1073741824)
+if excess_memory < 0 || (docker_default_hard_limit_memory_bytes != docker_hard_limit_memory_bytes || docker_dedault_soft_limit_memory_bytes != docker_soft_limit_memory_bytes)
+  excess_memory = 0
+end
+excess_memory = (excess_memory/4).round()
+
+node.override['hops']['docker']['cgroup']['memory']['hard-limit'] = ((docker_hard_limit_memory_bytes + excess_memory)/1073741824).to_s + "GB"
+node.override['hops']['docker']['cgroup']['memory']['soft-limit'] = ((docker_soft_limit_memory_bytes + excess_memory) /1073741824).to_s + "GB"
+
 if node['hops']['docker']['cgroup']['enabled'].eql?("true")
-  docker_cgroup_memory_hard_limit = "#{node['hops']['docker']['cgroup']['memory']['hard-limit']}"
-  docker_cgroup_memory_soft_limit = "#{node['hops']['docker']['cgroup']['memory']['soft-limit']}"
   cpu_quota_value = node['hops']['docker']['cgroup']['cpu']['quota']
   cpu_quota_period = node['hops']['docker']['cgroup']['cpu']["period"]
   docker_cgroup_cpu_cfs_quota_us = (cpu_quota_period * ((cpu_quota_value).to_f / 100)).to_i
@@ -15,55 +26,8 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
     code <<-EOH
         echo #{docker_cgroup_cpu_cfs_quota_us} > #{docker_cpu_cgroup_dir}/cpu.cfs_quota_us
         echo #{cpu_quota_period} > #{docker_cpu_cgroup_dir}/cpu.cfs_period_us
-        echo #{docker_cgroup_memory_hard_limit} > #{docker_memory_cgroup_dir}/memory.limit_in_bytes
-        echo #{docker_cgroup_memory_soft_limit} > #{docker_memory_cgroup_dir}/memory.soft_limit_in_bytes
+        echo #{docker_hard_limit_memory_bytes + excess_memory} > #{docker_memory_cgroup_dir}/memory.limit_in_bytes
+        echo #{docker_soft_limit_memory_bytes + excess_memory} > #{docker_memory_cgroup_dir}/memory.soft_limit_in_bytes
     EOH
   end
 end
-
-case node['platform_family']
-when "rhel"
-  systemd_script = "/usr/lib/systemd/system/docker-cgroup-rewrite.service"
-else
-  systemd_script = "/lib/systemd/system/docker-cgroup-rewrite.service"
-end
-
-
-docker_cgroup_rewrite_script="docker-cgroup-rewrite.sh"
-docker_cgroup_rewrite_script_path="#{node['hops']['dir']}/sbin/#{docker_cgroup_rewrite_script}"
-template "#{docker_cgroup_rewrite_script_path}" do
-  source "#{docker_cgroup_rewrite_script}.erb"
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
-
-service_name = "docker-cgroup-rewrite"
-
-service service_name do
-  provider Chef::Provider::Service::Systemd
-  supports :restart => true, :stop => true, :start => true, :status => true
-  action :nothing
-end
-
-template systemd_script do
-  source "#{service_name}.service.erb"
-  owner "root"
-  group "root"
-  mode 0664
-  variables({
-              'docker_cgroup_rewrite_script' => docker_cgroup_rewrite_script_path,
-              'memory_limit_bytes' => docker_cgroup_memory_hard_limit,
-              'memory_soft_limit_bytes' => docker_cgroup_memory_soft_limit,
-              'cpu_quota' => docker_cgroup_cpu_cfs_quota_us
-            })
-  if node['services']['enabled'] == "true"
-    notifies :enable, "service[#{service_name}]"
-  end
-end
-
-kagent_config "docker-cgroup-rewrite" do
-  action :systemd_reload
-end
-
