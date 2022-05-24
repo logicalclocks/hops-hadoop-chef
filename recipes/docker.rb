@@ -130,7 +130,6 @@ if node['hops']['gpu'].eql?("true")
         EOH
     end
   end
-
 end
 
 if !node['hops']['docker_dir'].eql?("/var/lib/docker")

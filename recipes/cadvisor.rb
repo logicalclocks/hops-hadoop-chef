@@ -49,14 +49,3 @@ end
 kagent_config "cadvisor" do
   action :systemd_reload
 end
-
-=begin
-if exists_local('consul', 'master') or exists_local('consul', 'slave')
-  # Register cAdvisor with Consul
-  consul_service "Registering cAdvisor with Consul" do
-    service_definition "cadvisor-consul.hcl.erb"
-    reload_consul false
-    action :register
-  end
-end
-=end
