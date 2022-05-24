@@ -542,7 +542,7 @@ default['hops']['cadvisor']['download-url']        = "#{node['download_url']}/do
 default['hops']['cadvisor']['port']                = "4194"
 
 
-default['hops']['docker']['cgroup']['enabled']                       = "true"
+default['hops']['docker']['cgroup']['enabled']                       = "false"
 default['hops']['docker']['cgroup']['memory']['hard-limit-default']  = "6GB"
 default['hops']['docker']['cgroup']['memory']['hard-limit']          = node['hops']['docker']['cgroup']['memory']['hard-limit-default']
 default['hops']['docker']['cgroup']['memory']['soft-limit-default']  = "2GB"

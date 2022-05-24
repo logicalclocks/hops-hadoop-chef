@@ -221,6 +221,7 @@ kagent_config service_name do
   action :systemd_reload
 end
 
-if exists_local("hopsworks", "default")
+#install cadvisor only on the headnode and no kubernetes
+if (exists_local("hopsworks", "default")) && (node['install']['kubernetes'])
   include_recipe "hops::cadvisor"
 end
