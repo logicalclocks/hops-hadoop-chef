@@ -15,8 +15,8 @@ node.override['hops']['docker']['cgroup']['memory']['hard-limit'] = ((docker_har
 node.override['hops']['docker']['cgroup']['memory']['soft-limit'] = ((docker_soft_limit_memory_bytes + excess_memory) /1073741824).to_s + "GB"
 
 if node['hops']['docker']['cgroup']['enabled'].eql?("true")
-  cpu_quota_value = node['hops']['docker']['cgroup']['cpu']['quota']
-  cpu_quota_period = node['hops']['docker']['cgroup']['cpu']["period"]
+  cpu_quota_value = node['hops']['docker']['cgroup']['cpu']['quota']['percentage']
+  cpu_quota_period = node['hops']['docker']['cgroup']['cpu']['period']
   docker_cgroup_cpu_cfs_quota_us = (cpu_quota_period * ((cpu_quota_value).to_f / 100)).to_i
   docker_memory_cgroup_dir = "/sys/fs/cgroup/memory/docker"
   docker_cpu_cgroup_dir = "/sys/fs/cgroup/cpu/docker"

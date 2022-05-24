@@ -975,6 +975,10 @@ attribute "hops/docker/cgroup/memory/soft-limit",
           :description => "Soft limit in bytes to allow flexible sharing of memory.  When the system detects memory contention or low memory, containers will restrict their consumption to the soft limits.",
           :type => 'string'
 
-attribute "hops/docker/cgroup/cpu/quota",
+attribute "hops/docker/cgroup/cpu/quota/percentage",
           :description => "The percentage of total cpu consumption for docker containers.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/cpu/period",
+          :description => "Specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated.",
           :type => 'string'
