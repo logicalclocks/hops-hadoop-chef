@@ -959,11 +959,10 @@ attribute "hops/fuse/mount_point",
           :description =>  "Directory to mount the filesystem",
           :type => 'string'
 
-<<<<<<< HEAD
 attribute "hops/yarn/nodemanager-graceful-decommission-timeout-secs",
           :description => "This is the maximal time to wait for running containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.",
           :type => 'string'
-=======
+
 attribute "hops/docker/cgroup/enabled",
           :description => "Enable cgroup settings for docker containers",
           :type => 'string'
@@ -979,5 +978,3 @@ attribute "hops/docker/cgroup/memory/soft-limit",
 attribute "hops/docker/cgroup/cpu/quota",
           :description => "The percentage of total cpu consumption for docker containers.",
           :type => 'string'
-
->>>>>>> Manage and monitor resource usage for Docker containers
