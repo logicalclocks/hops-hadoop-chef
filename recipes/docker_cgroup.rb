@@ -1,12 +1,13 @@
 available_memory_in_host_bytes = (node['memory']['total'].gsub("kB","").to_i/10241024) * 1073741824
 docker_default_hard_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['hard-limit-default'].gsub("GB", "").to_i) * 1073741824
-docker_dedault_soft_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['soft-limit-default'].gsub("GB", "").to_i) * 1073741824
+docker_default_soft_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['soft-limit-default'].gsub("GB", "").to_i) * 1073741824
 docker_hard_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['hard-limit'].gsub("GB", "").to_i) * 1073741824
 docker_soft_limit_memory_bytes = (node['hops']['docker']['cgroup']['memory']['soft-limit'].gsub("GB", "").to_i) * 1073741824
-# dyanamic memory allocation
+# dynamic memory allocation
 available_memory_in_host_bytes = available_memory_in_host_bytes - docker_hard_limit_memory_bytes
+# assumption: Hopsworks services require 30GB
 excess_memory = available_memory_in_host_bytes - (30 * 1073741824)
-if excess_memory < 0 || (docker_default_hard_limit_memory_bytes != docker_hard_limit_memory_bytes || docker_dedault_soft_limit_memory_bytes != docker_soft_limit_memory_bytes)
+if excess_memory < 0 || (docker_default_hard_limit_memory_bytes != docker_hard_limit_memory_bytes || docker_default_soft_limit_memory_bytes != docker_soft_limit_memory_bytes)
   excess_memory = 0
 end
 excess_memory = (excess_memory/4).round()
