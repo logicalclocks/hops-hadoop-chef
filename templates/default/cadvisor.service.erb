@@ -5,10 +5,6 @@ StartLimitBurst=20
 
 [Service]
 ExecStart = <%= @cadvisor_bin %> \
---storage_driver_host=localhost:8086 \
---storage_driver_password=root \
---storage_driver_secure=false \
---storage_driver_user=root \
 --logtostderr=true \
 --allow_dynamic_housekeeping=false \
 --global_housekeeping_interval=35s \
