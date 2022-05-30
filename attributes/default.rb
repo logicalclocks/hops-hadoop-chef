@@ -427,6 +427,7 @@ default['hops']['capacity']['default_acl_submit_applications']          = "*"
 default['hops']['capacity']['default_acl_administer_queue']             = "*"
 default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
+default['hops']['capacity']['minimum-user-limit-percent']               = ""
 
 #
 # Flyway - Database upgrades
