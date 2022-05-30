@@ -670,6 +670,10 @@ attribute "hops/capacity/queue_mapping_override.enable",
           :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
           :type => "string"
 
+attribute "hops/capacity/minimum-user-limit-percent",
+          :description => "Each queue enforces a limit on the percentage of resources allocated to a user at any given time, if there is demand for resources. Attribute format: root.default:VALUE-INTEGER,root.queue2:VALUE-INTEGER",
+          :type => "string"
+
 attribute "kagent/enabled",
           :description => "Set to 'true' to enable, 'false' to disable kagent",
           :type => "string"
