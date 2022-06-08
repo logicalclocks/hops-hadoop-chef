@@ -407,3 +407,20 @@ cookbook_file "#{node['hops']['conf_dir']}/namenode.yaml" do
   group node['hops']['group']
   mode 500
 end
+
+if not node['hops']['aws_access_key_id'].eql?("") and not node['hops']['aws_secret_access_key'].eql?("")
+  directory "/home/#{node['hops']['hdfs']['user']}/.aws" do
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode "0755"
+    action :create
+  end
+  
+  template "/home/#{node['hops']['hdfs']['user']}/.aws/credentials" do
+    source "credentials.erb"
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    mode "600"
+    action :create
+  end
+end
