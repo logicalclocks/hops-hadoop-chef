@@ -536,3 +536,16 @@ default['hops']['yarn']['nodemanager-graceful-decommission-timeout-secs']  =  36
 # Audit logs
 default['hops']['nn']['audit_log']                 = "false"
 default['hops']['rm']['audit_log']                 = "false"
+
+default['hops']['cadvisor']['dir']                 = "#{node['hops']['dir']}/cadvisor"
+default['hops']['cadvisor']['download-url']        = "#{node['download_url']}/docker/cadvisor"
+default['hops']['cadvisor']['port']                = "4194"
+
+
+default['hops']['docker']['cgroup']['enabled']                       = "false"
+default['hops']['docker']['cgroup']['memory']['hard-limit-default']  = "6GB"
+default['hops']['docker']['cgroup']['memory']['hard-limit']          = node['hops']['docker']['cgroup']['memory']['hard-limit-default']
+default['hops']['docker']['cgroup']['memory']['soft-limit-default']  = "2GB"
+default['hops']['docker']['cgroup']['memory']['soft-limit']          = node['hops']['docker']['cgroup']['memory']['soft-limit-default']
+default['hops']['docker']['cgroup']['cpu']['quota']['percentage']    = 80
+default['hops']['docker']['cgroup']['cpu']['period']                 = 100000

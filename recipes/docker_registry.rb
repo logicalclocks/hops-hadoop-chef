@@ -201,3 +201,7 @@ if conda_helpers.is_upgrade
     action :systemd_reload
   end
 end
+
+if exists_local("hopsworks", "default")
+  include_recipe "hops::docker_cgroup"
+end

@@ -962,3 +962,23 @@ attribute "hops/fuse/mount_point",
 attribute "hops/yarn/nodemanager-graceful-decommission-timeout-secs",
           :description => "This is the maximal time to wait for running containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.",
           :type => 'string'
+
+attribute "hops/docker/cgroup/enabled",
+          :description => "Enable cgroup settings for docker containers",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/memory/hard-limit",
+          :description => "Maximum memory allowed for docker containers in bytes",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/memory/soft-limit",
+          :description => "Soft limit in bytes to allow flexible sharing of memory.  When the system detects memory contention or low memory, containers will restrict their consumption to the soft limits.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/cpu/quota/percentage",
+          :description => "The percentage of total cpu consumption for docker containers.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/cpu/period",
+          :description => "Specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated.",
+          :type => 'string'
