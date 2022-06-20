@@ -76,7 +76,7 @@ export JAVA_HOME=${JAVA_HOME}
 # prefer any Xmx setting in their respective _OPT variable.
 # There is no default; the JVM will autoscale based upon machine
 # memory size.
- export HADOOP_HEAPSIZE_MAX=<%= node['hops']['nn']['heap_size'] %>
+# export HADOOP_HEAPSIZE_MAX=
 
 # The minimum amount of heap to use (Java -Xms).  If no unit
 # is provided, it will be converted to MB.  Daemons will
@@ -100,7 +100,7 @@ export JAVA_HOME=${JAVA_HOME}
 # section as to why....
 export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 
-export HADOOP_OPTS="-XX:MaxDirectMemorySize=<%= node['hops']['nn']['direct_memory_size'] %>m $HADOOP_OPTS"
+export HADOOP_OPTS="$HADOOP_OPTS"
 
 # Under certain conditions, Java on OS X will throw SCDynamicStore errors
 # in the system logs.

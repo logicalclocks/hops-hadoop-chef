@@ -272,6 +272,7 @@ default['hops']['nm']['https']['port']      = "45443"
 default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 1000
 default['hops']['nn']['heap_size']          = 1000
+default['hops']['dn']['heap_size']          = 1000
 
 default['hops']['erasure_coding']           = "false"
 
