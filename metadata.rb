@@ -622,6 +622,10 @@ attribute "hops/logging_level",
           :description => "Log levels are: TRACE, DEBUG, INFO, WARN",
           :type => 'string'
 
+attribute "hops/dn/heap_size",
+          :description => "Default size of the hadoop DataNode heap in MBs",
+          :type => 'string'
+
 attribute "hops/nn/heap_size",
           :description => "Size of the NameNode heap in MBs",
           :type => 'string'
