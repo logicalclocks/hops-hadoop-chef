@@ -18,6 +18,13 @@ when 'debian'
   update_command = "update-ca-certificates"
 end
 
+# include docker if not already exists
+#
+docker_home="/srv/hops/docker"
+if ::File.exist?("#{docker_home}") === false
+  include_recipe "hops::docker"
+end
+
 # we are root, using kagent's certificate should be ok
 kagent_crypto_dir = x509_helper.get_crypto_dir(node['kagent']['user'])
 hops_ca = "#{kagent_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['kagent']['user'])}"
@@ -189,18 +196,18 @@ end
 
 # We add docker in kagent in this recipe as the hops::docker recipe runs during the install phase and it might run
 # before kagent::install
-service_name='docker'
-if node['kagent']['enabled'] == "true"
-  kagent_config service_name do
-    service "docker"
-  end
-end
+# service_name='docker'
+# if node['kagent']['enabled'] == "true"
+#   kagent_config service_name do
+#     service "docker"
+#   end
+# end
 
-if conda_helpers.is_upgrade
-  kagent_config service_name do
-    action :systemd_reload
-  end
-end
+# if conda_helpers.is_upgrade
+#   kagent_config service_name do
+#     action :systemd_reload
+#   end
+# end
 
 if exists_local("hopsworks", "default")
   include_recipe "hops::docker_cgroup"

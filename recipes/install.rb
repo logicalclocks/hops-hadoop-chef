@@ -310,9 +310,9 @@ link node['hops']['data_dir'] do
   to node['hops']['data_volume']['data_dir']
 end
 
-if node['hops']['docker']['enabled'].eql?("true")
-  include_recipe "hops::docker"
-end
+# if node['hops']['docker']['enabled'].eql?("true")
+#   include_recipe "hops::docker"
+# end
 
 dd=node['hops']['data_dir']
 dataDir=dd.gsub("file://","")
