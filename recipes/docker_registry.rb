@@ -18,8 +18,8 @@ when 'debian'
   update_command = "update-ca-certificates"
 end
 
-# include docker if not already exists
-#
+# On single node hops::dn recipe runs after docker_registry, which causes to miss out the docker recipe.
+#  So we include docker recipe here if not already exists
 docker_home="/srv/hops/docker"
 if ::File.exist?("#{docker_home}") === false
   include_recipe "hops::docker"

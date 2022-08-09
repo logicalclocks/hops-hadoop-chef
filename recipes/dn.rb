@@ -89,6 +89,8 @@ if node['kagent']['enabled'] == "true"
   end
 end
 
+# include docker recipe if only on multi node,
+# otherwise we include hops::docker recipe in docker_registry which runs before hops::dn so we skip here
 unless exists_local("hops", "docker_registry")
   if node['hops']['docker']['enabled'].eql?("true")
     include_recipe "hops::docker"
