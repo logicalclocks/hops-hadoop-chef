@@ -95,8 +95,6 @@ unless exists_local("hops", "docker_registry")
   end
 end
 
-
-
 if service_discovery_enabled()
   # Register DataNode with Consul
   template "#{node['hops']['bin_dir']}/consul/dn-health.sh" do
