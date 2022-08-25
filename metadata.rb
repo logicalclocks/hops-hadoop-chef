@@ -767,7 +767,6 @@ attribute "hops/nn/root_dir_storage_policy",
           :description => "Storage policy for root directory",
           :type => "string"
 
-
 attribute "hops/nn/replace-dn-on-failure",
           :description => "When the cluster size is extremely small, e.g. 3 nodes or less, cluster administrators may want to set the 'hops/nn/root_dir_storage_policy' policy to NEVER in the default configuration file or disable this feature. Otherwise, users may experience an unusually high rate of pipeline failures since it is impossible to find new datanodes for replacement.",
           :type => "string"
