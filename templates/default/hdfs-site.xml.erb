@@ -441,13 +441,6 @@
 </property>
 <% end %>
 
-<!-- Store Small Files in NDB-->
-
-<property>
-   <name>dfs.store.small.files.in.db</name>
-   <value><%= node['hops']['small_files']['store_in_db'] %></value>
-</property>
-
 <property>
    <name>dfs.db.file.max.size</name>
    <value><%= node['hops']['small_files']['max_size'] %></value>
