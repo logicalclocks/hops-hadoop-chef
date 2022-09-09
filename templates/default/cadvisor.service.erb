@@ -12,8 +12,7 @@ ExecStart = <%= @cadvisor_bin %> \
 --max_housekeeping_interval=10s \
 --application_metrics_count_limit=1000 \
 --port=4194 \
---max_procs=2 \
---docker_only
+--max_procs=2
 
 LimitNOFILE = 20000
 Restart=on-failure
