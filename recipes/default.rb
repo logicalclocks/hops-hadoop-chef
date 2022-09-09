@@ -21,7 +21,7 @@ if service_discovery_enabled()
   ## Do not try to discover Hopsworks before it has been actual deployed
   ## default recipe is included by hops::ndb
   run_list = node.primary_runlist
-  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]']
+  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]', 'recipe[hops::fuse_mnt]']
   run_discovery = false
   for dr in run_discovery_recipes do
     if run_list.include?(dr)
@@ -30,7 +30,7 @@ if service_discovery_enabled()
     end
   end
 
-  hopsworks_port = ""
+  hopsworks_port = "8182"
   if run_discovery
     ruby_block 'Discover Hopsworks port' do
       block do
