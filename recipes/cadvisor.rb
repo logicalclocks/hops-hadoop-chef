@@ -26,11 +26,7 @@ else
   systemd_script = "/lib/systemd/system/cadvisor.service"
 end
 
-service "cadvisor" do
-  provider Chef::Provider::Service::Systemd
-  supports :restart => true, :stop => true, :start => true, :status => true
-  action :nothing
-end
+service_name = "cadvisor"
 
 template systemd_script do
   source "cadvisor.service.erb"
@@ -46,6 +42,12 @@ template systemd_script do
             })
 end
 
-kagent_config "cadvisor" do
+service service_name do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :disable
+end
+
+kagent_config service_name do
   action :systemd_reload
 end
