@@ -48,13 +48,13 @@ template systemd_script do
             })
 end
 
-kagent_config service_name do
+kagent_config "#{service_name}" do
   action :systemd_reload
 end
 
 # Register with kagent
 if node['kagent']['enabled'] == "true"
-  kagent_config service_name do
-    service service_name
+  kagent_config "#{service_name}" do
+    service "#{service_name}"
   end
 end
