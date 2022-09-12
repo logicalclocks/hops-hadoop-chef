@@ -532,6 +532,12 @@
 </property>
 
 <property>
+   <name>dfs.dn.cloud.cache.delete.activation.percentage</name>
+   <value><%= node['hops']['cloud_cache_delete_activation_percentage'] %></value>
+   <description>Disk utilization percentage to start cleaning blocks from DN Cloud cache</description>
+</property>
+
+<property>
    <name>dfs.dn.cloud.max.upload.threads</name>
    <value><%= node['hops']['cloud_max_upload_threads'] %></value>
    <description></description>

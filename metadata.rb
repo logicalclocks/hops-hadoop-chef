@@ -585,6 +585,10 @@ attribute "hops/cloud_bypass_disk_cache",
           :description => "Bypass disk cache",
           :type => 'string'
 
+attribute "hops/cloud_cache_delete_activation_percentage",
+          :description => "Disk utilization percentage to start cleaning blocks from DN Cloud cache",
+          :type => 'string'
+
 attribute "hops/cloud_max_upload_threads",
           :description => "Max number of threads for uploading blocks to cloud",
           :type => 'string'
