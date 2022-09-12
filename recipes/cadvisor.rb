@@ -28,6 +28,12 @@ end
 
 service_name = "cadvisor"
 
+service service_name do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :disable
+end
+
 template systemd_script do
   source "cadvisor.service.erb"
   owner "root"
@@ -42,12 +48,13 @@ template systemd_script do
             })
 end
 
-service service_name do
-  provider Chef::Provider::Service::Systemd
-  supports :restart => true, :stop => true, :start => true, :status => true
-  action :disable
-end
-
 kagent_config service_name do
   action :systemd_reload
+end
+
+# Register with kagent
+if node['kagent']['enabled'] == "true"
+  kagent_config service_name do
+    service service_name
+  end
 end
