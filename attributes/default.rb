@@ -59,6 +59,7 @@ default['hops']['cloud_provider']              = node["install"]["cloud"]
 default['hops']['aws_s3_region']               = "eu-west-1"
 default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
 default['hops']['cloud_bypass_disk_cache']         = "false"
+default['hops']['cloud_cache_delete_activation_percentage'] = "70"
 default['hops']['cloud_max_upload_threads']        = "20"
 default['hops']['cloud_store_small_files_in_db']   = "true"
 default['hops']['disable_non_cloud_storage_policies']       = "false"
