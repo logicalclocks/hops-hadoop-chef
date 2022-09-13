@@ -314,6 +314,11 @@ if node['hops']['docker']['enabled'].eql?("true")
   include_recipe "hops::docker"
 end
 
+#install cadvisor only on the headnode and no kubernetes
+if (exists_local("hopsworks", "default")) && (node['install']['kubernetes'].casecmp?("false"))
+  include_recipe "hops::cadvisor"
+end
+
 dd=node['hops']['data_dir']
 dataDir=dd.gsub("file://","")
 

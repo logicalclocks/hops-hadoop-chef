@@ -57,5 +57,7 @@ end
 if node['kagent']['enabled'] == "true"
   kagent_config "#{service_name}" do
     service "#{service_name}"
+    restart_agent false
+    action :add
   end
 end
