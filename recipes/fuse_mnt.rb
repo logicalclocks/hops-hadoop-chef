@@ -153,3 +153,9 @@ if node['kagent']['enabled'] == "true"
     log_file "#{node['hops']['logs_dir']}/fuse-mount.log"
   end
 end
+
+
+#install cadvisor only on the headnode and no kubernetes
+if (exists_local("hopsworks", "default")) && (node['install']['kubernetes'].casecmp?("false"))
+  include_recipe "hops::cadvisor"
+end
