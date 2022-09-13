@@ -19,30 +19,31 @@ remote_file cadvisor_bin do
   action :create_if_missing
 end
 
-case node['platform_family']
-when "rhel"
-  systemd_script = "/usr/lib/systemd/system/cadvisor.service"
-else
-  systemd_script = "/lib/systemd/system/cadvisor.service"
-end
 
 service_name = "cadvisor"
+
+case node['platform_family']
+when "rhel"
+  systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
+else
+  systemd_script = "/lib/systemd/system/#{service_name}.service"
+end
 
 service service_name do
   provider Chef::Provider::Service::Systemd
   supports :restart => true, :stop => true, :start => true, :status => true
-  action :disable
+  action :nothing
 end
 
 template systemd_script do
-  source "cadvisor.service.erb"
+  source "#{service_name}.service.erb"
   owner "root"
   group "root"
   mode 0664
   if node['services']['enabled'] == "true"
-    notifies :enable, "service[cadvisor]"
+    notifies :enable, "service[#{service_name}]"
   end
-  notifies :restart, "service[cadvisor]"
+  notifies :restart, "service[#{service_name}]"
   variables({
               'cadvisor_bin' => cadvisor_bin
             })
