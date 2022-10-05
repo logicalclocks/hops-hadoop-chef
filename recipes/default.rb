@@ -21,7 +21,7 @@ if service_discovery_enabled()
   ## Do not try to discover Hopsworks before it has been actual deployed
   ## default recipe is included by hops::ndb
   run_list = node.primary_runlist
-  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]']
+  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]', 'recipe[hops::fuse_mnt]']
   run_discovery = false
   for dr in run_discovery_recipes do
     if run_list.include?(dr)
@@ -30,7 +30,7 @@ if service_discovery_enabled()
     end
   end
 
-  hopsworks_port = ""
+  hopsworks_port = "8182"
   if run_discovery
     ruby_block 'Discover Hopsworks port' do
       block do
@@ -72,7 +72,13 @@ else
   zookeeper_fqdn = private_recipe_ip('kzookeeper', 'default')
 end
 
-
+if exists_local("hops", "rm")
+  if node['hops']['rm']['private_ips'].include?(my_ip)	
+    resourcemanager_fqdn = my_ip;
+  else
+    resourcemanager_fqdn = private_recipe_ip("hops","rm")	
+  end
+end
 
 rpcSocketFactory = "org.apache.hadoop.net.StandardSocketFactory"
 hopsworks_crl_uri = "RPC TLS NOT ENABLED"
@@ -147,7 +153,8 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => "https://#{glassfish_fqdn}:#{hopsworks_port}#{node['hops']['tls']['crl_fetch_path']}",
-     :service_discovery_enabled => sd_enabled
+     :service_discovery_enabled => sd_enabled,
+     :my_ip => my_ip
     }
   })
   action :create

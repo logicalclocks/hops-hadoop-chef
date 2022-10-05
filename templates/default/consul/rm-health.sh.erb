@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+IS_HA="<%= node['hops']['yarn']['resourcemanager_ha_enabled'] %>"
+
+if [[ $IS_HA == "true" ]];
+then 
+    RM_ID=<%= @id %>
+    IS_ACTIVE=`<%= node['hops']['bin_dir'] %>/yarn rmadmin -getServiceState $RM_ID`
+    if [[ $IS_ACTIVE != "active" ]];
+    then
+        exit 10
+    fi
+fi
+
 CHECK="curl --fail --silent -k https://$HOSTNAME:<%= node['hops']['rm']['https']['port'] %>/ws/v1/cluster > /dev/null 2>&1"
 
 source <%= node['consul']['health-check']['retryable-check-file'] %>

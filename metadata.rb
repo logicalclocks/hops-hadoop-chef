@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "2.6.0"
+version          "3.1.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -585,6 +585,10 @@ attribute "hops/cloud_bypass_disk_cache",
           :description => "Bypass disk cache",
           :type => 'string'
 
+attribute "hops/cloud_cache_delete_activation_percentage",
+          :description => "Disk utilization percentage to start cleaning blocks from DN Cloud cache",
+          :type => 'string'
+
 attribute "hops/cloud_max_upload_threads",
           :description => "Max number of threads for uploading blocks to cloud",
           :type => 'string'
@@ -619,6 +623,10 @@ attribute "hops/rm/scheduler_class",
 
 attribute "hops/logging_level",
           :description => "Log levels are: TRACE, DEBUG, INFO, WARN",
+          :type => 'string'
+
+attribute "hops/dn/heap_size",
+          :description => "Default size of the hadoop DataNode heap in MBs",
           :type => 'string'
 
 attribute "hops/nn/heap_size",
@@ -668,6 +676,10 @@ attribute "hops/capacity/queue_mapping",
           :type => "string"
 attribute "hops/capacity/queue_mapping_override.enable",
           :description => "If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.",
+          :type => "string"
+
+attribute "hops/capacity/minimum-user-limit-percent",
+          :description => "Each queue enforces a limit on the percentage of resources allocated to a user at any given time, if there is demand for resources. Attribute format: root.default:VALUE-INTEGER,root.queue2:VALUE-INTEGER",
           :type => "string"
 
 attribute "kagent/enabled",
@@ -759,7 +771,6 @@ attribute "hops/nn/root_dir_storage_policy",
           :description => "Storage policy for root directory",
           :type => "string"
 
-
 attribute "hops/nn/replace-dn-on-failure",
           :description => "When the cluster size is extremely small, e.g. 3 nodes or less, cluster administrators may want to set the 'hops/nn/root_dir_storage_policy' policy to NEVER in the default configuration file or disable this feature. Otherwise, users may experience an unusually high rate of pipeline failures since it is impossible to find new datanodes for replacement.",
           :type => "string"
@@ -769,7 +780,7 @@ attribute "hops/nn/replace-dn-on-failure-policy",
           :type => "string"
 
 attribute "hops/retry_policy_spec",
-          :description => "Retry policy specification. For example '2.6.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :description => "Retry policy specification. For example '3.1.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
 
 attribute "hops/retry_policy_enabled",
@@ -945,4 +956,28 @@ attribute "hops/fuse/staging_folder",
 
 attribute "hops/fuse/mount_point",
           :description =>  "Directory to mount the filesystem",
+          :type => 'string'
+
+attribute "hops/yarn/nodemanager-graceful-decommission-timeout-secs",
+          :description => "This is the maximal time to wait for running containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/enabled",
+          :description => "Enable cgroup settings for docker containers",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/memory/hard-limit",
+          :description => "Maximum memory allowed for docker containers in bytes",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/memory/soft-limit",
+          :description => "Soft limit in bytes to allow flexible sharing of memory.  When the system detects memory contention or low memory, containers will restrict their consumption to the soft limits.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/cpu/quota/percentage",
+          :description => "The percentage of total cpu consumption for docker containers.",
+          :type => 'string'
+
+attribute "hops/docker/cgroup/cpu/period",
+          :description => "Specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated.",
           :type => 'string'

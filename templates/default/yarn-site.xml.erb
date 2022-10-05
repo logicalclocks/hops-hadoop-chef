@@ -353,6 +353,15 @@
     <value><%= node['hops']['yarn']['min_allocation_memory_mb'] %></value>
   </property>
 
+<% if not node['hops']['capacity']['minimum-user-limit-percent'].empty? -%>
+<% for per_queue in node['hops']['capacity']['minimum-user-limit-percent'].split(',') -%>
+<% pq_split = per_queue.strip().split(':') -%>
+  <property>
+    <name>yarn.scheduler.capacity.<%= pq_split[0] %>.minimum-user-limit-percent</name>
+    <value><%= pq_split[1] %></value>
+  </property>
+<% end -%>
+<% end -%>
 
   <property>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
@@ -679,5 +688,10 @@
     <name>yarn.resourcemanager.is-elastic</name>
     <value><%= node['hops']['yarn']['is-elastic'] %></value>
   </property>
-  
+
+  <property>
+    <name>yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs</name>
+    <value><%= node['hops']['yarn']['nodemanager-graceful-decommission-timeout-secs'] %></value>
+  </property>
+    
 </configuration>

@@ -3,9 +3,9 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5"
-default['hops']['version']                     = "3.2.0.6-RC1"
-default['hops']['fuse']['version']             = "1.3.2"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6"
+default['hops']['version']                     = "3.2.0.7-RC0"
+default['hops']['fuse']['version']             = "1.3.3"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['hdfs']['user_id']             = '1506'
@@ -59,6 +59,7 @@ default['hops']['cloud_provider']              = node["install"]["cloud"]
 default['hops']['aws_s3_region']               = "eu-west-1"
 default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
 default['hops']['cloud_bypass_disk_cache']         = "false"
+default['hops']['cloud_cache_delete_activation_percentage'] = "70"
 default['hops']['cloud_max_upload_threads']        = "20"
 default['hops']['cloud_store_small_files_in_db']   = "true"
 default['hops']['disable_non_cloud_storage_policies']       = "false"
@@ -249,7 +250,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "21.04.2"
+default['hops']['ndb']['version']           = ""
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -272,6 +273,7 @@ default['hops']['nm']['https']['port']      = "45443"
 default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 1000
 default['hops']['nn']['heap_size']          = 1000
+default['hops']['dn']['heap_size']          = 1000
 
 default['hops']['erasure_coding']           = "false"
 
@@ -427,6 +429,7 @@ default['hops']['capacity']['default_acl_submit_applications']          = "*"
 default['hops']['capacity']['default_acl_administer_queue']             = "*"
 default['hops']['capacity']['queue_mapping']                            = ""
 default['hops']['capacity']['queue_mapping_override']['enable']         = "false"
+default['hops']['capacity']['minimum-user-limit-percent']               = ""
 
 #
 # Flyway - Database upgrades
@@ -436,8 +439,7 @@ default['hops']['flyway_url']                                           = node['
 
 default['hops']['yarnapp']['home_dir']                 = "/home"
 
-#Store Small files in NDB
-default['hops']['small_files']['store_in_db']                                       = "false"
+#Max small file size
 default['hops']['small_files']['max_size']                                          = 65536
 
 default['hopsmonitor']['default']['private_ips']                                    = ['10.0.2.15']
@@ -510,7 +512,7 @@ default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 default['hops']['docker']['git']['image']['name']    = "git"
-default['hops']['docker']['git']['image']['version'] = "0.1.0"
+default['hops']['docker']['git']['image']['version'] = "0.2.0"
 default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/hops-git/#{node['hops']['docker']['git']['image']['version']}/git.tgz"
 
 #XAttrs
@@ -526,7 +528,16 @@ default["hops"]["cloud_tours_cache"]['base_dir']   = "#{node['hops']['hdfs']['us
 default["hops"]["cloud_tours_cache"]['info_csv']   = "tours_info.csv"
 
 default['hops']['yarn']['is-elastic']              = "false"
+default['hops']['yarn']['nodemanager-graceful-decommission-timeout-secs']  =  3600
 
 # Audit logs
 default['hops']['nn']['audit_log']                 = "false"
 default['hops']['rm']['audit_log']                 = "false"
+
+default['hops']['docker']['cgroup']['enabled']                       = "false"
+default['hops']['docker']['cgroup']['memory']['hard-limit-default']  = "6GB"
+default['hops']['docker']['cgroup']['memory']['hard-limit']          = node['hops']['docker']['cgroup']['memory']['hard-limit-default']
+default['hops']['docker']['cgroup']['memory']['soft-limit-default']  = "2GB"
+default['hops']['docker']['cgroup']['memory']['soft-limit']          = node['hops']['docker']['cgroup']['memory']['soft-limit-default']
+default['hops']['docker']['cgroup']['cpu']['quota']['percentage']    = 80
+default['hops']['docker']['cgroup']['cpu']['period']                 = 100000
