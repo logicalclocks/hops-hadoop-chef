@@ -34,4 +34,8 @@ export YARN_RESOURCEMANAGER_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/
 
 export YARN_NODEMANAGER_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['nm']['metrics_port'] %>:'$HADOOP_CONF_DIR'/nodemanager.yaml -Dcom.sun.management.jmxremote  -Dcom.sun.management.jmxremote.port=<%= node['hops']['nm']['jmxport'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/yarn-jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
 
+<% if not node['install']['tmp_directory'].eql?("") %>
+export YARN_NODEMANAGER_OPTS=$YARN_NODEMANAGER_OPTS' -Djava.io.tmpdir=<%= node['install']['tmp_directory'] %> -Djna.tmpdir=<%= node['install']['tmp_directory'] %>'
+<% end %>
+
 export cygwin=false
