@@ -890,14 +890,6 @@ attribute "hops/docker_version/centos",
           :description =>  "the version of docker to use on centos installation",
           :type => 'string'
 
-attribute "hops/selinux_version/centos",
-          :description =>  "the version of selinux to use on centos installation",
-          :type => 'string'
-
-attribute "hops/containerd_version/centos",
-          :description =>  "the version of containerd to use on centos installation",
-          :type => 'string'
-
 attribute "hops/containerd_version/ubuntu",
           :description =>  "the version of containerd to use on ubuntu installation",
           :type => 'string'
