@@ -13,6 +13,9 @@ command="$mount_bin  $common_params"
 <% end %>
 
 
+#unmount the file system if it is already mounted
+<%= @umount_cmd %> | true
+
 PIDFile=<%= node['hops']['logs_dir'] %>/hadoop-<%= node['hops']['hdfs']['user'] %>-hopsfsmount.pid
 bash -c "nohup $command &"
 pid=$(pgrep hops-fuse-mount)
