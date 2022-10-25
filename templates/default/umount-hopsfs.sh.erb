@@ -2,4 +2,4 @@
 
 set -e
 
-/bin/fusermount -u <%= node['hops']['fuse']['mount_point'] %>
+/bin/fusermount -u -q -z <%= node['hops']['fuse']['mount_point'] %>
