@@ -18,7 +18,7 @@ end
 # Override install binaries for enterprise edition
 if node['install']['enterprise']['install'].casecmp? "true"
   version = get_hops_version
-  node.override['hops']['dist_url']    = "#{node['install']['enterprise']['download_url']}/hopshadoop/hops-#{version}.tgz"
+  node.override['hops']['dist_url']    = "https://repo.hops.works/dev/salman/hadoop-3.2.0.7-EE-RC0.tar.gz"
   node.override['hops']['schema_dir']  = "#{node['install']['enterprise']['download_url']}/hopshadoop/hops-schemas"
   node.override['dal']['download_url'] = "#{node['install']['enterprise']['download_url']}/hopshadoop/ndb-dal-#{version}-#{node['ndb']['version']}.jar"
   node.override['hops']['home']        = node['hops']['dir'] + "/hadoop-" + version
