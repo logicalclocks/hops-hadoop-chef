@@ -520,6 +520,18 @@
 </property>
 
 <property>
+   <name>dfs.cloud.aws.endpoint</name>
+   <value><%= node['hops']['aws_endpoint'] %></value>
+   <description>AWS Endpoint</description>
+</property>
+
+<property>
+   <name>dfs.cloud.aws.signing.region</name>
+   <value><%= node['hops']['aws_signing_region'] %></value>
+   <description>AWS signing region</description>
+</property>
+
+<property>
    <name>dfs.cloud.aws.s3.region</name>
    <value><%= node['hops']['aws_s3_region'] %></value>
    <description>AWS Region for file system buckets</description>
