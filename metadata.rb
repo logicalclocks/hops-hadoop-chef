@@ -609,6 +609,22 @@ attribute "hops/aws_s3_bucket",
           :description => "S3 bucket used to store file system blocks",
           :type => 'string'
 
+attribute "hops/aws_endpoint",
+          :description => "AWS endpoint",
+          :type => 'string'
+
+attribute "hops/aws_signing_region",
+          :description => "AWS signing region",
+          :type => 'string'
+
+attribute "hops/aws_access_key_id",
+          :description => "AWS access key id",
+          :type => 'string'
+
+attribute "hops/aws_secret_access_key",
+          :description => "AWS secret access key",
+          :type => 'string'
+
 attribute "hops/yarn/nodemanager_hb_ms",
           :description => "Heartbeat Interval for NodeManager->ResourceManager in ms",
           :type => 'string'
