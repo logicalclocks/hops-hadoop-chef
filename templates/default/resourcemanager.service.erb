@@ -1,11 +1,11 @@
 [Unit]
 Description = ResourceManager. The scheduler for YARN.
 After = syslog.target network.target remote-fs.target <%= @deps %>
-#The resourcemanager takes ~33s to fail if glassfish is not up
-#restartSec is 2 so the service restart every 35s
-#a maximum burst of 18 in 11min guaranty that it will at least try for 10min (18*35=630s=10,5min)
+#The resourcemanager takes ~6s to fail if glassfish is not up
+#restartSec is 2 so the service restart every 8s
+#a maximum burst of 76 in 11min guaranty that it will at least try for 10min (76*8=608s=10,1min)
 StartLimitIntervalSec=660
-StartLimitBurst=18
+StartLimitBurst=76
 
 [Service]
 User = <%= node['hops']['rm']['user'] %>
