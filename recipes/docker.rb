@@ -167,10 +167,6 @@ if !node['hops']['docker_dir'].eql?("/var/lib/docker")
     not_if { File.symlink?(node['hops']['docker_dir']) }
   end
 
-  systemd_unit "docker.service" do
-    action :start
-  end
-
   link node['hops']['docker_dir'] do
     owner 'root'
     group 'root'
@@ -212,11 +208,12 @@ template '/etc/docker/daemon.json' do
 end
 
 service_name='docker'
-# Start the docker deamon
-service service_name do
-  action [:enable, :restart]
-end
 
+# Start the docker deamon
 kagent_config service_name do
   action :systemd_reload
+end
+
+service service_name do
+  action :enable
 end
