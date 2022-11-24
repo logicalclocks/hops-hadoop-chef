@@ -755,6 +755,14 @@ attribute "hops/remotejmx/enabled",
           :description => "Enable remote JMX for hops services. (Default: False)",
           :type => "string"
 
+attribute "hops/remotejmx/password",
+          :description => "Password for remote JMX non-admin user (Default: hadoop)",
+          :type => "string"
+
+attribute "hops/remotejmx/adminPassword",
+          :description => "Password for remote JMX admin user (Default: hadoopAdmin)",
+          :type => "string"
+
 attribute "hopsworks/default/private_ips",
           :description => "Hopsworks private ip",
           :type => "string"
