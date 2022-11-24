@@ -41,7 +41,7 @@ export YARN_RESOURCEMANAGER_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/
 export YARN_RESOURCEMANAGER_OPTS=$YARN_RESOURCEMANAGER_OPTS' -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<%= node['hops']['remotejmx']['rm']['port'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
 <% end %>
 
-export YARN_NODEMANAGER_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['nm']['metrics_port'] %>:'$HADOOP_CONF_DIR'/nodemanager.yaml -Dcom.sun.management.jmxremote'
+export YARN_NODEMANAGER_OPTS='-javaagent:'$HADOOP_HOME'/share/hadoop/common/lib/jmx_prometheus_javaagent-<%= node['hops']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hops']['nm']['metrics_port'] %>:'$HADOOP_CONF_DIR'/nodemanager.yaml'
 
 <% if node['hops']['remotejmx']['enabled'].eql?("true") %>
 export YARN_NODEMANAGER_OPTS=$YARN_NODEMANAGER_OPTS' -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<%= node['hops']['remotejmx']['nm']['port'] %> -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file='$HADOOP_CONF_DIR'/jmxremote.password -Dcom.sun.management.jmxremote.access.file='$HADOOP_CONF_DIR'/jmxremote.access'
