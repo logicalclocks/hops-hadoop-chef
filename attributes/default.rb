@@ -29,12 +29,6 @@ default['hops']['mr']['user-home']             = "/home/#{node['hops']['mr']['us
 
 default['hopsworks']['user']                   = node['install']['user'].empty? ? "glassfish" : node['install']['user']
 
-default['hops']['jmx']['username']             = "monitorRole"
-default['hops']['jmx']['password']             = "hadoop"
-
-default['hops']['jmx']['adminUsername']        = "adminRole"
-default['hops']['jmx']['adminPassword']        = "hadoopAdmin"
-
 default['hops']['dir']                         = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['hops']['base_dir']                    = node['hops']['dir'] + "/hadoop"
 default['hops']['home']                        = node['hops']['dir'] + "/hadoop-" + node['hops']['version']
@@ -194,10 +188,16 @@ default['hops']['jhs']['done_dir']             = "#{node['hops']['jhs']['root_di
 # You can have a comma-separated list of services
 # http://hadoop.apache.org/docs/r2.1.0-beta/hadoop-mapreduce-client/hadoop-mapreduce-client-core/PluggableShuffleAndPluggableSort.html
 
-default['hops']['nn']['jmxport']               = "8077"
-default['hops']['dn']['jmxport']               = "8078"
-default['hops']['rm']['jmxport']               = "8082"
-default['hops']['nm']['jmxport']               = "8083"
+default['hops']['remotejmx']['enabled']              = "false"
+default['hops']['remotejmx']['username']             = "monitorRole"
+default['hops']['remotejmx']['password']             = "hadoop"
+default['hops']['remotejmx']['adminUsername']        = "adminRole"
+default['hops']['remotejmx']['adminPassword']        = "hadoopAdmin"
+
+default['hops']['remotejmx']['nn']['port']           = "8077"
+default['hops']['remotejmx']['dn']['port']           = "8078"
+default['hops']['remotejmx']['rm']['port']           = "8082"
+default['hops']['remotejmx']['nm']['port']           = "8083"
 
 default['hops']['nn']['public_ips']            = ['10.0.2.15']
 default['hops']['nn']['private_ips']           = ['10.0.2.15']

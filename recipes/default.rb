@@ -184,15 +184,6 @@ template "#{node['hops']['conf_dir']}/jmxremote.password" do
   action :create
 end
 
-template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
-  source "jmxremote.password.erb"
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "400"
-  action :create
-end
-
-
 template "#{node['hops']['sbin_dir']}/set-env.sh" do
   source "set-env.sh.erb"
   owner node['hops']['hdfs']['user']

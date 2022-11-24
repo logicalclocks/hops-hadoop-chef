@@ -1,5 +1,13 @@
 include_recipe "hops::default"
 
+template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node['hops']['rm']['user']
+  group node['hops']['group']
+  mode "400"
+  action :create
+end
+
 template_ssl_server()
 ndb_connectstring()
 
@@ -9,13 +17,6 @@ kagent_hopsify "Generate x.509" do
   crypto_directory crypto_dir
   action :generate_x509
   not_if { node["kagent"]["enabled"] == "false" }
-end
-
-template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
-  source "jmxremote.password.erb"
-  owner node['hops']['rm']['user']
-  group node['hops']['group']
-  mode "400"
 end
 
 deps = ""
