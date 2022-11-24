@@ -1,5 +1,13 @@
 include_recipe "hops::default"
 
+template "#{node['hops']['conf_dir']}/yarn-jmxremote.password" do
+  source "jmxremote.password.erb"
+  owner node['hops']['yarn']['user']
+  group node['hops']['group']
+  mode "400"
+  action :create
+end
+
 if node['hops']['docker']['enabled'].eql?("true")
   if node['install']['managed_docker_registry'].casecmp?("false")
     include_recipe "hops::docker_image"
