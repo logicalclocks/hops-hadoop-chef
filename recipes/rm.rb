@@ -11,13 +11,6 @@ kagent_hopsify "Generate x.509" do
   not_if { node["kagent"]["enabled"] == "false" }
 end
 
-template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
-  source "jmxremote.password.erb"
-  owner node['hops']['rm']['user']
-  group node['hops']['group']
-  mode "400"
-end
-
 deps = ""
 if service_discovery_enabled()
   deps += "consul.service "
