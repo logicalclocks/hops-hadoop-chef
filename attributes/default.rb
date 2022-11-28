@@ -34,10 +34,11 @@ default['hops']['base_dir']                    = node['hops']['dir'] + "/hadoop"
 default['hops']['home']                        = node['hops']['dir'] + "/hadoop-" + node['hops']['version']
 
 # Directories in data volume
-default['hops']['data_volume']['root_dir']     = "#{node['data']['dir']}/hops"
-default['hops']['data_volume']['data_dir']     = "#{node['hops']['data_volume']['root_dir']}/hopsdata"
-default['hops']['data_volume']['logs_dir']     = "#{node['hops']['data_volume']['root_dir']}/logs"
-default['hops']['data_volume']['docker']       = "#{node['data']['dir']}/docker"
+default['hops']['data_volume']['root_dir']          = "#{node['data']['dir']}/hops"
+default['hops']['data_volume']['data_dir']          = "#{node['hops']['data_volume']['root_dir']}/hopsdata"
+default['hops']['data_volume']['logs_dir']          = "#{node['hops']['data_volume']['root_dir']}/logs"
+default['hops']['data_volume']['docker']            = "#{node['data']['dir']}/docker"
+default['hops']['data_volume']['docker_registry']   = "#{node['data']['dir']}/docker_registry"
 
 default['hops']['sbin_dir']                    = node['hops']['base_dir'] + "/sbin"
 default['hops']['bin_dir']                     = node['hops']['base_dir'] + "/bin"
@@ -514,8 +515,8 @@ default['hops']['docker']['base']['download_url']     = "#{node['download_url']}
 default['hops']['cgroup-driver']                      = "cgroupfs"
 
 default['hops']['docker']['registry']['port']         = 4443
-
-default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/kube/docker-images/registry_image.tar"
+default['hops']['docker']['registry']['version']      = "2.8.1"
+default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/docker/registry/#{node['hops']['docker']['registry']['version']}/registry_image.tar"
 
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
