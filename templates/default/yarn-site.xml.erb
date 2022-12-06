@@ -49,6 +49,11 @@
   </property>
 
   <property>
+    <name>yarn.resourcemanager.webapp.https.client.need-auth</name>
+    <value><%= node['hops']['rm']['https']['need_two_way_auth'] %></value>
+  </property>
+
+  <property>
     <name>yarn.http.policy</name>
     <value>HTTPS_ONLY</value>
   </property>

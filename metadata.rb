@@ -946,6 +946,10 @@ attribute "hops/nn/https/port",
           :description => "The namenode https server port.",
           :type => 'string'
 
+attribute "hops/rm/https/need_two_way_auth",
+          :description => "Enable two-way TLS authentication for Yarn web UI (default: true)",
+          :type => 'string'
+
 attribute "hops/xattrs/max-xattrs-per-inode",
           :description => "Maximum number of extended attributes per inode. The maximum allowed number is 127 extended attributes per inode.",
           :type => "string"
