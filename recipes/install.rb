@@ -194,11 +194,16 @@ end
 
 case node['platform_family']
 when 'debian'
-  package 'libsnappy1v5'
+  package 'libsnappy1v5' do
+    retries 10
+    retry_delay 30
+  end
 when 'rhel'
-  package 'snappy'
   # bind-utils is needed to start the datanode, if HopsFS is installed without Hopsworks
-  package 'bind-utils'
+  package ['snappy', 'bind-utils'] do
+    retries 10
+    retry_delay 30
+  end
 end
 
 if node['hops']['native_libraries'].eql? "true"
@@ -224,7 +229,10 @@ if node['hops']['native_libraries'].eql? "true"
   protobuf_lib_prefix = "/usr"
   case node['platform_family']
   when "debian"
-    package ['g++', 'autoconf', 'automake', 'libtool', 'zlib1g-dev', 'libssl-dev', 'pkg-config', 'maven']
+    package ['g++', 'autoconf', 'automake', 'libtool', 'zlib1g-dev', 'libssl-dev', 'pkg-config', 'maven'] do
+      retries 10
+      retry_delay 30
+    end
   when "rhel"
     protobuf_lib_prefix = "/"
 

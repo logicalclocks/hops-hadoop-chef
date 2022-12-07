@@ -14,11 +14,16 @@ when 'rhel'
   # During upgrades, there might be a previous version of docker (not -ce) which will conflict with 
   # The docker-ce package we will install below. 
   package ['docker', 'docker-common'] do
+    retries 10
+    retry_delay 30
     action :remove
     only_if "yum list installed docker.x86_64"
   end
 
-  package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs']
+  package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs'] do
+    retries 10
+    retry_delay 30
+  end
 
   packages = ["container-selinux-#{node['hops']['selinux_version']['centos']}.el7.noarch.rpm", "containerd.io-#{node['hops']['containerd_version']['centos']}.el7.x86_64.rpm","docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm","docker-ce-cli-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm"]
 
@@ -61,7 +66,10 @@ when 'debian'
 
   # Additional dependencies needed, but dpkg doesn't know how to fetch them
   # from the repositories
-  package ['pigz', 'bridge-utils']
+  package ['pigz', 'bridge-utils'] do
+    retries 10
+    retry_delay 30
+  end
 
   bash "install_pkgs" do
     user 'root'
