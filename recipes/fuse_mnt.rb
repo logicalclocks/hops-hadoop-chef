@@ -3,11 +3,15 @@ include_recipe "hops::default"
 # Intall the needed packages
 case node['platform_family']
 when 'debian'
-  package 'fuse'
-  package 'libfuse-dev'
+  package ['fuse', 'libfuse-dev'] do
+    retries 10
+    retry_delay 30
+  end
 when 'rhel'
-  package 'fuse'
-  package 'fuse-libs'
+  package ['fuse', 'fuse-libs'] do
+    retries 10
+    retry_delay 30
+  end
 end
 
 service_name="hopsfsmount"
