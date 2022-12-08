@@ -274,7 +274,6 @@ default['hops']['limits']['nproc']          = '65536'
 default['hops']['jhs']['https']['port']     = "19443"
 default['hops']['rm']['https']['port']      = "8089"
 default['hops']['nm']['https']['port']      = "45443"
-default['hops']['rm']['https']['need_two_way_auth'] = node['hops']['tls']['enabled']
 
 default['hops']['yarn']['resource_tracker'] = "false"
 default['hops']['nn']['direct_memory_size'] = 1000
@@ -380,6 +379,8 @@ default['hops']['server']['threadpool'] = 3
 
 # RPC TLS
 default['hops']['tls']['enabled'] = "true"
+
+default['hops']['rm']['https']['need_two_way_auth'] = node['hops']['tls']['enabled']
 
 # Do not verify the hostname
 default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW_ALL"
