@@ -164,11 +164,16 @@ end
 
 if service_discovery_enabled()
   # Register NodeManager with Consul
+  consul_crypto_dir = x509_helper.get_crypto_dir(node['consul']['user'])
   template "#{node['hops']['bin_dir']}/consul/nm-health.sh" do
     source "consul/nm-health.sh.erb"
     owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode 0750
+    variables({
+      :key => "#{consul_crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['consul']['user'])}",
+      :certificate => "#{consul_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['consul']['user'])}"
+    })
   end
 
   consul_service "Registering NodeManager with Consul" do
