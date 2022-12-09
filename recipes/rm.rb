@@ -142,12 +142,15 @@ if service_discovery_enabled()
   my_id = node['hops']['rm']['private_ips'].index(my_private_ip())
 
   # Register ResourceManager with Consul
+  consul_crypto_dir = x509_helper.get_crypto_dir(node['consul']['user'])
   template "#{node['hops']['bin_dir']}/consul/rm-health.sh" do
     source "consul/rm-health.sh.erb"
     owner node['hops']['rm']['user']
     group node['hops']['group']
     mode 0750
     variables({
+      :key => "#{consul_crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['consul']['user'])}",
+      :certificate => "#{consul_crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['consul']['user'])}",
       :id => my_id
       })
   end
