@@ -150,6 +150,8 @@ download_command = " wget --no-check-certificate #{image_url}"
 registry_address = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 base_image = "#{node['hops']['docker']['base']['image']['name']}:#{node['hops']['docker_img_version']}"
 base_image_python = "#{node['hops']['docker']['base']['image']['python']['name']}:#{node['hops']['docker_img_version']}"
+flyingduck_image = "#{node['hops']['docker']['flyingduck']}:#{node['hops']['docker_img_version']}"
+
 
 if node['install']['enterprise']['install'].casecmp? "true"
   image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{base_filename}"
@@ -163,7 +165,7 @@ bash "download_images" do
        #{download_command} -O #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
   not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
-  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python}"
+  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python} #{registry_address}/#{flyingduck_image}"
 end
 
 #import docker base image
@@ -180,6 +182,8 @@ bash "tag_images" do
   code <<-EOF
     docker tag #{base_image} #{registry_address}/#{base_image}
     docker rmi #{base_image}
+    docker tag #{flyingduck_image} #{registry_address}/#{flyingduck_image}
+    docker rmi #{flyingduck_image}
     docker tag #{base_image_python} #{registry_address}/#{base_image_python}
     docker rmi #{base_image_python}
   EOF
@@ -190,6 +194,7 @@ bash "push_images" do
   user "root"
   code <<-EOF
     docker push #{registry_address}/#{base_image}
+    docker push #{registry_address}/#{flyingduck_image}
     docker push #{registry_address}/#{base_image_python}
   EOF
 end

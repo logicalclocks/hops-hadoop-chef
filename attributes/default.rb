@@ -520,6 +520,8 @@ default['hops']['docker']['registry']['port']         = 4443
 default['hops']['docker']['registry']['version']      = "2.8.1"
 default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/docker/registry/#{node['hops']['docker']['registry']['version']}/registry_image.tar"
 
+default['hops']['docker']['flyingduck']               = "flyingduck"
+
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 default['hops']['docker']['git']['image']['name']    = "git"
