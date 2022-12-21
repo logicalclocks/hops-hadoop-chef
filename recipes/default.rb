@@ -124,8 +124,8 @@ if node.attribute?('flink')
 end
 node.override['flink']['user'] = flinkUser
 
-template "#{node['hops']['conf_dir']}/log4j.properties" do
-  source "log4j.properties.erb"
+template "#{node['hops']['conf_dir']}/log4j2.properties" do
+  source "log4j2.properties.erb"
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
   mode "644"
