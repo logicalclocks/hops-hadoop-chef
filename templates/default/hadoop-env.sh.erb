@@ -91,7 +91,7 @@ export JAVA_HOME=${JAVA_HOME}
 
 # Extra Java runtime options for all Hadoop commands. We don't support
 # IPv6 yet/still, so by default the preference is set to IPv4.
- export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
+export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Dlog4j2.configurationFile=log4j2.properties"
 # For Kerberos debugging, an extended option set logs more information
 # export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true -Dsun.security.krb5.debug=true -Dsun.security.spnego.debug"
 
@@ -217,12 +217,12 @@ esac
 
 # Default log4j setting for interactive commands
 # Java property: hadoop.root.logger
- export HADOOP_ROOT_LOGGER=<%= node['hops']['logging_level'] %>,RFA
+export HADOOP_ROOT_LOGGER=<%= node['hops']['logging_level'] %>,console
 
 # Default log4j setting for daemons spawned explicitly by
 # --daemon option of hadoop, hdfs, mapred and yarn command.
 # Java property: hadoop.root.logger
-# export HADOOP_DAEMON_ROOT_LOGGER=INFO,RFA
+export HADOOP_DAEMON_ROOT_LOGGER=<%= node['hops']['logging_level'] %>,RFA
 
 # Default log level and output location for security-related messages.
 # You will almost certainly want to change this on a per-daemon basis via
