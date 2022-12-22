@@ -1,17 +1,15 @@
-appenders = RFA, stdout
-
-hadoop.root.logger=INFO,console
-hadoop.log.dir=/srv/hops/hadoop/logs
-hadoop.log.file=hadoop.log
+property.hadoop.root.logger=${sys:hadoop.root.logger:-INFO,console}
+property.hadoop.log.dir=${sys:hadoop.log.dir:-/srv/hops/hadoop/logs}
+property.hadoop.log.file=${sys:hadoop.log.file:-hadoop.log}
 
 # list of all appenders
-rootLogger.level = ${sys:hadoop.root.logger}
+rootLogger = ${hadoop.root.logger}
 
 # daily rolling file appender
 appender.RFA.type = RollingRandomAccessFile
 appender.RFA.name = RFA
-appender.RFA.fileName = ${sys:hadoop.log.dir}/${sys:hadoop.log.file}
-appender.RFA.filePattern= ${sys:hadoop.log.dir}/${sys:hadoop.log.file}.%i
+appender.RFA.fileName = ${hadoop.log.dir}/${hadoop.log.file}
+appender.RFA.filePattern= ${hadoop.log.dir}/${hadoop.log.file}.%i
 appender.RFA.layout.type = PatternLayout
 appender.RFA.layout.pattern = <%= node['hops']['log']['pattern'] %>
 appender.RFA.policies.type = Policies
@@ -20,11 +18,11 @@ appender.RFA.policies.size.size = <%= node['hops']['log']['maxfilesize'] %>
 appender.RFA.strategy.type = DefaultRolloverStrategy
 appender.RFA.strategy.max = <%= node['hops']['log']['maxbackupindex'] %>
 
-appender.stdout.type=Console
-appender.stdout.name=stdout
-appender.stdout.target=SYSTEM_ERR
-appender.stdout.layout.type=PatternLayout
-appender.stdout.layout.pattern=<%= node['hops']['log']['pattern'] %>
+appender.console.type=Console
+appender.console.name=console
+appender.console.target=SYSTEM_ERR
+appender.console.layout.type=PatternLayout
+appender.console.layout.pattern=<%= node['hops']['log']['pattern'] %>
 
 <% if node['hops']['nn']['audit_log'].casecmp?("true") %>
 logger.fsnamesystem.name=org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit
@@ -34,8 +32,8 @@ logger.fsnamesystem.additivity = false
 
 appender.RFAAUDIT.type = RollingRandomAccessFile
 appender.RFAAUDIT.name = RFAAUDIT
-appender.RFAAUDIT.fileName = ${sys:hadoop.log.dir}/nn-audit.log
-appender.RFAAUDIT.filePattern= ${sys:hadoop.log.dir}/nn-audit.log.%i
+appender.RFAAUDIT.fileName = ${hadoop.log.dir}/nn-audit.log
+appender.RFAAUDIT.filePattern= ${hadoop.log.dir}/nn-audit.log.%i
 appender.RFAAUDIT.layout.type = PatternLayout
 appender.RFAAUDIT.layout.pattern = <%= node['hops']['log']['pattern'] %>
 appender.RFAAUDIT.policies.type = Policies
@@ -53,8 +51,8 @@ logger.rmauditlogger.additivity = false
 
 appender.RFAAUDITRM.type = RollingRandomAccessFile
 appender.RFAAUDITRM.name = RFAAUDIT
-appender.RFAAUDITRM.fileName = ${sys:hadoop.log.dir}/rm-audit.log
-appender.RFAAUDITRM.filePattern= ${sys:hadoop.log.dir}/rm-audit.log.%i
+appender.RFAAUDITRM.fileName = ${hadoop.log.dir}/rm-audit.log
+appender.RFAAUDITRM.filePattern= ${hadoop.log.dir}/rm-audit.log.%i
 appender.RFAAUDITRM.layout.type = PatternLayout
 appender.RFAAUDITRM.layout.pattern = <%= node['hops']['log']['pattern'] %>
 appender.RFAAUDITRM.policies.type = Policies
