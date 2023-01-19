@@ -870,6 +870,10 @@ attribute "hops/docker/group_id",
           :description =>  "docker group id. Default: 1513",
           :type => 'string'
 
+attribute "hops/docker/storage_driver",
+          :description =>  "Docker daemon storage driver. Default: overlay2",
+          :type => 'string'
+
 attribute "hops/docker_version/ubuntu",
           :description =>  "the version of docker to use on ubuntu installation",
           :type => 'string'
