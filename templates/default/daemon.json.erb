@@ -15,7 +15,7 @@
       "max-size": "100m"
     },
 
-    "storage-driver":  "overlay2"<% if ! @registry_addr.eql?("") %>,
+    "storage-driver":  "<%= node['hops']['docker']['storage_driver'] %>"<% if ! @registry_addr.eql?("") %>,
 
     "insecure-registries" : [
       <% @insecure_registries.each_with_index do |registry,index| %>

@@ -500,6 +500,7 @@ default['hops']['containerd_version']['ubuntu']       = "1.2.6-0ubuntu1~18.04.2"
 default['hops']['containerd_version']['centos']       = "1.2.13-3.1"
 default['hops']['runc_version']['ubuntu']             = "1.0.0~rc95-0ubuntu1~18.04.1"
 default['hops']['docker']['group_id']                 = '1513'
+default['hops']['docker']['storage_driver']           = "overlay2"
 
 
 default['hops']['docker']['pkg']['download_url']['centos'] ="#{node['download_url']}/docker/#{node['hops']['docker_version']['centos']}/rhel"
