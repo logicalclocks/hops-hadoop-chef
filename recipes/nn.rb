@@ -4,8 +4,6 @@ template_ssl_server()
 
 my_ip = my_private_ip()
 
-include_recipe "hops::hdfs_user"
-
 file "#{node['hops']['conf_dir']}/dfs.exclude" do 
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -27,7 +25,6 @@ if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopswor
 end
 
 service_name="namenode"
-
 
 case node['platform_family']
 when "rhel"
@@ -112,6 +109,8 @@ if service_discovery_enabled()
     action :register
   end
 end
+
+include_recipe "hops::hdfs_user"
 
 ruby_block 'wait_until_nn_started' do
   block do
