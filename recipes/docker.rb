@@ -88,6 +88,11 @@ file '/etc/docker/daemon.json' do
   only_if { File.exist? '/etc/docker/daemon.json' }
 end
 
+file '/etc/containerd/config.toml' do
+  action :delete
+  only_if { File.exist? '/etc/containerd/config.toml' }
+end
+
 if node['hops']['gpu'].eql?("true")
   package_type = node['platform_family'].eql?("debian") ? "_amd64.deb" : ".x86_64.rpm"
   case node['platform_family']
