@@ -606,22 +606,6 @@ end
 Chef::Recipe.send(:include, Hops::Helpers)
 template_ssl_server(false)
 
-cookbook_file "#{node['hops']['bin_dir']}/hadoop_logs_mgm.py" do
-  source "hadoop_logs_mgm.py"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "0740"
-  action :create
-end
-
-template "#{node['hops']['conf_dir']}/hadoop_logs_mgm.ini" do
-  source "hadoop_logs_mgm.ini.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  mode "0740"
-  action :create
-end
-
 cookbook_file "#{node['hops']['sbin_dir']}/renew_service_jwt.py" do
   source "renew_service_jwt.py"
   owner node['hops']['hdfs']['user']
