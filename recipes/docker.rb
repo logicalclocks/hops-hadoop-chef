@@ -57,7 +57,7 @@ when 'debian'
 
   # Additional dependencies needed, but dpkg doesn't know how to fetch them
   # from the repositories
-  package ['pigz', 'bridge-utils', 'dns-root-data', 'dnsmasq-base', 'libidn11', 'ubuntu-fan'] do
+  package ['pigz', 'bridge-utils', 'dns-root-data', 'dnsmasq-base', "libidn11-dev", 'ubuntu-fan'] do
     retries 10
     retry_delay 30
   end
