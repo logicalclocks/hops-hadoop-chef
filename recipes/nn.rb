@@ -4,6 +4,8 @@ template_ssl_server()
 
 my_ip = my_private_ip()
 
+include_recipe "hops::hdfs_user"
+
 file "#{node['hops']['conf_dir']}/dfs.exclude" do 
   owner node['hops']['hdfs']['user']
   group node['hops']['group']
@@ -19,6 +21,7 @@ end
 if exists_local("ndb", "mysqld")
   deps += "mysqld.service "
 end
+
 
 if node['hops']['tls']['crl_enabled'].casecmp?("true") and exists_local("hopsworks", "default")
   deps += "glassfish-domain1.service "
@@ -110,7 +113,6 @@ if service_discovery_enabled()
   end
 end
 
-include_recipe "hops::hdfs_user"
 
 ruby_block 'wait_until_nn_started' do
   block do
