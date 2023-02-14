@@ -137,6 +137,14 @@
     <name>hadoop.proxyuser.<%= node['consul']['user'] %>.users</name>
     <value><%= node['consul']['user'] %></value>
   </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @flyingduckUser %>.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.<%= @flyingduckUser %>.groups</name>
+    <value>*</value>
+  </property>
 
   <property>
     <name>dfs.leader.check.interval</name>

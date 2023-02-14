@@ -124,6 +124,13 @@ if node.attribute?('flink')
 end
 node.override['flink']['user'] = flinkUser
 
+flyingduckUser = "flyingduck"
+if node.attribute?('flyingduck')
+  if node['flyingduck'].attribute?('user')
+    flyingduckUser = node['flyingduck']['user']
+  end
+end
+
 template "#{node['hops']['conf_dir']}/log4j2.properties" do
   source "log4j2.properties.erb"
   owner node['hops']['hdfs']['user']
@@ -150,6 +157,7 @@ template "#{node['hops']['conf_dir']}/core-site.xml" do
      :livyUser => livyUser,
      :hiveUser => hiveUser,
      :flinkUser => flinkUser,
+     :flyingduckUser => flyingduckUser,
      :nn_rpc_endpoint => nn_rpc_endpoint,
      :rpcSocketFactory => rpcSocketFactory,
      :hopsworks_crl_uri => "https://#{glassfish_fqdn}:#{hopsworks_port}#{node['hops']['tls']['crl_fetch_path']}",
