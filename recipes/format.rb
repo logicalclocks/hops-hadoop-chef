@@ -1,6 +1,17 @@
 include_recipe "hops::default"
 exec=node['ndb']['scripts_dir'] + "/mysql-client.sh"
 
+bash 'Restore deleted blocks from Cloud' do
+  user node['hops']['hdfs']['user']
+  group node['hops']['group']
+  returns 1
+  code <<-EOH
+    #{node['hops']['bin_dir']}/hdfs namenode -rollbackDeletedCloudBlocks
+  EOH
+  only_if { node['hops']['enable_cloud_storage'].casecmp?("true") }
+  not_if { node['ndb']['restore']['directory'].empty? }
+end
+
 # it is ok if all namenodes format the fs. Unless you add a new one later..
 # if the nn has already been formatted, re-formatting it returns error
 # TODO: test if the NameNode is running
