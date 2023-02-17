@@ -150,6 +150,7 @@ download_command = " wget --no-check-certificate #{image_url}"
 registry_address = "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 base_image = "#{node['hops']['docker']['base']['image']['name']}:#{node['hops']['docker_img_version']}"
 base_image_python = "#{node['hops']['docker']['base']['image']['python']['name']}:#{node['hops']['docker_img_version']}"
+docker_image_experimental = "#{node['hops']['docker']['experimental']}"
 
 if node['install']['enterprise']['install'].casecmp? "true"
   image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{base_filename}"
@@ -163,7 +164,7 @@ bash "download_images" do
        #{download_command} -O #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
   not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
-  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python}"
+  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python} #{registry_address}/#{docker_image_experimental}"
 end
 
 #import docker base image
@@ -172,7 +173,7 @@ bash "import_images" do
   code <<-EOF
     docker load -i #{Chef::Config['file_cache_path']}/#{base_filename}
   EOF
-  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python}"
+  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python} #{registry_address}/#{docker_image_experimental}"
 end
 
 bash "tag_images" do
@@ -182,8 +183,10 @@ bash "tag_images" do
     docker rmi #{base_image}
     docker tag #{base_image_python} #{registry_address}/#{base_image_python}
     docker rmi #{base_image_python}
+    docker tag docker/#{docker_image_experimental} #{registry_address}/#{docker_image_experimental}
+    docker rmi docker/#{docker_image_experimental}
   EOF
-  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python}"
+  not_if "docker image inspect #{registry_address}/#{base_image} #{registry_address}/#{base_image_python} #{registry_address}/#{docker_image_experimental}"
 end
 
 bash "push_images" do
@@ -191,6 +194,7 @@ bash "push_images" do
   code <<-EOF
     docker push #{registry_address}/#{base_image}
     docker push #{registry_address}/#{base_image_python}
+    docker push #{registry_address}/#{docker_image_experimental}
   EOF
 end
 
