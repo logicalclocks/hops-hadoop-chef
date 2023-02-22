@@ -9,7 +9,7 @@ bash 'Restore deleted blocks from Cloud' do
     #{node['hops']['bin_dir']}/hdfs namenode -rollbackDeletedCloudBlocks
   EOH
   only_if { node['hops']['enable_cloud_storage'].casecmp?("true") }
-  not_if { node['ndb']['restore']['directory'].empty? }
+  not_if { node['ndb']['restore']['tarball'].empty? }
 end
 
 # it is ok if all namenodes format the fs. Unless you add a new one later..
