@@ -231,6 +231,38 @@ file "#{Chef::Config['file_cache_path']}/#{git_filename}" do
   only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{git_filename}" }
 end
 
+# testconnector
+connector_image_url = node['hops']['docker']['testconnector']['download_url']
+connector_filename = File.basename(connector_image_url)
+connector_image = "#{node['hops']['docker']['testconnector']['image']['name']}:#{node['hops']['docker']['testconnector
+']['image']['version']}"
+
+bash "download_testconnector_image" do
+  user "root"
+  sensitive true
+  code <<-EOF
+    wget #{connector_image_url} -O #{Chef::Config['file_cache_path']}/#{connector_filename}
+  EOF
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{connector_filename}" }
+  not_if "docker image inspect #{registry_address}/#{connector_image}"
+end
+
+bash "tag_testconnector_images" do
+  user "root"
+  code <<-EOF
+    docker load -i #{Chef::Config['file_cache_path']}/#{connector_filename}
+    docker tag #{connector_image} #{registry_address}/#{connector_image}
+    docker rmi #{connector_image}
+    docker push #{registry_address}/#{connector_image}
+  EOF
+  not_if "docker image inspect #{registry_address}/#{connector_image}"
+end
+
+file "#{Chef::Config['file_cache_path']}/#{connector_filename}" do
+  action :delete
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{connector_filename}" }
+end
+
 # We add docker in kagent in this recipe as the hops::docker recipe runs during the install phase and it might run
 # before kagent::install
 service_name='docker'
