@@ -116,7 +116,7 @@ default['hops']['clusterj']['max_sessions']               = 1000
 default['hops']['clusterj']['session_max_reuse_count']    = 5000 
 default['hops']['clusterj']['enable_dto_cache']           = "false" 
 default['hops']['clusterj']['enable_session_cache']       = "false" 
-
+default['hops']['clusterj']['max_cached_instances']       = 0 
 
 default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 

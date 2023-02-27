@@ -26,7 +26,8 @@ com.mysql.clusterj.connection.reconnect.timeout=5
 io.hops.enable.clusterj.dto.cache=<%= node['hops']['clusterj']['enable_dto_cache'] %>
 io.hops.enable.clusterj.session.cache=<%= node['hops']['clusterj']['enable_session_cache'] %>
 
-com.mysql.clusterj.max.cached.instances=256
+com.mysql.clusterj.max.cached.instances=<%= node['hops']['clusterj']['max_cached_instances'] %>
+// HopsFS has its own session cache
 com.mysql.clusterj.max.cached.sessions=0
 com.mysql.clusterj.warmup.cached.sessions=0
 

@@ -241,6 +241,10 @@ attribute "hops/clusterj/enable_session_cache",
           :description => "Enable session cache provided by ClusterJ lib",
           :type => 'string'
 
+attribute "hops/clusterj/max_cached_instances",
+          :description => "Max DTO objects to cache on Clusterj side",
+          :type => 'string'
+
 attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
