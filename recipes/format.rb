@@ -10,6 +10,7 @@ bash 'Restore deleted blocks from Cloud' do
   EOH
   only_if { node['hops']['enable_cloud_storage'].casecmp?("true") }
   not_if { node['ndb']['restore']['tarball'].empty? }
+  not_if { node['ndb']['restore']['backup_id'].empty? }
 end
 
 # it is ok if all namenodes format the fs. Unless you add a new one later..
