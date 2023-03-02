@@ -234,8 +234,7 @@ end
 # testconnector
 connector_image_url = node['hops']['docker']['testconnector']['download_url']
 connector_filename = File.basename(connector_image_url)
-connector_image = "#{node['hops']['docker']['testconnector']['image']['name']}:#{node['hops']['docker']['testconnector
-']['image']['version']}"
+connector_image = "#{node['hops']['docker']['testconnector']['image']['name']}:#{node['hops']['docker']['testconnector']['image']['version']}"
 
 bash "download_testconnector_image" do
   user "root"
