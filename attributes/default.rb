@@ -501,8 +501,8 @@ default['hops']['docker']['storage_driver']           = "overlay2"
 
 
 
-default['hops']['docker']['download_url']['centos'] = "https://repo.hops.works/dev/gibson/docker/centos/#{node['hops']['docker_version']['centos']}.tgz"
-default['hops']['docker']['download_url']['ubuntu'] = "https://repo.hops.works/dev/gibson/docker/ubuntu/#{node['hops']['docker_version']['ubuntu']}.tgz"
+default['hops']['docker']['download_url']['centos'] = "#{node['download_url']}/docker/centos/#{node['hops']['docker_version']['centos']}.tgz"
+default['hops']['docker']['download_url']['ubuntu'] = "#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu']}.tgz"
 
 default['hops']['docker_img_version']                 = node['install']['version']
 default['hops']['docker_dir']                         = node['install']['dir'].empty? ? "/var/lib/docker" : "#{node['install']['dir']}/docker"
