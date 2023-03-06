@@ -1,18 +1,42 @@
 #!/usr/bin/env bash
 
+CGROUP_MOUNT=<%= node['hops']['cgroup']['mount-path'] %>
+YARN_USER=<%= node['hops']['yarn']['user'] %>
+
+if grep -e "$CGROUP_MOUNT[[:space:]]cgroup2" /proc/mounts > /dev/null 2>&1; then
+    cgroup_version=2
+else
+    cgroup_version=1
+fi
+
+_init_cgroup1(){
+    if [ ! -f $CGROUP_MOUNT/devices/hops-yarn ]; then
+      mkdir $CGROUP_MOUNT/devices/hops-yarn
+   fi
+   chown -R $YARN_USER $CGROUP_MOUNT/devices/hops-yarn
+
+   if [ ! -f $CGROUP_MOUNT/cpu/hops-yarn ]; then
+      mkdir $CGROUP_MOUNT/cpu/hops-yarn     
+   fi
+   chown -R $YARN_USER $CGROUP_MOUNT/cpu/hops-yarn
+}
+
+_init_cgroup2(){
+    if [ ! -f $CGROUP_MOUNT/hops-yarn ]; then
+        mkdir $CGROUP_MOUNT/hops-yarn
+    fi
+    chown -R $YARN_USER $CGROUP_MOUNT/hops-yarn
+    echo "+cpu +cpuset +memory" > $CGROUP_MOUNT/hops-yarn/cgroup.subtree_control
+}
+
 # if nodemanager is running, exit
 systemctl is-active nodemanager
 if [ $? -ne 0 ] ; then
-
-   if [ ! -f /sys/fs/cgroup/devices/hops-yarn ]; then
-      mkdir /sys/fs/cgroup/devices/hops-yarn
+   if [ "$cgroup_version" == "1" ]; then
+      _init_cgroup1
+   elif [ "$cgroup_version" == 2 ]; then
+      _init_cgroup2
    fi
-   chown -R <%= node['hops']['yarn']['user'] %> /sys/fs/cgroup/devices/hops-yarn
-   if [ ! -f /sys/fs/cgroup/cpu/hops-yarn ]; then
-      mkdir /sys/fs/cgroup/cpu/hops-yarn     
-   fi
-   chown -R <%= node['hops']['yarn']['user'] %> /sys/fs/cgroup/cpu/hops-yarn
-   
 else
     echo "Nodemanager is running. Cannot check gpu configuration if the nodemanager is running"
     exit 0

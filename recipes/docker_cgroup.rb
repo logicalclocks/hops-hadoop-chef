@@ -15,13 +15,15 @@ excess_memory = (excess_memory/4).round()
 node.override['hops']['docker']['cgroup']['memory']['hard-limit'] = ((docker_hard_limit_memory_bytes + excess_memory)/1073741824).to_s + "GB"
 node.override['hops']['docker']['cgroup']['memory']['soft-limit'] = ((docker_soft_limit_memory_bytes + excess_memory) /1073741824).to_s + "GB"
 
+
 if node['hops']['docker']['cgroup']['enabled'].eql?("true")
   cpu_quota_value = node['hops']['docker']['cgroup']['cpu']['quota']['percentage']
   cpu_quota_period = node['hops']['docker']['cgroup']['cpu']['period']
   docker_cgroup_cpu_cfs_quota_us = (cpu_quota_period * ((cpu_quota_value).to_f / 100) * node['cpu']['total']).to_i
-  docker_memory_cgroup_dir = "/sys/fs/cgroup/memory/docker"
-  docker_cpu_cgroup_dir = "/sys/fs/cgroup/cpu/docker"
-  bash "write_cgroup" do
+
+  docker_memory_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/memory/docker"
+  docker_cpu_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/cpu/docker"
+  bash "write_cgroup_1" do
     user 'root'
     group 'root'
     code <<-EOH
@@ -30,5 +32,17 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
         echo #{docker_hard_limit_memory_bytes + excess_memory} > #{docker_memory_cgroup_dir}/memory.limit_in_bytes
         echo #{docker_soft_limit_memory_bytes + excess_memory} > #{docker_memory_cgroup_dir}/memory.soft_limit_in_bytes
     EOH
+    not_if "grep -e \"#{node['hops']['cgroup']['mount-path']}[[:space:]]cgroup2\" /proc/mounts"
+  end
+
+  bash "write_cgroup_2" do
+    user 'root'
+    group 'root'
+    code <<-EOH
+        echo -e "#{docker_cgroup_cpu_cfs_quota_us} #{cpu_quota_period}" > #{node['hops']['cgroup']['mount-path']}/docker/cpu.max
+        echo #{docker_hard_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/docker/memory.max
+        echo #{docker_soft_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/docker/memory.high
+    EOH
+    only_if "grep -e \"#{node['hops']['cgroup']['mount-path']}[[:space:]]cgroup2\" /proc/mounts"
   end
 end

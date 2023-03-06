@@ -727,8 +727,12 @@ attribute "hops/yarn/linux_container_limit_users",
           :description => "",
           :type => "string"
 
-attribute "hops/yarn/cgroups",
-          :description => "'true' to enable cgroups (default), else 'false'",
+attribute "hops/yarn/cgroups/cpu/enabled",
+          :description => "Enable CPU cgroup control. Default: true",
+          :type => "string"
+
+attribute "hops/yarn/cgroups/memory/enabled",
+          :description => "Enable memory cgroup control. Default: true",
           :type => "string"
 
 attribute "hops/yarn/cgroups_deletion_timeout",
@@ -920,6 +924,10 @@ attribute "hops/docker/base/download_url",
 
 attribute "hops/cgroup-driver",
           :description =>  "Cgroup driver",
+          :type => 'string'
+
+attribute "hops/cgroup/mount-path",
+          :description =>  "Mount path for cgroup ",
           :type => 'string'
 
 attribute "hops/docker/registry/port",
