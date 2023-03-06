@@ -501,7 +501,7 @@ default['hops']['docker']['storage_driver']           = "overlay2"
 
 
 
-default['hops']['docker']['download_url']['centos'] = "#{node['download_url']}/docker/centos/#{node['hops']['docker_version']['centos']}.tgz"
+default['hops']['docker']['download_url']['centos'] = "#{node['download_url']}/docker/rhel/#{node['hops']['docker_version']['centos']}.tgz"
 default['hops']['docker']['download_url']['ubuntu'] = "#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu']}.tgz"
 
 default['hops']['docker_img_version']                 = node['install']['version']
