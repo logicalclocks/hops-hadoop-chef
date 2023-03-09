@@ -19,6 +19,11 @@ _init_cgroup1(){
       mkdir $CGROUP_MOUNT/cpu/hops-yarn     
    fi
    chown -R $YARN_USER $CGROUP_MOUNT/cpu/hops-yarn
+
+   if [ ! -f $CGROUP_MOUNT/memory/hops-yarn ]; then
+      mkdir $CGROUP_MOUNT/memory/hops-yarn
+   fi
+   chown -R $YARN_USER $CGROUP_MOUNT/memory/hops-yarn
 }
 
 _init_cgroup2(){
