@@ -254,7 +254,7 @@ bash "tag_testconnector_images" do
     docker rmi #{connector_image}
     docker push #{registry_address}/#{connector_image}
   EOF
-  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{connector_filename}" }
+  only_if { File.exist? "#{Chef::Config['file_cache_path']}/#{connector_filename}" }
   not_if "docker image inspect #{registry_address}/#{connector_image}"
 end
 
