@@ -553,3 +553,8 @@ default['hops']['docker']['cgroup']['memory']['soft-limit-default']  = "2GB"
 default['hops']['docker']['cgroup']['memory']['soft-limit']          = node['hops']['docker']['cgroup']['memory']['soft-limit-default']
 default['hops']['docker']['cgroup']['cpu']['quota']['percentage']    = 80
 default['hops']['docker']['cgroup']['cpu']['period']                 = 100000
+
+#test connector
+default['hops']['docker']['testconnector']['image']['name']    = "testconnector"
+default['hops']['docker']['testconnector']['image']['version'] = "0.1"
+default['hops']['docker']['testconnector']['download_url'] = "#{node['download_url']}/testconnector/#{node['hops']['docker']['testconnector']['image']['version']}/testconnector.tgz"
