@@ -351,7 +351,8 @@ default['hops']['fs-security-actions']['x509']['get-path']             = "/hopsw
 default['hops']['yarn']['container_executor']                = "org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor"
 
 # Use Cgroup isolation
-default['hops']['yarn']['cgroups']                        = "true"
+default['hops']['yarn']['cgroups']['cpu']['enabled']      = "true"
+default['hops']['yarn']['cgroups']['memory']['enabled']   = "true"
 default['hops']['yarn']['cgroups_deletion_timeout']       = "5000"
 default['hops']['yarn']['cgroups_max_cpu_usage']          = "90"
 default['hops']['yarn']['cgroups_strict_resource_usage']  = "false"
@@ -516,6 +517,7 @@ default['hops']['docker']['base']['image']['python']['name']  = "python38"
 default['hops']['docker']['base']['image']['python']['version'] = "3.8"
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
 default['hops']['cgroup-driver']                      = "cgroupfs"
+default['hops']['cgroup']['mount-path']               = "/sys/fs/cgroup"
 
 default['hops']['docker']['registry']['port']         = 4443
 default['hops']['docker']['registry']['version']      = "2.8.1"

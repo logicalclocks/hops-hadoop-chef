@@ -244,13 +244,6 @@ template "#{node['hops']['conf_dir']}/erasure-coding-site.xml" do
   action :create
 end
 
-# If CGroups are enabled, set the correct LCEResourceHandler
-if node['hops']['yarn']['cgroups'].eql?("true")
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler"
-else
-  resource_handler = "org.apache.hadoop.yarn.server.nodemanager.util.DefaultLCEResourcesHandler"
-end
-
 if node['hops']['yarn']['detect-hardware-capabilities'].casecmp?("true")
   node.override['hops']['yarn']['vcores'] = "-1"
   node.override['hops']['yarn']['memory_mbs'] = "-1"
@@ -275,7 +268,6 @@ template "#{node['hops']['conf_dir']}/yarn-site.xml" do
     h = {}
     h[:resourcemanager_fqdn] = resourcemanager_fqdn
     h[:zookeeper_fqdn] = zookeeper_fqdn
-    h[:resource_handler] = resource_handler
     h[:ha_ids] = ha_ids
     h[:my_id] = my_id
     h[:bind_ip] = bind_ip

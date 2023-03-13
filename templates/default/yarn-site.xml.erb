@@ -253,8 +253,13 @@
   </property>
 
   <property>
-    <name>yarn.nodemanager.linux-container-executor.resources-handler.class</name>
-    <value><%= @resource_handler %></value>
+    <name>yarn.nodemanager.resource.cpu.enabled</name>
+    <value><%= node['hops']['yarn']['cgroups']['cpu']['enabled'] %></value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.resource.memory.enabled</name>
+    <value><%= node['hops']['yarn']['cgroups']['memory']['enabled'] %></value>
   </property>
 
   <property>
