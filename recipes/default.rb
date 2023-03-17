@@ -3,7 +3,9 @@ include_recipe "hops::_config"
 
 Chef::Recipe.send(:include, Hops::Helpers)
 
-if not node["hopsworks"]["default"].attribute?("public_ips")
+flyingduck_in_cloud = exists_local("hops", "client") and exists_local("flyingduck", "default") and !node['install']['cloud'].empty? 
+
+if not node["hopsworks"]["default"].attribute?("public_ips") and not flyingduck_in_cloud
   Chef::Log.warn("Hopsworks cookbook was not loaded, disabling Hops TLS and JWT support!")
   node.override['hops']['tls']['enabled'] = "false"
   node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
@@ -29,6 +31,11 @@ if service_discovery_enabled()
       break
     end
   end
+
+  # Do no try to discover Hopsworks if building flyingduck on mysqld nodes in the cloud, no Hopsworks server is running
+  if flyingduck_in_cloud 
+    run_discovery = false
+  end 
 
   hopsworks_port = "8182"
   if run_discovery
