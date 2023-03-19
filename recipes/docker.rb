@@ -20,53 +20,44 @@ when 'rhel'
     only_if "yum list installed docker.x86_64"
   end
 
-  package ['lvm2','device-mapper','device-mapper-persistent-data','device-mapper-event','device-mapper-libs','device-mapper-event-libs'] do
-    retries 10
-    retry_delay 30
+  base_package_filename = File.basename(node['hops']['docker']['download_url']['centos'])
+  cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
+
+  remote_file cached_package_filename do
+    source node['hops']['docker']['download_url']['centos']
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
   end
 
-  packages = ["container-selinux-#{node['hops']['selinux_version']['centos']}.el7.noarch.rpm", "containerd.io-#{node['hops']['containerd_version']['centos']}.el7.x86_64.rpm","docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm","docker-ce-cli-#{node['hops']['docker_version']['centos']}.el7.x86_64.rpm"]
-
-  packages.each do |pkg|
-    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['hops']['docker']['pkg']['download_url']['centos']}/#{pkg}"
-      owner 'root'
-      group 'root'
-      mode '0755'
-      action :create
-    end
-  end
-  
   bash "install_pkgs" do
     user 'root'
     group 'root'
     cwd Chef::Config['file_cache_path']
     code <<-EOH
-        yum install -y #{packages.join(" ")}
+       tar xf #{base_package_filename}
+       cd #{node['hops']['docker_version']['centos']}
+       yum install -y *.rpm
     EOH
     not_if "yum list installed docker-ce-#{node['hops']['docker_version']['centos']}.el7.x86_64"
   end
-
 when 'debian'
-  packages = [
-    "containerd_#{node['hops']['containerd_version']['ubuntu']}_amd64.deb",
-    "docker.io_#{node['hops']['docker_version']['ubuntu']}_amd64.deb",
-    "runc_#{node['hops']['runc_version']['ubuntu']}_amd64.deb"
-  ]
 
-  packages.each do |pkg|
-    remote_file "#{Chef::Config['file_cache_path']}/#{pkg}" do
-      source "#{node['hops']['docker']['pkg']['download_url']['ubuntu']}/#{pkg}"
-      owner 'root'
-      group 'root'
-      mode '0755'
-      action :create
-    end
+  base_package_filename = File.basename(node['hops']['docker']['download_url']['ubuntu'])
+  cached_package_filename = "#{Chef::Config['file_cache_path']}/#{base_package_filename}"
+
+  remote_file cached_package_filename do
+    source node['hops']['docker']['download_url']['ubuntu']
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
   end
 
   # Additional dependencies needed, but dpkg doesn't know how to fetch them
   # from the repositories
-  package ['pigz', 'bridge-utils'] do
+  package ['pigz', 'bridge-utils', 'dns-root-data', 'dnsmasq-base', "libidn11-dev", 'ubuntu-fan'] do
     retries 10
     retry_delay 30
   end
@@ -76,7 +67,9 @@ when 'debian'
     group 'root'
     cwd Chef::Config['file_cache_path']
     code <<-EOH
-        dpkg -i #{packages.join(" ")}
+       tar xf #{base_package_filename}
+       cd #{node['hops']['docker_version']['ubuntu']}
+       dpkg -i *.deb
     EOH
     not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
   end

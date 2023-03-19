@@ -8,7 +8,7 @@
         }
     },
     <% end -%>
-    "graph": "<%= node['hops']['docker_dir'] %>",
+    "data-root": "<%= node['hops']['docker_dir'] %>",
     "exec-opts": ["native.cgroupdriver=<%= node['hops']['cgroup-driver'] %>"],
     "log-driver": "json-file",
     "log-opts": {
