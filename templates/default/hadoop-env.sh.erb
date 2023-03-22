@@ -91,7 +91,7 @@ export JAVA_HOME=${JAVA_HOME}
 
 # Extra Java runtime options for all Hadoop commands. We don't support
 # IPv6 yet/still, so by default the preference is set to IPv4.
-export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Dlog4j2.configurationFile=log4j2.properties"
+export HADOOP_OPTS="$HADOOP_OPTS -Djdk.tls.ephemeralDHKeySize=2048 -Djava.net.preferIPv4Stack=true -Dlog4j2.configurationFile=log4j2.properties"
 # For Kerberos debugging, an extended option set logs more information
 # export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true -Dsun.security.krb5.debug=true -Dsun.security.spnego.debug"
 
