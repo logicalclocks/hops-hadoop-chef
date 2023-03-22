@@ -352,7 +352,7 @@ default['hops']['yarn']['container_executor']                = "org.apache.hadoo
 
 # Use Cgroup isolation
 default['hops']['yarn']['cgroups']['cpu']['enabled']      = "true"
-default['hops']['yarn']['cgroups']['memory']['enabled']   = "true"
+default['hops']['yarn']['cgroups']['memory']['enabled']   = "false"
 default['hops']['yarn']['cgroups_deletion_timeout']       = "5000"
 default['hops']['yarn']['cgroups_max_cpu_usage']          = "90"
 default['hops']['yarn']['cgroups_strict_resource_usage']  = "false"
