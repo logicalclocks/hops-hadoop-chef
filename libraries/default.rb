@@ -1,3 +1,5 @@
+require 'open3'
+
 module Hops
   module Helpers
     def template_ssl_server(generate_jwt = true)
@@ -43,6 +45,20 @@ module Hops
         end
       end
       version
+    end
+
+    def docker_cgroup_driver()
+      if not node['hops']['cgroup-driver'].empty?
+        return node['hops']['cgroup-driver']
+      end
+
+      _, s = Open3.capture2("grep -e \"#{node['hops']['cgroup']['mount-path']}[[:space:]]cgroup2\" /proc/mounts")
+      if s.success?
+        if not exists_local("hops", "nm")
+          return "systemd"
+        end
+      end
+      return "cgroupfs"
     end
   end
 end

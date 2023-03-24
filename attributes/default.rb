@@ -513,7 +513,7 @@ default['hops']['docker']['base']['image']['name']           = "base"
 default['hops']['docker']['base']['image']['python']['name']  = "python38"
 default['hops']['docker']['base']['image']['python']['version'] = "3.8"
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
-default['hops']['cgroup-driver']                      = "cgroupfs"
+default['hops']['cgroup-driver']                      = ""
 default['hops']['cgroup']['mount-path']               = "/sys/fs/cgroup"
 
 default['hops']['docker']['registry']['port']         = 4443
