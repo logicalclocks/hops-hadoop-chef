@@ -216,6 +216,13 @@ template '/etc/docker/daemon.json' do
             })
 end
 
+template node['hops']['docker']['fuse-seccomp-file'] do
+  source 'fuse_seccomp.json'
+  owner 'root'
+  mode '0755'
+  action :create
+end
+
 service_name='docker'
 
 # Start the docker deamon
