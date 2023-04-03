@@ -197,6 +197,11 @@ override_dns = node['install']['localhost'].casecmp?("true") && node['platform_f
 dns_servers = ["127.0.0.53"]
 
 docker_cgroup_driver = docker_cgroup_driver()
+cgroup_parent = "docker.slice"
+if docker_cgroup_driver.eql?("cgroupfs")
+  cgroup_parent = "/#{cgroup_parent}"
+end
+
 template '/etc/docker/daemon.json' do
   source 'daemon.json.erb'
   owner 'root'
@@ -206,7 +211,8 @@ template '/etc/docker/daemon.json' do
               :insecure_registries => insecure_registries,
               :override_dns => override_dns,
               :dns_servers => dns_servers,
-              :docker_cgroup_driver => docker_cgroup_driver
+              :docker_cgroup_driver => docker_cgroup_driver,
+              :cgroup_parent => cgroup_parent
             })
 end
 
