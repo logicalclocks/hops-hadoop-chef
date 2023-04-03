@@ -10,6 +10,7 @@
     <% end -%>
     "data-root": "<%= node['hops']['docker_dir'] %>",
     "exec-opts": ["native.cgroupdriver=<%= @docker_cgroup_driver %>"],
+    "cgroup-parent": "<%= @cgroup_parent %>",
     "log-driver": "json-file",
     "log-opts": {
       "max-size": "100m"
