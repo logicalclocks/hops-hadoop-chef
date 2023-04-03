@@ -519,6 +519,13 @@ default['hops']['cgroup']['mount-path']               = "/sys/fs/cgroup"
 default['hops']['docker']['registry']['port']         = 4443
 default['hops']['docker']['registry']['version']      = "2.8.1"
 default['hops']['docker']['registry']['download_url'] = "#{node['download_url']}/docker/registry/#{node['hops']['docker']['registry']['version']}/registry_image.tar"
+default['hops']['docker']['registry']['storage']      = ""
+default['hops']['docker']['registry']['endpoint']     = node['hops']['aws_endpoint']
+default['hops']['docker']['registry']['bucket']       = node['hops']['aws_s3_bucket']
+default['hops']['docker']['registry']['region']       = node['hops']['aws_s3_region']
+default['hops']['docker']['registry']['path']         = "docker-registry"
+default['hops']['docker']['registry']['access_key']   = node['hops']['aws_access_key_id']
+default['hops']['docker']['registry']['secret_key']   = node['hops']['aws_secret_access_key']
 
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
