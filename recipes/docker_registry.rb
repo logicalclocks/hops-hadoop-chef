@@ -115,8 +115,8 @@ if node['hops']['docker']['registry']['storage'].casecmp("s3") == 0
 
   if !node['hops']['docker']['registry']['access_key'].eql?("")
     registry_storage_configuration = "#{registry_storage_configuration}" +
-      "-e REGISTRY_STORAGE_S3_ACCESSKEY=#{node['hops']['docker']['registry']['access_key']} "
-      "-e REGISTRY_STORAGE_S3_SECRETKEY='#{node['hops']['docker']['registry']['secret_key']} "
+      "-e REGISTRY_STORAGE_S3_ACCESSKEY=#{node['hops']['docker']['registry']['access_key']} " +
+      "-e REGISTRY_STORAGE_S3_SECRETKEY='#{node['hops']['docker']['registry']['secret_key']}' "
   end
 end
 
