@@ -922,6 +922,34 @@ attribute "hops/docker/registry/port",
           :description => "the port on which the docker registry listen",
           :type => 'string'
 
+attribute "hops/docker/registry/storage",
+          :description => "set to s3 to store the docker images on S3 compatible storage",
+          :type => 'string'
+
+attribute "hops/docker/registry/endpoint",
+          :description => "S3 endpoint if docker registry is configured to store images on S3",
+          :type => 'string'
+
+attribute "hops/docker/registry/bucket",
+          :description => "S3 bucket name if docker registry is configured to store images on S3",
+          :type => 'string'
+
+attribute "hops/docker/registry/region",
+          :description => "S3 region name if docker registry is configured to store images on S3",
+          :type => 'string'
+
+attribute "hops/docker/registry/path",
+          :description => "S3 path if docker registry is configured to store images on S3 (default: docker-registry)",
+          :type => 'string'
+
+attribute "hops/docker/registry/access_key",
+          :description => "S3 access_key if docker registry is configured to store images on S3 (default: docker-registry)",
+          :type => 'string'
+
+attribute "hops/docker/registry/secret_key",
+          :description => "S3 secret_key if docker registry is configured to store images on S3 (default: docker-registry)",
+          :type => 'string'
+
 attribute "hops/nn/http_port",
           :description => "The namenode http server port.",
           :type => 'string'

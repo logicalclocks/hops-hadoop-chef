@@ -101,6 +101,25 @@ end
 kagent_crypto_dir = x509_helper.get_crypto_dir(node['kagent']['user'])
 certificate_name = x509_helper.get_certificate_bundle_name(node['kagent']['user'])
 key_name = x509_helper.get_private_key_pkcs8_name(node['kagent']['user'])
+
+registry_storage_configuration = ""
+if node['hops']['docker']['registry']['storage'].casecmp("s3") == 0
+  registry_storage_configuration = "-e REGISTRY_STORAGE=s3 " + 
+      "-e REGISTRY_STORAGE_S3_REGION=#{node['hops']['docker']['registry']['region']} " +
+      "-e REGISTRY_STORAGE_S3_BUCKET=#{node['hops']['docker']['registry']['bucket']} " +
+      "-e REGISTRY_STORAGE_S3_ROOTDIRECTORY=#{node['hops']['docker']['registry']['path']} "
+
+  if !node['hops']['docker']['registry']['endpoint'].eql?("")
+    registry_storage_configuration = "#{registry_storage_configuration} -e REGISTRY_STORAGE_S3_REGIONENDPOINT=#{node['hops']['docker']['registry']['endpoint']} "
+  end
+
+  if !node['hops']['docker']['registry']['access_key'].eql?("")
+    registry_storage_configuration = "#{registry_storage_configuration}" +
+      "-e REGISTRY_STORAGE_S3_ACCESSKEY=#{node['hops']['docker']['registry']['access_key']} " +
+      "-e REGISTRY_STORAGE_S3_SECRETKEY='#{node['hops']['docker']['registry']['secret_key']}' "
+  end
+end
+
 #start docker registry
 bash "start_docker_registry" do
   user "root"
@@ -115,6 +134,7 @@ bash "start_docker_registry" do
               -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} \
               -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} \
               -e REGISTRY_HTTP_TLS_MINIMUMTLS=tls1.2 \
+              #{registry_storage_configuration} \
               -p #{node['hops']['docker']['registry']['port']}:443 \
               registry
   EOF
