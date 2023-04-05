@@ -52,6 +52,9 @@ module Hops
         return node['hops']['cgroup-driver']
       end
 
+      # https://hopsworks.atlassian.net/browse/CLOUD-532
+      return "cgroupfs"
+
       _, s = Open3.capture2("grep -e \"#{node['hops']['cgroup']['mount-path']}[[:space:]]cgroup2\" /proc/mounts")
       if s.success?
         if not exists_local("hops", "nm")
