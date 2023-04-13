@@ -51,6 +51,10 @@ default['hops']['share_dir']                    = node['hops']['base_dir'] + "/s
 
 default['hops']['enable_cloud_storage']        = "false"
 default['hops']['cloud_provider']              = node["install"]["cloud"]
+
+## Changes to remote object storage attributes name should
+## also be reflected in elasticsearch-chef cookbook.
+## We have an indirect dependency.
 default['hops']['aws_s3_region']               = "eu-west-1"
 default['hops']['aws_s3_bucket']               = "hopsfs.bucket"
 default['hops']['aws_endpoint']                = ""
