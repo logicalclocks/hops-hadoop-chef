@@ -3,12 +3,12 @@ include_recipe "hops::default"
 # Intall the needed packages
 case node['platform_family']
 when 'debian'
-  package ['fuse', 'libfuse-dev'] do
+  package ['fuse3', 'libfuse3-dev'] do
     retries 10
     retry_delay 30
   end
 when 'rhel'
-  package ['fuse', 'fuse-libs'] do
+  package ['fuse3', 'fuse3-libs'] do
     retries 10
     retry_delay 30
   end
