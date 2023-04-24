@@ -21,8 +21,9 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
   cpu_quota_period = node['hops']['docker']['cgroup']['cpu']['period']
   docker_cgroup_cpu_cfs_quota_us = (cpu_quota_period * ((cpu_quota_value).to_f / 100) * node['cpu']['total']).to_i
 
-  docker_memory_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/memory/docker.slice"
-  docker_cpu_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/cpu/docker.slice"
+  docker_cgroup_parent = "#{node['hops']['docker']['cgroup']['parent']}"
+  docker_memory_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/memory/#{docker_cgroup_parent}"
+  docker_cpu_cgroup_dir = "#{node['hops']['cgroup']['mount-path']}/cpu/#{docker_cgroup_parent}"
   bash "write_cgroup_1" do
     user 'root'
     group 'root'
@@ -39,9 +40,9 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
     user 'root'
     group 'root'
     code <<-EOH
-        echo -e "#{docker_cgroup_cpu_cfs_quota_us} #{cpu_quota_period}" > #{node['hops']['cgroup']['mount-path']}/docker.slice/cpu.max
-        echo #{docker_hard_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/docker.slice/memory.max
-        echo #{docker_soft_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/docker.slice/memory.high
+        echo -e "#{docker_cgroup_cpu_cfs_quota_us} #{cpu_quota_period}" > #{node['hops']['cgroup']['mount-path']}/#{docker_cgroup_parent}/cpu.max
+        echo #{docker_hard_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/#{docker_cgroup_parent}/memory.max
+        echo #{docker_soft_limit_memory_bytes + excess_memory} > #{node['hops']['cgroup']['mount-path']}/#{docker_cgroup_parent}/memory.high
     EOH
     only_if "grep -e \"#{node['hops']['cgroup']['mount-path']}[[:space:]]cgroup2\" /proc/mounts"
   end
