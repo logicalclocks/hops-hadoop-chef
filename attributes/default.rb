@@ -559,6 +559,7 @@ default['hops']['docker']['cgroup']['memory']['soft-limit-default']  = "5GB"
 default['hops']['docker']['cgroup']['memory']['soft-limit']          = node['hops']['docker']['cgroup']['memory']['soft-limit-default']
 default['hops']['docker']['cgroup']['cpu']['quota']['percentage']    = 80
 default['hops']['docker']['cgroup']['cpu']['period']                 = 100000
+default['hops']['docker']['cgroup']['parent']                        = "docker.slice"
 
 #test connector
 default['hops']['docker']['testconnector']['image']['name']    = "testconnector"
