@@ -569,5 +569,3 @@ default['hops']['docker']['cgroup']['parent']                        = "docker.s
 default['hops']['docker']['testconnector']['image']['name']    = "testconnector"
 default['hops']['docker']['testconnector']['image']['version'] = "0.2"
 default['hops']['docker']['testconnector']['download_url'] = "#{node['download_url']}/testconnector/#{node['hops']['docker']['testconnector']['image']['version']}/testconnector.tgz"
-
-
