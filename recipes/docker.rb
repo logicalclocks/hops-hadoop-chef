@@ -216,11 +216,26 @@ template '/etc/docker/daemon.json' do
             })
 end
 
-template node['hops']['docker']['fuse-seccomp-file'] do
-  source 'fuse_seccomp.json'
+template node['hops']['docker']['hopsfsmount-seccomp-profile'] do
+  source 'hopsfsmount_seccomp_profile.json'
   owner 'root'
   mode '0755'
   action :create
+end
+
+hopfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopfsmount-apparmor-profile']}"
+template hopfsmount_apparmor_profile do
+  source node['hops']['docker']['hopfsmount-apparmor-profile']
+  owner 'root'
+  mode '0755'
+  action :create
+end
+
+bash 'move-docker-images' do
+  user 'root'
+  code <<-EOH
+      apparmor_parser -r -W #{hopfsmount_apparmor_profile}
+  EOH
 end
 
 service_name='docker'

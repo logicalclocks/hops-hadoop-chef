@@ -570,4 +570,5 @@ default['hops']['docker']['testconnector']['image']['name']    = "testconnector"
 default['hops']['docker']['testconnector']['image']['version'] = "0.1"
 default['hops']['docker']['testconnector']['download_url'] = "#{node['download_url']}/testconnector/#{node['hops']['docker']['testconnector']['image']['version']}/testconnector.tgz"
 
-default['hops']['docker']['fuse-seccomp-file'] = "/etc/docker/fuse_seccomp.json"
+default['hops']['docker']['hopsfsmount-seccomp-profile'] = "/etc/docker/hopsfsmount_seccomp_profile.json"
+default['hops']['docker']['hopfsmount-apparmor-profile'] = "hopsworks-hopsfsmount-docker"
