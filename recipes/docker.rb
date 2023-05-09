@@ -216,7 +216,7 @@ template '/etc/docker/daemon.json' do
             })
 end
 
-template node['hops']['docker']['hopsfsmount-seccomp-profile'] do
+cookbook_file node['hops']['docker']['hopsfsmount-seccomp-profile'] do
   source 'hopsfsmount_seccomp_profile.json'
   owner 'root'
   mode '0755'
@@ -224,7 +224,7 @@ template node['hops']['docker']['hopsfsmount-seccomp-profile'] do
 end
 
 hopfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopfsmount-apparmor-profile']}"
-template hopfsmount_apparmor_profile do
+cookbook_file hopfsmount_apparmor_profile do
   source node['hops']['docker']['hopfsmount-apparmor-profile']
   owner 'root'
   mode '0755'
