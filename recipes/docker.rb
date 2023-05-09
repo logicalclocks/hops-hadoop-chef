@@ -225,7 +225,7 @@ end
 
 hopfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopfsmount-apparmor-profile']}"
 cookbook_file hopfsmount_apparmor_profile do
-  source node['hops']['docker']['hopfsmount-apparmor-profile']
+  source 'hopsfsmount_apparmor_profile'
   owner 'root'
   mode '0755'
   action :create
