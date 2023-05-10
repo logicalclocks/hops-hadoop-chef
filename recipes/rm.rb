@@ -101,8 +101,28 @@ template systemd_script do
   end
 end
 
+template "#{node['hops']['bin_dir']}/rm-waiter.sh" do
+  source "rm-waiter.sh.erb"
+  owner node['hops']['rm']['user']
+  group node['hops']['group']
+  mode 0750
+  variables({
+    :key => "#{crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['hops']['rm']['user'])}",
+    :certificate => "#{crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['hops']['rm']['user'])}"
+  })
+end
+
 kagent_config "#{service_name}" do
   action :systemd_reload
+end
+
+bash 'wait-for-resourcemanager' do
+  user node['hops']['rm']['user']
+  group node['hops']['group']
+  timeout 260
+  code <<-EOH
+    #{node['hops']['bin_dir']}/rm-waiter.sh
+  EOH
 end
 
 if node['kagent']['enabled'] == "true"
