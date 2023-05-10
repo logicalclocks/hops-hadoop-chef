@@ -223,7 +223,7 @@ cookbook_file node['hops']['docker']['hopsfsmount-seccomp-profile'] do
   action :create
 end
 
-hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopfsmount-apparmor-profile']}"
+hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopsfsmount-apparmor-profile']}"
 cookbook_file hopsfsmount_apparmor_profile do
   source 'hopsfsmount_apparmor_profile'
   owner 'root'
