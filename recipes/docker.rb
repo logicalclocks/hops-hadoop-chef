@@ -224,7 +224,7 @@ cookbook_file node['hops']['docker']['hopsfsmount-seccomp-profile'] do
 end
 
 hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopfsmount-apparmor-profile']}"
-cookbook_file hopfsmount_apparmor_profile do
+cookbook_file hopsfsmount_apparmor_profile do
   source 'hopsfsmount_apparmor_profile'
   owner 'root'
   mode '0755'
