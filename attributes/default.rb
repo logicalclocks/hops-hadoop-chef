@@ -572,4 +572,4 @@ default['hops']['docker']['testconnector']['download_url'] = "#{node['download_u
 
 default['hops']['docker']['hopsfsmount-seccomp-profile']              = "/etc/docker/hopsfsmount_seccomp_profile.json"
 default['hops']['docker']['hopsfsmount-apparmor-profile']             = "hopsworks-hopsfsmount-docker"
-default['hops']['docker']['load_hopsfsmount_apparmor_profile']        = "true"
+default['hops']['docker']['load-hopsfsmount-apparmor-profile']        = "true"

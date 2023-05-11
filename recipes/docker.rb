@@ -229,7 +229,7 @@ cookbook_file hopsfsmount_apparmor_profile do
   owner 'root'
   mode '0755'
   action :create
-  only_if { node['hops']['docker']['load_hopsfsmount_apparmor_profile'].eql?("true") }
+  only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true") }
 end
 
 bash 'apply_hopsfsmount_apparmor_profile' do
@@ -237,7 +237,7 @@ bash 'apply_hopsfsmount_apparmor_profile' do
   code <<-EOH
       apparmor_parser -r -W #{hopfsmount_apparmor_profile}
   EOH
-  only_if { node['hops']['docker']['load_hopsfsmount_apparmor_profile'].eql?("true") }
+  only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true") }
 end
 
 service_name='docker'

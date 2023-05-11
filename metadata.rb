@@ -1058,6 +1058,6 @@ attribute "hops/docker/hopsfsmount-seccomp-profile",
           :description => "Seccomp profile to be applied to containers that mounts hopsfs.",
           :type => 'string'
 
-attribute "hops/docker/load_hopsfsmount_apparmor_profile",
+attribute "hops/docker/load-hopsfsmount-apparmor-profile",
           :description => "Create the apparmor profile during installation. If it is set to false you cannot change the jupyter remote driver to 'hopsfsmount' at runtime",
           :type => 'string'
