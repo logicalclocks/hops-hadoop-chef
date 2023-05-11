@@ -229,13 +229,15 @@ cookbook_file hopsfsmount_apparmor_profile do
   owner 'root'
   mode '0755'
   action :create
+  only_if { node['hops']['docker']['load_hopsfsmount_apparmor_profile'].eql?("true") }
 end
 
-bash 'move-docker-images' do
+bash 'apply_hopsfsmount_apparmor_profile' do
   user 'root'
   code <<-EOH
       apparmor_parser -r -W #{hopfsmount_apparmor_profile}
   EOH
+  only_if { node['hops']['docker']['load_hopsfsmount_apparmor_profile'].eql?("true") }
 end
 
 service_name='docker'
