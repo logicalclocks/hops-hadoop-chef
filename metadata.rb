@@ -1049,3 +1049,6 @@ attribute "hops/docker/cgroup/cpu/quota/percentage",
 attribute "hops/docker/cgroup/cpu/period",
           :description => "Specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated.",
           :type => 'string'
+attribute "hops/docker/hopsfsmount-apparmor-profile",
+          :description => "Hopsfsmount apparmor profile to be applied to containers that mounts hopsfs.",
+          :type => 'string'
