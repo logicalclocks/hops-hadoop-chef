@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+CERTIFICATE=<%= @certificate %>
+KEY=<%= @key %>
+
+i=0
+while true
+do
+    response=$(curl -k -s --fail --cert $CERTIFICATE --key $KEY https://$HOSTNAME:<%= node['hops']['rm']['https']['port'] %>/ws/v1/cluster)
+    if [ $? -eq "0" ]
+    then
+        state=$(echo $response | jq -r ".clusterInfo.state")
+        if [ $state == "STARTED" ]
+        then
+            exit 0
+        else
+            echo "Local  ResourceManager state: $state"
+        fi
+    fi
+    echo "Local ResourceManager is not running/healthy"
+    let i++
+    if [ $i -gt 100 ]
+    then
+        echo "Exhausted all retries"
+        exit 1
+    fi
+    sleep 2s
+done
