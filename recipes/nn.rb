@@ -81,6 +81,17 @@ template systemd_script do
   end
 end
 
+template "#{node['hops']['bin_dir']}/nn-waiter.sh" do
+  source "nn-waiter.sh.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode 0750
+  variables({
+    :key => "#{crypto_dir}/#{x509_helper.get_private_key_pkcs8_name(node['hops']['hdfs']['user'])}",
+    :certificate => "#{crypto_dir}/#{x509_helper.get_certificate_bundle_name(node['hops']['hdfs']['user'])}"
+  })
+end
+
 kagent_config "#{service_name}" do
   action :systemd_reload
 end
@@ -126,11 +137,14 @@ if service_discovery_enabled()
   end
 end
 
-ruby_block 'wait_until_nn_started' do
-  block do
-     sleep(10)
-  end
-  action :run
+bash 'wait-for-namenode' do
+  user node['hops']['hdfs']['user']
+  group node['hops']['group']
+  timeout 260
+  code <<-EOH
+    # Wait for local NameNode to start and to leave SafeMode
+    #{node['hops']['bin_dir']}/nn-waiter.sh
+  EOH
 end
 
 dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
