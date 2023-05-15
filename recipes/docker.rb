@@ -223,22 +223,6 @@ cookbook_file node['hops']['docker']['hopsfsmount-seccomp-profile'] do
   action :create
 end
 
-hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopsfsmount-apparmor-profile']}"
-cookbook_file hopsfsmount_apparmor_profile do
-  source 'hopsfsmount_apparmor_profile'
-  owner 'root'
-  mode '0755'
-  action :create
-  only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true") }
-end
-
-bash 'apply_hopsfsmount_apparmor_profile' do
-  user 'root'
-  code <<-EOH
-      apparmor_parser -r -W #{hopsfsmount_apparmor_profile}
-  EOH
-  only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true") }
-end
 
 service_name='docker'
 
@@ -249,4 +233,28 @@ end
 
 service service_name do
   action :enable
+end
+
+cmd = Mixlib::ShellOut.new('docker info | grep "apparmor"')
+cmd.run_command
+if cmd.error?
+  node.override['hops']['docker']['apparmor-enabled'] = "false"
+end
+
+hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopsfsmount-apparmor-profile']}"
+cookbook_file hopsfsmount_apparmor_profile do
+  source 'hopsfsmount_apparmor_profile'
+  owner 'root'
+  mode '0755'
+  action :create
+  only_if { node['hops']['docker']['apparmor-enabled'].casecmp?("true") }
+end
+
+bash 'apply_hopsfsmount_apparmor_profile' do
+  user 'root'
+  code <<-EOH
+      apparmor_parser -r -W #{hopsfsmount_apparmor_profile}
+  EOH
+  only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true")}
+  only_if { node['hops']['docker']['apparmor-enabled'].casecmp?("true") }
 end
