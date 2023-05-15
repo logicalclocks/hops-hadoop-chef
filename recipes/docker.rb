@@ -235,7 +235,7 @@ end
 bash 'apply_hopsfsmount_apparmor_profile' do
   user 'root'
   code <<-EOH
-      apparmor_parser -r -W #{hopfsmount_apparmor_profile}
+      apparmor_parser -r -W #{hopsfsmount_apparmor_profile}
   EOH
   only_if { node['hops']['docker']['load-hopsfsmount-apparmor-profile'].casecmp?("true") }
 end
