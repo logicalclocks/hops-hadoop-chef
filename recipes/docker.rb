@@ -238,8 +238,8 @@ end
 cmd = Mixlib::ShellOut.new('docker info | grep "apparmor"')
 cmd.run_command
 if cmd.error?
-  node.override['hops']['docker']['apparmor-enabled'] = "false"
-  node.override['hops']['docker']['load-hopsfsmount-apparmor-profile'] = "false"
+  node.default['hops']['docker']['apparmor-enabled'] = "false"
+  node.default['hops']['docker']['load-hopsfsmount-apparmor-profile'] = "false"
 end
 
 hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopsfsmount-apparmor-profile']}"
