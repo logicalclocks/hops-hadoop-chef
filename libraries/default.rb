@@ -66,7 +66,7 @@ module Hops
 
     def is_apparmor_enabled()
       apparmor_enabled = true
-      cmd = Mixlib::ShellOut.new('docker info | grep "apparmor"')
+      cmd = Mixlib::ShellOut.new('apparmor_status >/dev/null 2>&1')
       cmd.run_command
       if cmd.exitstatus != 0
         apparmor_enabled = false

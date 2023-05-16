@@ -235,13 +235,6 @@ service service_name do
   action :enable
 end
 
-cmd = Mixlib::ShellOut.new('docker info | grep "apparmor"')
-cmd.run_command
-if cmd.exitstatus != 0
-  node.default['hops']['docker']['apparmor-enabled'] = "false"
-  node.default['hops']['docker']['load-hopsfsmount-apparmor-profile'] = "false"
-end
-
 apparmor_enabled=is_apparmor_enabled()
 hopsfsmount_apparmor_profile="/etc/apparmor.d/#{node['hops']['docker']['hopsfsmount-apparmor-profile']}"
 cookbook_file hopsfsmount_apparmor_profile do
