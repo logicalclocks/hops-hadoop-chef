@@ -63,5 +63,15 @@ module Hops
       end
       return "cgroupfs"
     end
+
+    def is_apparmor_enabled()
+      apparmor_enabled = true
+      cmd = Mixlib::ShellOut.new('docker info | grep "apparmor"')
+      cmd.run_command
+      if cmd.exitstatus != 0
+        apparmor_enabled = false
+      end
+      return apparmor_enabled
+    end
   end
 end
