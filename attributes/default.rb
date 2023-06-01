@@ -259,7 +259,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "21.04.13-SNAPSHOT"
+default['hops']['ndb']['version']           = "21.04.14-SNAPSHOT"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
