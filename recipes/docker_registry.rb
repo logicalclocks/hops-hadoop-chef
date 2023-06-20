@@ -8,7 +8,7 @@ rescue
   Chef::Log.warn "could not find the docker registry ip!"
 end
 
-#restart docker to take in account the new trusted certs
+#restart docker to take in account the new trusted certs added at kagent::default
 service 'docker' do
   action [:restart]
 end
