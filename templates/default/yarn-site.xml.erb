@@ -175,36 +175,42 @@
   </property>
 
 
-<% for id in @ha_ids -%>
+<% if node['hops']['yarn']['resourcemanager_ha_enabled'].casecmp?("true") -%>
+<% for ip in node['hops']['rm']['private_ips'] -%>
+  <% id = node['hops']['rm']['private_ips'].index(ip) -%>
   <property>
     <name>yarn.resourcemanager.hostname.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %></value>
+    <value><%= ip %></value>
   </property>
   <property>
     <name>yarn.resourcemanager.scheduler.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8030</value>
+    <value><%= ip %>:8030</value>
   </property>
   <property>
     <name>yarn.resourcemanager.resource-tracker.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8031</value>
+    <value><%= ip %>:8031</value>
   </property>
   <property>
     <name>yarn.resourcemanager.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8032</value>
+    <value><%= ip %>:8032</value>
   </property>
   <property>
     <name>yarn.resourcemanager.admin.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8033</value>
+    <value><%= ip %>:8033</value>
   </property>
   <property>
     <name>yarn.resourcemanager.groupMembership.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8034</value>
+    <value><%= ip %>:8034</value>
   </property>
   <property>
     <name>yarn.resourcemanager.webapp.address.<%= id %></name>
-    <value><%= id %>.<%= @resourcemanager_fqdn %>:8088</value>
+    <value><%= ip %>:8088</value>
   </property>
-
+  <property>
+    <name>yarn.resourcemanager.webapp.https.address.<%= id %></name>
+    <value><%= ip %>:<%= node['hops']['rm']['https']['port'] %></value>
+  </property>
+<% end -%>
 <% end -%>
 
   <property>
