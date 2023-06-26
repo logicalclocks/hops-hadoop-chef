@@ -6,7 +6,8 @@ KEY=<%= @key %>
 i=0
 while true
 do
-    response=$(curl -k -s --fail --cert $CERTIFICATE --key $KEY https://$HOSTNAME:<%= node['hops']['rm']['https']['port'] %>/ws/v1/cluster)
+    # if RM is StandBy it will redirect us to the Active, use -L to follow redirects
+    response=$(curl -L -k -s --fail --cert $CERTIFICATE --key $KEY https://$HOSTNAME:<%= node['hops']['rm']['https']['port'] %>/ws/v1/cluster)
     if [ $? -eq "0" ]
     then
         state=$(echo $response | jq -r ".clusterInfo.state")

@@ -37,3 +37,8 @@ if node['install']['enterprise']['install'].casecmp? "true"
   end
   node.override['hops']['versions'] = versions
 end
+
+if node['hops']['rm']['private_ips'].size() > 1
+  node.override['hops']['yarn']['resourcemanager_ha_enabled'] = "true"
+  node.override['hops']['yarn']['resourcemanager_auto_failover_enabled'] = "true"
+end
