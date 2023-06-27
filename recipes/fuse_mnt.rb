@@ -41,7 +41,7 @@ bash "unmount-hopsfs" do
     systemctl stop #{service_name}
     su - #{node['hops']['hdfs']['user']} -c "#{node['hops']['sbin_dir']}/umount-hopsfs.sh"
   EOH
-  only_if "grep 'fuse.hopsfs' /proc/mounts"
+  only_if  {::File.exist?("#{node['hops']['sbin_dir']}/umount-hopsfs.sh")}
 end
 
 
