@@ -52,6 +52,7 @@ directory node['hops']['fuse']['mount_point'] do
   mode "0755"
   recursive true
   not_if {::Dir.exist?(node['hops']['fuse']['mount_point'])}
+  ignore_failure true
 end
 
 
