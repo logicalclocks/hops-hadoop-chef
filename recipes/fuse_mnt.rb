@@ -51,6 +51,7 @@ directory node['hops']['fuse']['mount_point'] do
   group node['hops']['group']
   mode "0755"
   recursive true
+  not_if {::Dir.exist?(node['hops']['fuse']['mount_point'])}
 end
 
 
