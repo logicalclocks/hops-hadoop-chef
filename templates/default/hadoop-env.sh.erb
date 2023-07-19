@@ -100,6 +100,11 @@ export HADOOP_OPTS="$HADOOP_OPTS -Djdk.tls.ephemeralDHKeySize=2048 -Djava.net.pr
 # section as to why....
 export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 
+HADOOP_TMPDIR=<%= node['install']['tmp_directory'] %>
+if [ ! -z "$HADOOP_TMPDIR" ]; then
+    export HADOOP_OPTS="$HADOOP_OPTS -Djava.io.tmpdir=$HADOOP_TMPDIR"
+fi
+
 export HADOOP_OPTS="$HADOOP_OPTS"
 
 # Under certain conditions, Java on OS X will throw SCDynamicStore errors
