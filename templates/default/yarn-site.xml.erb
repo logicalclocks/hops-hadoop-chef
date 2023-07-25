@@ -59,6 +59,12 @@
   </property>
 
   <property>
+    <name>yarn.node-attribute.fs-store.root-dir</name>
+    <value>file://${java.io.tmpdir}/hadoop-yarn-<%= node['hops']['rm']['user'] %>/node-attribute</value>
+    <description>Path where centralized attribute mappings are stored</description>
+  </property>
+
+  <property>
     <name>yarn.resourcemanager.scheduler.class</name>
     <value><%= node['hops']['rm']['scheduler_class'] %></value>
     <description>In case you do not want to use the default scheduler</description>
