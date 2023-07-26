@@ -27,9 +27,7 @@ action :update_local_cache do
         old_tours_info = "#{::File.read(tours_info_file)}\n"
     end 
     
-    # dst
-    # src is infered from the local cache dir 
-    new_tours_info = new_resource.hdfs_paths.map{|dst| ["#{cloud_cache_dir}/#{::File.basename(dst)}", dst, new_resource.owner, new_resource.group, new_resource.mode].join(",")}.join("\n")
+    new_tours_info = new_resource.paths.zip(new_resource.hdfs_paths).map{|src, dst| ["#{cloud_cache_dir}/#{::File.basename(src)}", dst, new_resource.owner, new_resource.group, new_resource.mode].join(",")}.join("\n")
 
     tours_info = "#{old_tours_info}#{new_tours_info}"
     file tours_info_file do
