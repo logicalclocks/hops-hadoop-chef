@@ -170,6 +170,8 @@
     <value><%= node['hops']['yarn']['resourcemanager_recovery_enabled'] %></value>
   </property>
 
+<% if node['hops']['yarn']['resourcemanager_ha_enabled'].casecmp?("true") -%>
+
   <property>
     <name>yarn.resourcemanager.ha.id</name>
     <value><%= @my_id %></value>
@@ -180,8 +182,6 @@
     <value><%= @ha_ids.join(",") %></value>
   </property>
 
-
-<% if node['hops']['yarn']['resourcemanager_ha_enabled'].casecmp?("true") -%>
 <% for ip in node['hops']['rm']['private_ips'] -%>
   <% id = node['hops']['rm']['private_ips'].index(ip) -%>
   <property>
