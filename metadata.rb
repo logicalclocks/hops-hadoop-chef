@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "3.3.0"
+version          "3.4.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -812,7 +812,7 @@ attribute "hops/nn/replace-dn-on-failure-policy",
           :type => "string"
 
 attribute "hops/retry_policy_spec",
-          :description => "Retry policy specification. For example '3.3.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :description => "Retry policy specification. For example '3.4.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
 
 attribute "hops/retry_policy_enabled",
@@ -1048,4 +1048,16 @@ attribute "hops/docker/cgroup/cpu/quota/percentage",
 
 attribute "hops/docker/cgroup/cpu/period",
           :description => "Specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated.",
+          :type => 'string'
+
+attribute "hops/docker/hopsfsmount-apparmor-profile",
+          :description => "Apparmor profile to be applied to containers that mounts hopsfs.",
+          :type => 'string'
+
+attribute "hops/docker/hopsfsmount-seccomp-profile",
+          :description => "Seccomp profile to be applied to containers that mounts hopsfs.",
+          :type => 'string'
+
+attribute "hops/docker/load-hopsfsmount-apparmor-profile",
+          :description => "Create the apparmor profile during installation. If it is set to false you cannot change the jupyter remote driver to 'hopsfsmount' at runtime",
           :type => 'string'

@@ -4,7 +4,7 @@ include_attribute "ndb"
 include_attribute "kzookeeper"
 
 default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9"
-default['hops']['version']                     = "3.2.0.10-SNAPSHOT"
+default['hops']['version']                     = "3.2.0.10-RC0"
 default['hops']['fuse']['version']             = "3.2.0.10"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
@@ -259,7 +259,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "21.04.12"
+default['hops']['ndb']['version']           = "21.04.14"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -514,8 +514,8 @@ default['hops']['docker']['insecure_registries']      = ""
 default['hops']['docker']['trusted_registries']       = ""
 default['hops']['docker']['mounts']                   = "#{node['hops']['conf_dir']},#{node['hops']['dir']}/spark,#{node['hops']['dir']}/flink,#{node['hops']['dir']}/apache-livy"
 default['hops']['docker']['base']['image']['name']           = "base"
-default['hops']['docker']['base']['image']['python']['name']  = "python38"
-default['hops']['docker']['base']['image']['python']['version'] = "3.8"
+default['hops']['docker']['base']['image']['python']['name']  = "python310"
+default['hops']['docker']['base']['image']['python']['version'] = "3.10"
 default['hops']['docker']['base']['download_url']     = "#{node['download_url']}/kube/docker-images/#{node['hops']['docker_img_version']}/base.tar"
 default['hops']['cgroup-driver']                      = ""
 default['hops']['cgroup']['mount-path']               = "/sys/fs/cgroup"
@@ -534,7 +534,7 @@ default['hops']['docker']['registry']['secret_key']   = node['hops']['aws_secret
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 default['hops']['docker']['git']['image']['name']    = "git"
-default['hops']['docker']['git']['image']['version'] = "0.4.0"
+default['hops']['docker']['git']['image']['version'] = "0.5.0"
 default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/hops-git/#{node['hops']['docker']['git']['image']['version']}/git.tgz"
 
 #XAttrs
@@ -569,3 +569,8 @@ default['hops']['docker']['cgroup']['parent']                        = "docker.s
 default['hops']['docker']['testconnector']['image']['name']    = "testconnector"
 default['hops']['docker']['testconnector']['image']['version'] = "0.2"
 default['hops']['docker']['testconnector']['download_url'] = "#{node['download_url']}/testconnector/#{node['hops']['docker']['testconnector']['image']['version']}/testconnector.tgz"
+
+default['hops']['docker']['hopsfsmount-seccomp-profile']              = "/etc/docker/hopsfsmount_seccomp_profile.json"
+default['hops']['docker']['hopsfsmount-apparmor-profile']             = "hopsworks-hopsfsmount-docker"
+default['hops']['docker']['load-hopsfsmount-apparmor-profile']        = "true"
+default['hops']['docker']['apparmor-enabled']                         = "true"
