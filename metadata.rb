@@ -245,6 +245,34 @@ attribute "hops/clusterj/max_cached_instances",
           :description => "Max DTO objects to cache on Clusterj side",
           :type => 'string'
 
+attribute "hops/alive-watchdog/enabled",
+          :description => "Enable alive watchdog service, it requires an external service to poll. Default: false",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/interval",
+          :description => "Poll interval of watchdog. Default: 5s",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/poller-class",
+          :description => "Fully qualified name of the poller class. If empty, and watchdog enabled, the service will not start. Default: empty",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/url",
+          :description => "HTTP endpoint to poll for verdict if we should be alive or not. Required if using HTTP based poller class",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/truststore",
+          :description => "Optionally specify truststore to use in HTTP poller",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/truststore-password",
+          :description => "Password of the truststore to use in HTTP poller",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/json-poll/dc-id",
+          :description => "Configuration of current/your own data-center used by JsonPoller",
+          :type => 'string'
+
 attribute "hops/tls/enabled",
           :description => "'true' will enable RPC TLS and 'false' will disable it",
           :type => 'string'
