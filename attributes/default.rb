@@ -77,6 +77,7 @@ default['hops']['nn']['name_dir']                       = "file://" + node['hops
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
+default['hops']['hdfs']['projects_dir']        = "/Projects"
 default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
 default['hops']['hdfs']['max-blocks-per-file'] = "10240"
