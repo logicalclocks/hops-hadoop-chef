@@ -882,10 +882,6 @@ attribute "hops/docker/storage_driver",
           :description =>  "Docker daemon storage driver. Default: overlay2",
           :type => 'string'
 
-attribute "hops/docker/no-new-privileges",
-          :description =>  "Docker daemon no-new-privileges configuration. Default: true",
-          :type => 'string'
-
 attribute "hops/docker/live-restore",
           :description =>  "Docker daemon live-restore configuration. Default: true",
           :type => 'string'

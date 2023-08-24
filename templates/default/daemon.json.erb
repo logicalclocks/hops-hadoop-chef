@@ -11,7 +11,6 @@
     "data-root": "<%= node['hops']['docker_dir'] %>",
     "exec-opts": ["native.cgroupdriver=<%= @docker_cgroup_driver %>"],
     "cgroup-parent": "<%= @cgroup_parent %>",
-    "no-new-privileges": <%= node['hops']['docker']['no-new-privileges'] %>,
     "live-restore": <%= node['hops']['docker']['live-restore'] %>,
     "userland-proxy": <%= node['hops']['docker']['userland-proxy'] %>,
     "log-driver": "json-file",

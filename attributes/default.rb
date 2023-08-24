@@ -502,7 +502,6 @@ default['hops']['docker_version']['centos']           = "23.0.1-1"
 default['hops']['docker_version']['ubuntu']           = "23.0.1-1"
 default['hops']['docker']['group_id']                 = '1513'
 default['hops']['docker']['storage_driver']           = "overlay2"
-default['hops']['docker']['no-new-privileges']        = "true"
 default['hops']['docker']['live-restore']             = "true"
 default['hops']['docker']['userland-proxy']           = "false"
 
