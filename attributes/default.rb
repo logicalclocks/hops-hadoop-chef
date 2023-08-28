@@ -123,6 +123,14 @@ default['hops']['clusterj']['enable_dto_cache']           = "false"
 default['hops']['clusterj']['enable_session_cache']       = "false" 
 default['hops']['clusterj']['max_cached_instances']       = 0 
 
+default['hops']['alive-watchdog']['enabled']          = "false"
+default['hops']['alive-watchdog']['interval']         = "5s"
+default['hops']['alive-watchdog']['poller-class']     = ""
+default['hops']['alive-watchdog']['http-poll']['url'] = ""
+default['hops']['alive-watchdog']['http-poll']['truststore'] = ""
+default['hops']['alive-watchdog']['http-poll']['truststore-password'] = ""
+default['hops']['alive-watchdog']['json-poll']['dc-id'] = ""
+
 default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
 
