@@ -3,9 +3,9 @@ include_recipe "hops::_config"
 
 Chef::Recipe.send(:include, Hops::Helpers)
 
-flyingduck_in_cloud = exists_local("hops", "client") and exists_local("flyingduck", "default") and !node['install']['cloud'].empty? 
+flyingduck_in_cloud = exists_local("flyingduck", "default") and !node['install']['cloud'].empty?
 
-if not node["hopsworks"]["default"].attribute?("public_ips") and not flyingduck_in_cloud
+if flyingduck_in_cloud
   Chef::Log.warn("Hopsworks cookbook was not loaded, disabling Hops TLS and JWT support!")
   node.override['hops']['tls']['enabled'] = "false"
   node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
