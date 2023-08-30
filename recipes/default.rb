@@ -5,12 +5,6 @@ Chef::Recipe.send(:include, Hops::Helpers)
 
 flyingduck_in_cloud = exists_local("flyingduck", "default") and !node['install']['cloud'].empty?
 
-if flyingduck_in_cloud
-  Chef::Log.warn("Hopsworks cookbook was not loaded, disabling Hops TLS and JWT support!")
-  node.override['hops']['tls']['enabled'] = "false"
-  node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
-end
-
 require 'resolv'
 
 nnPort=node['hops']['nn']['port']
