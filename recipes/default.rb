@@ -11,9 +11,6 @@ my_ip = my_private_ip()
 ndb_connectstring()
 
 if service_discovery_enabled()
-  ## Do not try to discover Hopsworks before it has been actual deployed
-  ## default recipe is included by hops::ndb
-
   hopsworks_port = "8182"
   if node['hopsworks'].attribute?('internal') and node['hopsworks']['internal'].attribute?('port')
     hopsworks_port = node['hopsworks']['internal']['port']
@@ -25,7 +22,6 @@ if service_discovery_enabled()
   zookeeper_fqdn = consul_helper.get_service_fqdn("client.zookeeper")
 else
   ## Service Discovery is disabled
-
   glassfish_fqdn = ""
   if node.attribute?("hopsworks")
     glassfish_fqdn = private_recipe_ip("hopsworks", "default")
