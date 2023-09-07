@@ -10,6 +10,7 @@ end
 
 template_ssl_server()
 ndb_connectstring()
+my_ip = my_private_ip()
 
 crypto_dir = x509_helper.get_crypto_dir(node['hops']['rm']['user'])
 kagent_hopsify "Generate x.509" do
@@ -123,6 +124,7 @@ bash 'wait-for-resourcemanager' do
   code <<-EOH
     #{node['hops']['bin_dir']}/rm-waiter.sh
   EOH
+  not_if { node["install"]["secondary_region"].casecmp?("true") }
 end
 
 if node['kagent']['enabled'] == "true"
@@ -133,28 +135,30 @@ if node['kagent']['enabled'] == "true"
   end
 end
 
-tmp_dirs   = [ "#{node['hops']['hdfs']['user_home']}/#{node['hops']['rm']['user']}"]
-for d in tmp_dirs
-  hops_hdfs_directory d do
+if my_ip.eql? node['hops']['rm']['private_ips'][0] && node["install"]["secondary_region"].casecmp?("false")
+  tmp_dirs   = [ "#{node['hops']['hdfs']['user_home']}/#{node['hops']['rm']['user']}"]
+  for d in tmp_dirs
+    hops_hdfs_directory d do
+      action :create_as_superuser
+      owner node['hops']['rm']['user']
+      group node['hops']['group']
+      mode "1775"
+    end
+  end
+
+  hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hops']['yarn']['user']}" do
     action :create_as_superuser
-    owner node['hops']['rm']['user']
+    owner node['hops']['yarn']['user']
     group node['hops']['group']
     mode "1775"
   end
-end
 
-hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hops']['yarn']['user']}" do
-  action :create_as_superuser
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "1775"
-end
-
-hops_hdfs_directory node['hops']['yarn']['nodemanager']['remote_app_log_dir'] do
-  action :create_as_superuser
-  owner node['hops']['yarn']['user']
-  group node['hops']['group']
-  mode "1773"
+  hops_hdfs_directory node['hops']['yarn']['nodemanager']['remote_app_log_dir'] do
+    action :create_as_superuser
+    owner node['hops']['yarn']['user']
+    group node['hops']['group']
+    mode "1773"
+  end
 end
 
 if service_discovery_enabled()

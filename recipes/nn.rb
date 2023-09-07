@@ -145,12 +145,15 @@ bash 'wait-for-namenode' do
     # Wait for local NameNode to start and to leave SafeMode
     #{node['hops']['bin_dir']}/nn-waiter.sh
   EOH
+  not_if { node["install"]["secondary_region"].casecmp?("true") }
 end
 
-dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
 
 # Only the first NN needs to create the directories
-if my_ip.eql? node['hops']['nn']['private_ips'][0]
+if my_ip.eql? node['hops']['nn']['private_ips'][0] && node["install"]["secondary_region"].casecmp?("false")
+
+  dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
+
   for d in dirs
     hops_hdfs_directory d do
       action :create_as_superuser
