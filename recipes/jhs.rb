@@ -20,37 +20,39 @@ for script in node['hops']['yarn']['scripts']
   end
 end 
 
-hops_hdfs_directory "#{node['hops']['jhs']['root_dir']}" do
-  action :create_as_superuser
-  owner node['hops']['mr']['user']
-  group node['hops']['group']
-  mode "1775"
-end
-
-hops_hdfs_directory "#{node['hops']['jhs']['inter_dir']}" do
-  action :create_as_superuser
-  owner node['hops']['mr']['user']
-  group node['hops']['group']
-  mode "1777"
-end
-
-hops_hdfs_directory "#{node['hops']['jhs']['done_dir']}" do
-  action :create_as_superuser
-  owner node['hops']['mr']['user']
-  group node['hops']['group']
-  mode "1777"
-end
-
-node.normal['mr']['dirs'] = [node['hops']['mr']['staging_dir'], node['hops']['mr']['tmp_dir'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['mr']['user']]
- for d in node['mr']['dirs']
-   Chef::Log.info "Creating hdfs directory: #{d}"
-   hops_hdfs_directory d do
+if node["install"]["secondary_region"].casecmp?("false")
+  hops_hdfs_directory "#{node['hops']['jhs']['root_dir']}" do
     action :create_as_superuser
     owner node['hops']['mr']['user']
     group node['hops']['group']
-    mode "0775"
-   end
- end
+    mode "1775"
+  end
+  
+  hops_hdfs_directory "#{node['hops']['jhs']['inter_dir']}" do
+    action :create_as_superuser
+    owner node['hops']['mr']['user']
+    group node['hops']['group']
+    mode "1777"
+  end
+  
+  hops_hdfs_directory "#{node['hops']['jhs']['done_dir']}" do
+    action :create_as_superuser
+    owner node['hops']['mr']['user']
+    group node['hops']['group']
+    mode "1777"
+  end
+  
+  node.normal['mr']['dirs'] = [node['hops']['mr']['staging_dir'], node['hops']['mr']['tmp_dir'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['mr']['user']]
+  for d in node['mr']['dirs']
+    Chef::Log.info "Creating hdfs directory: #{d}"
+    hops_hdfs_directory d do
+     action :create_as_superuser
+     owner node['hops']['mr']['user']
+     group node['hops']['group']
+     mode "0775"
+    end
+  end
+end
 
 deps = ""
 if service_discovery_enabled()
@@ -71,12 +73,6 @@ when "debian"
   systemd_script = "/lib/systemd/system/#{service_name}.service"
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
-end
-
-
-file systemd_script do
-  action :delete
-  ignore_failure true
 end
 
 template systemd_script do
