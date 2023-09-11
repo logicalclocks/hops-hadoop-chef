@@ -150,7 +150,7 @@ end
 
 
 # Only the first NN needs to create the directories
-if my_ip.eql? node['hops']['nn']['private_ips'][0] && node["install"]["secondary_region"].casecmp?("false")
+if my_ip.eql?(node['hops']['nn']['private_ips'][0]) && node["install"]["secondary_region"].casecmp?("false")
 
   dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
 
