@@ -135,7 +135,7 @@ if node['kagent']['enabled'] == "true"
   end
 end
 
-if my_ip.eql? node['hops']['rm']['private_ips'][0] && node["install"]["secondary_region"].casecmp?("false")
+if my_ip.eql?(node['hops']['rm']['private_ips'][0]) && node["install"]["secondary_region"].casecmp?("false")
   tmp_dirs   = [ "#{node['hops']['hdfs']['user_home']}/#{node['hops']['rm']['user']}"]
   for d in tmp_dirs
     hops_hdfs_directory d do
