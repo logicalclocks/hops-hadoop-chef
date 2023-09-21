@@ -14,7 +14,7 @@ if node['hops']['docker']['enabled'].eql?("true")
   end 
 end
 
-template_ssl_server()
+template_ssl_server(requester="nm")
 
 crypto_dir = x509_helper.get_crypto_dir(node['hops']['yarn']['user'])
 kagent_hopsify "Generate x.509" do

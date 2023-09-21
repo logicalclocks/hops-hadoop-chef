@@ -250,22 +250,6 @@
     <value><%= @hopsworks %></value>
   </property>
 
-  <!-- Service JWT renewal configuration -->
-  <property>
-    <name>hops.jwt-manager.master-token-validity</name>
-    <value><%= node['hops']['jwt-manager']['master-token-validity'] %></value>
-  </property>
-
-  <property>
-    <name>hops.jwt-manager.service-renew-path</name>
-    <value><%= node['hops']['jwt-manager']['renew-path'] %></value>
-  </property>
-
-  <property>
-    <name>hops.jwt-manager.service-invalidate-path</name>
-    <value><%= node['hops']['jwt-manager']['invalidate-path'] %></value>
-  </property>
-
   <% end -%>
 
   <% if node['hops']['tls']['enabled'].eql? "true" -%>

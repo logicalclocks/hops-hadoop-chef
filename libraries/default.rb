@@ -2,14 +2,23 @@ require 'open3'
 
 module Hops
   module Helpers
-    def template_ssl_server(generate_jwt = true)
-      if (generate_jwt and (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") or node['hops']['tls']['enabled'].eql?("true")))
+    def template_ssl_server(create_api_key = true, requester)
+      if (create_api_key and (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") or node['hops']['tls']['enabled'].eql?("true")))
         
-        ## Get service JWT, from kagent-chef/libraries
-        master_token, renew_tokens = get_service_jwt()
+        # Parse ssl-server.xml and find the value of hops.hopsworks-api-key xml property
+        cmd = "cat #{node['hops']['conf_dir']}/ssl-server.xml | grep -A1 'hops.hopsworks-api-key' | awk 'NR==2' | sed 's/<value>//' | sed 's;</value>;;' | tr -d '[:space:]'"
+        stdout, s = Open3.capture2(cmd)
+        if s.success? && !stdout.empty?
+          api_key = stdout
+        else
+          api_key_params = {
+            :name => "hops_#{requester}_#{my_private_ip()}_#{SecureRandom.hex(6)}",
+            :scope => "AUTH"
+          }
+          api_key = create_api_key(node['kagent']['dashboard']['user'], node['kagent']['dashboard']['password'], api_key_params)
+        end
       else
-        master_token = ""
-        renew_tokens = []
+        api_key = ""
       end
 
       fqdn = node['fqdn']
@@ -23,8 +32,7 @@ module Hops
         group node['hops']['secure_group']
         mode "770"
         variables({
-                    :master_token => master_token,
-                    :renew_tokens => renew_tokens
+                    :api_key => api_key,
                   })
         action :create
       end

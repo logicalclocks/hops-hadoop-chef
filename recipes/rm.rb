@@ -8,7 +8,7 @@ template "#{node['hops']['conf_dir']}/rm-jmxremote.password" do
   action :create
 end
 
-template_ssl_server()
+template_ssl_server(requester="rm")
 ndb_connectstring()
 my_ip = my_private_ip()
 

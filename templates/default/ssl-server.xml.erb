@@ -40,20 +40,10 @@ limitations under the License.
   <% if (node['hops']['rmappsecurity']['jwt']['enabled'].eql?("true") || node['hops']['tls']['enabled'].eql?("true")) -%>
   
   <property>
-    <name>hops.jwt-manager.master-token</name>
-    <value><%= @master_token %></value>
-    <description>JWT for the ResourceManager to make REST calls to Hopsworks</description>
+    <name>hops.hopsworks-api-key</name>
+    <value><%= @api_key %></value>
+    <description>API key for Hops to make REST calls to Hopsworks</description>
   </property>
-
-  <% idx = 0 -%>
-  <% for renew_token in @renew_tokens -%>
-  <property>
-    <name>hops.jwt-manager.renew-token-<%= idx %></name>
-    <value><%= renew_token %></value>
-    <description>One-time JWT to renew master JWT</description>
-  </property>
-  <% idx += 1 -%>
-  <% end -%>
   <% end -%>
   
  </configuration>
