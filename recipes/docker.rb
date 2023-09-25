@@ -71,7 +71,7 @@ when 'debian'
        cd #{node['hops']['docker_version']['ubuntu']}
        dpkg -i *.deb
     EOH
-    not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
+    not_if "dpkg -l docker-ce | grep #{node['hops']['docker_version']['ubuntu']}"
   end
 end
 
