@@ -92,9 +92,6 @@ default['hops']['fuse']['staging_folder']      = node['hops']['dir'] + "/hops-st
 default['hops']['fuse']['mount_point']         = "/hopsfs" 
 
 
-default['hops']['install_protobuf']            = "false"
-default['hops']['protobuf_url']                = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
-default['hops']['hadoop_src_url']              = "https://archive.apache.org/dist/hadoop/core/hadoop-" + node['hops']['version'] + "/hadoop-" + node['hops']['version'] + "-src.tar.gz"
 default['hops']['nn']['http_port']             = 50070
 default['hops']['dn']['http_port']             = 50075
 default['hops']['nn']['port']                  = 8020
@@ -221,13 +218,6 @@ default['hops']['nm']['private_ips']           = ['10.0.2.15']
 
 # comma-separated list of namenode addrs
 default['hops']['nn']['addrs']                 = []
-
-# build the native libraries. Is much slower, but removes warning when using services.
-default['hops']['native_libraries']            = "false"
-
-default['maven']['version']                    = "3.2.5"
-default['maven']['checksum']                   = ""
-
 
 default['hops']['yarn']['memory_mbs']          = 12000
 
