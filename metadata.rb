@@ -985,6 +985,10 @@ attribute "hops/docker/registry/secret_key",
           :description => "S3 secret_key if docker registry is configured to store images on S3 (default: docker-registry)",
           :type => 'string'
 
+attribute "hops/docker/registry/mount_volumes",
+          :description => "Extra volumes to mount to the Docker registry container",
+          :type => 'string'
+
 attribute "hops/nn/http_port",
           :description => "The namenode http server port.",
           :type => 'string'
