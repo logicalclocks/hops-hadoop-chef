@@ -539,6 +539,7 @@ default['hops']['docker']['registry']['region']       = node['hops']['aws_s3_reg
 default['hops']['docker']['registry']['path']         = "docker-registry"
 default['hops']['docker']['registry']['access_key']   = node['hops']['aws_access_key_id']
 default['hops']['docker']['registry']['secret_key']   = node['hops']['aws_secret_access_key']
+default['hops']['docker']['registry']['mount_volumes'] = ""
 
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
