@@ -114,14 +114,14 @@ bash "start_docker_registry" do
     docker run -d \
               --restart=always \
               --name registry \
+              --network=host \
               #{volumes} \
               -e REGISTRY_STORAGE_DELETE_ENABLED=true \
-              -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+              -e REGISTRY_HTTP_ADDR=0.0.0.0:#{node['hops']['docker']['registry']['port']} \
               -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} \
               -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} \
               -e REGISTRY_HTTP_TLS_MINIMUMTLS=tls1.2 \
               #{registry_storage_configuration} \
-              -p #{node['hops']['docker']['registry']['port']}:443 \
               registry
   EOF
 end
