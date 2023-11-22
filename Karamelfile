@@ -44,6 +44,7 @@ dependencies:
       - hops::docker_registry
   - recipe: hops::docker_registry
     global:
+      - hops::nn
       - consul::master
       - consul::slave
   - recipe: hops::fuse_mnt

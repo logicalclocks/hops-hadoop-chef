@@ -206,68 +206,6 @@ when 'rhel'
   end
 end
 
-if node['hops']['native_libraries'].eql? "true"
-
-  # build hadoop native libraries: http://www.drweiwang.com/build-hadoop-native-libraries/
-  # g++ autoconf automake libtool zlib1g-dev pkg-config libssl-dev cmake
-
-  include_recipe 'build-essential::default'
-  include_recipe 'cmake::default'
-
-    protobuf_url = node['hops']['protobuf_url']
-    base_protobuf_filename = File.basename(protobuf_url)
-    cached_protobuf_filename = "#{Chef::Config['file_cache_path']}/#{base_protobuf_filename}"
-
-    remote_file cached_protobuf_filename do
-      source protobuf_url
-      owner node['hops']['hdfs']['user']
-      group node['hops']['group']
-      mode "0775"
-      action :create_if_missing
-    end
-
-  protobuf_lib_prefix = "/usr"
-  case node['platform_family']
-  when "debian"
-    package ['g++', 'autoconf', 'automake', 'libtool', 'zlib1g-dev', 'libssl-dev', 'pkg-config', 'maven'] do
-      retries 10
-      retry_delay 30
-    end
-  when "rhel"
-    protobuf_lib_prefix = "/"
-
-    # https://github.com/burtlo/ark
-    ark "maven" do
-      url "http://apache.mirrors.spacedump.net/maven/maven-3/#{node['maven']['version']}/binaries/apache-maven-#{node['maven']['version']}-bin.tar.gz"
-      version "#{node['maven']['version']}"
-      path "/usr/local/maven/"
-      home_dir "/usr/local/maven"
- #     checksum  "#{node['maven']['checksum']}"
-      append_env_path true
-      owner "#{node['hops']['hdfs']['user']}"
-    end
-
-  end
-   protobuf_name_no_extension = File.basename(base_protobuf_filename, ".tar.gz")
-   protobuf_name = "#{protobuf_lib_prefix}/.#{protobuf_name_no_extension}_downloaded"
-   bash 'extract-protobuf' do
-      user "root"
-      code <<-EOH
-        set -e
-        cd #{Chef::Config['file_cache_path']}
-	tar -zxf #{cached_protobuf_filename}
-        cd #{protobuf_name_no_extension}
-        ./configure --prefix=#{protobuf_lib_prefix}
-        make
-        make check
-        make install
-        touch #{protobuf_name}
-	EOH
-     not_if { ::File.exist?("#{protobuf_name}") }
-    end
-
-end
-
 # For LinuxContainerExecutor the the whole hadoop subtree should be own by root and not group writable.
 # If another cookbook has created the directory before, it will be updaste to have the correct ownership/permissions
 directory node['hops']['dir'] do
@@ -507,40 +445,6 @@ remote_file "#{node['hops']['share_dir']}/common/lib/#{jmx_prometheus_filename}"
   group node['hops']['group']
   mode '0755'
   action :create
-end
-
-
-if node['hops']['native_libraries'] == "true"
-
-  hadoop_src_url = node['hops']['hadoop_src_url']
-  base_hadoop_src_filename = File.basename(hadoop_src_url)
-  cached_hadoop_src_filename = "#{Chef::Config['file_cache_path']}/#{base_hadoop_src_filename}"
-
-  remote_file cached_hadoop_src_filename do
-    source hadoop_src_url
-    owner node['hops']['hdfs']['user']
-    group node['hops']['group']
-    mode "0755"
-    action :create_if_missing
-  end
-
-  hadoop_src_name = File.basename(base_hadoop_src_filename, ".tar.gz")
-  natives="#{node['hops']['dir']}/.downloaded_#{hadoop_src_name}"
-
-  bash 'build-hadoop-from-src-with-native-libraries' do
-    user node['hops']['hdfs']['user']
-    code <<-EOH
-        set -e
-        cd #{Chef::Config['file_cache_path']}
-	      tar -xf #{cached_hadoop_src_filename}
-        cd #{hadoop_src_name}
-        mvn package -Pdist,native -DskipTests -Dtar
-        cp -r hadoop-dist/target/hadoop-#{node['hops']['version']}/lib/native/* #{node['hops']['home']}/lib/native/
-        chown -R #{node['hops']['hdfs']['user']} #{node['hops']['home']}/lib/native/
-        touch #{natives}
-	EOH
-    not_if { ::File.exist?("#{natives}") }
-  end
 end
 
 magic_shell_environment 'PATH' do

@@ -145,12 +145,15 @@ bash 'wait-for-namenode' do
     # Wait for local NameNode to start and to leave SafeMode
     #{node['hops']['bin_dir']}/nn-waiter.sh
   EOH
+  not_if { node["install"]["secondary_region"].casecmp?("true") }
 end
 
-dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
 
 # Only the first NN needs to create the directories
-if my_ip.eql? node['hops']['nn']['private_ips'][0]
+if my_ip.eql?(node['hops']['nn']['private_ips'][0]) && node["install"]["secondary_region"].casecmp?("false")
+
+  dirs = [ "/tmp", node['hops']['hdfs']['user_home'], node['hops']['hdfs']['user_home'] + "/" + node['hops']['hdfs']['user'], node['hops']['hdfs']['apps_dir'] ]
+
   for d in dirs
     hops_hdfs_directory d do
       action :create_as_superuser
@@ -167,6 +170,14 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
       group node['hops']['group']
       mode "1750"
     end
+
+  # create the project root directory
+  hops_hdfs_directory node['hops']['hdfs']['projects_dir'] do
+    action :create_as_superuser
+    owner node['hopsworks']['user']
+    group node['hops']['hdfs']['user']
+    mode "1775"
+  end
 
   exec = "#{node['ndb']['scripts_dir']}/mysql-client.sh"
   bash 'insert_hopsworks_as_hdfs_superuser' do

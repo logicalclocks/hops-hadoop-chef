@@ -97,6 +97,16 @@ if node['hops']['docker']['registry']['storage'].casecmp("s3") == 0
   end
 end
 
+mount_volumes = ["-v #{kagent_crypto_dir}:/certs", "-v #{node['hops']['data_volume']['docker_registry']}:/var/lib/registry"]
+
+unless node['hops']['docker']['registry']['mount_volumes'].empty?
+  mounts = node['hops']['docker']['registry']['mount_volumes'].split(";")
+  mounts.each { |x|
+    mount_volumes.append("-v #{x}")
+  }
+end
+volumes = mount_volumes.join(" ")
+
 #start docker registry
 bash "start_docker_registry" do
   user "root"
@@ -104,15 +114,14 @@ bash "start_docker_registry" do
     docker run -d \
               --restart=always \
               --name registry \
-              -v #{kagent_crypto_dir}:/certs \
-              -v #{node['hops']['data_volume']['docker_registry']}:/var/lib/registry \
+              --network=host \
+              #{volumes} \
               -e REGISTRY_STORAGE_DELETE_ENABLED=true \
-              -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+              -e REGISTRY_HTTP_ADDR=0.0.0.0:#{node['hops']['docker']['registry']['port']} \
               -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/#{certificate_name} \
               -e REGISTRY_HTTP_TLS_KEY=/certs/#{key_name} \
               -e REGISTRY_HTTP_TLS_MINIMUMTLS=tls1.2 \
               #{registry_storage_configuration} \
-              -p #{node['hops']['docker']['registry']['port']}:443 \
               registry
   EOF
 end

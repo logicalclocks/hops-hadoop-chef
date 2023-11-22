@@ -3,9 +3,9 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9"
-default['hops']['version']                     = "3.2.0.10-RC0"
-default['hops']['fuse']['version']             = "3.2.0.10"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9,3.2.0.10"
+default['hops']['version']                     = "3.2.0.11-RC0"
+default['hops']['fuse']['version']             = "3.2.0.11"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['hdfs']['user_id']             = '1506'
@@ -77,6 +77,7 @@ default['hops']['nn']['name_dir']                       = "file://" + node['hops
 default['hops']['yarn']['nodemanager_recovery_dir']          = node['hops']['data_dir'] + "/yarn-nm-recovery"
 
 default['hops']['hdfs']['user_home']           = "/user"
+default['hops']['hdfs']['projects_dir']        = "/Projects"
 default['hops']['hdfs']['apps_dir']            = "/apps"
 default['hops']['hdfs']['blocksize']           = "134217728"
 default['hops']['hdfs']['max-blocks-per-file'] = "10240"
@@ -91,9 +92,6 @@ default['hops']['fuse']['staging_folder']      = node['hops']['dir'] + "/hops-st
 default['hops']['fuse']['mount_point']         = "/hopsfs" 
 
 
-default['hops']['install_protobuf']            = "false"
-default['hops']['protobuf_url']                = "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz"
-default['hops']['hadoop_src_url']              = "https://archive.apache.org/dist/hadoop/core/hadoop-" + node['hops']['version'] + "/hadoop-" + node['hops']['version'] + "-src.tar.gz"
 default['hops']['nn']['http_port']             = 50070
 default['hops']['dn']['http_port']             = 50075
 default['hops']['nn']['port']                  = 8020
@@ -121,6 +119,14 @@ default['hops']['clusterj']['session_max_reuse_count']    = 5000
 default['hops']['clusterj']['enable_dto_cache']           = "false" 
 default['hops']['clusterj']['enable_session_cache']       = "false" 
 default['hops']['clusterj']['max_cached_instances']       = 0 
+
+default['hops']['alive-watchdog']['enabled']          = "false"
+default['hops']['alive-watchdog']['interval']         = "5s"
+default['hops']['alive-watchdog']['poller-class']     = ""
+default['hops']['alive-watchdog']['http-poll']['url'] = ""
+default['hops']['alive-watchdog']['http-poll']['truststore'] = ""
+default['hops']['alive-watchdog']['http-poll']['truststore-password'] = ""
+default['hops']['alive-watchdog']['json-poll']['dc-id'] = ""
 
 default['hops']['nn']['replace-dn-on-failure']        = "true"
 default['hops']['nn']['replace-dn-on-failure-policy'] = "NEVER" 
@@ -213,13 +219,6 @@ default['hops']['nm']['private_ips']           = ['10.0.2.15']
 # comma-separated list of namenode addrs
 default['hops']['nn']['addrs']                 = []
 
-# build the native libraries. Is much slower, but removes warning when using services.
-default['hops']['native_libraries']            = "false"
-
-default['maven']['version']                    = "3.2.5"
-default['maven']['checksum']                   = ""
-
-
 default['hops']['yarn']['memory_mbs']          = 12000
 
 default['hops']['yarn']['min_allocation_memory_mb']          = 128
@@ -259,7 +258,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "21.04.14"
+default['hops']['ndb']['version']           = "21.04.15"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -498,12 +497,12 @@ default['hops']['gpu']                                = "false"
 
 #DOCKER
 default['hops']['docker']['enabled']                  = "true"
-default['hops']['docker_version']['centos']           = "23.0.1-1"
-default['hops']['docker_version']['ubuntu']           = "23.0.1-1"
+default['hops']['docker_version']['centos']           = "24.0.6-1"
+default['hops']['docker_version']['ubuntu']           = "24.0.6-1"
 default['hops']['docker']['group_id']                 = '1513'
 default['hops']['docker']['storage_driver']           = "overlay2"
-
-
+default['hops']['docker']['live-restore']             = "true"
+default['hops']['docker']['userland-proxy']           = "false"
 
 default['hops']['docker']['download_url']['centos'] = "#{node['download_url']}/docker/rhel/#{node['hops']['docker_version']['centos']}.tgz"
 default['hops']['docker']['download_url']['ubuntu'] = "#{node['download_url']}/docker/ubuntu/#{node['hops']['docker_version']['ubuntu']}.tgz"
@@ -530,6 +529,7 @@ default['hops']['docker']['registry']['region']       = node['hops']['aws_s3_reg
 default['hops']['docker']['registry']['path']         = "docker-registry"
 default['hops']['docker']['registry']['access_key']   = node['hops']['aws_access_key_id']
 default['hops']['docker']['registry']['secret_key']   = node['hops']['aws_secret_access_key']
+default['hops']['docker']['registry']['mount_volumes'] = ""
 
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 

@@ -2,15 +2,6 @@ include_recipe "java"
 include_recipe "hops::_config"
 
 Chef::Recipe.send(:include, Hops::Helpers)
-
-flyingduck_in_cloud = exists_local("hops", "client") and exists_local("flyingduck", "default") and !node['install']['cloud'].empty? 
-
-if not node["hopsworks"]["default"].attribute?("public_ips") and not flyingduck_in_cloud
-  Chef::Log.warn("Hopsworks cookbook was not loaded, disabling Hops TLS and JWT support!")
-  node.override['hops']['tls']['enabled'] = "false"
-  node.override['hops']['rmappsecurity']['jwt']['enabled'] = "false"
-end
-
 require 'resolv'
 
 nnPort=node['hops']['nn']['port']
@@ -20,33 +11,9 @@ my_ip = my_private_ip()
 ndb_connectstring()
 
 if service_discovery_enabled()
-  ## Do not try to discover Hopsworks before it has been actual deployed
-  ## default recipe is included by hops::ndb
-  run_list = node.primary_runlist
-  run_discovery_recipes = ['recipe[hops::client]', 'recipe[hops::dn]', 'recipe[hops::jhs]', 'recipe[hops::nm]', 'recipe[hops::nn]', 'recipe[hops::ps]', 'recipe[hops::rm]', 'recipe[hops::rt]', 'recipe[hops::fuse_mnt]']
-  run_discovery = false
-  for dr in run_discovery_recipes do
-    if run_list.include?(dr)
-      run_discovery = true
-      break
-    end
-  end
-
-  # Do no try to discover Hopsworks if building flyingduck on mysqld nodes in the cloud, no Hopsworks server is running
-  if flyingduck_in_cloud 
-    run_discovery = false
-  end 
-
   hopsworks_port = "8182"
-  if run_discovery
-    ruby_block 'Discover Hopsworks port' do
-      block do
-        _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
-        if hopsworks_port.nil?
-          raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
-        end
-      end
-    end
+  if node['hopsworks'].attribute?('internal') and node['hopsworks']['internal'].attribute?('port')
+    hopsworks_port = node['hopsworks']['internal']['port']
   end
 
   glassfish_fqdn = consul_helper.get_service_fqdn("glassfish")
@@ -55,13 +22,12 @@ if service_discovery_enabled()
   zookeeper_fqdn = consul_helper.get_service_fqdn("client.zookeeper")
 else
   ## Service Discovery is disabled
-
   glassfish_fqdn = ""
   if node.attribute?("hopsworks")
     glassfish_fqdn = private_recipe_ip("hopsworks", "default")
-    hopsworks_port = "8181"	
-    if node['hopsworks'].attribute?('https') and node['hopsworks']['https'].attribute?('port')	
-        hopsworks_port = node['hopsworks']['https']['port']	
+    hopsworks_port = "8182"
+    if node['hopsworks'].attribute?('internal') and node['hopsworks']['internal'].attribute?('port')
+      hopsworks_port = node['hopsworks']['internal']['port']
     end
   end
 

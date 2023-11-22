@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "3.4.0"
+version          "3.5.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -24,7 +24,6 @@ recipe            "hops::_config", "Internal recipe for setting config values"
 
 depends 'magic_shell', '~> 1.0.0'
 depends 'sysctl', '~> 1.0.3'
-depends 'cmake', '~> 0.3.0'
 depends 'kagent'
 depends 'ndb'
 depends 'conda'
@@ -243,6 +242,34 @@ attribute "hops/clusterj/enable_session_cache",
 
 attribute "hops/clusterj/max_cached_instances",
           :description => "Max DTO objects to cache on Clusterj side",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/enabled",
+          :description => "Enable alive watchdog service, it requires an external service to poll. Default: false",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/interval",
+          :description => "Poll interval of watchdog. Default: 5s",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/poller-class",
+          :description => "Fully qualified name of the poller class. If empty, and watchdog enabled, the service will not start. Default: empty",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/url",
+          :description => "HTTP endpoint to poll for verdict if we should be alive or not. Required if using HTTP based poller class",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/truststore",
+          :description => "Optionally specify truststore to use in HTTP poller",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/http-poll/truststore-password",
+          :description => "Password of the truststore to use in HTTP poller",
+          :type => 'string'
+
+attribute "hops/alive-watchdog/json-poll/dc-id",
+          :description => "Configuration of current/your own data-center used by JsonPoller",
           :type => 'string'
 
 attribute "hops/tls/enabled",
@@ -812,7 +839,7 @@ attribute "hops/nn/replace-dn-on-failure-policy",
           :type => "string"
 
 attribute "hops/retry_policy_spec",
-          :description => "Retry policy specification. For example '3.4.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :description => "Retry policy specification. For example '3.5.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
 
 attribute "hops/retry_policy_enabled",
@@ -882,6 +909,14 @@ attribute "hops/docker/storage_driver",
           :description =>  "Docker daemon storage driver. Default: overlay2",
           :type => 'string'
 
+attribute "hops/docker/live-restore",
+          :description =>  "Docker daemon live-restore configuration. Default: true",
+          :type => 'string'
+
+attribute "hops/docker/userland-proxy",
+          :description =>  "Docker daemon userland-proxy configuration. Default: false",
+          :type => 'string'
+
 attribute "hops/docker_version/ubuntu",
           :description =>  "the version of docker to use on ubuntu installation",
           :type => 'string'
@@ -948,6 +983,10 @@ attribute "hops/docker/registry/access_key",
 
 attribute "hops/docker/registry/secret_key",
           :description => "S3 secret_key if docker registry is configured to store images on S3 (default: docker-registry)",
+          :type => 'string'
+
+attribute "hops/docker/registry/mount_volumes",
+          :description => "Extra volumes to mount to the Docker registry container",
           :type => 'string'
 
 attribute "hops/nn/http_port",

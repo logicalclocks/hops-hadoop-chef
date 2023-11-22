@@ -379,4 +379,46 @@
   </property>
 <% end -%>
 
+  <property>
+    <name>hops.alive-watchdog.enabled</name>
+    <value><%= node['hops']['alive-watchdog']['enabled'] %></value>
+  </property>
+
+<% if node['hops']['alive-watchdog']['enabled'].casecmp?("true") -%>
+  <property>
+    <name>hops.alive-watchdog.interval</name>
+    <value><%= node['hops']['alive-watchdog']['interval'] %></value>
+  </property>
+
+  <property>
+    <name>hops.alive-watchdog.poller-class</name>
+    <value><%= node['hops']['alive-watchdog']['poller-class'] %></value>
+  </property>
+
+  <property>
+    <name>hops.alive-watchdog.http-poll.url</name>
+    <value><%= node['hops']['alive-watchdog']['http-poll']['url'] %></value>
+  </property>
+
+<% if !node['hops']['alive-watchdog']['http-poll']['truststore'].empty? -%>
+  <property>
+    <name>hops.alive-watchdog.http-poll.truststore</name>
+    <value><%= node['hops']['alive-watchdog']['http-poll']['truststore'] %></value>
+  </property>
+<% end -%>
+
+<% if !node['hops']['alive-watchdog']['http-poll']['truststore-password'].empty? -%>
+  <property>
+    <name>hops.alive-watchdog.http-poll.truststore-password</name>
+    <value><%= node['hops']['alive-watchdog']['http-poll']['truststore-password'] %></value>
+  </property>
+<% end -%>
+
+<% if node['hops']['alive-watchdog']['poller-class'].include?("JsonPoller") -%>
+  <property>
+    <name>hops.alive-watchdog.io.hops.leader_election.watchdog.JsonPoller.dc-id</name>
+    <value><%= node['hops']['alive-watchdog']['json-poll']['dc-id'] %></value>
+  </property>
+<% end -%>
+<% end -%>
 </configuration>

@@ -71,7 +71,7 @@ when 'debian'
        cd #{node['hops']['docker_version']['ubuntu']}
        dpkg -i *.deb
     EOH
-    not_if "dpkg -l docker.io | grep #{node['hops']['docker_version']['ubuntu']}"
+    not_if "dpkg -l docker-ce | grep #{node['hops']['docker_version']['ubuntu']}"
   end
 end
 
@@ -184,12 +184,6 @@ directory '/etc/docker/' do
   recursive true
 end
 
-insecure_registries = node['hops']['docker']['insecure_registries'].split(",")
-if service_discovery_enabled()
-  registry_host = consul_helper.get_service_fqdn("registry")
-  insecure_registries << "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
-end
-
 # Special case where its a localhost installation for Ubuntu
 # If we don't override Docker's DNS servers, in AWS we can't
 # resolve our own hostname
@@ -208,7 +202,6 @@ template '/etc/docker/daemon.json' do
   mode '0755'
   action :create
   variables({
-              :insecure_registries => insecure_registries,
               :override_dns => override_dns,
               :dns_servers => dns_servers,
               :docker_cgroup_driver => docker_cgroup_driver,
