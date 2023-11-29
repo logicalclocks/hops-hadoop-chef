@@ -400,7 +400,7 @@ default['hops']['rmappsecurity']['x509']['revoke-path']                 = "/hops
 default['hops']['rmappsecurity']['x509']['key-size']                    = "2048"
 
 default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
-default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
+default['hops']['rmappsecurity']['jwt']['validity']                     = "60m"
 default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 # Comma separated list of JWT audience
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
