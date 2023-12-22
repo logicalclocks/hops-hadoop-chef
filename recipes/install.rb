@@ -508,7 +508,7 @@ end
 # The RM recipe will re-template this file and, at that stage, with the Hopsworks server running,
 # the JWT will be added.
 Chef::Recipe.send(:include, Hops::Helpers)
-template_ssl_server(false)
+template_ssl_server(create_api_key=false, requester="")
 
 cookbook_file "#{node['hops']['sbin_dir']}/renew_service_jwt.py" do
   source "renew_service_jwt.py"

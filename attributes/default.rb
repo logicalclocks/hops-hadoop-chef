@@ -418,11 +418,6 @@ default['hops']['tls']['crl_fetch_path']                                = "/hops
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
 default['hops']['tls']['crl_fetcher_interval']                          = "5m"
 
-# Service JWT properties
-default['hops']['jwt-manager']['master-token-validity']                 = "7d"
-default['hops']['jwt-manager']['renew-path']                            = "/hopsworks-api/api/jwt/service"
-default['hops']['jwt-manager']['invalidate-path']                       = "/hopsworks-api/api/jwt/service"
-
 # DataNode Data Transfer Protocol encryption
 default['hops']['encrypt_data_transfer']['enabled']                     = "false"
 default['hops']['encrypt_data_transfer']['algorithm']                   = "3des"

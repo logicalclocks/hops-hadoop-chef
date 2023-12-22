@@ -332,18 +332,6 @@ attribute "hops/rmappsecurity/jwt/renew-path",
           :description => "HTTP endpoint to renew application JWT",
           :type => 'string'
 
-attribute "hops/jwt-manager/master-token-validity",
-          :description => "Validity period for master service JWT. Valid suffices are s, m, h, d",
-          :type => 'string'
-
-attribute "hops/jwt-manager/renew-path",
-          :description => "HTTP endpoint to renew service JWT",
-          :type => 'string'
-
-attribute "hops/jwt-manager/invalidate-path",
-          :description => "HTTP endpoint to invalidate service JWT",
-          :type => 'string'
-
 attribute "hops/tls/crl_enabled",
           :description => "Enable CRL validation when RPC TLS is enabled",
           :type => 'string'

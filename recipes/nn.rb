@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server()
+template_ssl_server(requester="nn")
 
 my_ip = my_private_ip()
 
