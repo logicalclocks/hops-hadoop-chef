@@ -20,14 +20,6 @@ action :install_hops do
   end
   flyway_basedir="#{node['hops']['dir']}/ndb-hops"
 
-  template "#{flyway_basedir}/flyway.sql" do
-    source "flyway.sql.erb"
-    owner node['hops']['hdfs']['user']
-    mode 0750
-    action :create
-  end
-
-
   flyway_dir="#{node['hops']['dir']}/ndb-hops/flyway"
 
   bash "flyway_baseline" do
@@ -35,7 +27,6 @@ action :install_hops do
     code <<-EOF
     set -e
     cd #{flyway_dir}
-    #{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} < #{node['hops']['dir']}/ndb-hops/flyway.sql
     #{flyway_dir}/flyway baseline
   EOF
     not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh #{node['hops']['db']} -e 'show tables' | grep flyway_schema_history"
