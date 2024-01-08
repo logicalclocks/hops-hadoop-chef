@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server()
+template_ssl_server(requester="nn")
 
 my_ip = my_private_ip()
 
@@ -194,18 +194,20 @@ if my_ip.eql?(node['hops']['nn']['private_ips'][0]) && node["install"]["secondar
     bash 'add_disk_undo_file' do
       user node['ndb']['user']
       code <<-EOF
-        #{node['ndb']['scripts_dir']}/mysql-client.sh INFORMATION_SCHEMA -e "SELECT MAXIMUM_SIZE from FILES WHERE FILE_TYPE like 'UNDO LOG' AND FILE_NAME like 'undo_%'" | sed 's/\t/,/g'  > /tmp/undo.csv
+        tmpdir="${TMPDIR:-/tmp}"
+        #{node['ndb']['scripts_dir']}/mysql-client.sh INFORMATION_SCHEMA -e "SELECT MAXIMUM_SIZE from FILES WHERE FILE_TYPE like 'UNDO LOG' AND ENGINE = 'ndbcluster' AND FILE_NAME like '%undo_%'" | sed 's/\t/,/g'  > $tmpdir/undo.csv
         # all of the undo file sizes are now in /tmp/undo.csv. Sum them up using awk, result on last line.
-        existing_size=$(awk -F"," '{print;x+=$1}END{print x}' /tmp/undo.csv | tail -1)
+        existing_size=$(awk -F"," '{print;x+=$1}END{print x}' $tmpdir/undo.csv | tail -1)
         desired_size="#{node['ndb']['nvme']['undofile_size']}"
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
         # add a new undo file if remaining is > 1MB
         if [ $remaining -gt 1000000 ] ; then
-           echo "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_#{ts}.log' INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER" > /tmp/undo.sql
-           #{node['ndb']['scripts_dir']}/mysql-client.sh < /tmp/undo.sql
-           rm /tmp/undo.sql
+           echo "ALTER LOGFILE GROUP lg_1 ADD UNDOFILE 'undo_#{ts}.log' INITIAL_SIZE ${remaining} ENGINE NDBCLUSTER" > $tmpdir/undo.sql
+           #{node['ndb']['scripts_dir']}/mysql-client.sh < $tmpdir/undo.sql
+           rm -f $tmpdir/undo.sql
         fi
+        rm -f $tmpdir/undo.csv
       EOF
     end
   end
@@ -216,18 +218,20 @@ if my_ip.eql?(node['hops']['nn']['private_ips'][0]) && node["install"]["secondar
       user node['ndb']['user']
       timeout 7200
       code <<-EOF
-        #{node['ndb']['scripts_dir']}/mysql-client.sh INFORMATION_SCHEMA -e "SELECT MAXIMUM_SIZE from FILES WHERE FILE_TYPE like 'DATAFILE' AND FILE_NAME like 'ts_1_data_file_%'" | sed 's/\t/,/g'  > /tmp/datafile.csv
+        tmpdir="${TMPDIR:-/tmp}"
+        #{node['ndb']['scripts_dir']}/mysql-client.sh INFORMATION_SCHEMA -e "SELECT MAXIMUM_SIZE from FILES WHERE FILE_TYPE like 'DATAFILE' AND ENGINE = 'ndbcluster' AND FILE_NAME like '%ts_1_data_file_%'" | sed 's/\t/,/g'  > $tmpdir/datafile.csv
         # all of the datafile file sizes are now in /tmp/datafile.csv. Sum them up using awk, result on last line.
-        existing_size=$(awk -F"," '{print;x+=$1}END{print x}' /tmp/datafile.csv | tail -1)
+        existing_size=$(awk -F"," '{print;x+=$1}END{print x}' $tmpdir/datafile.csv | tail -1)
         desired_size="#{node['ndb']['nvme']['logfile_size']}"
         size=${desired_size/M/000000}
         remaining=$(($size - $existing_size))
         # add a new data file if remaining is > 1MB
         if [ $remaining -gt 1000000 ] ; then
-           echo "ALTER TABLESPACE ts_1 ADD DATAFILE 'ts_1_data_file_#{ts}.dat' INITIAL_SIZE ${remaining}" > /tmp/datafile.sql
-           #{node['ndb']['scripts_dir']}/mysql-client.sh < /tmp/datafile.sql
-           rm /tmp/datafile.sql
+           echo "ALTER TABLESPACE ts_1 ADD DATAFILE 'ts_1_data_file_#{ts}.dat' INITIAL_SIZE ${remaining}" > $tmpdir/datafile.sql
+           #{node['ndb']['scripts_dir']}/mysql-client.sh < $tmpdir/datafile.sql
+           rm -f $tmpdir/datafile.sql
         fi
+        rm -f $tmpdir/datafile.csv
       EOF
     end
   end

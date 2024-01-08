@@ -3,9 +3,9 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9,3.2.0.10"
-default['hops']['version']                     = "3.2.0.11-RC0"
-default['hops']['fuse']['version']             = "3.2.0.11"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9,3.2.0.10,3.2.0.11"
+default['hops']['version']                     = "3.2.0.12-SNAPSHOT"
+default['hops']['fuse']['version']             = "3.2.0.12"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['hdfs']['user_id']             = '1506'
@@ -64,7 +64,7 @@ default['hops']['aws_secret_access_key']       = ""
 default['hops']['cloud_bypass_disk_cache']         = "false"
 default['hops']['cloud_cache_delete_activation_percentage'] = "70"
 default['hops']['cloud_max_upload_threads']        = "20"
-default['hops']['cloud_store_small_files_in_db']   = "true"
+default['hops']['cloud_store_small_files_in_db']   = "false"
 default['hops']['disable_non_cloud_storage_policies']       = "false"
 default['hops']['nn']['cloud_max_br_threads']               = "10"
 default['hops']['nn']['root_dir_storage_policy']       = ""
@@ -258,7 +258,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "21.04.15"
+default['hops']['ndb']['version']           = "22.10.1-SNAPSHOT"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -400,7 +400,7 @@ default['hops']['rmappsecurity']['x509']['revoke-path']                 = "/hops
 default['hops']['rmappsecurity']['x509']['key-size']                    = "2048"
 
 default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
-default['hops']['rmappsecurity']['jwt']['validity']                     = "30m"
+default['hops']['rmappsecurity']['jwt']['validity']                     = "60m"
 default['hops']['rmappsecurity']['jwt']['expiration-leeway']            = "5m"
 # Comma separated list of JWT audience
 default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
@@ -417,11 +417,6 @@ default['hops']['tls']['crl_fetcher_class']                             = "org.a
 default['hops']['tls']['crl_fetch_path']                                = "/hopsworks-ca/v2/certificate/crl/intermediate"
 default['hops']['tls']['crl_output_file']                               = "#{node['hops']['tmp_dir']}/hops_crl.pem"
 default['hops']['tls']['crl_fetcher_interval']                          = "5m"
-
-# Service JWT properties
-default['hops']['jwt-manager']['master-token-validity']                 = "7d"
-default['hops']['jwt-manager']['renew-path']                            = "/hopsworks-api/api/jwt/service"
-default['hops']['jwt-manager']['invalidate-path']                       = "/hopsworks-api/api/jwt/service"
 
 # DataNode Data Transfer Protocol encryption
 default['hops']['encrypt_data_transfer']['enabled']                     = "false"

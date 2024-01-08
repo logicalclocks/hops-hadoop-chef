@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "3.5.0"
+version          "3.7.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -330,18 +330,6 @@ attribute "hops/rmappsecurity/jwt/invalidate-path",
 
 attribute "hops/rmappsecurity/jwt/renew-path",
           :description => "HTTP endpoint to renew application JWT",
-          :type => 'string'
-
-attribute "hops/jwt-manager/master-token-validity",
-          :description => "Validity period for master service JWT. Valid suffices are s, m, h, d",
-          :type => 'string'
-
-attribute "hops/jwt-manager/renew-path",
-          :description => "HTTP endpoint to renew service JWT",
-          :type => 'string'
-
-attribute "hops/jwt-manager/invalidate-path",
-          :description => "HTTP endpoint to invalidate service JWT",
           :type => 'string'
 
 attribute "hops/tls/crl_enabled",
@@ -839,7 +827,7 @@ attribute "hops/nn/replace-dn-on-failure-policy",
           :type => "string"
 
 attribute "hops/retry_policy_spec",
-          :description => "Retry policy specification. For example '3.5.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :description => "Retry policy specification. For example '3.7.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
 
 attribute "hops/retry_policy_enabled",

@@ -1,6 +1,6 @@
 include_recipe "hops::default"
 
-template_ssl_server()
+template_ssl_server(requester="dn")
 
 # DataNode and NameNode run as the same user
 # Generate certificate only once
