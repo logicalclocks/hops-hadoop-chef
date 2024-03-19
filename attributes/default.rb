@@ -529,7 +529,7 @@ default['hops']['docker']['registry']['mount_volumes'] = ""
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 default['hops']['docker']['git']['image']['name']    = "git"
-default['hops']['docker']['git']['image']['version'] = "0.6.0"
+default['hops']['docker']['git']['image']['version'] = "0.7.0"
 default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/hops-git/#{node['hops']['docker']['git']['image']['version']}/git.tgz"
 
 #XAttrs
