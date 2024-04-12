@@ -600,6 +600,10 @@ attribute "hops/aws_s3_region",
           :description => "AWS S3 Region. Default is eu-west-1",
           :type => 'string'
 
+attribute "hops/aws_s3_bypass_governance_retention",
+          :description => "In case of Object Lock enabled (Cohesity way of implementing Versioning), add the bypass-governance-retention flag in delete objects versions requests (default: false)",
+          :type => 'string'
+
 attribute "hops/cloud_bypass_disk_cache",
           :description => "Bypass disk cache",
           :type => 'string'
