@@ -4,7 +4,7 @@ maintainer_email "jdowling@kth.se"
 license          "Apache v2.0"
 description      'Installs/Configures the Hops distribution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "3.7.0"
+version          "3.8.0"
 source_url       "https://github.com/hopshadoop/hops-hadoop-chef"
 
 
@@ -600,6 +600,10 @@ attribute "hops/aws_s3_region",
           :description => "AWS S3 Region. Default is eu-west-1",
           :type => 'string'
 
+attribute "hops/aws_s3_bypass_governance_retention",
+          :description => "In case of Object Lock enabled (Cohesity way of implementing Versioning), add the bypass-governance-retention flag in delete objects versions requests (default: false)",
+          :type => 'string'
+
 attribute "hops/cloud_bypass_disk_cache",
           :description => "Bypass disk cache",
           :type => 'string'
@@ -827,7 +831,7 @@ attribute "hops/nn/replace-dn-on-failure-policy",
           :type => "string"
 
 attribute "hops/retry_policy_spec",
-          :description => "Retry policy specification. For example '3.7.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
+          :description => "Retry policy specification. For example '3.8.0,6,60000,10' means retry 6 times with 10 sec delay and then retry 10 times with 1 min delay.",
           :type => "string"
 
 attribute "hops/retry_policy_enabled",

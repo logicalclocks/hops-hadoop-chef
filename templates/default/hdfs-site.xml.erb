@@ -532,6 +532,12 @@
 </property>
 
 <property>
+   <name>dfs.cloud.aws.s3.bypass-governance-retention</name>
+   <value><%= node['hops']['aws_s3_bypass_governance_retention'] %></value>
+   <description>Add bypass-governance-retention flag to delete object version requests</description>
+</property>
+
+<property>
    <name>dfs.cloud.aws.s3.region</name>
    <value><%= node['hops']['aws_s3_region'] %></value>
    <description>AWS Region for file system buckets</description>
@@ -661,5 +667,16 @@
   </property>
 <% end -%>
 
+<property>
+  <name>fs.AbstractFileSystem.hopsfs.impl</name>
+  <value>org.apache.hadoop.fs.Hdfs</value>
+  <description>The FileSystem for hopsfs: uris.</description>
+</property>
+
+<property>
+  <name>fs.AbstractFileSystem.hdfs.impl</name>
+  <value>org.apache.hadoop.fs.Hdfs</value>
+  <description>The FileSystem for hdfs: uris.</description>
+</property>
 
 </configuration>

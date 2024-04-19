@@ -3,9 +3,9 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "kzookeeper"
 
-default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9,3.2.0.10,3.2.0.11"
-default['hops']['version']                     = "3.2.0.12-SNAPSHOT"
-default['hops']['fuse']['version']             = "3.2.0.12"
+default['hops']['versions']                    = "2.8.2.2,2.8.2.3,2.8.2.4,2.8.2.5,2.8.2.6,2.8.2.7,2.8.2.8,2.8.2.9,2.8.2.10,3.2.0.0,3.2.0.1,3.2.0.2,3.2.0.3,3.2.0.4,3.2.0.5,3.2.0.6,3.2.0.7,3.2.0.8,3.2.0.9,3.2.0.10,3.2.0.11,3.2.0.12"
+default['hops']['version']                     = "3.2.0.13-SNAPSHOT"
+default['hops']['fuse']['version']             = "3.2.0.13"
 
 default['hops']['hdfs']['user']                = node['install']['user'].empty? ? "hdfs" : node['install']['user']
 default['hops']['hdfs']['user_id']             = '1506'
@@ -61,6 +61,7 @@ default['hops']['aws_endpoint']                = ""
 default['hops']['aws_signing_region']          = ""
 default['hops']['aws_access_key_id']           = ""
 default['hops']['aws_secret_access_key']       = ""
+default['hops']['aws_s3_bypass_governance_retention'] = "false"
 default['hops']['cloud_bypass_disk_cache']         = "false"
 default['hops']['cloud_cache_delete_activation_percentage'] = "70"
 default['hops']['cloud_max_upload_threads']        = "20"
@@ -258,7 +259,7 @@ default['mysql']['port']                    = default['ndb']['mysql_port']
 
 default['hops']['schema_dir']               = "#{node['hops']['root_url']}/hops-schemas"
 
-default['hops']['ndb']['version']           = "22.10.1-SNAPSHOT"
+default['hops']['ndb']['version']           = "22.10.1"
 
 if node['hops']['ndb']['version'] != ""
   node.override['ndb']['version'] = node['hops']['ndb']['version']
@@ -529,7 +530,7 @@ default['hops']['docker']['registry']['mount_volumes'] = ""
 default['hops']['nvidia_pkgs']['download_url']        ="#{node['download_url']}/kube/nvidia"
 
 default['hops']['docker']['git']['image']['name']    = "git"
-default['hops']['docker']['git']['image']['version'] = "0.5.0"
+default['hops']['docker']['git']['image']['version'] = "0.7.0"
 default['hops']['docker']['git']['download_url']     = "#{node['download_url']}/hops-git/#{node['hops']['docker']['git']['image']['version']}/git.tgz"
 
 #XAttrs
