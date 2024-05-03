@@ -359,6 +359,8 @@ bash 'chown-hops-base_dir' do
   user 'root'
   group 'root'
   code <<-EOH
+    # Remove possible broken links due to symlinking another Hops version ie ndb-dal.jar
+    find -L #{node['hops']['base_dir']} -type l -delete
     # chown -L : traverse symbolic links
     chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
   EOH
