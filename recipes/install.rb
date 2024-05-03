@@ -403,18 +403,29 @@ bash 'extract-hadoop' do
 	      tar -zxf #{cached_package_filename} -C #{node['hops']['dir']}
         # remove the config files that we would otherwise overwrite
         rm -rf #{node['hops']['home']}/etc/*
-
-        rm -f #{node['hops']['base_dir']}
-        ln -s #{node['hops']['home']} #{node['hops']['base_dir']}
-
-        # chown -L : traverse symbolic links
-        chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
         chmod 755 #{node['hops']['home']}
-
         # Write flag
         touch #{hin}
 	EOH
   not_if { ::File.exist?("#{hin}") }
+end
+
+link node['hops']['base_dir'] do
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  mode '0755'
+  to node['hops']['home']
+end
+
+bash 'chown-hops-base_dir' do
+  user 'root'
+  group 'root'
+  code <<-EOH
+    # Remove possible broken links due to symlinking another Hops version ie ndb-dal.jar
+    find -L #{node['hops']['base_dir']} -type l -delete
+    # chown -L : traverse symbolic links
+    chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
+  EOH
 end
 
 bash 'chown-sbin' do
