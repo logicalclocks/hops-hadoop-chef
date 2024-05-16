@@ -426,6 +426,7 @@ bash 'chown-hops-base_dir' do
     # chown -L : traverse symbolic links
     chown -RL #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hops']['base_dir']}
   EOH
+  not_if { File.directory?(node['hops']['logs_dir']) }
 end
 
 bash 'chown-sbin' do
