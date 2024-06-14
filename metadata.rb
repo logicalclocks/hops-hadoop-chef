@@ -810,6 +810,10 @@ attribute "hops/nn/enable_retrycache",
           :description => "'true' or 'false' - true to enable retryCache. Default is true.",
           :type => "string"
 
+attribute "hops/nn/retrycache_deletion_batch_size",
+          :description => "Max deletion batch size for expired retry cache entries.",
+          :type => "string"
+
 attribute "hops/hdfs/quota_enabled",
           :description => "'true' or 'false' - true to enable hdfs quota. Default is true.",
           :type => "string"

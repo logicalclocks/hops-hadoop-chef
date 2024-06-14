@@ -468,6 +468,11 @@
 </property>
 
 <property>
+   <name>dfs.namenode.retrycache.delete.batch.size</name>
+   <value><%= node['hops']['nn']['retrycache_deletion_batch_size'] %></value>
+</property>
+
+<property>
    <name>dfs.locationDomainId</name>
    <value><%= @location_domain_id %></value>
 </property>
