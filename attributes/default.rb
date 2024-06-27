@@ -472,7 +472,8 @@ default['hops']['dn']['metrics_port']                     = "19851"
 default['hops']['nm']['metrics_port']                     = "19852"
 default['hops']['rm']['metrics_port']                     = "19853"
 
-default['hops']['nn']['enable_retrycache']            = "true"
+default['hops']['nn']['enable_retrycache']                = "true"
+default['hops']['nn']['retrycache_deletion_batch_size']   = "5000"
 
 default['hops']['hdfs']['quota_enabled']              = "true"
 default['hops']['nn']['handler_count']                = 120
