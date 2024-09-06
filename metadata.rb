@@ -604,6 +604,18 @@ attribute "hops/aws_s3_bypass_governance_retention",
           :description => "In case of Object Lock enabled (Cohesity way of implementing Versioning), add the bypass-governance-retention flag in delete objects versions requests (default: false)",
           :type => 'string'
 
+attribute "hops/google_gcs_bucket",
+          :description => "Google GCS Bucket to store HopsFS data",
+          :type => 'string'
+
+attribute "hops/google_gcs_bucket_location",
+          :description => "Google GCS Bucket to store HopsFS data",
+          :type => 'string'
+
+attribute "hops/google_gcs_bucket_enable_versioning",
+          :description => "Google GCS Bucket to store HopsFS data",
+          :type => 'string'
+
 attribute "hops/cloud_bypass_disk_cache",
           :description => "Bypass disk cache",
           :type => 'string'
