@@ -392,6 +392,7 @@ default['hops']['hadoop']['ssl']['hostname']['verifier']                = "ALLOW
 # Socket factory for the client
 default['hops']['hadoop']['rpc']['socket']['factory']                   = "org.apache.hadoop.net.HopsSSLSocketFactory"
 default['hops']['hadoop']['ssl']['enabled']['protocols']                = "TLSv1.2,TLSv1.1"
+default['hops']['security-actions']['max-connections-per-route']       = "100"
 default['hops']['rmappsecurity']['actor_class']                         = "org.apache.hadoop.yarn.server.resourcemanager.security.DevHopsworksRMAppSecurityActions"
 
 default['hops']['rmappsecurity']['x509']['expiration_safety_period']    = "2d"
@@ -399,6 +400,7 @@ default['hops']['rmappsecurity']['x509']['revocation_monitor_interval'] = "12h"
 default['hops']['rmappsecurity']['x509']['sign-path']                   = "/hopsworks-ca/v2/certificate/app"
 default['hops']['rmappsecurity']['x509']['revoke-path']                 = "/hopsworks-ca/v2/certificate/app"
 default['hops']['rmappsecurity']['x509']['key-size']                    = "2048"
+default['hops']['rmappsecurity']['x509']['revocation-queue-size']       = "500"
 
 default['hops']['rmappsecurity']['jwt']['enabled']                      = "true"
 default['hops']['rmappsecurity']['jwt']['validity']                     = "60m"
@@ -408,6 +410,7 @@ default['hops']['rmappsecurity']['jwt']['audience']                     = "job"
 default['hops']['rmappsecurity']['jwt']['generate-path']                = "/hopsworks-api/api/jwt"
 default['hops']['rmappsecurity']['jwt']['invalidate-path']              = "/hopsworks-api/api/jwt/key"
 default['hops']['rmappsecurity']['jwt']['renew-path']                   = "/hopsworks-api/api/jwt"
+default['hops']['certificate-localization']['queue-size']               = "500"
 
 # Set to 'true' if you want production TLS certificates.
 default['hops']['tls']['prod']                                          = "false"
