@@ -238,6 +238,16 @@
     <value><%= @rpcSocketFactory %></value>
   </property>
 
+  <property>
+    <name>hops.security-actions.max-connections-per-route</name>
+    <value><%= node['hops']['security-actions']['max-connections-per-route'] %></value>
+  </property>
+
+  <property>
+    <name>hops.certificate-localization.localization-queue-size</name>
+    <value><%= node['hops']['certificate-localization']['queue-size'] %></value>
+  </property>
+  
   <% if node['hops']['tls']['enabled'].casecmp?("true") or node['hops']['rmappsecurity']['jwt']['enabled'].casecmp?("true") -%>
 
   <property>
